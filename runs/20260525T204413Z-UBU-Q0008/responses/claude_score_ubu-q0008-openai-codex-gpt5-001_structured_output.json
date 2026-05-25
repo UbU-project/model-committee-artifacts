@@ -1,0 +1,23 @@
+{
+  "scores": [
+    {
+      "proposal_id": "ubu-q0008-openai-codex-gpt5-001",
+      "score": 89,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "The 10-status assignment FSM (offered, accepted, in_progress, clarification_requested, delivered, completed, rejected_by_worker, cancelled, expired, failed) adds implementation surface area; the distinction between 'delivered' and 'completed' requires careful enforcement to avoid status drift.",
+        "Lease/heartbeat deadline semantics are referenced but not defined (duration, renewal protocol, clock-skew tolerance), which may cause ambiguity when UBU-Q0020 implements retry construction.",
+        "Late-submission handling after expiration ('must pass expected-prior-version, idempotency, authority, and review checks') is described at a policy level only; the mechanism for these checks is not specified and could diverge from canonical review workflows.",
+        "Section 24.1.3 is renumbered implicitly by inserting 24.1.2 before the existing model-committee worker text; if other documents cross-reference the prior section numbering this could introduce inconsistency."
+      ],
+      "required_fixes": [],
+      "rationale": "Mechanical validation confirms clean application. All nine sub-questions from UBU-Q0008 are addressed: explicit parent-directed assignment (Q1), polling-only-from-assigned-inbox (Q2), observation-without-execution-authority (Q3), single-lease-per-executor-slot with competitive claiming deferred (Q4), heartbeat expiry handling (Q5), logged transitions via new worker_assignment_updated event type (Q6), rejection with reason (Q7), clarification requests (Q8), and child-task proposals only through authorized mutation requests (Q9). OPEN_QUESTIONS.md preserves the single-line metadata format, updating only Status, Resolved-by, and Resolution fields. The decision record UBU-D0158 maps cleanly to the design section 24.1.2 added in DESIGN.md. Scope is appropriately bounded: retry construction, mutation request schema, Delegation Substrate, and parent/child automation shape are explicitly left to their dedicated open questions. The new log event type is added to the existing event-type list with a consistent naming pattern. No unnecessary files are touched and no extraneous abstractions are introduced. Minor deductions for unspecified lease timing mechanics and the implicit section renumbering risk."
+    }
+  ],
+  "selected_proposal_id": "ubu-q0008-openai-codex-gpt5-001",
+  "selection_rationale": "Only one proposal is present and it scores well: the patch applies cleanly, resolves all nine sub-questions coherently, preserves the OPEN_QUESTIONS.md schema, stays scoped to the question, and produces an auditable decision record. The identified risks are design-level concerns appropriate for future open questions rather than defects requiring rejection."
+}
