@@ -1,0 +1,115 @@
+{
+  "schema_version": "0.2",
+  "run_id": "20260525T051634Z-UBU-Q0060",
+  "created_at_utc": "2026-05-25T05:16:34Z",
+  "repo_path": "../ubu-design",
+  "base_commit": "5ebbb1d00b97d4513ca0c3289991ee01b5fd313e",
+  "selected_question_id": "UBU-Q0060",
+  "phase": "work-select",
+  "config_path": "config/models.json",
+  "status": "selected",
+  "commands": [
+    "model-committee run-loop"
+  ],
+  "providers_attempted": [
+    "codex",
+    "claude"
+  ],
+  "providers_succeeded": [
+    "codex",
+    "claude"
+  ],
+  "providers_failed": [],
+  "provider_attempts": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "sonnet",
+      "phase": "work-score",
+      "target_proposal_id": "codex-ubu-q0060-001",
+      "response_path": "runs/20260525T051634Z-UBU-Q0060/responses/claude_score_codex-ubu-q0060-001_stdout.json",
+      "stderr_path": null
+    }
+  ],
+  "provider_successes": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20260525T051634Z-UBU-Q0060/parsed/codex_work_proposal.json"
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "sonnet",
+      "phase": "work-score",
+      "target_proposal_id": "codex-ubu-q0060-001",
+      "response_path": "runs/20260525T051634Z-UBU-Q0060/responses/claude_score_codex-ubu-q0060-001_stdout.json",
+      "parsed_path": "runs/20260525T051634Z-UBU-Q0060/parsed/claude_score_codex-ubu-q0060-001_result.json"
+    }
+  ],
+  "provider_failures": [],
+  "score_matrix": [
+    {
+      "proposal_id": "codex-ubu-q0060-001",
+      "author_provider": "codex",
+      "scorer_provider": "claude",
+      "score": 89,
+      "valid": true,
+      "rationale": "The patch applies cleanly and is mechanically valid. It directly and comprehensively addresses all seven subquestions in UBU-Q0060: provider descriptor fields and classes (Q1/Q2), Compartment hard gates for no_cloud_llm/no_external_export/local_only (Q3), ContextBundle-based context minimization and redaction (Q4), BYOK credential scoping rules (Q5), UbUCorp managed inference as a non-privileged provider class (Q6), and disclosure requirements before cloud execution (Q7). The decision record UBU-D0157 is well-structured with status, consequences, and downstream refs. OPEN_QUESTIONS.md changes correctly update only the Status and Resolution fields while preserving all other metadata fields and the schema. No new questions are added and no files outside the allowed set are touched. The main concerns are forward references to ContextBundle governance (not yet fully resolved) and the hard-gate language being potentially too absolute for edge cases not yet modeled, but neither rises to the level of a required fix for Phase 1 architecture documentation.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "DESIGN.md addition references '\u00a72.11' by number, but section numbering cannot be verified without reading the full current file; a stale or wrong section reference would be misleading.",
+        "ContextBundle is referenced as an established concept with specific required fields, but it may not yet be fully resolved upstream; this creates a forward dependency that could require revision if ContextBundle governance changes.",
+        "The absolute hard-gate language ('A capability grant, provider preference, workflow setting, or user click cannot override these denials') is architecturally correct but may conflict with legitimate edge cases (e.g., emergency override by a privileged Identity) that are not yet modeled.",
+        "UBU-Q0079, UBU-Q0080, UBU-Q0083, and UBU-Q0084 are listed as dependents but remain Open; if their resolution conflicts with the adapter interface or route envelope defined here, backtracking through this decision will be needed.",
+        "The credential-scoping model specifies storage targets (local instance, OS/device secret store, user-owned worker) at a level of detail that may not survive Phase 1 implementation without requiring an amendment decision."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20260525T051634Z-UBU-Q0060/responses/claude_score_codex-ubu-q0060-001_stdout.json",
+        "stderr_path": null
+      }
+    }
+  ],
+  "score_aggregates": [
+    {
+      "proposal_id": "codex-ubu-q0060-001",
+      "author_provider": "codex",
+      "cross_score_count": 1,
+      "score_mean": 89.0,
+      "score_spread": 0,
+      "frontier_score_gap": 0,
+      "disagreement_flags": []
+    }
+  ],
+  "cross_score_count": 1,
+  "score_mean": 89.0,
+  "score_spread": 0,
+  "frontier_score_gap": 0,
+  "disagreement_flags": [],
+  "quorum_result": {
+    "valid": true,
+    "human_review_required": false,
+    "selected_proposal_id": "codex-ubu-q0060-001",
+    "selected_score": 89.0,
+    "selected_cross_score_count": 1,
+    "blocked_reasons": [],
+    "manual_override": false
+  },
+  "selected_proposal_id": "codex-ubu-q0060-001",
+  "automated_selection_valid": true,
+  "human_review_required": false,
+  "artifact_publication_status": "operator_pending"
+}

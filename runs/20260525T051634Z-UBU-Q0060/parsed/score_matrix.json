@@ -1,0 +1,26 @@
+[
+  {
+    "proposal_id": "codex-ubu-q0060-001",
+    "author_provider": "codex",
+    "scorer_provider": "claude",
+    "score": 89,
+    "valid": true,
+    "rationale": "The patch applies cleanly and is mechanically valid. It directly and comprehensively addresses all seven subquestions in UBU-Q0060: provider descriptor fields and classes (Q1/Q2), Compartment hard gates for no_cloud_llm/no_external_export/local_only (Q3), ContextBundle-based context minimization and redaction (Q4), BYOK credential scoping rules (Q5), UbUCorp managed inference as a non-privileged provider class (Q6), and disclosure requirements before cloud execution (Q7). The decision record UBU-D0157 is well-structured with status, consequences, and downstream refs. OPEN_QUESTIONS.md changes correctly update only the Status and Resolution fields while preserving all other metadata fields and the schema. No new questions are added and no files outside the allowed set are touched. The main concerns are forward references to ContextBundle governance (not yet fully resolved) and the hard-gate language being potentially too absolute for edge cases not yet modeled, but neither rises to the level of a required fix for Phase 1 architecture documentation.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [
+      "DESIGN.md addition references '\u00a72.11' by number, but section numbering cannot be verified without reading the full current file; a stale or wrong section reference would be misleading.",
+      "ContextBundle is referenced as an established concept with specific required fields, but it may not yet be fully resolved upstream; this creates a forward dependency that could require revision if ContextBundle governance changes.",
+      "The absolute hard-gate language ('A capability grant, provider preference, workflow setting, or user click cannot override these denials') is architecturally correct but may conflict with legitimate edge cases (e.g., emergency override by a privileged Identity) that are not yet modeled.",
+      "UBU-Q0079, UBU-Q0080, UBU-Q0083, and UBU-Q0084 are listed as dependents but remain Open; if their resolution conflicts with the adapter interface or route envelope defined here, backtracking through this decision will be needed.",
+      "The credential-scoping model specifies storage targets (local instance, OS/device secret store, user-owned worker) at a level of detail that may not survive Phase 1 implementation without requiring an amendment decision."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20260525T051634Z-UBU-Q0060/responses/claude_score_codex-ubu-q0060-001_stdout.json",
+      "stderr_path": null
+    }
+  }
+]

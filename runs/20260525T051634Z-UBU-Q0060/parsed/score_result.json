@@ -1,0 +1,24 @@
+{
+  "scores": [
+    {
+      "proposal_id": "codex-ubu-q0060-001",
+      "score": 89,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": false,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "ContextBundle is referenced as an established concept with specific required fields, but it may not yet be fully resolved upstream; this creates a forward dependency that could require revision if ContextBundle governance changes.",
+        "DESIGN.md addition references '\u00a72.11' by number, but section numbering cannot be verified without reading the full current file; a stale or wrong section reference would be misleading.",
+        "The absolute hard-gate language ('A capability grant, provider preference, workflow setting, or user click cannot override these denials') is architecturally correct but may conflict with legitimate edge cases (e.g., emergency override by a privileged Identity) that are not yet modeled.",
+        "The credential-scoping model specifies storage targets (local instance, OS/device secret store, user-owned worker) at a level of detail that may not survive Phase 1 implementation without requiring an amendment decision.",
+        "UBU-Q0079, UBU-Q0080, UBU-Q0083, and UBU-Q0084 are listed as dependents but remain Open; if their resolution conflicts with the adapter interface or route envelope defined here, backtracking through this decision will be needed."
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 1 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "codex-ubu-q0060-001",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}
