@@ -1,0 +1,113 @@
+{
+  "schema_version": "0.2",
+  "run_id": "20260525T035447Z-UBU-Q0016",
+  "created_at_utc": "2026-05-25T03:54:47Z",
+  "repo_path": "../ubu-design",
+  "base_commit": "1c387fd9cad42322ba5a51fd04aff6f9430e942f",
+  "selected_question_id": "UBU-Q0016",
+  "phase": "work-select",
+  "config_path": "config/models.json",
+  "status": "selected",
+  "commands": [
+    "model-committee run-loop"
+  ],
+  "providers_attempted": [
+    "codex",
+    "claude"
+  ],
+  "providers_succeeded": [
+    "codex",
+    "claude"
+  ],
+  "providers_failed": [],
+  "provider_attempts": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "sonnet",
+      "phase": "work-score",
+      "target_proposal_id": "codex-ubu-q0016-20260524-001",
+      "response_path": "runs/20260525T035447Z-UBU-Q0016/responses/claude_score_codex-ubu-q0016-20260524-001_stdout.json",
+      "stderr_path": null
+    }
+  ],
+  "provider_successes": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20260525T035447Z-UBU-Q0016/parsed/codex_work_proposal.json"
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "sonnet",
+      "phase": "work-score",
+      "target_proposal_id": "codex-ubu-q0016-20260524-001",
+      "response_path": "runs/20260525T035447Z-UBU-Q0016/responses/claude_score_codex-ubu-q0016-20260524-001_stdout.json",
+      "parsed_path": "runs/20260525T035447Z-UBU-Q0016/parsed/claude_score_codex-ubu-q0016-20260524-001_result.json"
+    }
+  ],
+  "provider_failures": [],
+  "score_matrix": [
+    {
+      "proposal_id": "codex-ubu-q0016-20260524-001",
+      "author_provider": "codex",
+      "scorer_provider": "claude",
+      "score": 90,
+      "valid": true,
+      "rationale": "The patch applies cleanly with no mechanical errors. All 11 sub-questions of UBU-Q0016 are addressed: skeleton Plan representation, legitimization contents, candidate Plan representation, execution profiles per search method, probability representation (scalar/log/interval/provenance/correlation groups), independence-assumption safeguards, Compact Calendar encoding checklist, stored vs. reconstructed Plan policy, time-advance coverage recalculation, and the MVP minimum implementation list. DESIGN.md receives appropriately scoped additions to \u00a715.2.2 and \u00a716, and a new \u00a716.9. DECISIONS.md receives a complete UBU-D0151 record with status, consequences, and follow-on question list. OPEN_QUESTIONS.md updates the single-line metadata format correctly (Status: Solved, Resolved by: UBU-D0151) and replaces the resolution text. No new questions are added; pre-existing narrower questions are correctly identified as continuing follow-ups rather than blockers. The proposal explicitly defers exhaustive optimization, GPU/cloud, learned policies, and exact coverage proof, keeping Phase 1 tractable. Minor risks are prescriptive profile naming and the unverified decision number, neither of which requires a fix before acceptance.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "Execution profile names (baseline, mobile_local, desktop_or_worker, solver_validation, gpu_or_hosted) are prescriptive and may constrain implementation naming conventions that haven't been established yet.",
+        "Correlation-group requirements for probability provenance add specification depth that may be premature for MVP, since the proposal itself notes MVP may conservatively mark correlation unknown.",
+        "UBU-D0151 decision number is asserted without verifying it doesn't collide with an existing decision in DECISIONS.md \u2014 a merge conflict risk if another branch already used that number."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20260525T035447Z-UBU-Q0016/responses/claude_score_codex-ubu-q0016-20260524-001_stdout.json",
+        "stderr_path": null
+      }
+    }
+  ],
+  "score_aggregates": [
+    {
+      "proposal_id": "codex-ubu-q0016-20260524-001",
+      "author_provider": "codex",
+      "cross_score_count": 1,
+      "score_mean": 90.0,
+      "score_spread": 0,
+      "frontier_score_gap": 0,
+      "disagreement_flags": []
+    }
+  ],
+  "cross_score_count": 1,
+  "score_mean": 90.0,
+  "score_spread": 0,
+  "frontier_score_gap": 0,
+  "disagreement_flags": [],
+  "quorum_result": {
+    "valid": true,
+    "human_review_required": false,
+    "selected_proposal_id": "codex-ubu-q0016-20260524-001",
+    "selected_score": 90.0,
+    "selected_cross_score_count": 1,
+    "blocked_reasons": [],
+    "manual_override": false
+  },
+  "selected_proposal_id": "codex-ubu-q0016-20260524-001",
+  "automated_selection_valid": true,
+  "human_review_required": false,
+  "artifact_publication_status": "operator_pending"
+}

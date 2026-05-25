@@ -1,0 +1,22 @@
+{
+  "scores": [
+    {
+      "proposal_id": "codex-ubu-q0016-20260524-001",
+      "score": 90,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "good",
+      "risks": [
+        "Execution profile names (baseline, mobile_local, desktop_or_worker, solver_validation, gpu_or_hosted) are prescriptive and may constrain implementation naming conventions that haven't been established yet.",
+        "Correlation-group requirements for probability provenance add specification depth that may be premature for MVP, since the proposal itself notes MVP may conservatively mark correlation unknown.",
+        "UBU-D0151 decision number is asserted without verifying it doesn't collide with an existing decision in DECISIONS.md \u2014 a merge conflict risk if another branch already used that number."
+      ],
+      "required_fixes": [],
+      "rationale": "The patch applies cleanly with no mechanical errors. All 11 sub-questions of UBU-Q0016 are addressed: skeleton Plan representation, legitimization contents, candidate Plan representation, execution profiles per search method, probability representation (scalar/log/interval/provenance/correlation groups), independence-assumption safeguards, Compact Calendar encoding checklist, stored vs. reconstructed Plan policy, time-advance coverage recalculation, and the MVP minimum implementation list. DESIGN.md receives appropriately scoped additions to \u00a715.2.2 and \u00a716, and a new \u00a716.9. DECISIONS.md receives a complete UBU-D0151 record with status, consequences, and follow-on question list. OPEN_QUESTIONS.md updates the single-line metadata format correctly (Status: Solved, Resolved by: UBU-D0151) and replaces the resolution text. No new questions are added; pre-existing narrower questions are correctly identified as continuing follow-ups rather than blockers. The proposal explicitly defers exhaustive optimization, GPU/cloud, learned policies, and exact coverage proof, keeping Phase 1 tractable. Minor risks are prescriptive profile naming and the unverified decision number, neither of which requires a fix before acceptance."
+    }
+  ],
+  "selected_proposal_id": "codex-ubu-q0016-20260524-001",
+  "selection_rationale": "Only one proposal is present and it earns selection on merit: the patch applies cleanly, comprehensively addresses all 11 sub-questions of UBU-Q0016, correctly updates OPEN_QUESTIONS.md status markers, adds a well-structured DECISIONS.md record (UBU-D0151), expands DESIGN.md \u00a715.2.2 and \u00a716 with the required grammar and execution-profile definitions, explicitly defers non-MVP concerns, and introduces no unnecessary scope or new open questions. Identified risks are minor and do not block acceptance."
+}

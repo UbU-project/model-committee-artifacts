@@ -1,0 +1,273 @@
+diff --git a/DESIGN.md b/DESIGN.md
+--- a/DESIGN.md
++++ b/DESIGN.md
+@@ -1545,13 +1545,26 @@ The ideal search over candidate Plans may be NP-hard or otherwise combinatoriall
+ ### 15.2.2 Skeleton Plans and legitimization
+ 
+ The planning pipeline begins with a **skeleton Plan**. A skeleton Plan affixes all Static Tasks and recursively walks backward through dependency DAGs from terminal Static Tasks to dependency roots, then schedules root prerequisites before their dependents. The skeleton Plan is a causal/dependency foundation, not a complete optimized user Plan.
+ 
+ A dependency is a requirement that some state be true before a dependent Task begins. During skeletonization, UbU must check whether that state is already satisfied by the initial UniverseState before inserting prerequisite Tasks. If a viable skeleton Plan cannot be created, the planning model is blocked, contradictory, incomplete, or impossible enough that UbU should stop ordinary planning and ask the user for clarification with a concrete diagnostic explanation.
+ 
+ After skeletonization, UbU performs **legitimization**. Legitimization adds the minimum human-viability constraints and support Tasks needed to make the skeleton Plan plausibly executable by the user. Examples include affect constraints, breaks, recovery Tasks, meals, sleep, transition buffers, setup/teardown time, context-switch limits, and basic sustainability requirements.
+ 
+ The legitimized skeleton Plan is the baseline feasible Plan. Optional Dynamic Tasks, gap-filling work, and richer candidate Plans are compared against it by value, risk, fragility, and user-fit. If full legitimization is cheap, it may be used directly while testing candidate Plans. If it is expensive, UbU should use semi-legitimization heuristics before invoking full legitimization on finalists.
++
++Minimum skeleton Plan representation records:
++
++- Static Task placements with fixed start and end times;
++- the dependency DAG frontier used for the current planning scope;
++- prerequisite roots whose required state is not already true in the initial UniverseState;
++- ordered prerequisite chains and the dependency or precondition refs that justify them;
++- initial UniverseState assumptions, including known true, known false, assumed, and unresolved planner-relevant facts;
++- unsatisfied dependency diagnostics with the failing Task, missing state, causal chain, and clarification alternatives when available.
++
++Legitimization records the constraints it enforced and any support Tasks or buffers it inserted. The minimum legitimization output includes affect limits in `user_mode`, recovery, breaks, meals, sleep, rest, transition buffers, setup and teardown time, context-switch limits, slack thresholds, dependency-fragility thresholds, and a threshold result of `passed`, `failed`, or `needs_clarification`.
++
++After legitimization, the minimum candidate Plan representation includes materialized Task placements, decision envelopes for movable Tasks, Plan probability metadata, value score, legitimacy threshold result or score, hard-validation status, and explanation lineage back to Objectives, dependencies, preconditions, affect constraints, worker status, risk findings, and probability inputs.
+ 
+ ### 15.2.3 Planning horizon and early preparation
+ 
+ The internal planning horizon may exceed the user-visible Calendar window. A one-day visible Calendar may require look-ahead beyond the day to avoid cutting off dependency chains, Techniques, deadlines, or future preparation sequences.
+@@ -1591,21 +1604,29 @@ Compact Calendar support is considered important for MVP because it enables recu
+ ### 16.1 Compact Calendar concept
+ 
+ A compact Calendar may include:
+ 
+-- Task set
+-- Static Tasks
+-- Dynamic Tasks
+-- duration distributions
+-- Task success probabilities
+-- external-event trigger distributions
+-- modeled interruption distributions
+-- affect-state uncertainty and constraints
+-- deterministic expansion grammar
+-- expansion threshold(s)
+-- coverage value
+-- default Plan reference or materialized default Plan
+-- short-horizon branch cache
+-- execution-mode metadata such as time delta, branch horizon, and resource limits
++- Task set;
++- Static Tasks;
++- Dynamic Tasks;
++- skeleton Plan metadata;
++- legitimized skeleton baseline;
++- ordering constraints;
++- duration distributions;
++- Task success probabilities;
++- external-event trigger distributions;
++- modeled interruption distributions;
++- affect-state uncertainty and constraints;
++- deterministic expansion grammar;
++- probability provenance expressions and correlation-group references;
++- expansion threshold(s);
++- coverage value;
++- default Plan reference or materialized default Plan;
++- stored user-previewed, risk-report, or debug Plans when policy requires them;
++- short-horizon branch cache;
++- decision envelopes;
++- protected, flexible, and disposable Task metadata;
++- cached explanations and repair recipes;
++- execution-mode metadata such as time delta, branch horizon, CPU/GPU resource limits, and privacy-routing limits.
+ 
+ ### 16.2 Coverage
+ 
+@@ -1612,22 +1633,30 @@ A compact Calendar may include:
+ Coverage belongs to the compact serialization, not the abstract Calendar.
+ 
+ Coverage represents the probability mass of possible futures covered by the compact representation.
+ 
+ The provisional short-horizon branch coverage target is `0.99` probability mass. This should be treated as a configurable heuristic, not as a mathematical guarantee for every device, scope, or resource mode.
++
++After time advances, coverage is recalculated by conditioning the compact Calendar on elapsed time and accepted Logs, Snapshots, External Events, and user actions, then discarding expired branch mass and re-estimating the remaining covered mass.
++
++If recalculated coverage falls below the configured threshold, UbU records a `low_compact_calendar_coverage` recalculation trigger or marks the Calendar stale according to trigger policy. Exact coverage proof is not an MVP requirement.
+ 
+ ### 16.3 Planner grammar direction
+ 
+ Compact Calendar planning is no longer framed as a bare DFS process that directly produces the default Plan. The current architecture is:
+ 
+ 1. Build the skeleton Plan from Static Tasks and dependency DAGs.
+ 2. Legitimize the skeleton Plan into a minimally human-viable baseline.
+ 3. Generate richer candidate Plans by adding optional Dynamic Tasks and alternative placements.
+ 4. Use semi-legitimization or full legitimization to reject unrealistic candidates.
+ 5. Validate finalists against hard constraints.
+ 6. Select the user-facing default Plan by Plan probability among deterministic candidate Plans.
+ 7. Package compact repair metadata for runtime use.
+ 
+ DFS-like search may still be useful for candidate construction. BFS-like search may still be useful for near-term divergence. Greedy selection may still be useful as a deliberately unintelligent baseline. None of those algorithms is the complete planning architecture by itself.
++
++Execution profiles are additive rather than mutually exclusive. The greedy mean-duration planner is the required MVP benchmark. Local and mobile profiles must support deterministic skeletonization, conservative legitimization, exact hard-constraint checks, local repair recipes, and a short-horizon branch cache. Desktop, worker, and hosted profiles may add DFS-like candidate construction, local search, solver-backed finalist validation, and GPU-friendly scoring or simulation. GPU or learned search may propose and score candidates, but exact or conservative validation certifies the selected Plan.
++
++Plan probability is represented internally as probability metadata rather than only as a display scalar. The minimum record contains a display scalar, a log probability for stable computation, an optional probability interval, provenance over the modeled probabilistic inputs, and correlation-group or scenario references when inputs are not independent. Implementations may multiply probabilities only for inputs declared independent. Correlated or unknown relationships must use joint scenarios, shared random variables, correlation groups, or conservative intervals rather than pretending independence.
+ 
+ ### 16.4 Reactive short-horizon branch layer
+ 
+@@ -1679,21 +1708,29 @@ Known offline windows, such as flights or planned disconnection, should trigger
+ ### 16.8 GPU-aware execution backends and privacy boundary
+ 
+ The open-core planning loop must not depend on a hidden cloud service. Mobile-only UbU must preserve the core UbU experience, but it should do so as a real-time steward of Plan legitimacy, user agency, and next-action clarity rather than as the full global optimizer.
+ 
+ Cloud or external compute may improve performance, granularity, analysis depth, branch coverage, and expensive legitimization, but must not be a hidden mandatory dependency for the open-core planning loop. Solver selection should treat GPU suitability as a first-class criterion. CPU or conservative exact logic should certify skeleton validity, hard constraints, contradiction diagnostics, and explanations; GPU-capable search, simulation, scoring, and learned-model inference should handle large candidate sets, stochastic robustness, affect scoring, and premium cloud planning where available.
+ 
+ Possible execution backends include:
+ 
+ - local mobile execution;
+ - local desktop or laptop execution;
+ - Phase 2 user-owned worker devices;
+ - dedicated user-owned worker appliances;
+ - UbU corporate hosted compute;
+ - third-party UbU-compatible compute providers;
+ - future privacy-preserving compute services such as practical FHE-backed or comparable encrypted computation.
+ 
+ The FOSS planner and Compact Calendar representation should be backend-agnostic. Execution providers are interchangeable through explicit APIs, capability grants, Compartment policy, provenance, and user-visible routing decisions. GPU search may propose candidate Plans, but hard constraints and final Plan validity must be certified by exact or conservative validation. Cloud planning payloads should minimize PII and transmit only the structured timing, dependency, value, constraint, criticality, and legitimacy information needed for the selected provider.
++
++### 16.9 MVP Compact Calendar implementation
++
++The minimum Phase 1 Compact Calendar implementation stores the legitimized skeleton baseline, the default Plan, the active execution profile, coverage estimate, decision envelopes, Task criticality, cached explanation fragments, probability provenance, and last-legitimate-Plan reference. It stores user-previewed, risk-report, and debug/reproducibility Plans only when those artifacts are actually generated or needed for audit.
++
++High-probability near-term alternatives within the reactive horizon may be stored as materialized branches or as deterministic reconstruction instructions. Non-selected candidate Plans, expensive global repairs, and low-probability branches are reconstructed on demand from the compact grammar, current UniverseState, Logs, Snapshots, External Events, repair recipes, and cached provenance.
++
++MVP planning does not require exhaustive optimal search, cloud compute, GPU execution, exact coverage proof, learned policy models, or a complete transport grammar for every post-MVP uncertainty source. The required implementation is a deterministic skeletonizer, minimum legitimizer, greedy baseline, bounded candidate expansion, hard-constraint validator, Plan probability/provenance record, compact default-Plan package, short-horizon repair cache or reconstruction path, and low-coverage recalculation trigger.
+ 
+ ---
+ 
+ ## 17. Logs
+diff --git a/DECISIONS.md b/DECISIONS.md
+--- a/DECISIONS.md
++++ b/DECISIONS.md
+@@ -2578,12 +2578,85 @@ The generated `review.md` should include a final operator step to publish the ru
+ ```bash
+ RUN_ID="<run-id>"
+ 
+ mkdir -p ../model-committee-artifacts/runs
+ cp -r "$(pwd)/runs/${RUN_ID}" ../model-committee-artifacts/runs/
+ 
+ git -C ../model-committee-artifacts add "runs/${RUN_ID}"
+ git -C ../model-committee-artifacts commit -S -m "UMC artifact ${RUN_ID}"
+ git -C ../model-committee-artifacts push
+ ```
+ 
+ These commands are instructions for a human operator or separately authorized release process. `model-committee v0.2` should generate them, not execute them automatically.
++
++---
++
++## UBU-D0151: Compact Calendar MVP grammar uses skeleton, legitimization, bounded candidates, and repair metadata
++
++**Status:** Accepted → DESIGN.md §§15.2.2, 16
++
++Resolved question: `UBU-Q0016`.
++
++Compact Calendar planning for Phase 1 uses a staged explicit grammar rather than a bare DFS grammar.
++
++The minimum skeleton Plan representation includes:
++
++- Static Task placements with fixed start and end times;
++- dependency DAG frontier for the current planning scope;
++- prerequisite roots whose required state is not already true in the initial UniverseState;
++- ordered prerequisite chains with dependency and precondition references;
++- initial UniverseState assumptions, including known true, known false, assumed, and unresolved planner-relevant facts;
++- unsatisfied dependency diagnostics with failing Task, missing state, causal chain, and clarification alternatives where available.
++
++Skeleton generation must check the initial UniverseState before inserting a prerequisite Task. A dependency requires a state, not necessarily a new Task. If skeletonization cannot produce a viable baseline, ordinary planning stops and UbU reports a concrete diagnostic instead of continuing into optimization.
++
++Legitimization adds the minimum human-viability constraints and support work required to make the skeleton plausible for execution:
++
++- affect constraints in `user_mode`;
++- recovery, break, meal, sleep, and rest requirements when applicable;
++- transition buffers;
++- setup and teardown time;
++- context-switch limits;
++- slack and dependency-fragility thresholds.
++
++The legitimized skeleton baseline is the minimum feasible Plan. Support work inserted by legitimization is represented as ordinary Tasks or buffers with explanation lineage, not as hidden planner magic.
++
++The minimum candidate Plan representation after legitimization includes:
++
++- materialized Task placements;
++- decision envelopes for movable Tasks;
++- Plan probability metadata;
++- value score;
++- legitimacy threshold result or score;
++- hard-validation status;
++- explanation lineage back to Objectives, dependencies, preconditions, affect constraints, worker status, risk findings, and probability inputs.
++
++Execution profiles are allowed as follows:
++
++- `baseline`: greedy mean-duration planning is required as a benchmark and fallback reference.
++- `mobile_local`: deterministic skeletonization, conservative legitimization, exact hard-constraint checks, local repair recipes, basic decision envelopes, cached explanations, and short-horizon BFS-like branch or repair reconstruction are required.
++- `desktop_or_worker`: DFS-like candidate construction, local search, larger branch horizons, cached subplans, and solver-backed finalist validation are allowed.
++- `solver_validation`: CP-SAT, SMT/MaxSMT, local-search, or comparable exact/conservative solvers may validate finalists, diagnose contradictions, or certify hard constraints.
++- `gpu_or_hosted`: GPU-friendly scoring, stochastic simulation, affect scoring, robustness scoring, and learned-model inference may propose or rank candidates, but exact or conservative validation must certify selected Plans.
++
++Search methods are implementation techniques, not semantic authority. DFS-like, BFS-like, greedy, solver-backed, GPU-friendly, and local repair methods may be combined as long as hard constraints, explanations, and selected-Plan validity remain inspectable.
++
++Plan probability is represented as probability metadata with:
++
++- a scalar display probability;
++- a log probability for stable computation;
++- an optional probability interval;
++- a provenance expression over modeled probabilistic inputs;
++- correlation-group, scenario, joint-distribution, or shared-random-variable references when inputs are not independent.
++
++Implementations must not multiply probabilistic inputs unless independence is explicitly declared by the model. Correlated or unknown relationships must use joint scenarios, shared random variables, correlation groups, or conservative intervals rather than pretending independence. MVP may be conservative and mark correlation unknown instead of producing false precision.
++
++Compact Calendar encoding should include, when present in the planning scope:
++
++- skeleton Plan metadata;
++- legitimized skeleton baseline;
++- ordering constraints;
++- duration PDFs;
++- Task success probabilities;
++- external-event and interruption distributions;
++- affect constraints;
++- decision envelopes;
++- protected, flexible, and disposable Task metadata;
++- cached explanations and repair recipes;
++- execution-mode metadata, including time delta, branch horizon, CPU/GPU resource limits, and privacy-routing limits.
++
++The concrete Plans stored in MVP are the legitimized skeleton baseline and the default Plan. User-previewed Plans, risk-report Plans, and debug/reproducibility Plans are stored only when actually generated for those uses. High-probability near-term alternatives may be stored as materialized branches or deterministic reconstruction instructions within the reactive horizon.
++
++Other candidate Plans, low-probability branches, expensive repairs, and remote-assisted optimizations are reconstructed on demand from the compact grammar, current UniverseState, Logs, Snapshots, External Events, repair recipes, and cached provenance.
++
++After time advances, coverage is recalculated by conditioning the compact Calendar on elapsed time and accepted Logs, Snapshots, External Events, and user actions; discarding expired branch mass; re-estimating the covered remaining mass; and emitting a `low_compact_calendar_coverage` recalculation trigger or stale marker when the configured threshold is crossed. Exact coverage proof is not required in MVP.
++
++The minimum MVP implementation is:
++
++- deterministic skeletonizer over Static Tasks, dependencies, preconditions, and initial UniverseState;
++- minimum legitimizer for affect, recovery, transition, setup/teardown, context switching, and slack constraints;
++- greedy baseline planner;
++- bounded candidate expansion for optional Dynamic Tasks;
++- hard-constraint validator for selected candidates;
++- Plan probability and provenance record with correlation safeguards;
++- compact default-Plan package with decision envelopes, criticality, cached explanations, and last-legitimate-Plan reference;
++- short-horizon repair cache or reconstruction path;
++- low-coverage recalculation trigger.
++
++**Consequences:**
++
++- `UBU-Q0016` is resolved for Phase 1 architecture and no longer blocks implementation on an unspecified planner grammar.
++- Exact exhaustive optimization, GPU execution, cloud planning, learned policies, and exact coverage proof are not Phase 1 requirements.
++- `UBU-Q0017`, `UBU-Q0057`, `UBU-Q0058`, `UBU-Q0070`, `UBU-Q0071`, `UBU-Q0072`, `UBU-Q0073`, and `UBU-Q0076` remain valid narrower follow-up questions rather than blockers to the architecture decision.
++- The open-core planner remains backend-agnostic: external or GPU compute may improve quality, but local deterministic planning and repair metadata preserve the core UbU experience.
+diff --git a/OPEN_QUESTIONS.md b/OPEN_QUESTIONS.md
+--- a/OPEN_QUESTIONS.md
++++ b/OPEN_QUESTIONS.md
+@@ -337,7 +337,7 @@
+ 
+ ## UBU-Q0016: Compact Calendar planner grammar and execution profile
+ 
+-Status: Open Priority: MVP blocker Phase: Phase 1 Decision type: Architecture Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: TBD Depends on: UBU-Q0014, UBU-Q0015 Blocks: Phase 1 implementation Resolved by: Unresolved Last scored: Never Scored from commit: None
++Status: Solved Priority: MVP blocker Phase: Phase 1 Decision type: Architecture Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: TBD Depends on: UBU-Q0014, UBU-Q0015 Blocks: Phase 1 implementation Resolved by: UBU-D0151 Last scored: Never Scored from commit: None
+ 
+ Compact Calendar support is important for recursive self-analysis, future sync/transport, and fast recalculation. The current direction is no longer a bare DFS grammar. The planner architecture begins with skeleton Plan generation, then legitimization, then candidate Plan expansion and validation, with reactive mobile stewardship around the selected Plan.
+ 
+@@ -410,7 +410,7 @@
+ 
+ ### Resolution
+ 
+-Unresolved. Must be refined into an MVP planner grammar and execution profile before Phase 1 implementation can be considered stable.
++Resolved. See UBU-D0151.
+ 
+ ---
+ 

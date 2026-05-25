@@ -1,0 +1,22 @@
+{
+  "scores": [
+    {
+      "proposal_id": "codex-ubu-q0016-20260524-001",
+      "score": 90,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": false,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Correlation-group requirements for probability provenance add specification depth that may be premature for MVP, since the proposal itself notes MVP may conservatively mark correlation unknown.",
+        "Execution profile names (baseline, mobile_local, desktop_or_worker, solver_validation, gpu_or_hosted) are prescriptive and may constrain implementation naming conventions that haven't been established yet.",
+        "UBU-D0151 decision number is asserted without verifying it doesn't collide with an existing decision in DECISIONS.md \u2014 a merge conflict risk if another branch already used that number."
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 1 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "codex-ubu-q0016-20260524-001",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}
