@@ -1,0 +1,171 @@
+diff --git a/DESIGN.md b/DESIGN.md
+--- a/DESIGN.md
++++ b/DESIGN.md
+@@ -2033,10 +2033,11 @@ MVP event types are:
+ - `task_completed`
+ - `task_failed`
+ - `task_moot`
+ - `external_event_observed`
+ - `snapshot_observed`
+ - `objective_transitioned`
++- `pipeline_state_transitioned`
+ - `plan_realized`
+ - `decision_recorded`
+ - `recalculation_triggered`
+ - `worker_assignment_updated`
+@@ -2906,17 +2907,50 @@ Contributor interactions may also be associated with a GitHub Identity and relat
+ ### 26.2 Pipeline state
+ 
+-`pipeline_state` is distinct from `Objective.status`.
+-
+-Candidate pipeline states:
++`pipeline_state` is generic projection-scoped workflow/project-management state. It is not GitHub-specific, although Phase 1 uses it first for GitHub dogfooding and managed-label projection.
++
++`pipeline_state` is not stored directly on `Objective` in Phase 1. It is stored as projection metadata keyed by one projection plus one target Objective. One Objective may therefore have multiple current pipeline states for multiple projections, such as GitHub issue labels, a future organization board, or a local release workflow.
++
++MVP projection-state record:
++
++- `pipeline_state_id`
++- `pipeline_projection_id`
++- `target_ref` (`Objective` only in Phase 1)
++- `pipeline_state`
++- `authority_source`
++- `source_refs`
++- `external_reference_refs`
++- `updated_at`
++- `version`
++- `provenance`
++
++A projection has at most one current `pipeline_state` for a given Objective. History is reconstructed from Logs, not by storing multiple historical states on the Objective.
++
++Phase 1 `pipeline_state` enum:
+ 
+ - `unlabeled`
+ - `invalid`
+ - `under_specified`
+ - `valid_unprioritized`
+ - `unassigned`
+ - `in_process_awaiting_pr`
+ - `awaiting_review`
+ - `awaiting_ci`
+ - `complete`
++
++Enum semantics:
++
++- `unlabeled`: no accepted projection label/state has been assigned.
++- `invalid`: the projected work item is malformed, duplicate-invalid, impossible, or not admissible as planned work.
++- `under_specified`: more triage or clarification is required before prioritization.
++- `valid_unprioritized`: valid work exists but has not been ranked or selected for execution.
++- `unassigned`: valid prioritized work has no executor or active assignment.
++- `in_process_awaiting_pr`: work is assigned or in progress and the next expected external projection is a PR or comparable artifact.
++- `awaiting_review`: implementation or artifact exists and needs human, maintainer, or worker review.
++- `awaiting_ci`: review or merge path is waiting on CI or comparable automated verification.
++- `complete`: the projection workflow is complete; this does not by itself prove `Objective.status = completed` or `satisfied`.
++
++Automation Workers do not directly mutate `pipeline_state`. A worker may submit a `pipeline_state` projection-state mutation request when its capability grant permits `mutation_request.submit` for the target projection and Objective. The canonical instance validates authority, expected prior version, Compartment/export policy, External References, idempotency, and review policy before applying or rejecting the request.
++
++Every accepted `pipeline_state` transition creates a `pipeline_state_transitioned` Log entry with old state, new state, projection id, target Objective ref, actor or authority source, reason, effective time, provenance, source refs, external refs, and any requested projection update. Rejected, stale, or unauthorized worker requests are logged through worker mutation rejection events.
+ 
+ ### 26.3 GitHub projection
+diff --git a/DECISIONS.md b/DECISIONS.md
+--- a/DECISIONS.md
++++ b/DECISIONS.md
+@@ -3617,3 +3617,54 @@ Question wording must use model-repair framing:
+ - Detailed preference-calibration examples remain in `UBU-Q0051`; discovery-mode inference remains in `UBU-Q0052`; deeper affect/personality modeling remains post-MVP in `UBU-Q0074`.
+ 
+ ---
++
++## UBU-D0182: Pipeline state is projection-scoped workflow metadata
++
++**Status:** Accepted → DESIGN.md §§17.2, 26.2
++
++Resolved question: `UBU-Q0004`.
++
++`pipeline_state` is generic projection-scoped workflow/project-management metadata, not GitHub-specific. Phase 1 uses it first for GitHub issue/PR dogfooding and managed labels.
++
++`pipeline_state` is not stored directly on `Objective` in Phase 1. It is stored in projection metadata keyed by `pipeline_projection_id` and target Objective. One Objective may have multiple current pipeline states across different projections. A projection has at most one current state per Objective; historical changes are represented by Logs.
++
++Minimum record fields:
++
++- `pipeline_state_id`
++- `pipeline_projection_id`
++- `target_ref` (`Objective` only in Phase 1)
++- `pipeline_state`
++- `authority_source`
++- `source_refs`
++- `external_reference_refs`
++- `updated_at`
++- `version`
++- `provenance`
++
++The Phase 1 enum is:
++
++- `unlabeled`
++- `invalid`
++- `under_specified`
++- `valid_unprioritized`
++- `unassigned`
++- `in_process_awaiting_pr`
++- `awaiting_review`
++- `awaiting_ci`
++- `complete`
++
++`complete` is workflow completion for the projection and does not by itself prove `Objective.status = completed` or `satisfied`.
++
++Automation Workers do not directly mutate `pipeline_state`. A worker may submit a `pipeline_state` projection-state mutation request through `mutation_request.submit`; the canonical instance validates authority, expected prior version, Compartment/export policy, External References, idempotency, and review policy before applying or rejecting it.
++
++Every accepted `pipeline_state` transition creates a `pipeline_state_transitioned` Log entry with old state, new state, projection id, target Objective ref, actor or authority source, reason, effective time, provenance, source refs, external refs, and any requested projection update. Rejected, stale, or unauthorized worker requests are logged through worker mutation rejection events.
++
++**Consequences:**
++
++- `UBU-Q0004` is resolved for Phase 1.
++- Objective lifecycle remains on `Objective.status`; workflow state stays projection-scoped.
++- GitHub managed labels project accepted `pipeline_state` values but do not become canonical state.
++- Multiple projections can coexist without changing the Objective schema.
++- Worker authority remains request-only for pipeline changes.
++
++---
+diff --git a/OPEN_QUESTIONS.md b/OPEN_QUESTIONS.md
+--- a/OPEN_QUESTIONS.md
++++ b/OPEN_QUESTIONS.md
+@@ -66,36 +66,6 @@ Resolved. See UBU-D0098.
+ ## UBU-Q0004: Pipeline State
+-
+-Status: Open Priority: MVP important Phase: Phase 1 Decision type: Data model Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 90 Depends on: UBU-Q0003 Blocks: Phase 1 implementation Resolved by: Unresolved Last scored: 2026-05-26 Scored from commit: None
+-
+-`Objective.status` is the canonical UbU lifecycle status. `pipeline_state` is workflow/project-management state.
+-
+-### Question
+-
+-1. Is `pipeline_state` generic or GitHub-specific?
+-2. Can one Objective have multiple pipeline states for multiple projections?
+-3. Is `pipeline_state` stored on Objective directly or in projection metadata?
+-4. What is the MVP pipeline enum?
+-5. Can Automation Workers mutate `pipeline_state`?
+-6. Does every pipeline state transition create an event/log entry?
+-
+-### Candidate MVP enum
+-
+-```text
+-unlabeled
+-invalid
+-under_specified
+-valid_unprioritized
+-unassigned
+-in_process_awaiting_pr
+-awaiting_review
+-awaiting_ci
+-complete
+-```
+-
+-### Resolution
+-
+-Unresolved.
+-
+----
+-
++Status: Solved Priority: MVP important Phase: Phase 1 Decision type: Data model Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 90 Depends on: UBU-Q0003 Blocks: Phase 1 implementation Resolved by: UBU-D0182 Last scored: 2026-05-26 Scored from commit: None
++Resolved. See UBU-D0182.
++---
++
+ ## UBU-Q0005: GitHub Event Triage Rules

@@ -1,0 +1,27 @@
+{
+  "scores": [
+    {
+      "proposal_id": "codex-ubu-q0004-pipeline-state-001",
+      "score": 85,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": false,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "DECISIONS.md UBU-D0182 status line references DESIGN.md \u00a7\u00a717.2, 26.2 but the patch only modifies \u00a726.2. If \u00a717.2 does not contain pipeline_state content already established in a prior commit, this is a dangling cross-reference.",
+        "OPEN_QUESTIONS.md tombstone removes the blank line between the ## heading and the status metadata line, which may break parsers that rely on that formatting.",
+        "Tombstone uses 'Status: Solved' while other resolved questions in the file appear to use 'Status: Resolved' \u2014 inconsistent vocabulary could cause tooling mismatches.",
+        "pipeline_state_transitioned is added to the MVP event-types list in DESIGN.md without a corresponding definition entry if event types are formally enumerated elsewhere in the spec."
+      ],
+      "required_fixes": [
+        "Align the tombstone status token ('Solved' vs 'Resolved') with whatever value other resolved questions use in OPEN_QUESTIONS.md.",
+        "Restore the blank line between '## UBU-Q0004: Pipeline State' and the status metadata line in OPEN_QUESTIONS.md to match the format of other tombstones.",
+        "Verify that DESIGN.md \u00a717.2 already contains pipeline_state content; if not, remove \u00a717.2 from the DECISIONS.md cross-reference or add the missing \u00a717.2 content."
+      ],
+      "rationale": "Aggregate cross-score mean from 1 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "codex-ubu-q0004-pipeline-state-001",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}

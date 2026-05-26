@@ -1,0 +1,27 @@
+{
+  "scores": [
+    {
+      "proposal_id": "codex-ubu-q0004-pipeline-state-001",
+      "score": 85,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "DECISIONS.md UBU-D0182 status line references DESIGN.md \u00a7\u00a717.2, 26.2 but the patch only modifies \u00a726.2. If \u00a717.2 does not contain pipeline_state content already established in a prior commit, this is a dangling cross-reference.",
+        "OPEN_QUESTIONS.md tombstone removes the blank line between the ## heading and the status metadata line, which may break parsers that rely on that formatting.",
+        "Tombstone uses 'Status: Solved' while other resolved questions in the file appear to use 'Status: Resolved' \u2014 inconsistent vocabulary could cause tooling mismatches.",
+        "pipeline_state_transitioned is added to the MVP event-types list in DESIGN.md without a corresponding definition entry if event types are formally enumerated elsewhere in the spec."
+      ],
+      "required_fixes": [
+        "Verify that DESIGN.md \u00a717.2 already contains pipeline_state content; if not, remove \u00a717.2 from the DECISIONS.md cross-reference or add the missing \u00a717.2 content.",
+        "Restore the blank line between '## UBU-Q0004: Pipeline State' and the status metadata line in OPEN_QUESTIONS.md to match the format of other tombstones.",
+        "Align the tombstone status token ('Solved' vs 'Resolved') with whatever value other resolved questions use in OPEN_QUESTIONS.md."
+      ],
+      "rationale": "The proposal comprehensively answers all six UBU-Q0004 sub-questions: pipeline_state is declared generic and projection-scoped (Q1), one Objective can hold multiple pipeline states across projections (Q2), state is stored in projection metadata not on Objective (Q3), the candidate enum is adopted with per-value semantic definitions (Q4), workers use request-only mutation (Q5), and every accepted transition produces a pipeline_state_transitioned Log entry (Q6). The decision record UBU-D0182 is well-formed, the enum semantics are precise and actionable, and the worker-authority boundary is consistent with the existing mutation-request pattern. The patch is limited to the three expected documentation files, mechanical validation passed, and no new open questions are introduced. Deductions are for the potentially stale \u00a717.2 cross-reference in the decision status line, the missing blank line in the tombstone, and the 'Solved' vs 'Resolved' status-token inconsistency \u2014 all fixable before merge without rework of substance."
+    }
+  ],
+  "selected_proposal_id": "codex-ubu-q0004-pipeline-state-001",
+  "selection_rationale": "Only one proposal was submitted and it passes mechanical validation. It directly and completely resolves all six UBU-Q0004 sub-questions, is properly scoped to documentation files, introduces no unnecessary scope, and requires no decomposition given UBU-Q0003 is already resolved. The identified risks are minor documentation inconsistencies that do not undermine the substantive design decisions."
+}
