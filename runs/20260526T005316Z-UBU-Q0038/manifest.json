@@ -1,0 +1,150 @@
+{
+  "schema_version": "0.2",
+  "run_id": "20260526T005316Z-UBU-Q0038",
+  "created_at_utc": "2026-05-26T00:53:16Z",
+  "repo_path": "../ubu-design",
+  "base_commit": "7669d90917f767c65652e12c0cc2996fd6e486d0",
+  "selected_question_id": "UBU-Q0038",
+  "phase": "work-select",
+  "config_path": "config/models.json",
+  "status": "selected",
+  "commands": [
+    "model-committee run-loop"
+  ],
+  "providers_attempted": [
+    "codex",
+    "claude"
+  ],
+  "providers_succeeded": [
+    "codex",
+    "claude"
+  ],
+  "providers_failed": [],
+  "provider_attempts": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-score",
+      "target_proposal_id": "codex-ubu-q0038-d0161",
+      "response_path": "runs/20260526T005316Z-UBU-Q0038/responses/codex_score_codex-ubu-q0038-d0161_response.json",
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "sonnet",
+      "phase": "work-score",
+      "target_proposal_id": "codex-ubu-q0038-d0161",
+      "response_path": "runs/20260526T005316Z-UBU-Q0038/responses/claude_score_codex-ubu-q0038-d0161_stdout.json",
+      "stderr_path": null
+    }
+  ],
+  "provider_successes": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20260526T005316Z-UBU-Q0038/parsed/codex_work_proposal.json"
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-score",
+      "target_proposal_id": "codex-ubu-q0038-d0161",
+      "response_path": "runs/20260526T005316Z-UBU-Q0038/responses/codex_score_codex-ubu-q0038-d0161_response.json",
+      "parsed_path": "runs/20260526T005316Z-UBU-Q0038/parsed/codex_score_codex-ubu-q0038-d0161_result.json"
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "sonnet",
+      "phase": "work-score",
+      "target_proposal_id": "codex-ubu-q0038-d0161",
+      "response_path": "runs/20260526T005316Z-UBU-Q0038/responses/claude_score_codex-ubu-q0038-d0161_stdout.json",
+      "parsed_path": "runs/20260526T005316Z-UBU-Q0038/parsed/claude_score_codex-ubu-q0038-d0161_result.json"
+    }
+  ],
+  "provider_failures": [],
+  "score_matrix": [
+    {
+      "proposal_id": "codex-ubu-q0038-d0161",
+      "author_provider": "codex-cli",
+      "scorer_provider": "codex",
+      "score": 94,
+      "valid": true,
+      "rationale": "The proposal cleanly applies, modifies only the allowed design files, directly answers all listed subquestions, and adds an explicit accepted decision covering proposal format, validation, self-score handling, scoring criteria, invalid-selected-patch behavior, v0.1 writable files, generalization to code work, Codex/Ollama inclusion, v0.2 cross-scoring, and the no-auto-commit boundary. It preserves the OPEN_QUESTIONS schema and keeps scope focused on process rules rather than implementation or GitHub mutation.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "The added DESIGN.md text is dense and placed as several long paragraphs rather than a more scannable subsection, which may make later edits harder.",
+        "Marking UBU-Q0038 fully solved is appropriate for the stated contract, but future implementation details may still require follow-up questions if validators or quorum thresholds reveal gaps."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20260526T005316Z-UBU-Q0038/responses/codex_score_codex-ubu-q0038-d0161_response.json",
+        "stderr_path": null
+      }
+    },
+    {
+      "proposal_id": "codex-ubu-q0038-d0161",
+      "author_provider": "codex-cli",
+      "scorer_provider": "claude",
+      "score": 90,
+      "valid": true,
+      "rationale": "The patch applies cleanly and is confined to the v0.1 writable set (DESIGN.md, DECISIONS.md, OPEN_QUESTIONS.md). It directly answers all ten subquestions of UBU-Q0038: proposal envelope format, pre-score validation steps, self-score non-quorum treatment, scoring criteria list, invalid-selected-patch failure path, v0.1 file allowlist, generalization strategy for code and bug-fix work, schema-constrained Codex proposals, Ollama secondary proposals, and the commit-boundary constraint. UBU-D0161 is well-structured with a status header, rationale, rules, and explicit consequences. OPEN_QUESTIONS.md is updated to Solved with the correct resolver list. The only notable risks are two decision references (UBU-D0160, UBU-D0070) cited in the consequences block that do not appear in the question's own resolution metadata; these should be verified to exist in DECISIONS.md at the base commit but are not blockers for acceptance. No required fixes identified.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "UBU-D0160 is cited in the consequences block as a compatible prior decision but does not appear in the UBU-Q0038 resolution list or in the question text; if UBU-D0160 does not exist in DECISIONS.md at the base commit this is a dangling reference.",
+        "UBU-D0070 is similarly cited in consequences without appearing in any resolution reference in the question; worth verifying it is an extant decision.",
+        "The DESIGN.md addition is placed immediately before section 3.3 inside section 3.2; if 3.2 has sub-section numbering the insertion point may not carry the right heading level, though this is cosmetic."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20260526T005316Z-UBU-Q0038/responses/claude_score_codex-ubu-q0038-d0161_stdout.json",
+        "stderr_path": null
+      }
+    }
+  ],
+  "score_aggregates": [
+    {
+      "proposal_id": "codex-ubu-q0038-d0161",
+      "author_provider": "codex-cli",
+      "cross_score_count": 2,
+      "score_mean": 92.0,
+      "score_spread": 4,
+      "frontier_score_gap": 4,
+      "disagreement_flags": []
+    }
+  ],
+  "cross_score_count": 2,
+  "score_mean": 92.0,
+  "score_spread": 4,
+  "frontier_score_gap": 4,
+  "disagreement_flags": [],
+  "quorum_result": {
+    "valid": true,
+    "human_review_required": false,
+    "selected_proposal_id": "codex-ubu-q0038-d0161",
+    "selected_score": 92.0,
+    "selected_cross_score_count": 2,
+    "blocked_reasons": [],
+    "manual_override": false
+  },
+  "selected_proposal_id": "codex-ubu-q0038-d0161",
+  "automated_selection_valid": true,
+  "human_review_required": false,
+  "artifact_publication_status": "operator_pending"
+}

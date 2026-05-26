@@ -1,0 +1,24 @@
+{
+  "scores": [
+    {
+      "proposal_id": "codex-ubu-q0038-d0161",
+      "score": 92,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": false,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Marking UBU-Q0038 fully solved is appropriate for the stated contract, but future implementation details may still require follow-up questions if validators or quorum thresholds reveal gaps.",
+        "The DESIGN.md addition is placed immediately before section 3.3 inside section 3.2; if 3.2 has sub-section numbering the insertion point may not carry the right heading level, though this is cosmetic.",
+        "The added DESIGN.md text is dense and placed as several long paragraphs rather than a more scannable subsection, which may make later edits harder.",
+        "UBU-D0070 is similarly cited in consequences without appearing in any resolution reference in the question; worth verifying it is an extant decision.",
+        "UBU-D0160 is cited in the consequences block as a compatible prior decision but does not appear in the UBU-Q0038 resolution list or in the question text; if UBU-D0160 does not exist in DECISIONS.md at the base commit this is a dangling reference."
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "codex-ubu-q0038-d0161",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}

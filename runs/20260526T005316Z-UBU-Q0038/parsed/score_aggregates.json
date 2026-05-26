@@ -1,0 +1,11 @@
+[
+  {
+    "proposal_id": "codex-ubu-q0038-d0161",
+    "author_provider": "codex-cli",
+    "cross_score_count": 2,
+    "score_mean": 92.0,
+    "score_spread": 4,
+    "frontier_score_gap": 4,
+    "disagreement_flags": []
+  }
+]

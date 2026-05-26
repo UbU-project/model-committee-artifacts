@@ -1,0 +1,235 @@
+# Model-Committee Cross-Scoring Request
+
+You are scoring candidate work proposals for the UbU `model-committee` process.
+
+Return exactly one JSON object. Do not return prose outside the JSON object.
+
+This is a v0.2 cross-score. You are not making the final selection; model-committee
+will aggregate valid cross-scores locally.
+
+Scoring provider: `claude`
+Authoring provider for the candidate proposal(s): `codex-cli`
+
+## Selected question
+
+Question ID: `UBU-Q0038`  
+Question title: `Changeset-Based Work Phase`  
+Base commit: `7669d90917f767c65652e12c0cc2996fd6e486d0`
+
+```markdown
+## UBU-Q0038: Changeset-Based Work Phase
+
+Status: Open Priority: MVP blocker Phase: Phase 1 Decision type: Process Auto-choice eligibility: Auto eligible Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: TBD Depends on: UBU-Q0032 Blocks: model-committee work execution Resolved by: UBU-D0063, UBU-D0069 Last scored: Never Scored from commit: None
+
+### Question
+
+How should the model-committee work phase represent, score, select, apply, and commit concrete changesets?
+
+### Subquestions
+
+1. What format should work proposals use?
+2. What validation is required before work scoring?
+3. May models score their own work?
+4. What criteria should work scoring use?
+5. When may a selected changeset be committed locally?
+6. What files may be modified in v0.1?
+7. How does the work phase generalize from design questions to code changes and bug fixes?
+8. How should Codex CLI schema-constrained proposals fit into the work phase?
+9. How should Ollama secondary proposals be included in Codex scoring?
+10. What should happen when Codex scoring selects a mechanically invalid proposal?
+
+### Current direction
+
+The work phase should produce explicit patch-style changesets, score those changesets, select the best one when quorum is satisfied, and create reviewable artifacts. v0.1 uses Codex CLI as the primary schema-constrained work and scoring provider, with Ollama as secondary proposal providers. v0.2 adds Claude Code CLI as a schema-native frontier provider and requires cross-scoring: Codex scores Claude proposals and Claude scores Codex proposals. Self-scores may be diagnostic but do not count as quorum evidence. v0.2 writes or updates `selected.patch`, `commit_message.txt`, `review.md`, score-matrix artifacts, disagreement flags, and logs. Remote GitHub mutation, automatic patch application, automatic artifact push, and automatic PR creation remain out of scope.
+
+### Resolution
+
+Partially resolved by `UBU-D0063`, `UBU-D0069`, and `UBU-D0150`; detailed scoring and validation rules may be refined after implementation.
+
+---
+
+```
+
+## Candidate proposals
+
+```json
+[
+  {
+    "proposal_id": "codex-ubu-q0038-d0161",
+    "provider_id": "codex-cli",
+    "model_name": "gpt-5",
+    "question_id": "UBU-Q0038",
+    "base_commit": "7669d90917f767c65652e12c0cc2996fd6e486d0",
+    "summary": "Resolve UBU-Q0038 by adding UBU-D0161, clarifying that work proposals are schema-validated patch artifacts with explicit validation, scoring, invalid-selection, cross-scoring, and commit-boundary rules.",
+    "rationale": "UBU-Q0038 was partially resolved by earlier decisions but still lacked a single accepted contract for proposal format, pre-score validation, self-score handling, scoring criteria, invalid selected patches, v0.1 writable files, and the boundary between review artifacts and commits. This proposal records those details in DESIGN.md and DECISIONS.md, then marks the selected question solved in OPEN_QUESTIONS.md without adding new scope.",
+    "changed_files": [
+      "DESIGN.md",
+      "DECISIONS.md",
+      "OPEN_QUESTIONS.md"
+    ],
+    "patch": "diff --git a/DESIGN.md b/DESIGN.md\n--- a/DESIGN.md\n+++ b/DESIGN.md\n@@ -428,6 +428,16 @@\n This prevents implementation from being hidden inside an external editor agent and makes the committee loop applicable to documentation changes, code changes, bug fixes, and future UbU implementation work.\n \n VS Code or another editor may still be used for human review, but it is not part of the canonical committee loop.\n+\n+The accepted work-phase contract is intentionally mechanical. A work proposal is a schema-validated envelope containing provider identity, model name, selected question or problem ID, base commit, summary, rationale, changed-file list, a raw unified diff, suggested commit message, validation notes, declared new questions, declared resolved questions, declared decisions, and a human-review flag. The patch is the authoritative changeset; prose summaries are explanatory only.\n+\n+Before scoring, `model-committee` validates the proposal envelope, base commit, allowed file set, referenced question and decision IDs, patch syntax, patch applicability against the recorded base snapshot, and any work-item-specific semantic checks. For current design-document work, the v0.1 writable set is limited to `DESIGN.md`, `DECISIONS.md`, and `OPEN_QUESTIONS.md`. Later code, schema, fixture, and bug-fix work generalizes by declaring an allowed path set plus validators, tests, and artifact expectations for the selected work item.\n+\n+Only mechanically valid proposals are eligible for automatic selection. Invalid proposals are retained in logs with diagnostics, but they are not quorum evidence. If a selected proposal later fails patch validation, automatic selection fails rather than silently applying a different patch; the run writes review artifacts and uses the invalid-selected-patch failure path.\n+\n+Work scoring considers at least correctness against the selected question or problem, consistency with accepted decisions, mechanical validity, minimality, reviewability, risk and reversibility, validation or test adequacy, maintainability, and whether the changeset preserves model-committee authority boundaries. Score records must name required fixes and validation assumptions. Self-scores may be retained as diagnostics, but only non-self scores count for quorum evidence. v0.1 uses Codex scoring over valid Codex and Ollama proposals; v0.2 requires frontier cross-scoring between Codex and Claude Code as described above.\n+\n+`model-committee` v0.1 and v0.2 do not automatically apply patches, commit locally, push artifacts, open pull requests, or mutate GitHub. A human operator may apply `selected.patch`, inspect `review.md`, rerun appropriate checks, and create a normal local commit using `commit_message.txt` as a suggestion. Any future automatic local commit path requires a later accepted decision with explicit clean-worktree, validation, and approval rules.\n \n ### 3.3 Prioritized recursive loop\n \ndiff --git a/DECISIONS.md b/DECISIONS.md\n--- a/DECISIONS.md\n+++ b/DECISIONS.md\n@@ -2922,3 +2922,34 @@\n - The final long-term artifact format may evolve through schema migrations and later decisions, but the Phase 1 logging blocker is closed.\n - `UBU-Q0046` can focus on which artifacts are published publicly and how they are summarized, not on what the local run log must preserve.\n - Implementations may add artifacts or fields, but omitting the minimum artifacts requires a later accepted decision.\n+\n+---\n+\n+## UBU-D0161: Model-committee work proposals are validated patch artifacts\n+\n+**Status:** Accepted \u2192 DESIGN.md \u00a73.2\n+\n+Resolved question: `UBU-Q0038`.\n+\n+The `model-committee` work phase represents implementation as explicit patch artifacts, not hidden editor state or direct provider edits.\n+\n+A work proposal is a schema-constrained envelope with at least: proposal ID, provider ID, model name, selected question or problem ID, base commit, summary, rationale, changed-file list, raw unified diff, suggested commit message, validation notes, declared new questions, declared resolved questions, declared decisions, and a human-review-required flag. The raw unified diff is the proposed state transition. Summaries, rationales, and commit messages help review, but they do not replace the patch.\n+\n+Before work scoring, `model-committee` validates proposal JSON against the active schema, confirms the proposal targets the selected question or work item and expected base commit, checks changed files against the work item's allowlist, parses the unified diff, verifies that the patch applies to the recorded base snapshot, rejects forbidden paths or generated/private artifacts, verifies referenced question and decision IDs, and runs work-item-specific semantic checks when available. For v0.1 design work, the writable set is only `DESIGN.md`, `DECISIONS.md`, and `OPEN_QUESTIONS.md`. Later code, schema, fixture, and bug-fix work uses the same proposal envelope but supplies a different allowlist, validators, tests, and expected review artifacts.\n+\n+Mechanically invalid proposals are retained in run logs with diagnostics, but they are not eligible for automatic selection and do not count as valid work proposals for quorum. The scorer may be shown invalid-proposal diagnostics for critique, but selection must choose only from mechanically valid proposals.\n+\n+Work scoring evaluates at least: correctness against the selected question or problem; consistency with accepted design decisions and authority boundaries; mechanical validity; minimality and focus; reviewability of the patch and commit message; risk, reversibility, and blast radius; validation or test adequacy; maintainability and generality beyond the immediate prompt; and whether new questions or decisions are warranted rather than silently expanding scope. Score records include score, validity judgment, rationale, risks, required fixes, and validation assumptions.\n+\n+Models may score their own proposals only for diagnostic metadata. Self-scores do not count as quorum evidence and must be labeled non-quorum. In v0.1, Codex is the required scoring provider for valid Codex and Ollama work proposals, and Ollama proposals are included only after they pass the same schema and patch validation. In v0.2, Codex and Claude Code cross-score each other's frontier proposals; local/Ollama providers remain useful for diversity, dissent, fallback, and offline review but do not replace the required frontier cross-score unless a later decision changes quorum policy.\n+\n+If a scorer selects a proposal that is later discovered to be mechanically invalid, automatic selection fails. The run must not silently apply or commit that patch. It writes review artifacts, validation diagnostics, and the invalid-selected-patch failure result. Choosing another proposal requires a valid score/selection record over the remaining mechanically valid proposals or a new run. v0.2 quorum, score-threshold, and disagreement failures use the human-review-required path rather than being treated as successful automatic selection.\n+\n+`model-committee` v0.1 and v0.2 do not automatically apply patches to canonical files, create local commits, push artifacts, open pull requests, or mutate GitHub. A human operator may apply `selected.patch`, inspect `review.md`, run the relevant validation commands, and commit normally using `commit_message.txt` as a suggestion. Automatic local commit remains out of scope until a later accepted decision defines explicit approval, clean-worktree, validation, rollback, and authority rules.\n+\n+**Consequences:**\n+\n+- `UBU-Q0038` is resolved for the v0.1/v0.2 work-phase contract.\n+- `UBU-D0063`, `UBU-D0069`, `UBU-D0070`, `UBU-D0150`, and `UBU-D0160` remain compatible; this decision fills in the proposal, validation, scoring, invalid-selection, and commit-boundary details.\n+- The work phase generalizes from design-document patches to code changes and bug fixes through work-item-specific file allowlists, validators, tests, and review artifacts rather than through a different provider authority model.\n+- Any future automatic patch application or local commit feature requires a separate accepted decision.\ndiff --git a/OPEN_QUESTIONS.md b/OPEN_QUESTIONS.md\n--- a/OPEN_QUESTIONS.md\n+++ b/OPEN_QUESTIONS.md\n@@ -689,7 +689,7 @@\n \n ## UBU-Q0038: Changeset-Based Work Phase\n \n-Status: Open Priority: MVP blocker Phase: Phase 1 Decision type: Process Auto-choice eligibility: Auto eligible Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: TBD Depends on: UBU-Q0032 Blocks: model-committee work execution Resolved by: UBU-D0063, UBU-D0069 Last scored: Never Scored from commit: None\n+Status: Solved Priority: MVP blocker Phase: Phase 1 Decision type: Process Auto-choice eligibility: Auto eligible Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: TBD Depends on: UBU-Q0032 Blocks: model-committee work execution Resolved by: UBU-D0063, UBU-D0069, UBU-D0150, UBU-D0161 Last scored: Never Scored from commit: None\n \n ### Question\n \n@@ -714,7 +714,7 @@\n \n ### Resolution\n \n-Partially resolved by `UBU-D0063`, `UBU-D0069`, and `UBU-D0150`; detailed scoring and validation rules may be refined after implementation.\n+Resolved. See `UBU-D0063`, `UBU-D0069`, `UBU-D0150`, and `UBU-D0161`.\n \n ---\n \n",
+    "commit_message": "Resolve model-committee changeset work phase",
+    "validation_notes": [
+      "Generated against base commit 7669d90917f767c65652e12c0cc2996fd6e486d0.",
+      "Patch modifies only DESIGN.md, DECISIONS.md, and OPEN_QUESTIONS.md.",
+      "Validated with git apply --check from stdin in the repository workspace.",
+      "OPEN_QUESTIONS.md keeps the selected question metadata on one line and edits only the UBU-Q0038 block."
+    ],
+    "new_questions_added": [],
+    "questions_resolved": [
+      "UBU-Q0038"
+    ],
+    "decisions_added": [
+      "UBU-D0161"
+    ],
+    "requires_human_review": false
+  }
+]
+```
+
+## Mechanical validation results
+
+```json
+[
+  {
+    "proposal_id": "codex-ubu-q0038-d0161",
+    "patch_applies": true,
+    "allowlist_passed": true,
+    "changed_files": [
+      "DECISIONS.md",
+      "DESIGN.md",
+      "OPEN_QUESTIONS.md"
+    ],
+    "error": null,
+    "normalized_patch": null,
+    "warnings": [],
+    "ordinary_error": null,
+    "recount_error": null,
+    "normalization_error": null
+  }
+]
+```
+
+## Provider weights
+
+Provider weights are historical diagnostic context only in v0.2. Do not use
+self-trust or author identity as score evidence.
+
+```json
+{}
+```
+
+## JSON Schema
+
+Your output must satisfy this schema:
+
+```json
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "scores",
+    "selected_proposal_id",
+    "selection_rationale"
+  ],
+  "properties": {
+    "scores": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "proposal_id",
+          "score",
+          "patch_applies",
+          "implements_selected_work",
+          "preserves_question_schema",
+          "avoids_unnecessary_scope",
+          "decomposition_quality",
+          "risks",
+          "required_fixes",
+          "rationale"
+        ],
+        "properties": {
+          "proposal_id": {
+            "type": "string"
+          },
+          "score": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "patch_applies": {
+            "type": "boolean"
+          },
+          "implements_selected_work": {
+            "type": "boolean"
+          },
+          "preserves_question_schema": {
+            "type": "boolean"
+          },
+          "avoids_unnecessary_scope": {
+            "type": "boolean"
+          },
+          "decomposition_quality": {
+            "type": "string",
+            "enum": [
+              "none",
+              "good",
+              "bad",
+              "not_applicable"
+            ]
+          },
+          "risks": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "required_fixes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "rationale": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "selected_proposal_id": {
+      "type": "string"
+    },
+    "selection_rationale": {
+      "type": "string"
+    }
+  }
+}
+```
+
+## Scoring requirements
+
+Score each proposal from 0 to 100.
+
+Consider:
+
+- whether the patch applies cleanly;
+- whether it implements the selected work;
+- whether it preserves the question schema;
+- whether it avoids unnecessary scope;
+- whether it modifies only allowed files;
+- whether it creates useful decomposition if decomposition occurs;
+- whether it introduces new risks;
+- whether required fixes remain.
+
+Rules:
+
+- Score every proposal in this prompt.
+- `selected_proposal_id` must refer to one scored proposal from this prompt.
+- Manual override is not allowed in v0.2.
+- Prefer a patch that is valid, minimal, auditable, and directly responsive.
+- Do not select a proposal whose patch failed mechanical validation.
+- Do not score your own provider's proposal unless explicitly asked for diagnostic self-score.
+
+Return only JSON.
