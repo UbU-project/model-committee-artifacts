@@ -1,0 +1,236 @@
+# Model-Committee Cross-Scoring Request
+
+You are scoring candidate work proposals for the UbU `model-committee` process.
+
+Return exactly one JSON object. Do not return prose outside the JSON object.
+
+This is a v0.2 cross-score. You are not making the final selection; model-committee
+will aggregate valid cross-scores locally.
+
+Scoring provider: `claude`
+Authoring provider for the candidate proposal(s): `codex`
+
+## Selected question
+
+Question ID: `UBU-Q0049`  
+Question title: `Release Outreach Pipeline artifact model and implementation boundary`  
+Base commit: `2c410f5b6f469b90fbc850528e479eea059d7fab`
+
+```markdown
+## UBU-Q0049: Release Outreach Pipeline artifact model and implementation boundary
+
+Status: Open Priority: MVP important Phase: Phase 1 Decision type: Process Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 90 Depends on: UBU-Q0030, UBU-Q0036, UBU-Q0038 Blocks: Release Outreach Pipeline implementation, release communication, contributor recruitment Resolved by: UBU-D0094 Last scored: 2026-05-26 Scored from commit: None
+
+### Question
+
+What is the minimum useful artifact model and implementation boundary for the Release Outreach Pipeline?
+
+### Subquestions
+
+1. What files and metadata should a release outreach package contain?
+2. How should screenshots, UI-test exports, fixture captures, and demo recordings record provenance?
+3. What schema should distinguish implemented behavior, mock behavior, future plans, and speculative goals?
+4. What human approval gates are required before video rendering, platform upload, public posting, or external channel mutation?
+5. How should Compartment, Identity, public-projection, and export rules prevent private data leakage?
+6. Which parts of the pipeline belong in Phase 1 dogfooding and which should remain post-MVP?
+7. How should project configurations define audience-specific communication Objectives?
+8. Which video-generation tools or local renderers should be treated as Automation Workers versus external publication systems?
+
+### Current direction
+
+`UBU-D0094` accepts the feature bundle and tagline: "UbU should make every release explain itself." The minimum path should start with manually reviewed release outreach packages generated from repo state, release notes, accepted decisions, closed issues, and approved screenshots. Full automated video generation and publication should be deferred until the artifact schema, provenance model, privacy gates, and review workflow are explicit.
+
+### Resolution
+
+Partially established by `UBU-D0094`; detailed artifact schema, implementation boundaries, provenance requirements, and review gates remain open.
+
+---
+
+```
+
+## Candidate proposals
+
+```json
+[
+  {
+    "proposal_id": "codex-ubu-q0049-20260526-001",
+    "provider_id": "codex",
+    "model_name": "gpt-5",
+    "question_id": "UBU-Q0049",
+    "base_commit": "2c410f5b6f469b90fbc850528e479eea059d7fab",
+    "summary": "Resolve UBU-Q0049 by defining the Release Outreach Pipeline package model, claim labels, media provenance, approval gates, privacy/export boundary, Phase 1 scope, and Automation Worker versus external publication boundary.",
+    "rationale": "UBU-D0094 accepted the feature bundle but left the implementation boundary too vague for Phase 1. This proposal adds a compact accepted decision, updates the design summary, tombstones the selected question, and removes a stale reference claiming UBU-Q0049 remains open. The decision keeps Phase 1 manual and reviewable while preserving later automation paths for rendering and publication.",
+    "changed_files": [
+      "DECISIONS.md",
+      "DESIGN.md",
+      "OPEN_QUESTIONS.md"
+    ],
+    "patch": "diff --git a/DECISIONS.md b/DECISIONS.md\nindex 55f8e9d..5647c42 100644\n--- a/DECISIONS.md\n+++ b/DECISIONS.md\n@@ -3075,7 +3075,7 @@ Stale overwrite prevention is mandatory. The canonical instance compares `expect\n - Worker authority remains request-based and bounded by capability grants, Compartment policy, expected versions, idempotency, assignment leases, and review policy.\n - Valid worker outputs can support automation without granting direct canonical write authority.\n - Invalid and stale worker submissions remain auditable without polluting canonical state.\n-- `UBU-Q0013`, `UBU-Q0020`, `UBU-Q0021`, `UBU-Q0049`, and `UBU-Q0084` remain open for authority-source vocabulary, retry construction, automation child structure, release-outreach artifacts, and external AgentAction side-effect modeling.\n+- `UBU-Q0013`, `UBU-Q0020`, `UBU-Q0021`, and `UBU-Q0084` remain open for authority-source vocabulary, retry construction, automation child structure, and external AgentAction side-effect modeling.\n \n ---\n \n@@ -3510,3 +3510,59 @@ Failed and partially successful runs are publishable when labeled by failure cla\n - Future implementation should add an artifact-safety check and a redacted public manifest schema before publishing run packages.\n \n ---\n+\n+## UBU-D0180: Release Outreach Pipeline uses structured packages and gated publication\n+\n+**Status:** Accepted \u2192 DESIGN.md \u00a7\u00a72.6, 4.1.3\n+\n+Resolved question: `UBU-Q0049`.\n+\n+A release outreach package is a derived release artifact set, not a new Phase 1 canonical entity. It is attached to ordinary Objectives, WorkItems, Logs, release artifacts, External References, Automation Worker outputs, and export/projection gates.\n+\n+Minimum package artifacts:\n+\n+- `manifest.json`: package ID, schema version, project/release refs, version or release range, base commit or build refs, generated/updated timestamps, actor Identity, package status, linked Objective/Task/Log refs, source summary, Compartment/export summary, and package hash list.\n+- `claim_register.json`: claim ID, text, audience, claim kind, support status, evidence refs, source object refs, allowed public wording, review state, and publication eligibility.\n+- `evidence_index.json`: release notes, accepted decisions, closed issues, commits, tests, fixtures, screenshots, recordings, risk reports, or other evidence with hashes, selectors, source refs, and capture/import provenance.\n+- Draft artifacts: public release notes, developer release notes, video script, narration text, captions, YouTube title/description/chapters, announcement drafts, known limitations, future-work notes, and contributor calls-to-action when relevant.\n+- `media_refs.json`: screenshot, UI-test export, fixture capture, and demo-recording references. Raw media is copied into the package only when export policy allows it and review approves it.\n+- `export_review.json`, `approvals.json`, and `publication_plan.json`: privacy/export decisions, approval records, intended audiences, channels, destinations, and required next gates.\n+\n+Every public claim uses one support status:\n+\n+- `implemented_behavior`: backed by implemented code, accepted release notes, closed issue, test artifact, screenshot, recording, or other release evidence.\n+- `mock_or_fixture_behavior`: backed by synthetic, redacted, fixture, or demo-only data and visibly labeled as such.\n+- `future_plan`: backed by an accepted decision, roadmap item, issue, or future-work note, and visibly not implemented.\n+- `speculative_goal`: aspirational or exploratory; allowed only when labeled and excluded from implementation claims.\n+\n+Known limitations are represented as limitations or future-work claims, not as hidden qualifiers on implementation claims. An `implemented_behavior` claim without evidence is invalid for public output.\n+\n+Media provenance records at least artifact ID, artifact type, source workflow or worker, generator tool, repo commit or build ref, test or demo flow ref, fixture/live/mock mode, input source refs, visible Identity refs, Compartment refs, redaction or minimization applied, hash, capture time, approval state, supported claim refs, retention policy, and export policy.\n+\n+Approval gates are separate and append-only:\n+\n+- package assembly may be automatic after source selection and local policy checks;\n+- public export requires artifact-safety and Compartment/export review;\n+- script, narration, and caption drafts require human review before being treated as approved public copy;\n+- video rendering requires explicit approval because it may combine protected media, voice, captions, and public claims into a harder-to-edit artifact;\n+- platform upload, public posting, mailing-list send, social posting, or any external channel mutation requires explicit human approval unless a narrow trusted auto-publication rule names the workflow, destination, audience, source scope, claim labels, Compartment/export constraints, and rollback or correction path.\n+\n+Compartment and Identity policy is a hard upper bound. `no_external_export` content cannot enter public packages except as redacted structural references. `no_cloud_llm` content cannot be sent to cloud drafting or video tools. Low-security un-compartmented content may be used only through a user-visible route. Screenshots and recordings must be reviewed for private data, contributor communications, personal data, credentials, private notes, hidden repository context, and unintended Identity disclosure before public use.\n+\n+Project configurations may define audience-specific communication Objectives. A minimum configuration maps audience labels to Objective refs, intended channels, allowed source categories, required package sections, tone or reading-level guidance, claim-label policy, destination refs, and approval policy. This is configuration over ordinary Objectives, not a new MVP Objective subtype.\n+\n+Phase 1 includes manual structured packages, claim/evidence registers, approved media references, manual or worker-assisted drafts, contributor calls-to-action tied to real issues or artifacts, export review, approval records, and publication plans. Phase 1 may generate renderer commands or upload instructions as review artifacts, but it must not auto-render videos, upload to platforms, publish posts, send announcements, or mutate external channels.\n+\n+Post-MVP work includes automated UI screenshot capture, demo-flow export, script generation from repository state, narration or voice generation, caption generation, thumbnail generation, video rendering automation, upload/publication connectors, analytics feedback, and trusted auto-publication policies.\n+\n+Local renderers, UI-test capture tools, LLM script drafters, TTS tools, caption generators, and thumbnail generators are Automation Workers when they produce candidate artifacts under capability grants without mutating external public channels. YouTube, social, mailing-list, website, app-store, or other public-channel APIs are external publication systems; calls to them are projection or AgentAction workflows with the approval gates above. A combined render-and-upload tool must be split by boundary or treated as an external publication system for the upload step.\n+\n+**Consequences:**\n+\n+- `UBU-Q0049` is resolved for Phase 1 implementation.\n+- Release outreach can proceed through manual packages without waiting for automated video generation or publication.\n+- Public release artifacts have a stable claim-label and provenance model that prevents mock, future, or speculative behavior from being described as implemented.\n+- `UBU-Q0063` can reuse release outreach packages as public organizational-introspection evidence.\n+- `UBU-Q0084` may later refine AgentAction details for external publication connectors without reopening the Phase 1 package boundary.\n+\n+---\ndiff --git a/DESIGN.md b/DESIGN.md\nindex 8d907a4..ddab9bf 100644\n--- a/DESIGN.md\n+++ b/DESIGN.md\n@@ -140,15 +140,17 @@ The Release Outreach Pipeline is an accepted future feature bundle with the tagl\n \n > UbU should make every release explain itself.\n \n-Release management should not stop at code, tests, changelogs, and deployment artifacts. For UbU-runs-UbU, every meaningful minor release should also create reviewable explanation artifacts for the audiences affected by the release. These artifacts may include user-facing release notes, developer-facing release notes, screenshots, scripted UI-demo captures, short video scripts, narration text, captions, YouTube descriptions, thumbnail concepts, public posts, known-limitations summaries, and contributor calls-to-action.\n+Release management should not stop at code, tests, changelogs, and deployment artifacts. For UbU-runs-UbU, every meaningful minor release should create a reviewable release outreach package when there is enough change to explain.\n \n-The pipeline is a communication Objective implemented through ordinary UbU primitives: Objectives, Techniques, WorkItems, Logs, Automation Worker outputs, release artifacts, and export/projection gates. A later implementation may add specialized schemas for release artifacts or communication objectives, but the design requirement does not depend on a new first-class MVP entity.\n+A release outreach package is a derived artifact set attached to ordinary WorkItems, Logs, release artifacts, and export/projection gates. Phase 1 does not add a new canonical entity; it requires a structured package manifest, claim register, evidence/provenance index, reviewed text drafts, approved media references, privacy/export review, approval records, and a publication plan.\n \n-Release outreach must be evidence-bound. Generated claims should be traceable to implemented features, accepted design decisions, closed issues, release notes, automated UI screenshots, demo recordings, or clearly labeled future plans. The pipeline should not let AI-generated video scripts drift into unsupported hype.\n+Release outreach must be evidence-bound. Each public claim should carry a support label such as `implemented_behavior`, `mock_or_fixture_behavior`, `future_plan`, or `speculative_goal`, plus evidence refs when evidence is claimed. Public artifacts must not represent planned, fixture-backed, mock, or speculative behavior as implemented behavior.\n \n-Publication is gated by default. UbU may draft, assemble, render, and prepare release communication artifacts automatically, but uploading to YouTube, publishing posts, sending announcements, or mutating external public channels should require explicit human approval unless a project has configured a narrow trusted auto-publication rule.\n+Screenshots, UI-test exports, fixture captures, and demo recordings are provenance-bearing evidence. They should record source workflow or worker, repo/build/test refs, fixture or live-data mode, visible Identity and Compartment exposure, redaction, hash, capture time, approval state, and the claims they support.\n \n-The Release Outreach Pipeline is not UbU-specific marketing glue. It is intended to generalize to project-management configurations: open-source projects, research groups, internal teams, product teams, community projects, and personal projects may all define communication Objectives that explain progress to their relevant audiences.\n+Publication is gated by default. UbU may draft, assemble, render, and prepare communication artifacts automatically, but video rendering, platform upload, public posting, or external channel mutation require explicit human approval unless a project has configured a narrow trusted auto-publication rule.\n+\n+The Release Outreach Pipeline is not UbU-specific marketing glue. It is intended to generalize to project-management configurations through audience-specific communication Objectives for users, developers, maintainers, funders, internal stakeholders, customers, community members, or other audiences.\n \n ### 2.7 First-person legibility\n \n@@ -836,25 +838,23 @@ The Phase 1 version may be simple and fixture-backed. Fixture behavior must be l\n \n The Release Outreach Pipeline should become part of ordinary UbU-runs-UbU release management. A minor release should produce a release outreach package when the current project state contains enough user-visible, developer-visible, or contributor-visible change to justify public explanation.\n \n-A release outreach package may include:\n+The Phase 1 package is manual but structured. Minimum package artifacts are:\n \n-- a public release-note summary;\n-- a developer release-note summary;\n-- a short user-facing video script;\n-- a developer-facing video segment or call-to-action;\n-- screenshot and screen-recording references from automated UI runs, fixtures, or explicitly approved mock data;\n-- captions or narration text;\n-- YouTube title, description, and chapter outline;\n-- social or mailing-list announcement drafts;\n-- known limitations and future-work notes;\n-- a contributor next-action list tied to real issues or artifacts.\n+- `manifest.json` with release, source, Identity, Compartment, status, and hash metadata;\n+- `claim_register.json` with audience, support status, evidence refs, and review state for each public claim;\n+- `evidence_index.json` for source artifacts, hashes, selectors, and provenance;\n+- release-note, script, narration/caption, announcement, and publication-metadata drafts when relevant;\n+- `media_refs.json` for approved screenshots, UI-test exports, fixture captures, or recordings;\n+- `export_review.json`, `approvals.json`, and `publication_plan.json`;\n+- known-limitations, future-work, and contributor call-to-action notes tied to real artifacts.\n \n-The package should record provenance. Each claim should identify whether it came from an implemented feature, accepted design decision, closed issue, test fixture, UI capture, release note, or future-plan label. Public artifacts should not represent planned or mock behavior as implemented behavior.\n+Media provenance records must distinguish approved live captures, approved fixture/synthetic captures, UI-test exports, and mock/demo-only captures. Every claim in scripts, release notes, and public posts links to claim-register evidence and uses the support labels accepted in `UBU-D0180`.\n \n-The Phase 1 minimum may be manual but structured: the project operator can write or approve the release notes, screenshots, and script while UbU records the artifact set as a WorkItem sequence. Later phases should automate screenshot capture from UI tests, demo-flow export, script drafting, voice/narration preparation, caption generation, video-render-plan generation, publication metadata, and review gates.\n+Phase 1 dogfooding may generate text drafts, collect approved screenshots or recordings, assemble a publication plan, and record human approvals. It may use local renderers or LLM/script workers only as Automation Workers that produce candidate artifacts under capability grants.\n \n-The full video-generation pipeline is future work. Phase 1 should preserve the model boundary: generate reviewable communication artifacts before trying to automate external publication.\n+Post-MVP work includes automatic UI capture generation, demo-flow export, script drafting from repository state, narration and caption generation, thumbnail generation, video rendering automation, platform upload, social posting, mailing-list publication, analytics feedback, and trusted auto-publication policies.\n \n+The full video-generation and publication pipeline remains future work. Phase 1 should generate reviewable communication artifacts before trying to automate external publication.\n \n ### 4.1.4 EthConf outreach as Association-introspection dogfooding\n \ndiff --git a/OPEN_QUESTIONS.md b/OPEN_QUESTIONS.md\nindex 8b4f567..3fa752d 100644\n--- a/OPEN_QUESTIONS.md\n+++ b/OPEN_QUESTIONS.md\n@@ -809,32 +809,8 @@ Resolved. See UBU-D0079, UBU-D0080, UBU-D0087.\n ---\n \n ## UBU-Q0049: Release Outreach Pipeline artifact model and implementation boundary\n-\n-Status: Open Priority: MVP important Phase: Phase 1 Decision type: Process Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 90 Depends on: UBU-Q0030, UBU-Q0036, UBU-Q0038 Blocks: Release Outreach Pipeline implementation, release communication, contributor recruitment Resolved by: UBU-D0094 Last scored: 2026-05-26 Scored from commit: None\n-\n-### Question\n-\n-What is the minimum useful artifact model and implementation boundary for the Release Outreach Pipeline?\n-\n-### Subquestions\n-\n-1. What files and metadata should a release outreach package contain?\n-2. How should screenshots, UI-test exports, fixture captures, and demo recordings record provenance?\n-3. What schema should distinguish implemented behavior, mock behavior, future plans, and speculative goals?\n-4. What human approval gates are required before video rendering, platform upload, public posting, or external channel mutation?\n-5. How should Compartment, Identity, public-projection, and export rules prevent private data leakage?\n-6. Which parts of the pipeline belong in Phase 1 dogfooding and which should remain post-MVP?\n-7. How should project configurations define audience-specific communication Objectives?\n-8. Which video-generation tools or local renderers should be treated as Automation Workers versus external publication systems?\n-\n-### Current direction\n-\n-`UBU-D0094` accepts the feature bundle and tagline: \"UbU should make every release explain itself.\" The minimum path should start with manually reviewed release outreach packages generated from repo state, release notes, accepted decisions, closed issues, and approved screenshots. Full automated video generation and publication should be deferred until the artifact schema, provenance model, privacy gates, and review workflow are explicit.\n-\n-### Resolution\n-\n-Partially established by `UBU-D0094`; detailed artifact schema, implementation boundaries, provenance requirements, and review gates remain open.\n-\n+Status: Solved Priority: MVP important Phase: Phase 1 Decision type: Process Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 90 Depends on: UBU-Q0030, UBU-Q0036, UBU-Q0038 Blocks: Release Outreach Pipeline implementation, release communication, contributor recruitment Resolved by: UBU-D0180 Last scored: 2026-05-26 Scored from commit: None\n+Resolved. See UBU-D0180.\n ---\n \n ## UBU-Q0050: Minimum Phase 1 bootstrap interview and next-action focus UX\n",
+    "commit_message": "Resolve release outreach package boundary",
+    "validation_notes": [
+      "Patch modifies only DESIGN.md, DECISIONS.md, and OPEN_QUESTIONS.md.",
+      "OPEN_QUESTIONS.md converts UBU-Q0049 to a compact tombstone with Status: Solved and Resolved by: UBU-D0180.",
+      "Proposal removes the stale DECISIONS.md reference that listed UBU-Q0049 as remaining open.",
+      "Patch is intended to apply at base commit 2c410f5b6f469b90fbc850528e479eea059d7fab; no tests were run in this proposal context.",
+      "Patch required --recount normalization."
+    ],
+    "new_questions_added": [],
+    "questions_resolved": [
+      "UBU-Q0049"
+    ],
+    "decisions_added": [
+      "UBU-D0180"
+    ],
+    "requires_human_review": true
+  }
+]
+```
+
+## Mechanical validation results
+
+```json
+[
+  {
+    "proposal_id": "codex-ubu-q0049-20260526-001",
+    "patch_applies": true,
+    "allowlist_passed": true,
+    "changed_files": [
+      "DECISIONS.md",
+      "DESIGN.md",
+      "OPEN_QUESTIONS.md"
+    ],
+    "error": null,
+    "normalized_patch": "diff --git a/DECISIONS.md b/DECISIONS.md\nindex 55f8e9d..5647c42 100644\n--- a/DECISIONS.md\n+++ b/DECISIONS.md\n@@ -3075,7 +3075,7 @@ Stale overwrite prevention is mandatory. The canonical instance compares `expect\n - Worker authority remains request-based and bounded by capability grants, Compartment policy, expected versions, idempotency, assignment leases, and review policy.\n - Valid worker outputs can support automation without granting direct canonical write authority.\n - Invalid and stale worker submissions remain auditable without polluting canonical state.\n-- `UBU-Q0013`, `UBU-Q0020`, `UBU-Q0021`, `UBU-Q0049`, and `UBU-Q0084` remain open for authority-source vocabulary, retry construction, automation child structure, release-outreach artifacts, and external AgentAction side-effect modeling.\n+- `UBU-Q0013`, `UBU-Q0020`, `UBU-Q0021`, and `UBU-Q0084` remain open for authority-source vocabulary, retry construction, automation child structure, and external AgentAction side-effect modeling.\n \n ---\n \n@@ -3510,3 +3510,59 @@ Failed and partially successful runs are publishable when labeled by failure cla\n - Future implementation should add an artifact-safety check and a redacted public manifest schema before publishing run packages.\n \n ---\n+\n+## UBU-D0180: Release Outreach Pipeline uses structured packages and gated publication\n+\n+**Status:** Accepted \u2192 DESIGN.md \u00a7\u00a72.6, 4.1.3\n+\n+Resolved question: `UBU-Q0049`.\n+\n+A release outreach package is a derived release artifact set, not a new Phase 1 canonical entity. It is attached to ordinary Objectives, WorkItems, Logs, release artifacts, External References, Automation Worker outputs, and export/projection gates.\n+\n+Minimum package artifacts:\n+\n+- `manifest.json`: package ID, schema version, project/release refs, version or release range, base commit or build refs, generated/updated timestamps, actor Identity, package status, linked Objective/Task/Log refs, source summary, Compartment/export summary, and package hash list.\n+- `claim_register.json`: claim ID, text, audience, claim kind, support status, evidence refs, source object refs, allowed public wording, review state, and publication eligibility.\n+- `evidence_index.json`: release notes, accepted decisions, closed issues, commits, tests, fixtures, screenshots, recordings, risk reports, or other evidence with hashes, selectors, source refs, and capture/import provenance.\n+- Draft artifacts: public release notes, developer release notes, video script, narration text, captions, YouTube title/description/chapters, announcement drafts, known limitations, future-work notes, and contributor calls-to-action when relevant.\n+- `media_refs.json`: screenshot, UI-test export, fixture capture, and demo-recording references. Raw media is copied into the package only when export policy allows it and review approves it.\n+- `export_review.json`, `approvals.json`, and `publication_plan.json`: privacy/export decisions, approval records, intended audiences, channels, destinations, and required next gates.\n+\n+Every public claim uses one support status:\n+\n+- `implemented_behavior`: backed by implemented code, accepted release notes, closed issue, test artifact, screenshot, recording, or other release evidence.\n+- `mock_or_fixture_behavior`: backed by synthetic, redacted, fixture, or demo-only data and visibly labeled as such.\n+- `future_plan`: backed by an accepted decision, roadmap item, issue, or future-work note, and visibly not implemented.\n+- `speculative_goal`: aspirational or exploratory; allowed only when labeled and excluded from implementation claims.\n+\n+Known limitations are represented as limitations or future-work claims, not as hidden qualifiers on implementation claims. An `implemented_behavior` claim without evidence is invalid for public output.\n+\n+Media provenance records at least artifact ID, artifact type, source workflow or worker, generator tool, repo commit or build ref, test or demo flow ref, fixture/live/mock mode, input source refs, visible Identity refs, Compartment refs, redaction or minimization applied, hash, capture time, approval state, supported claim refs, retention policy, and export policy.\n+\n+Approval gates are separate and append-only:\n+\n+- package assembly may be automatic after source selection and local policy checks;\n+- public export requires artifact-safety and Compartment/export review;\n+- script, narration, and caption drafts require human review before being treated as approved public copy;\n+- video rendering requires explicit approval because it may combine protected media, voice, captions, and public claims into a harder-to-edit artifact;\n+- platform upload, public posting, mailing-list send, social posting, or any external channel mutation requires explicit human approval unless a narrow trusted auto-publication rule names the workflow, destination, audience, source scope, claim labels, Compartment/export constraints, and rollback or correction path.\n+\n+Compartment and Identity policy is a hard upper bound. `no_external_export` content cannot enter public packages except as redacted structural references. `no_cloud_llm` content cannot be sent to cloud drafting or video tools. Low-security un-compartmented content may be used only through a user-visible route. Screenshots and recordings must be reviewed for private data, contributor communications, personal data, credentials, private notes, hidden repository context, and unintended Identity disclosure before public use.\n+\n+Project configurations may define audience-specific communication Objectives. A minimum configuration maps audience labels to Objective refs, intended channels, allowed source categories, required package sections, tone or reading-level guidance, claim-label policy, destination refs, and approval policy. This is configuration over ordinary Objectives, not a new MVP Objective subtype.\n+\n+Phase 1 includes manual structured packages, claim/evidence registers, approved media references, manual or worker-assisted drafts, contributor calls-to-action tied to real issues or artifacts, export review, approval records, and publication plans. Phase 1 may generate renderer commands or upload instructions as review artifacts, but it must not auto-render videos, upload to platforms, publish posts, send announcements, or mutate external channels.\n+\n+Post-MVP work includes automated UI screenshot capture, demo-flow export, script generation from repository state, narration or voice generation, caption generation, thumbnail generation, video rendering automation, upload/publication connectors, analytics feedback, and trusted auto-publication policies.\n+\n+Local renderers, UI-test capture tools, LLM script drafters, TTS tools, caption generators, and thumbnail generators are Automation Workers when they produce candidate artifacts under capability grants without mutating external public channels. YouTube, social, mailing-list, website, app-store, or other public-channel APIs are external publication systems; calls to them are projection or AgentAction workflows with the approval gates above. A combined render-and-upload tool must be split by boundary or treated as an external publication system for the upload step.\n+\n+**Consequences:**\n+\n+- `UBU-Q0049` is resolved for Phase 1 implementation.\n+- Release outreach can proceed through manual packages without waiting for automated video generation or publication.\n+- Public release artifacts have a stable claim-label and provenance model that prevents mock, future, or speculative behavior from being described as implemented.\n+- `UBU-Q0063` can reuse release outreach packages as public organizational-introspection evidence.\n+- `UBU-Q0084` may later refine AgentAction details for external publication connectors without reopening the Phase 1 package boundary.\n+\n+---\ndiff --git a/DESIGN.md b/DESIGN.md\nindex 8d907a4..ddab9bf 100644\n--- a/DESIGN.md\n+++ b/DESIGN.md\n@@ -140,15 +140,17 @@ The Release Outreach Pipeline is an accepted future feature bundle with the tagl\n \n > UbU should make every release explain itself.\n \n-Release management should not stop at code, tests, changelogs, and deployment artifacts. For UbU-runs-UbU, every meaningful minor release should also create reviewable explanation artifacts for the audiences affected by the release. These artifacts may include user-facing release notes, developer-facing release notes, screenshots, scripted UI-demo captures, short video scripts, narration text, captions, YouTube descriptions, thumbnail concepts, public posts, known-limitations summaries, and contributor calls-to-action.\n+Release management should not stop at code, tests, changelogs, and deployment artifacts. For UbU-runs-UbU, every meaningful minor release should create a reviewable release outreach package when there is enough change to explain.\n \n-The pipeline is a communication Objective implemented through ordinary UbU primitives: Objectives, Techniques, WorkItems, Logs, Automation Worker outputs, release artifacts, and export/projection gates. A later implementation may add specialized schemas for release artifacts or communication objectives, but the design requirement does not depend on a new first-class MVP entity.\n+A release outreach package is a derived artifact set attached to ordinary WorkItems, Logs, release artifacts, and export/projection gates. Phase 1 does not add a new canonical entity; it requires a structured package manifest, claim register, evidence/provenance index, reviewed text drafts, approved media references, privacy/export review, approval records, and a publication plan.\n \n-Release outreach must be evidence-bound. Generated claims should be traceable to implemented features, accepted design decisions, closed issues, release notes, automated UI screenshots, demo recordings, or clearly labeled future plans. The pipeline should not let AI-generated video scripts drift into unsupported hype.\n+Release outreach must be evidence-bound. Each public claim should carry a support label such as `implemented_behavior`, `mock_or_fixture_behavior`, `future_plan`, or `speculative_goal`, plus evidence refs when evidence is claimed. Public artifacts must not represent planned, fixture-backed, mock, or speculative behavior as implemented behavior.\n \n-Publication is gated by default. UbU may draft, assemble, render, and prepare release communication artifacts automatically, but uploading to YouTube, publishing posts, sending announcements, or mutating external public channels should require explicit human approval unless a project has configured a narrow trusted auto-publication rule.\n+Screenshots, UI-test exports, fixture captures, and demo recordings are provenance-bearing evidence. They should record source workflow or worker, repo/build/test refs, fixture or live-data mode, visible Identity and Compartment exposure, redaction, hash, capture time, approval state, and the claims they support.\n \n-The Release Outreach Pipeline is not UbU-specific marketing glue. It is intended to generalize to project-management configurations: open-source projects, research groups, internal teams, product teams, community projects, and personal projects may all define communication Objectives that explain progress to their relevant audiences.\n+Publication is gated by default. UbU may draft, assemble, render, and prepare communication artifacts automatically, but video rendering, platform upload, public posting, or external channel mutation require explicit human approval unless a project has configured a narrow trusted auto-publication rule.\n+\n+The Release Outreach Pipeline is not UbU-specific marketing glue. It is intended to generalize to project-management configurations through audience-specific communication Objectives for users, developers, maintainers, funders, internal stakeholders, customers, community members, or other audiences.\n \n ### 2.7 First-person legibility\n \n@@ -836,25 +838,23 @@ The Phase 1 version may be simple and fixture-backed. Fixture behavior must be l\n \n The Release Outreach Pipeline should become part of ordinary UbU-runs-UbU release management. A minor release should produce a release outreach package when the current project state contains enough user-visible, developer-visible, or contributor-visible change to justify public explanation.\n \n-A release outreach package may include:\n+The Phase 1 package is manual but structured. Minimum package artifacts are:\n \n-- a public release-note summary;\n-- a developer release-note summary;\n-- a short user-facing video script;\n-- a developer-facing video segment or call-to-action;\n-- screenshot and screen-recording references from automated UI runs, fixtures, or explicitly approved mock data;\n-- captions or narration text;\n-- YouTube title, description, and chapter outline;\n-- social or mailing-list announcement drafts;\n-- known limitations and future-work notes;\n-- a contributor next-action list tied to real issues or artifacts.\n+- `manifest.json` with release, source, Identity, Compartment, status, and hash metadata;\n+- `claim_register.json` with audience, support status, evidence refs, and review state for each public claim;\n+- `evidence_index.json` for source artifacts, hashes, selectors, and provenance;\n+- release-note, script, narration/caption, announcement, and publication-metadata drafts when relevant;\n+- `media_refs.json` for approved screenshots, UI-test exports, fixture captures, or recordings;\n+- `export_review.json`, `approvals.json`, and `publication_plan.json`;\n+- known-limitations, future-work, and contributor call-to-action notes tied to real artifacts.\n \n-The package should record provenance. Each claim should identify whether it came from an implemented feature, accepted design decision, closed issue, test fixture, UI capture, release note, or future-plan label. Public artifacts should not represent planned or mock behavior as implemented behavior.\n+Media provenance records must distinguish approved live captures, approved fixture/synthetic captures, UI-test exports, and mock/demo-only captures. Every claim in scripts, release notes, and public posts links to claim-register evidence and uses the support labels accepted in `UBU-D0180`.\n \n-The Phase 1 minimum may be manual but structured: the project operator can write or approve the release notes, screenshots, and script while UbU records the artifact set as a WorkItem sequence. Later phases should automate screenshot capture from UI tests, demo-flow export, script drafting, voice/narration preparation, caption generation, video-render-plan generation, publication metadata, and review gates.\n+Phase 1 dogfooding may generate text drafts, collect approved screenshots or recordings, assemble a publication plan, and record human approvals. It may use local renderers or LLM/script workers only as Automation Workers that produce candidate artifacts under capability grants.\n \n-The full video-generation pipeline is future work. Phase 1 should preserve the model boundary: generate reviewable communication artifacts before trying to automate external publication.\n+Post-MVP work includes automatic UI capture generation, demo-flow export, script drafting from repository state, narration and caption generation, thumbnail generation, video rendering automation, platform upload, social posting, mailing-list publication, analytics feedback, and trusted auto-publication policies.\n \n+The full video-generation and publication pipeline remains future work. Phase 1 should generate reviewable communication artifacts before trying to automate external publication.\n \n ### 4.1.4 EthConf outreach as Association-introspection dogfooding\n \ndiff --git a/OPEN_QUESTIONS.md b/OPEN_QUESTIONS.md\nindex 8b4f567..3fa752d 100644\n--- a/OPEN_QUESTIONS.md\n+++ b/OPEN_QUESTIONS.md\n@@ -809,32 +809,8 @@ Resolved. See UBU-D0079, UBU-D0080, UBU-D0087.\n ---\n \n ## UBU-Q0049: Release Outreach Pipeline artifact model and implementation boundary\n-\n-Status: Open Priority: MVP important Phase: Phase 1 Decision type: Process Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 90 Depends on: UBU-Q0030, UBU-Q0036, UBU-Q0038 Blocks: Release Outreach Pipeline implementation, release communication, contributor recruitment Resolved by: UBU-D0094 Last scored: 2026-05-26 Scored from commit: None\n-\n-### Question\n-\n-What is the minimum useful artifact model and implementation boundary for the Release Outreach Pipeline?\n-\n-### Subquestions\n-\n-1. What files and metadata should a release outreach package contain?\n-2. How should screenshots, UI-test exports, fixture captures, and demo recordings record provenance?\n-3. What schema should distinguish implemented behavior, mock behavior, future plans, and speculative goals?\n-4. What human approval gates are required before video rendering, platform upload, public posting, or external channel mutation?\n-5. How should Compartment, Identity, public-projection, and export rules prevent private data leakage?\n-6. Which parts of the pipeline belong in Phase 1 dogfooding and which should remain post-MVP?\n-7. How should project configurations define audience-specific communication Objectives?\n-8. Which video-generation tools or local renderers should be treated as Automation Workers versus external publication systems?\n-\n-### Current direction\n-\n-`UBU-D0094` accepts the feature bundle and tagline: \"UbU should make every release explain itself.\" The minimum path should start with manually reviewed release outreach packages generated from repo state, release notes, accepted decisions, closed issues, and approved screenshots. Full automated video generation and publication should be deferred until the artifact schema, provenance model, privacy gates, and review workflow are explicit.\n-\n-### Resolution\n-\n-Partially established by `UBU-D0094`; detailed artifact schema, implementation boundaries, provenance requirements, and review gates remain open.\n-\n+Status: Solved Priority: MVP important Phase: Phase 1 Decision type: Process Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 90 Depends on: UBU-Q0030, UBU-Q0036, UBU-Q0038 Blocks: Release Outreach Pipeline implementation, release communication, contributor recruitment Resolved by: UBU-D0180 Last scored: 2026-05-26 Scored from commit: None\n+Resolved. See UBU-D0180.\n ---\n \n ## UBU-Q0050: Minimum Phase 1 bootstrap interview and next-action focus UX\n",
+    "warnings": [
+      "Patch required --recount normalization."
+    ],
+    "ordinary_error": "error: corrupt patch at line 26",
+    "recount_error": null,
+    "normalization_error": null
+  }
+]
+```
+
+## Provider weights
+
+Provider weights are historical diagnostic context only in v0.2. Do not use
+self-trust or author identity as score evidence.
+
+```json
+{}
+```
+
+## JSON Schema
+
+Your output must satisfy this schema:
+
+```json
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "scores",
+    "selected_proposal_id",
+    "selection_rationale"
+  ],
+  "properties": {
+    "scores": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "proposal_id",
+          "score",
+          "patch_applies",
+          "implements_selected_work",
+          "preserves_question_schema",
+          "avoids_unnecessary_scope",
+          "decomposition_quality",
+          "risks",
+          "required_fixes",
+          "rationale"
+        ],
+        "properties": {
+          "proposal_id": {
+            "type": "string"
+          },
+          "score": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "patch_applies": {
+            "type": "boolean"
+          },
+          "implements_selected_work": {
+            "type": "boolean"
+          },
+          "preserves_question_schema": {
+            "type": "boolean"
+          },
+          "avoids_unnecessary_scope": {
+            "type": "boolean"
+          },
+          "decomposition_quality": {
+            "type": "string",
+            "enum": [
+              "none",
+              "good",
+              "bad",
+              "not_applicable"
+            ]
+          },
+          "risks": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "required_fixes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "rationale": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "selected_proposal_id": {
+      "type": "string"
+    },
+    "selection_rationale": {
+      "type": "string"
+    }
+  }
+}
+```
+
+## Scoring requirements
+
+Score each proposal from 0 to 100.
+
+Consider:
+
+- whether the patch applies cleanly;
+- whether it implements the selected work;
+- whether it preserves the question schema;
+- whether it avoids unnecessary scope;
+- whether it modifies only allowed files;
+- whether it creates useful decomposition if decomposition occurs;
+- whether it introduces new risks;
+- whether required fixes remain.
+
+Rules:
+
+- Score every proposal in this prompt.
+- `selected_proposal_id` must refer to one scored proposal from this prompt.
+- Manual override is not allowed in v0.2.
+- Prefer a patch that is valid, minimal, auditable, and directly responsive.
+- Do not select a proposal whose patch failed mechanical validation.
+- Do not score your own provider's proposal unless explicitly asked for diagnostic self-score.
+
+Return only JSON.

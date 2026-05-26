@@ -1,0 +1,27 @@
+{
+  "scores": [
+    {
+      "proposal_id": "codex-ubu-q0049-20260526-001",
+      "score": 83,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": false,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "DESIGN.md \u00a72.6 and \u00a74.1.3 rewrites are substantial and condense some original language about generalization to project types; subtle meaning loss is possible.",
+        "Missing blank line before the `---` separator in the OPEN_QUESTIONS.md tombstone block (minor formatting inconsistency).",
+        "Patch header was corrupt and required --recount normalization; indicates patch was not cleanly generated at the stated base commit.",
+        "Tombstone in OPEN_QUESTIONS.md drops all subquestion text, making historical audit harder if DECISIONS.md is ever unavailable, though this appears to match the established pattern for other resolved questions.",
+        "UBU-D0180 decision number may conflict if another decision was added between the base commit and the authoring point; cannot verify sequential integrity without reading the full file."
+      ],
+      "required_fixes": [
+        "Add blank line between 'Resolved. See UBU-D0180.' and the trailing '---' separator in OPEN_QUESTIONS.md to match the formatting of other tombstones in the file.",
+        "Verify that UBU-D0180 is the correct next sequential decision number at the base commit before merging."
+      ],
+      "rationale": "Aggregate cross-score mean from 1 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "codex-ubu-q0049-20260526-001",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}
