@@ -1,0 +1,22 @@
+{
+  "scores": [
+    {
+      "proposal_id": "codex-ubu-q0053-20260526-001",
+      "score": 88,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": false,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "DESIGN.md edits span three separate hunks (\u00a74 Calendar preview, next-action/log-review inline block, \u00a717.8) introducing psychological annotation rules across multiple sections; a future editor may not know all three need to stay consistent.",
+        "The closing sentence in \u00a717.8 drops the open-ticket reference to UBU-Q0053 and replaces it with the decision reference UBU-D0181; if the decision is later revised, the DESIGN.md prose may lag.",
+        "Tombstone removes the subquestion text, which reduces historical readability for anyone inspecting UBU-Q0053 directly in OPEN_QUESTIONS.md without consulting DECISIONS.md."
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 1 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "codex-ubu-q0053-20260526-001",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}

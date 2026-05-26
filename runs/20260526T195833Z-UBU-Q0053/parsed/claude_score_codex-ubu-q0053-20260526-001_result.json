@@ -1,0 +1,22 @@
+{
+  "scores": [
+    {
+      "proposal_id": "codex-ubu-q0053-20260526-001",
+      "score": 88,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Tombstone removes the subquestion text, which reduces historical readability for anyone inspecting UBU-Q0053 directly in OPEN_QUESTIONS.md without consulting DECISIONS.md.",
+        "DESIGN.md edits span three separate hunks (\u00a74 Calendar preview, next-action/log-review inline block, \u00a717.8) introducing psychological annotation rules across multiple sections; a future editor may not know all three need to stay consistent.",
+        "The closing sentence in \u00a717.8 drops the open-ticket reference to UBU-Q0053 and replaces it with the decision reference UBU-D0181; if the decision is later revised, the DESIGN.md prose may lag."
+      ],
+      "required_fixes": [],
+      "rationale": "Mechanical validation passes cleanly. All seven subquestions are addressed: minimum Calendar preview Task trigger and content (before first task in work window, after material regen), minimum Log review Task trigger (end of window / next startup with deviations, weekly catch-up), cadence adjustment via ordinary Task recurrence/snooze, canonical admission rules per object type (Logs, Preferences, Snapshots, Objectives, Tasks, Reports), noncanonical review-note definition, explicit ruling that SDT/TPB constructs (autonomy, competence, relatedness, attitude, subjective norms, perceived control, expected execution) stay as prompt labels and review-note categories rather than canonical fields, and model-repair framing guidance. No new canonical entity types are introduced; the decision reuses existing Phase 1 mechanisms throughout. The OPEN_QUESTIONS.md tombstone preserves all metadata fields in compact form and points to UBU-D0181. The DECISIONS.md entry is well-structured with consequences and cross-references to related open questions (UBU-Q0051, UBU-Q0052, UBU-Q0074). Minor deductions for tombstone loss of subquestion prose and scattered DESIGN.md edits, neither of which is a blocking issue."
+    }
+  ],
+  "selected_proposal_id": "codex-ubu-q0053-20260526-001",
+  "selection_rationale": "Only one valid proposal is present and it scores 88/100. It applies cleanly, directly resolves all seven subquestions of UBU-Q0053, introduces decision UBU-D0181 with clear canonical admission rules, keeps SDT/TPB constructs as noncanonical review-note categories rather than new data model fields, and avoids scope beyond the three allowed files. No blocking defects were found."
+}

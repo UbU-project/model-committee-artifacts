@@ -1,0 +1,114 @@
+{
+  "schema_version": "0.3",
+  "run_id": "20260526T195833Z-UBU-Q0053",
+  "created_at_utc": "2026-05-26T19:58:33Z",
+  "repo_path": "../ubu-design",
+  "base_commit": "1a30743f847b1994c241ad70fc6eb4346b3f93c6",
+  "selected_question_id": "UBU-Q0053",
+  "phase": "work-select",
+  "config_path": "config/models.json",
+  "status": "selected",
+  "commands": [
+    "model-committee run-loop"
+  ],
+  "providers_attempted": [
+    "codex",
+    "claude"
+  ],
+  "providers_succeeded": [
+    "codex",
+    "claude"
+  ],
+  "providers_failed": [],
+  "provider_attempts": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "sonnet",
+      "phase": "work-score",
+      "target_proposal_id": "codex-ubu-q0053-20260526-001",
+      "response_path": "runs/20260526T195833Z-UBU-Q0053/responses/claude_score_codex-ubu-q0053-20260526-001_stdout.json",
+      "stderr_path": null
+    }
+  ],
+  "provider_successes": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20260526T195833Z-UBU-Q0053/parsed/codex_work_proposal.json"
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "sonnet",
+      "phase": "work-score",
+      "target_proposal_id": "codex-ubu-q0053-20260526-001",
+      "response_path": "runs/20260526T195833Z-UBU-Q0053/responses/claude_score_codex-ubu-q0053-20260526-001_stdout.json",
+      "parsed_path": "runs/20260526T195833Z-UBU-Q0053/parsed/claude_score_codex-ubu-q0053-20260526-001_result.json"
+    }
+  ],
+  "provider_failures": [],
+  "score_matrix": [
+    {
+      "proposal_id": "codex-ubu-q0053-20260526-001",
+      "author_provider": "codex",
+      "scorer_provider": "claude",
+      "score": 88,
+      "valid": true,
+      "rationale": "Mechanical validation passes cleanly. All seven subquestions are addressed: minimum Calendar preview Task trigger and content (before first task in work window, after material regen), minimum Log review Task trigger (end of window / next startup with deviations, weekly catch-up), cadence adjustment via ordinary Task recurrence/snooze, canonical admission rules per object type (Logs, Preferences, Snapshots, Objectives, Tasks, Reports), noncanonical review-note definition, explicit ruling that SDT/TPB constructs (autonomy, competence, relatedness, attitude, subjective norms, perceived control, expected execution) stay as prompt labels and review-note categories rather than canonical fields, and model-repair framing guidance. No new canonical entity types are introduced; the decision reuses existing Phase 1 mechanisms throughout. The OPEN_QUESTIONS.md tombstone preserves all metadata fields in compact form and points to UBU-D0181. The DECISIONS.md entry is well-structured with consequences and cross-references to related open questions (UBU-Q0051, UBU-Q0052, UBU-Q0074). Minor deductions for tombstone loss of subquestion prose and scattered DESIGN.md edits, neither of which is a blocking issue.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "Tombstone removes the subquestion text, which reduces historical readability for anyone inspecting UBU-Q0053 directly in OPEN_QUESTIONS.md without consulting DECISIONS.md.",
+        "DESIGN.md edits span three separate hunks (\u00a74 Calendar preview, next-action/log-review inline block, \u00a717.8) introducing psychological annotation rules across multiple sections; a future editor may not know all three need to stay consistent.",
+        "The closing sentence in \u00a717.8 drops the open-ticket reference to UBU-Q0053 and replaces it with the decision reference UBU-D0181; if the decision is later revised, the DESIGN.md prose may lag."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20260526T195833Z-UBU-Q0053/responses/claude_score_codex-ubu-q0053-20260526-001_stdout.json",
+        "stderr_path": null
+      }
+    }
+  ],
+  "score_aggregates": [
+    {
+      "proposal_id": "codex-ubu-q0053-20260526-001",
+      "author_provider": "codex",
+      "cross_score_count": 1,
+      "score_mean": 88.0,
+      "score_spread": 0,
+      "frontier_score_gap": 0,
+      "disagreement_flags": []
+    }
+  ],
+  "cross_score_count": 1,
+  "score_mean": 88.0,
+  "score_spread": 0,
+  "frontier_score_gap": 0,
+  "disagreement_flags": [],
+  "quorum_result": {
+    "valid": true,
+    "human_review_required": false,
+    "selected_proposal_id": "codex-ubu-q0053-20260526-001",
+    "selected_score": 88.0,
+    "selected_cross_score_count": 1,
+    "blocked_reasons": [],
+    "manual_override": false
+  },
+  "selected_proposal_id": "codex-ubu-q0053-20260526-001",
+  "automated_selection_valid": true,
+  "human_review_required": false,
+  "artifact_publication_status": "operator_pending",
+  "prompt_size_warning": true
+}
