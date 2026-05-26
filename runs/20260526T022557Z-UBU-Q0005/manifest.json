@@ -1,0 +1,114 @@
+{
+  "schema_version": "0.2",
+  "run_id": "20260526T022557Z-UBU-Q0005",
+  "created_at_utc": "2026-05-26T02:25:57Z",
+  "repo_path": "../ubu-design",
+  "base_commit": "ac1490c309a0ecbb11a7e04d4bf96bd20742bd18",
+  "selected_question_id": "UBU-Q0005",
+  "phase": "work-select",
+  "config_path": "config/models.json",
+  "status": "selected",
+  "commands": [
+    "model-committee work-generate"
+  ],
+  "providers_attempted": [
+    "codex",
+    "claude"
+  ],
+  "providers_succeeded": [
+    "codex",
+    "claude"
+  ],
+  "providers_failed": [],
+  "provider_attempts": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "sonnet",
+      "phase": "work-score",
+      "target_proposal_id": "ubu-q0005-github-event-triage-gpt5-20260525",
+      "response_path": "runs/20260526T022557Z-UBU-Q0005/responses/claude_score_ubu-q0005-github-event-triage-gpt5-20260525_stdout.json",
+      "stderr_path": null
+    }
+  ],
+  "provider_successes": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20260526T022557Z-UBU-Q0005/parsed/codex_work_proposal.json"
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "sonnet",
+      "phase": "work-score",
+      "target_proposal_id": "ubu-q0005-github-event-triage-gpt5-20260525",
+      "response_path": "runs/20260526T022557Z-UBU-Q0005/responses/claude_score_ubu-q0005-github-event-triage-gpt5-20260525_stdout.json",
+      "parsed_path": "runs/20260526T022557Z-UBU-Q0005/parsed/claude_score_ubu-q0005-github-event-triage-gpt5-20260525_result.json"
+    }
+  ],
+  "provider_failures": [],
+  "score_matrix": [
+    {
+      "proposal_id": "ubu-q0005-github-event-triage-gpt5-20260525",
+      "author_provider": "codex",
+      "scorer_provider": "claude",
+      "score": 88,
+      "valid": true,
+      "rationale": "The patch applies cleanly per mechanical validation. It addresses all nine sub-questions of UBU-Q0005 directly and systematically: four log-only cases are enumerated, the default External Event rule is stated clearly, per-event-class triage rules cover all eleven candidate event classes, Objective and Task creation thresholds are defined, recalculation reuses the existing `github_update` trigger kind, worker assignment is correctly kept Task-driven rather than event-driven, projection updates are kept projection-driven, and duplicate detection uses a two-layer scheme with explicit fallback key composition. The OPEN_QUESTIONS.md status line, resolution field, and body are updated in the correct locations without disturbing surrounding content. DECISIONS.md adds UBU-D0163 with full consequences, and DESIGN.md gains \u00a726.5 as a coherent subsection following existing \u00a726.x structure. Scope is appropriately bounded: UBU-Q0006 (noise control), UBU-Q0004 (pipeline state), and UBU-Q0010 (token custody) remain open. The main weaknesses are the qualifier-heavy per-event rules that could produce implementation ambiguity and the unmitigated event-volume risk deferred to Q0006, neither of which is a blocking defect for Phase 1 resolution.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "The blanket rule that every unique in-scope GitHub observation creates an External Event could produce high event volume in busy repositories; the deferral to UBU-Q0006 for noise-control means this risk is acknowledged but not yet mitigated.",
+        "Qualifier language ('usually', 'when possible', 'only when') in per-event-class defaults is intentionally flexible but may require repeated interpretation during implementation, potentially leading to inconsistent behavior across importers.",
+        "The composite fallback deduplication key (repository, class, action, object type/ID, actor, timestamp, version, UbU target) is complex; hash-collision or clock-skew edge cases are not addressed.",
+        "Objective creation criteria ('durable desired state') are left somewhat open to interpreter judgment, which could cause drift between implementations."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20260526T022557Z-UBU-Q0005/responses/claude_score_ubu-q0005-github-event-triage-gpt5-20260525_stdout.json",
+        "stderr_path": null
+      }
+    }
+  ],
+  "score_aggregates": [
+    {
+      "proposal_id": "ubu-q0005-github-event-triage-gpt5-20260525",
+      "author_provider": "codex",
+      "cross_score_count": 1,
+      "score_mean": 88.0,
+      "score_spread": 0,
+      "frontier_score_gap": 0,
+      "disagreement_flags": []
+    }
+  ],
+  "cross_score_count": 1,
+  "score_mean": 88.0,
+  "score_spread": 0,
+  "frontier_score_gap": 0,
+  "disagreement_flags": [],
+  "quorum_result": {
+    "valid": true,
+    "human_review_required": false,
+    "selected_proposal_id": "ubu-q0005-github-event-triage-gpt5-20260525",
+    "selected_score": 88.0,
+    "selected_cross_score_count": 1,
+    "blocked_reasons": [],
+    "manual_override": false
+  },
+  "selected_proposal_id": "ubu-q0005-github-event-triage-gpt5-20260525",
+  "automated_selection_valid": true,
+  "human_review_required": false,
+  "artifact_publication_status": "operator_pending"
+}

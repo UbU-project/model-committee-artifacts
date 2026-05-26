@@ -1,0 +1,23 @@
+{
+  "scores": [
+    {
+      "proposal_id": "ubu-q0005-github-event-triage-gpt5-20260525",
+      "score": 88,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": false,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Objective creation criteria ('durable desired state') are left somewhat open to interpreter judgment, which could cause drift between implementations.",
+        "Qualifier language ('usually', 'when possible', 'only when') in per-event-class defaults is intentionally flexible but may require repeated interpretation during implementation, potentially leading to inconsistent behavior across importers.",
+        "The blanket rule that every unique in-scope GitHub observation creates an External Event could produce high event volume in busy repositories; the deferral to UBU-Q0006 for noise-control means this risk is acknowledged but not yet mitigated.",
+        "The composite fallback deduplication key (repository, class, action, object type/ID, actor, timestamp, version, UbU target) is complex; hash-collision or clock-skew edge cases are not addressed."
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 1 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "ubu-q0005-github-event-triage-gpt5-20260525",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}
