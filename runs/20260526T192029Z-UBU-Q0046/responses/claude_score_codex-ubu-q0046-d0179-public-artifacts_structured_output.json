@@ -1,0 +1,22 @@
+{
+  "scores": [
+    {
+      "proposal_id": "codex-ubu-q0046-d0179-public-artifacts",
+      "score": 88,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "manifest.public.json schema and artifact-safety check are described in the policy but deferred to future implementation; a contributor following this policy has no schema to validate against yet.",
+        "The tombstone body omits a blank line between the metadata line and 'Resolved. See UBU-D0179.' \u2014 minor formatting inconsistency that may not match other tombstone examples in the file.",
+        "UBU-Q0063 is mentioned as a downstream dependent but not tracked in OPEN_QUESTIONS.md metadata, so the dependency may be invisible to the scoring loop."
+      ],
+      "required_fixes": [],
+      "rationale": "Patch applies cleanly per mechanical validation. The proposal directly and fully addresses all six subquestions in UBU-Q0046: artifact selection, presentation of patches and commit messages, privacy/safety exclusions, credibility evidence, GitHub/PR linkage, and treatment of failed runs. DESIGN.md \u00a73.1.3 and DECISIONS.md UBU-D0179 are consistent with each other and with the existing \u00a73.1.x numbering convention. The tombstone in OPEN_QUESTIONS.md updates status to Solved, updates Resolved by to UBU-D0179, and replaces the body with a compact resolution note, which matches the expected tombstone pattern. No code files, configuration, or unrelated documentation is modified. The only meaningful gap is that the public manifest schema and artifact-safety check are explicitly deferred to future work \u2014 the policy is sound but partially unimplemented, which the decision acknowledges. No required fixes."
+    }
+  ],
+  "selected_proposal_id": "codex-ubu-q0046-d0179-public-artifacts",
+  "selection_rationale": "Only one proposal is present and it passes mechanical validation, directly resolves all six subquestions of UBU-Q0046, adds consistent documentation to both DESIGN.md and DECISIONS.md, and tombstones the question correctly. No competing proposal exists against which to prefer an alternative."
+}

@@ -1,0 +1,45 @@
+[
+  {
+    "proposal_id": "codex-ubu-q0046-d0179-public-artifacts",
+    "author_provider": "openai-codex",
+    "scorer_provider": "codex",
+    "score": 93,
+    "valid": true,
+    "rationale": "The patch cleanly resolves UBU-Q0046 with a focused public artifact policy, mirrors it into DESIGN.md, adds a concrete accepted decision, and tombstones the open question in the expected compact form. It directly addresses committed versus linked or summarized artifacts, selected patch and commit-message presentation, safety boundaries for private reasoning and unsafe outputs, GitHub/PR linkage, and credible handling of failed or partial runs. Scope is limited to the expected design, decisions, and open-question files, with no unnecessary implementation churn.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [
+      "The policy is intentionally high-level and leaves the exact redacted public manifest schema and artifact-safety check for future implementation.",
+      "The statement that model-committee must not mark canonical questions solved could be read broadly unless understood as prohibiting automatic mutation rather than accepted human-reviewed patches."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20260526T192029Z-UBU-Q0046/responses/codex_score_codex-ubu-q0046-d0179-public-artifacts_response.json",
+      "stderr_path": null
+    }
+  },
+  {
+    "proposal_id": "codex-ubu-q0046-d0179-public-artifacts",
+    "author_provider": "openai-codex",
+    "scorer_provider": "claude",
+    "score": 88,
+    "valid": true,
+    "rationale": "Patch applies cleanly per mechanical validation. The proposal directly and fully addresses all six subquestions in UBU-Q0046: artifact selection, presentation of patches and commit messages, privacy/safety exclusions, credibility evidence, GitHub/PR linkage, and treatment of failed runs. DESIGN.md \u00a73.1.3 and DECISIONS.md UBU-D0179 are consistent with each other and with the existing \u00a73.1.x numbering convention. The tombstone in OPEN_QUESTIONS.md updates status to Solved, updates Resolved by to UBU-D0179, and replaces the body with a compact resolution note, which matches the expected tombstone pattern. No code files, configuration, or unrelated documentation is modified. The only meaningful gap is that the public manifest schema and artifact-safety check are explicitly deferred to future work \u2014 the policy is sound but partially unimplemented, which the decision acknowledges. No required fixes.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [
+      "manifest.public.json schema and artifact-safety check are described in the policy but deferred to future implementation; a contributor following this policy has no schema to validate against yet.",
+      "The tombstone body omits a blank line between the metadata line and 'Resolved. See UBU-D0179.' \u2014 minor formatting inconsistency that may not match other tombstone examples in the file.",
+      "UBU-Q0063 is mentioned as a downstream dependent but not tracked in OPEN_QUESTIONS.md metadata, so the dependency may be invisible to the scoring loop."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20260526T192029Z-UBU-Q0046/responses/claude_score_codex-ubu-q0046-d0179-public-artifacts_stdout.json",
+      "stderr_path": null
+    }
+  }
+]

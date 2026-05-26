@@ -1,0 +1,110 @@
+diff --git a/DESIGN.md b/DESIGN.md
+--- a/DESIGN.md
++++ b/DESIGN.md
+@@ -418,6 +418,23 @@
+ Provider invocation records must include `invocation_id`, provider ID, provider class, model name or alias, phase, command/argv shape with secrets redacted, timeout, start and end timestamps, exit status, stdout/stderr artifact paths, raw output path, parsed output path, schema path or hash, validation result, and failure class when applicable. They must not store API keys, bearer tokens, credential files, private environment dumps, or unredacted secrets.
+ 
+ v0.2 review artifacts should expose the score matrix, disagreement flags, quorum result, selected patch validation status, selected score, cross-score provenance, and the operator-run artifact-publication commands. The commands are part of the review artifact and must not be executed automatically.
++
++### 3.1.3 Public dogfooding artifact policy
++
++Public dogfooding artifacts should publish a sanitized review package, not the complete private run log by default. The public package is evidence that the loop is real and reviewable: canonical inputs led to provider proposals, validated patches, cross-scores, quorum or disagreement outcomes, human review, and a later canonical commit when accepted.
++
++Default public artifacts are:
++
++- `review.md`, including run ID, base commit, selected question, selected proposal summary, validation result, score matrix summary, quorum or disagreement result, failed-provider summary, and publication commands.
++- `selected.patch` and `commit_message.txt` when a candidate exists.
++- `manifest.public.json` or an equivalent redacted manifest containing hashes, provider/model IDs, artifact paths, scores, validation status, selected proposal ID, exit code, and links to the accepted commit, Issue, or PR when available.
++- Score-matrix and validation summaries sufficient to reproduce the selection judgment without exposing full prompts or private reasoning.
++
++The complete local run directory may be archived outside the design repo. Public publication must exclude secrets, private environment dumps, credentials, private chain-of-thought, unsafe provider text, unredacted raw prompts when they contain sensitive context, and raw provider logs that are not needed for public review. Redacted raw artifacts may be published only when they help diagnose a run and pass the same artifact-safety check.
++
++Successful, failed, and human-review-required runs should all be publishable. Failed runs should be labeled by failure class, such as parse failure, invalid patch, no quorum, provider timeout, or critical disagreement, and should explain the next review action. This improves credibility when failures show bounded authority, preserved evidence, and no silent state mutation.
++
++GitHub connection is by reference, not automatic mutation. A public artifact should name the related open question, Issue, PR, accepted decision, selected patch, and final commit when available. `model-committee` may generate links and operator instructions, but opening PRs, pushing artifacts, and accepting canonical design changes remain human actions.
+ 
+ ### 3.2 Changeset-based work phase
+ 
+diff --git a/DECISIONS.md b/DECISIONS.md
+--- a/DECISIONS.md
++++ b/DECISIONS.md
+@@ -3470,3 +3470,43 @@
+ - Provider and model updates invalidate reusable derived scores without rewriting accepted canonical state or historical run logs.
+ 
+ ---
++
++## UBU-D0179: Public dogfooding artifacts publish sanitized review packages
++
++**Status:** Accepted → DESIGN.md §3.1.3
++
++Resolved question: `UBU-Q0046`.
++
++`model-committee` public dogfooding should publish sanitized review packages, not complete private run logs by default. The public package must show enough evidence for a contributor to verify the loop: selected question or problem, base commit, canonical input hashes, provider proposals, mechanical validation, score matrix or scoring summary, quorum or disagreement outcome, selected patch, suggested commit message, human-review status, and eventual canonical commit, Issue, or PR link when available.
++
++Default public artifacts:
++
++- `review.md`;
++- `selected.patch` when a selected or reviewable candidate exists;
++- `commit_message.txt` when available;
++- `manifest.public.json` or an equivalent redacted manifest;
++- score-matrix and validation summaries;
++- links to the source question, related Issue or PR, accepted decision, and final commit when available.
++
++Not public by default:
++
++- raw provider logs, prompts, stderr, JSONL traces, and full manifests;
++- private chain-of-thought or hidden reasoning;
++- unsafe or policy-violating provider outputs;
++- API keys, bearer tokens, credential paths, private environment dumps, or secrets;
++- unredacted sensitive context or Compartment-protected payloads.
++
++Raw artifacts may be published only after explicit redaction and artifact-safety review. Hashes and summarized diagnostics should be preferred when the raw material is not needed for public review.
++
++Failed and partially successful runs are publishable when labeled by failure class and next review action. Acceptable public failure classes include parse failure, schema failure, invalid patch, no valid proposal, no quorum, selected score below threshold, critical disagreement, provider timeout, and artifact-safety block. A failed run should demonstrate bounded authority and preserved evidence; it must not imply accepted design state.
++
++`model-committee` may generate publication commands and GitHub/PR link placeholders, but it must not auto-publish artifacts, open PRs, push branches, mutate GitHub, apply patches, or mark canonical questions solved. Human review remains required to publish artifacts, accept patches, and connect a run to a final repository commit.
++
++**Consequences:**
++
++- `UBU-Q0046` is resolved.
++- Public credibility comes from reviewable run packages and accepted commits, not from dumping every raw provider artifact.
++- `UBU-Q0063` may depend on this policy for organizational-introspection dogfooding artifacts.
++- Future implementation should add an artifact-safety check and a redacted public manifest schema before publishing run packages.
++
++---
+diff --git a/OPEN_QUESTIONS.md b/OPEN_QUESTIONS.md
+--- a/OPEN_QUESTIONS.md
++++ b/OPEN_QUESTIONS.md
+@@ -788,30 +788,8 @@
+ ---
+ 
+ ## UBU-Q0046: Public dogfooding artifacts for contributor credibility
+-
+-Status: Open Priority: MVP important Phase: Phase 1 Decision type: Process Auto-choice eligibility: Auto eligible Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 90 Depends on: UBU-Q0036, UBU-Q0038 Blocks: Contributor recruitment Resolved by: UBU-D0077, UBU-D0086 Last scored: 2026-05-26 Scored from commit: None
+-
+-### Question
+-
+-What public dogfooding artifacts should `model-committee` expose to make UbU credible and actionable to potential contributors?
+-
+-### Subquestions
+-
+-1. Which run artifacts should be committed, linked, summarized, or ignored?
+-2. How should selected patches, review notes, and commit messages be presented?
+-3. How should public artifacts avoid leaking private reasoning or unsafe provider outputs?
+-4. What would convince a developer that the loop is real and reviewable?
+-5. How should artifacts connect to GitHub Issues or PRs?
+-6. How should failed or partially successful runs be shown without damaging credibility?
+-
+-### Current direction
+-
+-The project should show the dogfooding loop, not merely describe it. Artifacts should demonstrate that open questions become model-assisted proposals, reviewable patches, decisions, and updated canonical state. v0.2 review artifacts should also show cross-model score matrices, quorum outcomes, disagreement flags, and the operator-run publication command for copying the run to `../model-committee-artifacts`.
+-
+-### Resolution
+-
+-Partially resolved by `UBU-D0077`, `UBU-D0086`, and `UBU-D0150`; exact long-term artifact publication policy remains open, but v0.2 has a concrete operator-run publication path for model-committee run artifacts.
+-
++Status: Solved Priority: MVP important Phase: Phase 1 Decision type: Process Auto-choice eligibility: Auto eligible Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 90 Depends on: UBU-Q0036, UBU-Q0038 Blocks: Contributor recruitment Resolved by: UBU-D0179 Last scored: 2026-05-26 Scored from commit: None
++Resolved. See UBU-D0179.
+ ---
+ 
+ ## UBU-Q0047: Minimum committed-contributor onboarding path

@@ -1,0 +1,24 @@
+{
+  "scores": [
+    {
+      "proposal_id": "codex-ubu-q0046-d0179-public-artifacts",
+      "score": 90,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": false,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "The policy is intentionally high-level and leaves the exact redacted public manifest schema and artifact-safety check for future implementation.",
+        "The statement that model-committee must not mark canonical questions solved could be read broadly unless understood as prohibiting automatic mutation rather than accepted human-reviewed patches.",
+        "The tombstone body omits a blank line between the metadata line and 'Resolved. See UBU-D0179.' \u2014 minor formatting inconsistency that may not match other tombstone examples in the file.",
+        "UBU-Q0063 is mentioned as a downstream dependent but not tracked in OPEN_QUESTIONS.md metadata, so the dependency may be invisible to the scoring loop.",
+        "manifest.public.json schema and artifact-safety check are described in the policy but deferred to future implementation; a contributor following this policy has no schema to validate against yet."
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "codex-ubu-q0046-d0179-public-artifacts",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}
