@@ -1,0 +1,28 @@
+{
+  "provider_name": "claude",
+  "model_name": "sonnet",
+  "argv": [
+    "claude",
+    "--print",
+    "-",
+    "--output-format",
+    "json",
+    "--json-schema",
+    "<json-schema>",
+    "--tools",
+    "",
+    "--model",
+    "sonnet",
+    "--max-turns",
+    "5"
+  ],
+  "stdout_path": "runs/20260526T205621Z-UBU-Q0010/responses/claude_score_codex-ubu-q0010-d0184-token-custody_stdout.json",
+  "stderr_path": "runs/20260526T205621Z-UBU-Q0010/responses/claude_score_codex-ubu-q0010-d0184-token-custody_stderr.txt",
+  "exit_status": 0,
+  "timeout_seconds": 3600,
+  "schema_validation": {
+    "valid": true,
+    "message": null
+  },
+  "parsed_structured_output_path": "runs/20260526T205621Z-UBU-Q0010/responses/claude_score_codex-ubu-q0010-d0184-token-custody_structured_output.json"
+}

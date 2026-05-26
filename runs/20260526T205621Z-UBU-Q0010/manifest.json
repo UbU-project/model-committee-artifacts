@@ -1,0 +1,116 @@
+{
+  "schema_version": "0.3",
+  "run_id": "20260526T205621Z-UBU-Q0010",
+  "created_at_utc": "2026-05-26T20:56:21Z",
+  "repo_path": "../ubu-design",
+  "base_commit": "c5d808493dfb2d0f4f116a5304d8188055f1ecc0",
+  "selected_question_id": "UBU-Q0010",
+  "phase": "work-select",
+  "config_path": "config/models.json",
+  "status": "selected",
+  "commands": [
+    "model-committee run-loop"
+  ],
+  "providers_attempted": [
+    "codex",
+    "claude"
+  ],
+  "providers_succeeded": [
+    "codex",
+    "claude"
+  ],
+  "providers_failed": [],
+  "provider_attempts": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "sonnet",
+      "phase": "work-score",
+      "target_proposal_id": "codex-ubu-q0010-d0184-token-custody",
+      "response_path": "runs/20260526T205621Z-UBU-Q0010/responses/claude_score_codex-ubu-q0010-d0184-token-custody_stdout.json",
+      "stderr_path": null
+    }
+  ],
+  "provider_successes": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20260526T205621Z-UBU-Q0010/parsed/codex_work_proposal.json"
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "sonnet",
+      "phase": "work-score",
+      "target_proposal_id": "codex-ubu-q0010-d0184-token-custody",
+      "response_path": "runs/20260526T205621Z-UBU-Q0010/responses/claude_score_codex-ubu-q0010-d0184-token-custody_stdout.json",
+      "parsed_path": "runs/20260526T205621Z-UBU-Q0010/parsed/claude_score_codex-ubu-q0010-d0184-token-custody_result.json"
+    }
+  ],
+  "provider_failures": [],
+  "score_matrix": [
+    {
+      "proposal_id": "codex-ubu-q0010-d0184-token-custody",
+      "author_provider": "codex",
+      "scorer_provider": "claude",
+      "score": 88,
+      "valid": true,
+      "rationale": "The patch applies cleanly and is confirmed by mechanical validation. All seven sub-questions of UBU-Q0010 are answered: storage location (worker-held by default, canonical only when it is itself the writer), token identity (dedicated GitHub App/bot preferred, maintainer allowed for dogfooding, individual tokens not shared), repository scoping (required where GitHub supports it), Task-level scoping (enforced via UbU capability grants rather than provider-native per-Task tokens), canonical instance token visibility (must never see worker-held raw secrets), read-after-write verification (required; API success alone not sufficient), and MVP security assumption (cooperative operator-administered enclaves, least-privilege, human approval, append-only audit, revocation/rotation). The new DESIGN.md \u00a726.3.1 provides normative prose that is well-structured and directly responsive. UBU-D0184 in DECISIONS.md is complete with consequences and cross-references. The two updates to existing DECISIONS.md entries (replacing 'UBU-Q0010 remains open' with 'governed by UBU-D0184') are correct cleanup. The OPEN_QUESTIONS.md tombstone follows the established 'Status: Solved \u2026 Resolved by: \u2026 / Resolved. See <decision>.' pattern. The sole identified defect is a missing blank line before the closing '---' separator in the tombstone \u2014 cosmetic and non-blocking. Scope is tight: only the three expected documentation files are touched.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [
+        "Add blank line between 'Resolved. See UBU-D0184.' and the '---' HR in the OPEN_QUESTIONS.md tombstone to match the formatting of other tombstoned entries."
+      ],
+      "risks": [
+        "Missing blank line between 'Resolved. See UBU-D0184.' and the '---' separator in OPEN_QUESTIONS.md tombstone \u2014 minor formatting inconsistency with other resolved entries.",
+        "Full question body stripped from OPEN_QUESTIONS.md; traceability depends entirely on DECISIONS.md and DESIGN.md remaining coherent cross-references.",
+        "MVP security assumption explicitly disclaims protection against malicious local admin or compromised worker \u2014 correct scoping but reviewers should confirm this scope exclusion aligns with overall Phase 1 threat model agreed elsewhere."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20260526T205621Z-UBU-Q0010/responses/claude_score_codex-ubu-q0010-d0184-token-custody_stdout.json",
+        "stderr_path": null
+      }
+    }
+  ],
+  "score_aggregates": [
+    {
+      "proposal_id": "codex-ubu-q0010-d0184-token-custody",
+      "author_provider": "codex",
+      "cross_score_count": 1,
+      "score_mean": 88.0,
+      "score_spread": 0,
+      "frontier_score_gap": 0,
+      "disagreement_flags": []
+    }
+  ],
+  "cross_score_count": 1,
+  "score_mean": 88.0,
+  "score_spread": 0,
+  "frontier_score_gap": 0,
+  "disagreement_flags": [],
+  "quorum_result": {
+    "valid": true,
+    "human_review_required": false,
+    "selected_proposal_id": "codex-ubu-q0010-d0184-token-custody",
+    "selected_score": 88.0,
+    "selected_cross_score_count": 1,
+    "blocked_reasons": [],
+    "manual_override": false
+  },
+  "selected_proposal_id": "codex-ubu-q0010-d0184-token-custody",
+  "automated_selection_valid": true,
+  "human_review_required": false,
+  "artifact_publication_status": "operator_pending",
+  "prompt_size_warning": true
+}

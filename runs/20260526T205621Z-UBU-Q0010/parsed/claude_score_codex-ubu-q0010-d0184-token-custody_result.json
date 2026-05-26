@@ -1,0 +1,24 @@
+{
+  "scores": [
+    {
+      "proposal_id": "codex-ubu-q0010-d0184-token-custody",
+      "score": 88,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Missing blank line between 'Resolved. See UBU-D0184.' and the '---' separator in OPEN_QUESTIONS.md tombstone \u2014 minor formatting inconsistency with other resolved entries.",
+        "Full question body stripped from OPEN_QUESTIONS.md; traceability depends entirely on DECISIONS.md and DESIGN.md remaining coherent cross-references.",
+        "MVP security assumption explicitly disclaims protection against malicious local admin or compromised worker \u2014 correct scoping but reviewers should confirm this scope exclusion aligns with overall Phase 1 threat model agreed elsewhere."
+      ],
+      "required_fixes": [
+        "Add blank line between 'Resolved. See UBU-D0184.' and the '---' HR in the OPEN_QUESTIONS.md tombstone to match the formatting of other tombstoned entries."
+      ],
+      "rationale": "The patch applies cleanly and is confirmed by mechanical validation. All seven sub-questions of UBU-Q0010 are answered: storage location (worker-held by default, canonical only when it is itself the writer), token identity (dedicated GitHub App/bot preferred, maintainer allowed for dogfooding, individual tokens not shared), repository scoping (required where GitHub supports it), Task-level scoping (enforced via UbU capability grants rather than provider-native per-Task tokens), canonical instance token visibility (must never see worker-held raw secrets), read-after-write verification (required; API success alone not sufficient), and MVP security assumption (cooperative operator-administered enclaves, least-privilege, human approval, append-only audit, revocation/rotation). The new DESIGN.md \u00a726.3.1 provides normative prose that is well-structured and directly responsive. UBU-D0184 in DECISIONS.md is complete with consequences and cross-references. The two updates to existing DECISIONS.md entries (replacing 'UBU-Q0010 remains open' with 'governed by UBU-D0184') are correct cleanup. The OPEN_QUESTIONS.md tombstone follows the established 'Status: Solved \u2026 Resolved by: \u2026 / Resolved. See <decision>.' pattern. The sole identified defect is a missing blank line before the closing '---' separator in the tombstone \u2014 cosmetic and non-blocking. Scope is tight: only the three expected documentation files are touched."
+    }
+  ],
+  "selected_proposal_id": "codex-ubu-q0010-d0184-token-custody",
+  "selection_rationale": "Only one proposal is present and it passes all mechanical validation checks. It substantively resolves UBU-Q0010 by answering all seven sub-questions, adds normative content in DESIGN.md \u00a726.3.1, creates a complete UBU-D0184 decision record, correctly tombstones the question, and stays within the allowed file set. The single minor defect (missing blank line in the tombstone) does not affect correctness or auditability."
+}

@@ -1,0 +1,24 @@
+{
+  "scores": [
+    {
+      "proposal_id": "codex-ubu-q0010-d0184-token-custody",
+      "score": 88,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": false,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Full question body stripped from OPEN_QUESTIONS.md; traceability depends entirely on DECISIONS.md and DESIGN.md remaining coherent cross-references.",
+        "MVP security assumption explicitly disclaims protection against malicious local admin or compromised worker \u2014 correct scoping but reviewers should confirm this scope exclusion aligns with overall Phase 1 threat model agreed elsewhere.",
+        "Missing blank line between 'Resolved. See UBU-D0184.' and the '---' separator in OPEN_QUESTIONS.md tombstone \u2014 minor formatting inconsistency with other resolved entries."
+      ],
+      "required_fixes": [
+        "Add blank line between 'Resolved. See UBU-D0184.' and the '---' HR in the OPEN_QUESTIONS.md tombstone to match the formatting of other tombstoned entries."
+      ],
+      "rationale": "Aggregate cross-score mean from 1 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "codex-ubu-q0010-d0184-token-custody",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}
