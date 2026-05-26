@@ -1,0 +1,23 @@
+{
+  "scores": [
+    {
+      "proposal_id": "codex-ubu-q0079-mcp-capability-boundary",
+      "score": 89,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": false,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "The 'Scored from commit: None' field in the OPEN_QUESTIONS.md tombstone is not updated to the base commit hash (958e7f087866079a8d05362c97db4e971b8890f0), which may cause traceability gaps in the question audit trail.",
+        "The MCPToolCapabilityGrant schema is defined in prose only; no normative schema artifact or DESIGN.md section reference for the grant structure is linked, which may create implementation ambiguity.",
+        "UBU-D0177 Consequences mention that UBU-Q0080 'can define Delegation Substrate fields on top of this candidate and capability boundary', but no corresponding open question is created or linked; if UBU-Q0080 does not yet exist this is a dangling forward reference.",
+        "association_attestation_candidate.submit is listed in the Phase 1 tool set with an inline conditional caveat ('for fixtures or manually reviewed Association-introspection dogfooding') rather than being cleanly separated or excluded; this could create ambiguity about whether it is a first-class Phase 1 tool or a special-case exception."
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 1 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "codex-ubu-q0079-mcp-capability-boundary",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}

@@ -1,0 +1,157 @@
+{
+  "schema_version": "0.3",
+  "run_id": "20260526T165034Z-UBU-Q0079",
+  "created_at_utc": "2026-05-26T16:50:34Z",
+  "repo_path": "../ubu-design",
+  "base_commit": "958e7f087866079a8d05362c97db4e971b8890f0",
+  "selected_question_id": "UBU-Q0079",
+  "phase": "work-select",
+  "config_path": "config/models.json",
+  "status": "selected",
+  "commands": [
+    "model-committee run-loop"
+  ],
+  "providers_attempted": [
+    "codex",
+    "ollama:sam860__deepseek-r1-0528-qwen3--8b",
+    "ollama:qooba__qwen3-coder-30b-a3b-instruct--q3_k_m",
+    "claude"
+  ],
+  "providers_succeeded": [
+    "codex",
+    "ollama:qooba__qwen3-coder-30b-a3b-instruct--q3_k_m",
+    "claude"
+  ],
+  "providers_failed": [
+    "ollama:sam860__deepseek-r1-0528-qwen3--8b: ModelOutputError: ollama output failed schema validation for sam860/deepseek-r1-0528-qwen3:8b: expected exactly one JSON object or fenced JSON block"
+  ],
+  "provider_attempts": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "ollama:sam860__deepseek-r1-0528-qwen3--8b",
+      "model_name": "sam860/deepseek-r1-0528-qwen3:8b",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "ollama:qooba__qwen3-coder-30b-a3b-instruct--q3_k_m",
+      "model_name": "qooba/qwen3-coder-30b-a3b-instruct:q3_k_m",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "sonnet",
+      "phase": "work-score",
+      "target_proposal_id": "codex-ubu-q0079-mcp-capability-boundary",
+      "response_path": "runs/20260526T165034Z-UBU-Q0079/responses/claude_score_codex-ubu-q0079-mcp-capability-boundary_stdout.json",
+      "stderr_path": null
+    }
+  ],
+  "provider_successes": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20260526T165034Z-UBU-Q0079/parsed/codex_work_proposal.json"
+    },
+    {
+      "provider_id": "ollama:qooba__qwen3-coder-30b-a3b-instruct--q3_k_m",
+      "model_name": "qooba/qwen3-coder-30b-a3b-instruct:q3_k_m",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20260526T165034Z-UBU-Q0079/parsed/ollama_qooba__qwen3-coder-30b-a3b-instruct--q3_k_m_proposal.json"
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "sonnet",
+      "phase": "work-score",
+      "target_proposal_id": "codex-ubu-q0079-mcp-capability-boundary",
+      "response_path": "runs/20260526T165034Z-UBU-Q0079/responses/claude_score_codex-ubu-q0079-mcp-capability-boundary_stdout.json",
+      "parsed_path": "runs/20260526T165034Z-UBU-Q0079/parsed/claude_score_codex-ubu-q0079-mcp-capability-boundary_result.json"
+    }
+  ],
+  "provider_failures": [
+    {
+      "provider_id": "ollama:sam860__deepseek-r1-0528-qwen3--8b",
+      "model_name": "sam860/deepseek-r1-0528-qwen3:8b",
+      "phase": "work-generate",
+      "failure_class": "ModelOutputError",
+      "message": "ollama output failed schema validation for sam860/deepseek-r1-0528-qwen3:8b: expected exactly one JSON object or fenced JSON block",
+      "timeout_seconds": null,
+      "exit_status": null,
+      "stderr_path": null,
+      "response_path": "runs/20260526T165034Z-UBU-Q0079/responses/ollama_sam860__deepseek-r1-0528-qwen3--8b_response.txt",
+      "quorum_met": true
+    }
+  ],
+  "score_matrix": [
+    {
+      "proposal_id": "codex-ubu-q0079-mcp-capability-boundary",
+      "author_provider": "codex",
+      "scorer_provider": "claude",
+      "score": 89,
+      "valid": true,
+      "rationale": "The patch applies cleanly per mechanical validation. It directly answers all five subquestions of UBU-Q0079: the Phase 1 tool set is enumerated, MCPToolCapabilityGrant fields are specified, the candidate-envelope pattern for write-like calls is defined, audit/deny/retry/rollback semantics are given, and the loopback dogfooding fixture is described. The OPEN_QUESTIONS.md change correctly converts the full question block to a compact tombstone with updated Status ('Solved'), updated 'Resolved by: UBU-D0177', and a pointer to the decision \u2014 preserving all header fields and their format. DECISIONS.md adds UBU-D0177 as the anchoring decision record with a full Consequences block. DESIGN.md \u00a721.4 is updated with matching normative text. The proposal reuses existing worker-mutation, ContextBundle, Compartment, and Log primitives rather than creating a parallel authority model, which is architecturally consistent and reduces implementation surface. Compartment policy as a hard upper bound is clearly stated and specific denied flags are enumerated. No new open questions are added, no files outside the allowlist are modified, and no unnecessary scope is introduced. Minor issues \u2014 the inline caveat on association_attestation_candidate.submit, the unupdated Scored-from-commit field, and the forward reference to UBU-Q0080 \u2014 are insufficient to block acceptance but represent small hygiene improvements for a future pass.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "association_attestation_candidate.submit is listed in the Phase 1 tool set with an inline conditional caveat ('for fixtures or manually reviewed Association-introspection dogfooding') rather than being cleanly separated or excluded; this could create ambiguity about whether it is a first-class Phase 1 tool or a special-case exception.",
+        "The 'Scored from commit: None' field in the OPEN_QUESTIONS.md tombstone is not updated to the base commit hash (958e7f087866079a8d05362c97db4e971b8890f0), which may cause traceability gaps in the question audit trail.",
+        "UBU-D0177 Consequences mention that UBU-Q0080 'can define Delegation Substrate fields on top of this candidate and capability boundary', but no corresponding open question is created or linked; if UBU-Q0080 does not yet exist this is a dangling forward reference.",
+        "The MCPToolCapabilityGrant schema is defined in prose only; no normative schema artifact or DESIGN.md section reference for the grant structure is linked, which may create implementation ambiguity."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20260526T165034Z-UBU-Q0079/responses/claude_score_codex-ubu-q0079-mcp-capability-boundary_stdout.json",
+        "stderr_path": null
+      }
+    }
+  ],
+  "score_aggregates": [
+    {
+      "proposal_id": "codex-ubu-q0079-mcp-capability-boundary",
+      "author_provider": "codex",
+      "cross_score_count": 1,
+      "score_mean": 89.0,
+      "score_spread": 0,
+      "frontier_score_gap": 0,
+      "disagreement_flags": []
+    }
+  ],
+  "cross_score_count": 1,
+  "score_mean": 89.0,
+  "score_spread": 0,
+  "frontier_score_gap": 0,
+  "disagreement_flags": [],
+  "quorum_result": {
+    "valid": true,
+    "human_review_required": false,
+    "selected_proposal_id": "codex-ubu-q0079-mcp-capability-boundary",
+    "selected_score": 89.0,
+    "selected_cross_score_count": 1,
+    "blocked_reasons": [],
+    "manual_override": false
+  },
+  "selected_proposal_id": "codex-ubu-q0079-mcp-capability-boundary",
+  "automated_selection_valid": true,
+  "human_review_required": false,
+  "artifact_publication_status": "operator_pending",
+  "prompt_size_warning": true
+}

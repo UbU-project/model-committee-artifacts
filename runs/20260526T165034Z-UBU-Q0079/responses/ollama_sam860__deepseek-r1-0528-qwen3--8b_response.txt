@@ -1,0 +1,15 @@
+{
+
+  "proposal_id": "MCP-0079",
+  "provider_id": "model-committee",
+  "model_name": "model-committee-v1",
+  "question_id": "UBU-Q0079",
+  "base_commit": "abc123",
+  "summary": "Clarified the MCP-style client/server integration boundary to emphasize user-owned policy and Compartment rules.",
+  "rationale": "The MCP contract requires explicit boundaries for external tools and agents. This proposal refines the contract to ensure user sovereignty by bounding every tool surface with user-owned policy, Compartment rules, and review semantics.",
+  "changed_files": [
+    "DECISIONS.md",
+    "OPEN_QUESTIONS.md",
+    "PLANNING_KERNEL_CONTRACT.md"
+  ],
+  "patch": "diff --git a/DECISIONS.md b/DECISIONS.md\n--- a/DECISIONS.md\n+++ b/DECISIONS.md\n@@ -123,6 +123,15 @@\n## UBU-D0165: Advisory safeguards and user autonomy\n\n### Summary\n\nAdvisory behavioral safeguards represent uncertainty, false-positive risk, user override, and introspection consequences without becoming paternalistic gates.\n\n### Decision\n\nAdvisory safeguards should be default-on, user-aware, uncertainty-transparent, overrideable, and introspection-relevant when bypassed.\n\n### Rationale\n\nAdvisory safeguards should be default-on, user-aware, uncertainty-transparent, overrideable, and introspection-relevant when bypassed.\n\n### Affected files\n\n- OPEN_QUESTIONS.md\n- DESIGN.md\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n

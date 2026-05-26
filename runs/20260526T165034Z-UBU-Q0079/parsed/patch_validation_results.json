@@ -1,0 +1,35 @@
+[
+  {
+    "proposal_id": "codex-ubu-q0079-mcp-capability-boundary",
+    "patch_applies": true,
+    "allowlist_passed": true,
+    "changed_files": [
+      "DECISIONS.md",
+      "DESIGN.md",
+      "OPEN_QUESTIONS.md"
+    ],
+    "error": null,
+    "normalized_patch": null,
+    "warnings": [],
+    "ordinary_error": null,
+    "recount_error": null,
+    "normalization_error": null
+  },
+  {
+    "proposal_id": "proposal-ubu-q0079-mcp-capability",
+    "patch_applies": false,
+    "allowlist_passed": true,
+    "changed_files": [
+      "DECISIONS.md",
+      "DESIGN.md",
+      "OPEN_QUESTIONS.md",
+      "PLANNING_KERNEL_CONTRACT.md"
+    ],
+    "error": "ordinary git apply --check failed: error: patch failed: DECISIONS.md:1\nerror: DECISIONS.md: patch does not apply\nerror: patch failed: DESIGN.md:1\nerror: DESIGN.md: patch does not apply\nerror: patch failed: OPEN_QUESTIONS.md:1\nerror: OPEN_QUESTIONS.md: patch does not apply\nerror: patch failed: PLANNING_KERNEL_CONTRACT.md:1\nerror: PLANNING_KERNEL_CONTRACT.md: patch does not apply\ngit apply --check --recount failed: error: corrupt patch at line 175",
+    "normalized_patch": null,
+    "warnings": [],
+    "ordinary_error": "error: patch failed: DECISIONS.md:1\nerror: DECISIONS.md: patch does not apply\nerror: patch failed: DESIGN.md:1\nerror: DESIGN.md: patch does not apply\nerror: patch failed: OPEN_QUESTIONS.md:1\nerror: OPEN_QUESTIONS.md: patch does not apply\nerror: patch failed: PLANNING_KERNEL_CONTRACT.md:1\nerror: PLANNING_KERNEL_CONTRACT.md: patch does not apply",
+    "recount_error": "error: corrupt patch at line 175",
+    "normalization_error": null
+  }
+]

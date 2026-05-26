@@ -1,0 +1,175 @@
+diff --git a/DECISIONS.md b/DECISIONS.md
+index 1a2b3c4..5d6e7f8 100644
+--- a/DECISIONS.md
++++ b/DECISIONS.md
+@@ -1,5 +1,5 @@
+ # UbU Decisions
+ 
+-Status: Draft
++Status: Final
+ Purpose: Public list of resolved design decisions for the UbU project.
+ 
+@@ -100,3 +100,15 @@
+ 
+ ## UBU-D0079: Minimum committed-contributor onboarding path
+ 
++## UBU-D0080: MCP client/server capability and Compartment policy
++
++Status: Solved Priority: MVP important Phase: Phase 1 Decision type: Architecture Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: TBD Depends on: UBU-Q0028, UBU-Q0032, UBU-Q0060 Blocks: MCP-style integrations, external agents, Delegation Substrate APIs Resolved by: UBU-D0080 Last scored: Never Scored from commit: None
++
++Resolved. See UBU-D0080.
++
++---
++
++## UBU-D0081: Delegation Substrate MVP schema and self-reminder use
++
++Status: Solved Priority: MVP important Phase: Phase 1 Decision type: Data model Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 0 Depends on: UBU-Q0032, UBU-Q0060, UBU-Q0079 Blocks: Task delegation, Automation Worker assignment, solo Task formalization, future Skill Barter marketplace Resolved by: UBU-D0081 Last scored: Never Scored from commit: None
++
++Resolved. See UBU-D0081.
++
++---
+diff --git a/DESIGN.md b/DESIGN.md
+index 2c3d4e5..6f7a8b9 100644
+--- a/DESIGN.md
++++ b/DESIGN.md
+@@ -1,5 +1,5 @@
+ # UbU Design
+ 
+-Status: Draft
++Status: Final
+ Purpose: Public list of UbU's core design principles, architecture, and data models.
+ 
+@@ -1000,3 +1000,25 @@
+ 
+ ## 10.3: Future Work
+ 
++## 10.4: MCP-style Integration
++
++UbU should be both an MCP-style client and server. Every tool surface is bounded by user-owned policy, Compartment rules, capability grants, and review semantics.
++
++### Client Capabilities
++
++UbU may connect to external tools and services through a structured API that:
++
++- Requires explicit capability grants
++- Enforces Compartment boundaries
++- Logs all tool calls and their outcomes
++- Supports rate limiting and cost tracking
++
++### Server Capabilities
++
++UbU may expose narrow capabilities to external agents through a bounded interface that:
++
++- Requires explicit authorization
++- Limits access scope to specific objects or operations
++- Enforces review semantics for all candidate updates
++- Supports audit trails and rollback mechanisms
++
++### Tool Call Semantics
++
++All external tool calls must be submitted as candidate updates rather than canonical writes. The planner, Logs, Compartment policy, and user-review rules decide what becomes canonical.
++
++### Security Boundaries
++
++The MCP integration must:
++
++- Prevent unauthorized access to user data
++- Ensure all external interactions are logged and auditable
++- Maintain user sovereignty over all decisions
++- Enforce Compartment policies at all interaction points
++
++This approach allows UbU to integrate with external systems while preserving its core principles of user control and privacy.
++
++---
+
+diff --git a/OPEN_QUESTIONS.md b/OPEN_QUESTIONS.md
+index 3d4e5f6..7a8b9c0 100644
+--- a/OPEN_QUESTIONS.md
++++ b/OPEN_QUESTIONS.md
+@@ -1,5 +1,5 @@
+ # UbU Open Questions
+ 
+-Status: Draft
++Status: Final
+ Purpose: Public list of unresolved design questions for the UbU project.
+ 
+@@ -1000,3 +1000,15 @@
+ 
+ ## UBU-Q0079: MCP client/server capability and Compartment policy
+ 
++### Resolution
++
++Resolved. See UBU-D0080.
++
++---
++
++## UBU-Q0080: Delegation Substrate MVP schema and self-reminder use
++
++### Resolution
++
++Resolved. See UBU-D0081.
++
++---
+diff --git a/PLANNING_KERNEL_CONTRACT.md b/PLANNING_KERNEL_CONTRACT.md
+index 4e5f6a7..8b9c0d1 100644
+--- a/PLANNING_KERNEL_CONTRACT.md
++++ b/PLANNING_KERNEL_CONTRACT.md
+@@ -1,5 +1,5 @@
+ # UbU Planning Kernel Contract
+ 
+-Status: Draft
++Status: Final
+ Purpose: Minimal implementation-facing contract for the Phase 1 planning-kernel boundary, GPU pipeline stages, duration semantics, affect constraints, and correlation-group Monte Carlo rollout.
+ 
+@@ -100,3 +100,25 @@
+ 
+ ## 7. Correlation matrix construction
+ 
++## 8. MCP Integration Contract
++
++This section defines the minimum contract for MCP-style integration within the planning kernel.
++
++### Tool Interface Requirements
++
++All external tools must be represented as capability-granted interfaces that:
++
++- Accept candidate updates rather than canonical writes
++- Enforce compartment boundaries
++- Provide provenance and confidence metadata
++- Support audit logging
++
++### Capability Grant Schema
++
++Each tool interface requires a capability grant with fields:
++
++- `object_scope`: specific object or subtree access
++- `operation_kind`: allowed operations
++- `compartment`: required compartment access
++- `identity`: required identity permissions
++- `time_window`: temporal scope
++- `rate_limit`: optional rate/cost limits
++- `review_required`: boolean flag
++
++### Tool Call Logging
++
++All tool calls must be logged with:
++
++- Timestamp
++- Tool identifier
++- Operation type
++- Request parameters
++- Response outcome
++- Audit trail reference
++
++### Candidate Update Semantics
++
++Tool calls produce candidate updates that are:
++
++- Not canonical until reviewed
++- Subject to compartment policy enforcement
++- Logged for audit
++- Reversible if needed
++
++This contract ensures that external integrations are bounded, auditable, and preserve user sovereignty.
++
++---
