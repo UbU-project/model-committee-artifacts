@@ -1,0 +1,24 @@
+[
+  {
+    "proposal_id": "codex-ubu-q0100-d0165",
+    "author_provider": "codex",
+    "scorer_provider": "claude",
+    "score": 91,
+    "valid": true,
+    "rationale": "The patch applies cleanly per mechanical validation. It directly and completely addresses all five subquestions of UBU-Q0100: the product-invariant set (subquestion 1) maps to 'Product hard boundaries'; external sources (subquestion 2) are captured as 'External hard constraints' with source-labeling requirements; fallible behavioral checks (subquestion 3) are assigned to 'Advisory behavioral safeguards' with explicit rationale for why they must not be unconditional hard gates; user-configured gates (subquestion 4) are given their own category with required record fields; and documentation language rules (subquestion 5) are stated explicitly in both DESIGN.md and DECISIONS.md. The decision text in UBU-D0165 is detailed, internally consistent, and directly aligned with the question's current direction ('structural or externally required hard boundaries; advisory behavioral checks by default'). Scope is tight: only the three directly relevant files are touched, and \u00a72.10.2 and \u00a722.4 are the only DESIGN.md sections modified. Decomposition is good: UBU-Q0101 is left open for advisory-safeguard UX detail, which is the right boundary. No required fixes identified.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [
+      "The four-category taxonomy introduces new governance vocabulary (especially 'user-configured required gates') that will need consistent application across all future documentation and UI copy; drift risk is real.",
+      "External hard constraints guidance ('if the constraint depends on uncertain interpretation, UbU should disclose uncertainty') sets a behavioral expectation but defers the UX mechanism to no named follow-on question, leaving a potential gap between UBU-Q0100 and UBU-Q0101.",
+      "The OPEN_QUESTIONS.md status value 'Solved' should be verified against the canonical status vocabulary used elsewhere in the file; other resolved questions may use a different term."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20260526T031047Z-UBU-Q0100/responses/claude_score_codex-ubu-q0100-d0165_stdout.json",
+      "stderr_path": null
+    }
+  }
+]

@@ -1,0 +1,113 @@
+{
+  "schema_version": "0.2",
+  "run_id": "20260526T031047Z-UBU-Q0100",
+  "created_at_utc": "2026-05-26T03:10:47Z",
+  "repo_path": "../ubu-design",
+  "base_commit": "0c06f1365db83a30cb0382cf159aa8ca93bc255d",
+  "selected_question_id": "UBU-Q0100",
+  "phase": "work-select",
+  "config_path": "config/models.json",
+  "status": "selected",
+  "commands": [
+    "model-committee work-generate"
+  ],
+  "providers_attempted": [
+    "codex",
+    "claude"
+  ],
+  "providers_succeeded": [
+    "codex",
+    "claude"
+  ],
+  "providers_failed": [],
+  "provider_attempts": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "sonnet",
+      "phase": "work-score",
+      "target_proposal_id": "codex-ubu-q0100-d0165",
+      "response_path": "runs/20260526T031047Z-UBU-Q0100/responses/claude_score_codex-ubu-q0100-d0165_stdout.json",
+      "stderr_path": null
+    }
+  ],
+  "provider_successes": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20260526T031047Z-UBU-Q0100/parsed/codex_work_proposal.json"
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "sonnet",
+      "phase": "work-score",
+      "target_proposal_id": "codex-ubu-q0100-d0165",
+      "response_path": "runs/20260526T031047Z-UBU-Q0100/responses/claude_score_codex-ubu-q0100-d0165_stdout.json",
+      "parsed_path": "runs/20260526T031047Z-UBU-Q0100/parsed/claude_score_codex-ubu-q0100-d0165_result.json"
+    }
+  ],
+  "provider_failures": [],
+  "score_matrix": [
+    {
+      "proposal_id": "codex-ubu-q0100-d0165",
+      "author_provider": "codex",
+      "scorer_provider": "claude",
+      "score": 91,
+      "valid": true,
+      "rationale": "The patch applies cleanly per mechanical validation. It directly and completely addresses all five subquestions of UBU-Q0100: the product-invariant set (subquestion 1) maps to 'Product hard boundaries'; external sources (subquestion 2) are captured as 'External hard constraints' with source-labeling requirements; fallible behavioral checks (subquestion 3) are assigned to 'Advisory behavioral safeguards' with explicit rationale for why they must not be unconditional hard gates; user-configured gates (subquestion 4) are given their own category with required record fields; and documentation language rules (subquestion 5) are stated explicitly in both DESIGN.md and DECISIONS.md. The decision text in UBU-D0165 is detailed, internally consistent, and directly aligned with the question's current direction ('structural or externally required hard boundaries; advisory behavioral checks by default'). Scope is tight: only the three directly relevant files are touched, and \u00a72.10.2 and \u00a722.4 are the only DESIGN.md sections modified. Decomposition is good: UBU-Q0101 is left open for advisory-safeguard UX detail, which is the right boundary. No required fixes identified.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "The four-category taxonomy introduces new governance vocabulary (especially 'user-configured required gates') that will need consistent application across all future documentation and UI copy; drift risk is real.",
+        "External hard constraints guidance ('if the constraint depends on uncertain interpretation, UbU should disclose uncertainty') sets a behavioral expectation but defers the UX mechanism to no named follow-on question, leaving a potential gap between UBU-Q0100 and UBU-Q0101.",
+        "The OPEN_QUESTIONS.md status value 'Solved' should be verified against the canonical status vocabulary used elsewhere in the file; other resolved questions may use a different term."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20260526T031047Z-UBU-Q0100/responses/claude_score_codex-ubu-q0100-d0165_stdout.json",
+        "stderr_path": null
+      }
+    }
+  ],
+  "score_aggregates": [
+    {
+      "proposal_id": "codex-ubu-q0100-d0165",
+      "author_provider": "codex",
+      "cross_score_count": 1,
+      "score_mean": 91.0,
+      "score_spread": 0,
+      "frontier_score_gap": 0,
+      "disagreement_flags": []
+    }
+  ],
+  "cross_score_count": 1,
+  "score_mean": 91.0,
+  "score_spread": 0,
+  "frontier_score_gap": 0,
+  "disagreement_flags": [],
+  "quorum_result": {
+    "valid": true,
+    "human_review_required": false,
+    "selected_proposal_id": "codex-ubu-q0100-d0165",
+    "selected_score": 91.0,
+    "selected_cross_score_count": 1,
+    "blocked_reasons": [],
+    "manual_override": false
+  },
+  "selected_proposal_id": "codex-ubu-q0100-d0165",
+  "automated_selection_valid": true,
+  "human_review_required": false,
+  "artifact_publication_status": "operator_pending"
+}

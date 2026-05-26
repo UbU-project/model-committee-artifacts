@@ -1,0 +1,22 @@
+{
+  "scores": [
+    {
+      "proposal_id": "codex-ubu-q0100-d0165",
+      "score": 91,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": false,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "External hard constraints guidance ('if the constraint depends on uncertain interpretation, UbU should disclose uncertainty') sets a behavioral expectation but defers the UX mechanism to no named follow-on question, leaving a potential gap between UBU-Q0100 and UBU-Q0101.",
+        "The OPEN_QUESTIONS.md status value 'Solved' should be verified against the canonical status vocabulary used elsewhere in the file; other resolved questions may use a different term.",
+        "The four-category taxonomy introduces new governance vocabulary (especially 'user-configured required gates') that will need consistent application across all future documentation and UI copy; drift risk is real."
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 1 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "codex-ubu-q0100-d0165",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}
