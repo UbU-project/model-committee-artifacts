@@ -1,0 +1,113 @@
+{
+  "schema_version": "0.2",
+  "run_id": "20260526T003928Z-UBU-Q0036",
+  "created_at_utc": "2026-05-26T00:39:28Z",
+  "repo_path": "../ubu-design",
+  "base_commit": "331d5bc36a090d9d20832846be48e1a79fb4ea87",
+  "selected_question_id": "UBU-Q0036",
+  "phase": "work-select",
+  "config_path": "config/models.json",
+  "status": "selected",
+  "commands": [
+    "model-committee run-loop"
+  ],
+  "providers_attempted": [
+    "codex",
+    "claude"
+  ],
+  "providers_succeeded": [
+    "codex",
+    "claude"
+  ],
+  "providers_failed": [],
+  "provider_attempts": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "sonnet",
+      "phase": "work-score",
+      "target_proposal_id": "codex-ubu-q0036-001",
+      "response_path": "runs/20260526T003928Z-UBU-Q0036/responses/claude_score_codex-ubu-q0036-001_stdout.json",
+      "stderr_path": null
+    }
+  ],
+  "provider_successes": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20260526T003928Z-UBU-Q0036/parsed/codex_work_proposal.json"
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "sonnet",
+      "phase": "work-score",
+      "target_proposal_id": "codex-ubu-q0036-001",
+      "response_path": "runs/20260526T003928Z-UBU-Q0036/responses/claude_score_codex-ubu-q0036-001_stdout.json",
+      "parsed_path": "runs/20260526T003928Z-UBU-Q0036/parsed/claude_score_codex-ubu-q0036-001_result.json"
+    }
+  ],
+  "provider_failures": [],
+  "score_matrix": [
+    {
+      "proposal_id": "codex-ubu-q0036-001",
+      "author_provider": "codex",
+      "scorer_provider": "claude",
+      "score": 88,
+      "valid": true,
+      "rationale": "The patch applies cleanly and is confirmed by mechanical validation. It directly answers UBU-Q0036 by specifying the minimum v0.1/v0.2 run-log directory structure (manifest.json, inputs/, schemas/, prompts/, raw/, parsed/, patches/, scores/, top-level selected artifacts), the required manifest fields, provider invocation record fields, security constraints (no secrets/keys), and review artifact content. The DESIGN.md addition (\u00a73.1.2) and DECISIONS.md entry (UBU-D0160) are appropriately complementary rather than redundant\u2014the design section is normative prose and the decision entry is the auditable record. OPEN_QUESTIONS.md is updated correctly: status changed to Solved, Resolved-by updated to include UBU-D0160, and the metadata remains on one line preserving the question schema. Scope is disciplined: only the three documentation files are touched, publication policy is explicitly deferred to UBU-Q0046, and no implementation files are modified. The decision is internally consistent with the current-direction text from the question itself, covering all the v0.2 extensions (Claude Code prompts, raw CLI JSON envelopes, structured_output payloads, invocation metadata, score-matrix entries, disagreement flags, quorum results, publication instructions). Minor deductions for vague field names and the solved/open tension noted in risks.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "The manifest required-fields list is long and specific; implementations may find it overly prescriptive before the first working v0.2 run exists to validate feasibility.",
+        "Marking Q0036 as 'Solved' while simultaneously noting the long-term format 'may evolve through schema migrations and later decisions' creates mild ambiguity about whether the question is truly closed or only partially resolved at the Phase 1 boundary.",
+        "Some field descriptions in the manifest spec (e.g., 'provider configuration summaries') remain vague enough that different implementations could produce incompatible run directories without violating the written contract."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20260526T003928Z-UBU-Q0036/responses/claude_score_codex-ubu-q0036-001_stdout.json",
+        "stderr_path": null
+      }
+    }
+  ],
+  "score_aggregates": [
+    {
+      "proposal_id": "codex-ubu-q0036-001",
+      "author_provider": "codex",
+      "cross_score_count": 1,
+      "score_mean": 88.0,
+      "score_spread": 0,
+      "frontier_score_gap": 0,
+      "disagreement_flags": []
+    }
+  ],
+  "cross_score_count": 1,
+  "score_mean": 88.0,
+  "score_spread": 0,
+  "frontier_score_gap": 0,
+  "disagreement_flags": [],
+  "quorum_result": {
+    "valid": true,
+    "human_review_required": false,
+    "selected_proposal_id": "codex-ubu-q0036-001",
+    "selected_score": 88.0,
+    "selected_cross_score_count": 1,
+    "blocked_reasons": [],
+    "manual_override": false
+  },
+  "selected_proposal_id": "codex-ubu-q0036-001",
+  "automated_selection_valid": true,
+  "human_review_required": false,
+  "artifact_publication_status": "operator_pending"
+}

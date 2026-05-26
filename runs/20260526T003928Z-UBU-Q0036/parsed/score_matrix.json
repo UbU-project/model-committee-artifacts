@@ -1,0 +1,24 @@
+[
+  {
+    "proposal_id": "codex-ubu-q0036-001",
+    "author_provider": "codex",
+    "scorer_provider": "claude",
+    "score": 88,
+    "valid": true,
+    "rationale": "The patch applies cleanly and is confirmed by mechanical validation. It directly answers UBU-Q0036 by specifying the minimum v0.1/v0.2 run-log directory structure (manifest.json, inputs/, schemas/, prompts/, raw/, parsed/, patches/, scores/, top-level selected artifacts), the required manifest fields, provider invocation record fields, security constraints (no secrets/keys), and review artifact content. The DESIGN.md addition (\u00a73.1.2) and DECISIONS.md entry (UBU-D0160) are appropriately complementary rather than redundant\u2014the design section is normative prose and the decision entry is the auditable record. OPEN_QUESTIONS.md is updated correctly: status changed to Solved, Resolved-by updated to include UBU-D0160, and the metadata remains on one line preserving the question schema. Scope is disciplined: only the three documentation files are touched, publication policy is explicitly deferred to UBU-Q0046, and no implementation files are modified. The decision is internally consistent with the current-direction text from the question itself, covering all the v0.2 extensions (Claude Code prompts, raw CLI JSON envelopes, structured_output payloads, invocation metadata, score-matrix entries, disagreement flags, quorum results, publication instructions). Minor deductions for vague field names and the solved/open tension noted in risks.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [
+      "The manifest required-fields list is long and specific; implementations may find it overly prescriptive before the first working v0.2 run exists to validate feasibility.",
+      "Marking Q0036 as 'Solved' while simultaneously noting the long-term format 'may evolve through schema migrations and later decisions' creates mild ambiguity about whether the question is truly closed or only partially resolved at the Phase 1 boundary.",
+      "Some field descriptions in the manifest spec (e.g., 'provider configuration summaries') remain vague enough that different implementations could produce incompatible run directories without violating the written contract."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20260526T003928Z-UBU-Q0036/responses/claude_score_codex-ubu-q0036-001_stdout.json",
+      "stderr_path": null
+    }
+  }
+]

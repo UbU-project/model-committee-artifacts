@@ -1,0 +1,22 @@
+{
+  "scores": [
+    {
+      "proposal_id": "codex-ubu-q0036-001",
+      "score": 88,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": false,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Marking Q0036 as 'Solved' while simultaneously noting the long-term format 'may evolve through schema migrations and later decisions' creates mild ambiguity about whether the question is truly closed or only partially resolved at the Phase 1 boundary.",
+        "Some field descriptions in the manifest spec (e.g., 'provider configuration summaries') remain vague enough that different implementations could produce incompatible run directories without violating the written contract.",
+        "The manifest required-fields list is long and specific; implementations may find it overly prescriptive before the first working v0.2 run exists to validate feasibility."
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 1 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "codex-ubu-q0036-001",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}
