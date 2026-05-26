@@ -1,0 +1,27 @@
+[
+  {
+    "proposal_id": "codex-ubu-q0009-worker-mutation-schema-001",
+    "author_provider": "codex",
+    "scorer_provider": "claude",
+    "score": 88,
+    "valid": true,
+    "rationale": "The patch applies cleanly per mechanical validation. All eight sub-questions in UBU-Q0009 receive direct, explicit answers: submission payload families (all three), full required and optional field enumerations, conditional-not-immediate application rule, rejected-request logging with sanitized reason, atomic batch semantics, create-only request path, append-only reversal, and expected-prior-version plus idempotency-key stale-overwrite prevention. The three changed files (DESIGN.md, DECISIONS.md, OPEN_QUESTIONS.md) are exactly those expected for a question resolution; no extraneous files are touched. DECISIONS.md entry UBU-D0164 is coherent, complete, and correctly cross-references open downstream questions. The section renumbering in DESIGN.md (24.1.3 to 24.1.4) is properly handled. The only notable defect is the 'Solved' vs 'Resolved' status-field vocabulary mismatch, which is a minor schema-consistency issue rather than a substantive gap. The proposal does not open new sub-questions, which is appropriate for an MVP-blocker resolution.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [
+      "Verify that 'Solved' is the accepted Status vocabulary in OPEN_QUESTIONS.md; if other resolved questions use 'Resolved', change the UBU-Q0009 status line to match."
+    ],
+    "risks": [
+      "Status field uses 'Solved' rather than 'Resolved', which may be inconsistent with other resolved questions in OPEN_QUESTIONS.md; the resolution body itself uses 'Resolved' throughout, creating a minor intra-document inconsistency.",
+      "The required-field list is long and prescriptive for a Phase 1 MVP blocker; implementation teams could struggle to satisfy all mandatory fields simultaneously, and any later relaxation would require another decision.",
+      "Decision number UBU-D0164 cannot be independently verified as sequential without full DECISIONS.md context; an off-by-one would create a reference mismatch with any existing D0164.",
+      "The 'independent_items' batch mode is introduced as non-atomic but still permitted, which could allow partial canonical mutations that are hard to reason about without further guidance on reconciliation."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20260526T025116Z-UBU-Q0009/responses/claude_score_codex-ubu-q0009-worker-mutation-schema-001_stdout.json",
+      "stderr_path": null
+    }
+  }
+]

@@ -1,0 +1,25 @@
+{
+  "scores": [
+    {
+      "proposal_id": "codex-ubu-q0009-worker-mutation-schema-001",
+      "score": 88,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Status field uses 'Solved' rather than 'Resolved', which may be inconsistent with other resolved questions in OPEN_QUESTIONS.md; the resolution body itself uses 'Resolved' throughout, creating a minor intra-document inconsistency.",
+        "The required-field list is long and prescriptive for a Phase 1 MVP blocker; implementation teams could struggle to satisfy all mandatory fields simultaneously, and any later relaxation would require another decision.",
+        "Decision number UBU-D0164 cannot be independently verified as sequential without full DECISIONS.md context; an off-by-one would create a reference mismatch with any existing D0164.",
+        "The 'independent_items' batch mode is introduced as non-atomic but still permitted, which could allow partial canonical mutations that are hard to reason about without further guidance on reconciliation."
+      ],
+      "required_fixes": [
+        "Verify that 'Solved' is the accepted Status vocabulary in OPEN_QUESTIONS.md; if other resolved questions use 'Resolved', change the UBU-Q0009 status line to match."
+      ],
+      "rationale": "The patch applies cleanly per mechanical validation. All eight sub-questions in UBU-Q0009 receive direct, explicit answers: submission payload families (all three), full required and optional field enumerations, conditional-not-immediate application rule, rejected-request logging with sanitized reason, atomic batch semantics, create-only request path, append-only reversal, and expected-prior-version plus idempotency-key stale-overwrite prevention. The three changed files (DESIGN.md, DECISIONS.md, OPEN_QUESTIONS.md) are exactly those expected for a question resolution; no extraneous files are touched. DECISIONS.md entry UBU-D0164 is coherent, complete, and correctly cross-references open downstream questions. The section renumbering in DESIGN.md (24.1.3 to 24.1.4) is properly handled. The only notable defect is the 'Solved' vs 'Resolved' status-field vocabulary mismatch, which is a minor schema-consistency issue rather than a substantive gap. The proposal does not open new sub-questions, which is appropriate for an MVP-blocker resolution."
+    }
+  ],
+  "selected_proposal_id": "codex-ubu-q0009-worker-mutation-schema-001",
+  "selection_rationale": "Only one candidate was submitted and it passes all mechanical checks, addresses every sub-question in UBU-Q0009 with explicit and auditable answers, confines changes to the three expected documentation files, and introduces a coherent, well-bounded decision (UBU-D0164). The single identified required fix (status vocabulary) is minor and does not affect substance. No alternative proposal exists to prefer over it."
+}

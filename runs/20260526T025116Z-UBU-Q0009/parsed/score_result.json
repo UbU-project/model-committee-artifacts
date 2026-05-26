@@ -1,0 +1,25 @@
+{
+  "scores": [
+    {
+      "proposal_id": "codex-ubu-q0009-worker-mutation-schema-001",
+      "score": 88,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": false,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Decision number UBU-D0164 cannot be independently verified as sequential without full DECISIONS.md context; an off-by-one would create a reference mismatch with any existing D0164.",
+        "Status field uses 'Solved' rather than 'Resolved', which may be inconsistent with other resolved questions in OPEN_QUESTIONS.md; the resolution body itself uses 'Resolved' throughout, creating a minor intra-document inconsistency.",
+        "The 'independent_items' batch mode is introduced as non-atomic but still permitted, which could allow partial canonical mutations that are hard to reason about without further guidance on reconciliation.",
+        "The required-field list is long and prescriptive for a Phase 1 MVP blocker; implementation teams could struggle to satisfy all mandatory fields simultaneously, and any later relaxation would require another decision."
+      ],
+      "required_fixes": [
+        "Verify that 'Solved' is the accepted Status vocabulary in OPEN_QUESTIONS.md; if other resolved questions use 'Resolved', change the UBU-Q0009 status line to match."
+      ],
+      "rationale": "Aggregate cross-score mean from 1 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "codex-ubu-q0009-worker-mutation-schema-001",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}
