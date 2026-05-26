@@ -1,0 +1,152 @@
+{
+  "schema_version": "0.3",
+  "run_id": "20260526T203239Z-UBU-Q0006",
+  "created_at_utc": "2026-05-26T20:32:39Z",
+  "repo_path": "../ubu-design",
+  "base_commit": "89428f48d1bea78c61d872f955e05a7111282a7b",
+  "selected_question_id": "UBU-Q0006",
+  "phase": "work-select",
+  "config_path": "config/models.json",
+  "status": "selected",
+  "commands": [
+    "model-committee run-loop"
+  ],
+  "providers_attempted": [
+    "codex",
+    "claude"
+  ],
+  "providers_succeeded": [
+    "codex",
+    "claude"
+  ],
+  "providers_failed": [],
+  "provider_attempts": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-score",
+      "target_proposal_id": "codex-ubu-q0006-d0183",
+      "response_path": "runs/20260526T203239Z-UBU-Q0006/responses/codex_score_codex-ubu-q0006-d0183_response.json",
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "sonnet",
+      "phase": "work-score",
+      "target_proposal_id": "codex-ubu-q0006-d0183",
+      "response_path": "runs/20260526T203239Z-UBU-Q0006/responses/claude_score_codex-ubu-q0006-d0183_stdout.json",
+      "stderr_path": null
+    }
+  ],
+  "provider_successes": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20260526T203239Z-UBU-Q0006/parsed/codex_work_proposal.json"
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-score",
+      "target_proposal_id": "codex-ubu-q0006-d0183",
+      "response_path": "runs/20260526T203239Z-UBU-Q0006/responses/codex_score_codex-ubu-q0006-d0183_response.json",
+      "parsed_path": "runs/20260526T203239Z-UBU-Q0006/parsed/codex_score_codex-ubu-q0006-d0183_result.json"
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "sonnet",
+      "phase": "work-score",
+      "target_proposal_id": "codex-ubu-q0006-d0183",
+      "response_path": "runs/20260526T203239Z-UBU-Q0006/responses/claude_score_codex-ubu-q0006-d0183_stdout.json",
+      "parsed_path": "runs/20260526T203239Z-UBU-Q0006/parsed/claude_score_codex-ubu-q0006-d0183_result.json"
+    }
+  ],
+  "provider_failures": [],
+  "score_matrix": [
+    {
+      "proposal_id": "codex-ubu-q0006-d0183",
+      "author_provider": "openai-codex",
+      "scorer_provider": "codex",
+      "score": 91,
+      "valid": true,
+      "rationale": "The patch applies cleanly, modifies only canonical allowed files, and directly resolves all eight parts of UBU-Q0006 with concrete admission rules for new Objectives, append-only handling, mere logging, Task creation, duplicate detection, inherited instrumental value, automatic closure, and noise budgets. The decision text is auditable and the OPEN_QUESTIONS tombstone is compact and schema-compatible. The main weakness is minor unnecessary scope in updating a UBU-Q0004 reference while resolving Q0006.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": false,
+      "required_fixes": [],
+      "risks": [
+        "Slight scope creep: the D0163 consequences update also changes the UBU-Q0004 status reference, which is not part of UBU-Q0006 even if it may be a stale cross-reference cleanup.",
+        "The one-delivery cap is clear as a default, but implementations may need later clarification for batched webhook deliveries containing multiple distinct GitHub objects."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20260526T203239Z-UBU-Q0006/responses/codex_score_codex-ubu-q0006-d0183_response.json",
+        "stderr_path": null
+      }
+    },
+    {
+      "proposal_id": "codex-ubu-q0006-d0183",
+      "author_provider": "openai-codex",
+      "scorer_provider": "claude",
+      "score": 85,
+      "valid": true,
+      "rationale": "The patch applies cleanly per mechanical validation. It directly addresses all eight sub-questions in UBU-Q0006: new Objective admission criteria (Q1), append-as-evidence rule (Q2), log-only default (Q3), Task admission criteria (Q4), normalized duplicate key for analysis Objectives (Q5), instrumental value derived from parent scope (Q6), automatic closure through normal lifecycle transitions (Q7), and noise budget defaults (Q8). UBU-D0183 is added to DECISIONS.md with a clear status, consequence block, and cross-reference; DESIGN.md receives the corresponding normative text; OPEN_QUESTIONS.md converts UBU-Q0006 to a compact solved tombstone following the same pattern used for UBU-Q0005. The UBU-Q0004 status update inside the UBU-D0163 consequence block is a minor side-effect of scope \u2014 updating the 'remains open' bullet while removing the UBU-Q0006 bullet \u2014 but is plausible cleanup if UBU-D0182 exists. No new open questions are introduced, no unauthorized files are touched, and the proposal does not decompose UBU-Q0006 into sub-questions. The main risks are the unverifiable UBU-Q0004 assertion, the rigidity of the one-Objective-per-delivery cap, and the forward dependency on acceptance machinery for automatic closure.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "DECISIONS.md updates UBU-Q0004 status to 'resolved by UBU-D0182' as a side-effect of this patch \u2014 if UBU-D0182 does not exist at base commit or does not fully resolve UBU-Q0004, this assertion is incorrect and introduces stale state into the consequence block of UBU-D0163.",
+        "The noise budget hard cap of 'one new Objective and one immediate Task per GitHub delivery' is a concrete implementation constraint embedded in design; it may be too rigid for burst events (e.g. a PR that simultaneously closes multiple milestones) and could need revision before implementation.",
+        "The normalized duplicate key for analysis Objectives (parent refs, analysis kind, source refs, artifact, question text, active/terminal status) is high-cardinality and somewhat under-specified \u2014 implementations may diverge on normalization, making the deduplication guarantee weaker than the text implies.",
+        "Automatic closure rules rely on 'accepted evidence' and 'termination condition satisfied' \u2014 these depend on downstream acceptance/lifecycle machinery that is not yet resolved, creating a forward dependency that could block Phase 1 implementation of analysis Objective closure."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20260526T203239Z-UBU-Q0006/responses/claude_score_codex-ubu-q0006-d0183_stdout.json",
+        "stderr_path": null
+      }
+    }
+  ],
+  "score_aggregates": [
+    {
+      "proposal_id": "codex-ubu-q0006-d0183",
+      "author_provider": "openai-codex",
+      "cross_score_count": 2,
+      "score_mean": 88.0,
+      "score_spread": 6,
+      "frontier_score_gap": 6,
+      "disagreement_flags": []
+    }
+  ],
+  "cross_score_count": 2,
+  "score_mean": 88.0,
+  "score_spread": 6,
+  "frontier_score_gap": 6,
+  "disagreement_flags": [],
+  "quorum_result": {
+    "valid": true,
+    "human_review_required": false,
+    "selected_proposal_id": "codex-ubu-q0006-d0183",
+    "selected_score": 88.0,
+    "selected_cross_score_count": 2,
+    "blocked_reasons": [],
+    "manual_override": false
+  },
+  "selected_proposal_id": "codex-ubu-q0006-d0183",
+  "automated_selection_valid": true,
+  "human_review_required": false,
+  "artifact_publication_status": "operator_pending",
+  "prompt_size_warning": true
+}

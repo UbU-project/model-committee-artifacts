@@ -1,0 +1,11 @@
+[
+  {
+    "proposal_id": "codex-ubu-q0006-d0183",
+    "author_provider": "openai-codex",
+    "cross_score_count": 2,
+    "score_mean": 88.0,
+    "score_spread": 6,
+    "frontier_score_gap": 6,
+    "disagreement_flags": []
+  }
+]

@@ -1,0 +1,23 @@
+{
+  "scores": [
+    {
+      "proposal_id": "codex-ubu-q0006-d0183",
+      "score": 85,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "DECISIONS.md updates UBU-Q0004 status to 'resolved by UBU-D0182' as a side-effect of this patch \u2014 if UBU-D0182 does not exist at base commit or does not fully resolve UBU-Q0004, this assertion is incorrect and introduces stale state into the consequence block of UBU-D0163.",
+        "The noise budget hard cap of 'one new Objective and one immediate Task per GitHub delivery' is a concrete implementation constraint embedded in design; it may be too rigid for burst events (e.g. a PR that simultaneously closes multiple milestones) and could need revision before implementation.",
+        "The normalized duplicate key for analysis Objectives (parent refs, analysis kind, source refs, artifact, question text, active/terminal status) is high-cardinality and somewhat under-specified \u2014 implementations may diverge on normalization, making the deduplication guarantee weaker than the text implies.",
+        "Automatic closure rules rely on 'accepted evidence' and 'termination condition satisfied' \u2014 these depend on downstream acceptance/lifecycle machinery that is not yet resolved, creating a forward dependency that could block Phase 1 implementation of analysis Objective closure."
+      ],
+      "required_fixes": [],
+      "rationale": "The patch applies cleanly per mechanical validation. It directly addresses all eight sub-questions in UBU-Q0006: new Objective admission criteria (Q1), append-as-evidence rule (Q2), log-only default (Q3), Task admission criteria (Q4), normalized duplicate key for analysis Objectives (Q5), instrumental value derived from parent scope (Q6), automatic closure through normal lifecycle transitions (Q7), and noise budget defaults (Q8). UBU-D0183 is added to DECISIONS.md with a clear status, consequence block, and cross-reference; DESIGN.md receives the corresponding normative text; OPEN_QUESTIONS.md converts UBU-Q0006 to a compact solved tombstone following the same pattern used for UBU-Q0005. The UBU-Q0004 status update inside the UBU-D0163 consequence block is a minor side-effect of scope \u2014 updating the 'remains open' bullet while removing the UBU-Q0006 bullet \u2014 but is plausible cleanup if UBU-D0182 exists. No new open questions are introduced, no unauthorized files are touched, and the proposal does not decompose UBU-Q0006 into sub-questions. The main risks are the unverifiable UBU-Q0004 assertion, the rigidity of the one-Objective-per-delivery cap, and the forward dependency on acceptance machinery for automatic closure."
+    }
+  ],
+  "selected_proposal_id": "codex-ubu-q0006-d0183",
+  "selection_rationale": "Only one proposal is present and it passes mechanical validation, addresses all eight UBU-Q0006 sub-questions, follows the established tombstone and decision-record schema, and introduces no unauthorized file changes. Risks are minor and no required fixes block acceptance."
+}

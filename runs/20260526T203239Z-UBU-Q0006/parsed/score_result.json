@@ -1,0 +1,25 @@
+{
+  "scores": [
+    {
+      "proposal_id": "codex-ubu-q0006-d0183",
+      "score": 88,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": false,
+      "avoids_unnecessary_scope": false,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Automatic closure rules rely on 'accepted evidence' and 'termination condition satisfied' \u2014 these depend on downstream acceptance/lifecycle machinery that is not yet resolved, creating a forward dependency that could block Phase 1 implementation of analysis Objective closure.",
+        "DECISIONS.md updates UBU-Q0004 status to 'resolved by UBU-D0182' as a side-effect of this patch \u2014 if UBU-D0182 does not exist at base commit or does not fully resolve UBU-Q0004, this assertion is incorrect and introduces stale state into the consequence block of UBU-D0163.",
+        "Slight scope creep: the D0163 consequences update also changes the UBU-Q0004 status reference, which is not part of UBU-Q0006 even if it may be a stale cross-reference cleanup.",
+        "The noise budget hard cap of 'one new Objective and one immediate Task per GitHub delivery' is a concrete implementation constraint embedded in design; it may be too rigid for burst events (e.g. a PR that simultaneously closes multiple milestones) and could need revision before implementation.",
+        "The normalized duplicate key for analysis Objectives (parent refs, analysis kind, source refs, artifact, question text, active/terminal status) is high-cardinality and somewhat under-specified \u2014 implementations may diverge on normalization, making the deduplication guarantee weaker than the text implies.",
+        "The one-delivery cap is clear as a default, but implementations may need later clarification for batched webhook deliveries containing multiple distinct GitHub objects."
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "codex-ubu-q0006-d0183",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}
