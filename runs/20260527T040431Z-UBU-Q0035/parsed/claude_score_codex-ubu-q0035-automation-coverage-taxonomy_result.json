@@ -1,0 +1,22 @@
+{
+  "scores": [
+    {
+      "proposal_id": "codex-ubu-q0035-automation-coverage-taxonomy",
+      "score": 85,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "UBU-Q0035 declares 'Depends on: UBU-Q0032' in its metadata header; the proposal resolves it without verifying or documenting whether UBU-Q0032 is already resolved, which could violate the dependency gate.",
+        "The UBU-D0190 decision text contains a forward reference to 'UBU-D0175 blocker certificate' with a specific classification rule; if UBU-D0175's semantics have changed or are still in flux, this rule may need revisiting.",
+        "The enumerated 'Human only' and 'Human approval required' category lists are long and prescriptive; future decisions may conflict with or duplicate them, requiring retroactive harmonization."
+      ],
+      "required_fixes": [],
+      "rationale": "Patch applies cleanly per mechanical validation. The proposal directly answers the question by defining a three-class taxonomy (Auto eligible / Human approval required / Human only) and correctly propagates that answer across all three documentation layers: DESIGN.md \u00a73.7.1 for normative spec, DECISIONS.md UBU-D0190 for rationale and consequences, and OPEN_QUESTIONS.md for the tombstone. The tombstone is well-formed: Status is updated to Solved, Resolved by is set to UBU-D0190, and the body is reduced to a forwarding pointer. No files outside the standard allowed set are touched, and no new open questions are introduced. The primary concern is the unaddressed UBU-Q0032 dependency \u2014 the process normally requires that dependency to be resolved (or co-resolved) before the dependent question can close. This is not a patch defect but is a process gap that reviewers should verify. The UBU-D0175 forward reference is a minor coupling risk. No required fixes are identified because the taxonomy content is substantively correct and the process gap is a reviewer check rather than a patch error."
+    }
+  ],
+  "selected_proposal_id": "codex-ubu-q0035-automation-coverage-taxonomy",
+  "selection_rationale": "Only one candidate is present and it passes all mechanical validation checks. The patch applies cleanly, implements a well-structured three-class taxonomy that directly resolves UBU-Q0035, correctly tombstones the question in OPEN_QUESTIONS.md, and stays within the allowed file scope. The minor risks (unverified UBU-Q0032 dependency, UBU-D0175 forward reference) are reviewer concerns, not patch blockers."
+}

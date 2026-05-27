@@ -1,0 +1,114 @@
+{
+  "schema_version": "0.3",
+  "run_id": "20260527T040431Z-UBU-Q0035",
+  "created_at_utc": "2026-05-27T04:04:31Z",
+  "repo_path": "../ubu-design",
+  "base_commit": "4ad0f3efaf487fc7771d7ebee52ba6fa5d994fef",
+  "selected_question_id": "UBU-Q0035",
+  "phase": "work-select",
+  "config_path": "config/models.json",
+  "status": "selected",
+  "commands": [
+    "model-committee run-loop"
+  ],
+  "providers_attempted": [
+    "codex",
+    "claude"
+  ],
+  "providers_succeeded": [
+    "codex",
+    "claude"
+  ],
+  "providers_failed": [],
+  "provider_attempts": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "sonnet",
+      "phase": "work-score",
+      "target_proposal_id": "codex-ubu-q0035-automation-coverage-taxonomy",
+      "response_path": "runs/20260527T040431Z-UBU-Q0035/responses/claude_score_codex-ubu-q0035-automation-coverage-taxonomy_stdout.json",
+      "stderr_path": null
+    }
+  ],
+  "provider_successes": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20260527T040431Z-UBU-Q0035/parsed/codex_work_proposal.json"
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "sonnet",
+      "phase": "work-score",
+      "target_proposal_id": "codex-ubu-q0035-automation-coverage-taxonomy",
+      "response_path": "runs/20260527T040431Z-UBU-Q0035/responses/claude_score_codex-ubu-q0035-automation-coverage-taxonomy_stdout.json",
+      "parsed_path": "runs/20260527T040431Z-UBU-Q0035/parsed/claude_score_codex-ubu-q0035-automation-coverage-taxonomy_result.json"
+    }
+  ],
+  "provider_failures": [],
+  "score_matrix": [
+    {
+      "proposal_id": "codex-ubu-q0035-automation-coverage-taxonomy",
+      "author_provider": "codex",
+      "scorer_provider": "claude",
+      "score": 85,
+      "valid": true,
+      "rationale": "Patch applies cleanly per mechanical validation. The proposal directly answers the question by defining a three-class taxonomy (Auto eligible / Human approval required / Human only) and correctly propagates that answer across all three documentation layers: DESIGN.md \u00a73.7.1 for normative spec, DECISIONS.md UBU-D0190 for rationale and consequences, and OPEN_QUESTIONS.md for the tombstone. The tombstone is well-formed: Status is updated to Solved, Resolved by is set to UBU-D0190, and the body is reduced to a forwarding pointer. No files outside the standard allowed set are touched, and no new open questions are introduced. The primary concern is the unaddressed UBU-Q0032 dependency \u2014 the process normally requires that dependency to be resolved (or co-resolved) before the dependent question can close. This is not a patch defect but is a process gap that reviewers should verify. The UBU-D0175 forward reference is a minor coupling risk. No required fixes are identified because the taxonomy content is substantively correct and the process gap is a reviewer check rather than a patch error.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "UBU-Q0035 declares 'Depends on: UBU-Q0032' in its metadata header; the proposal resolves it without verifying or documenting whether UBU-Q0032 is already resolved, which could violate the dependency gate.",
+        "The UBU-D0190 decision text contains a forward reference to 'UBU-D0175 blocker certificate' with a specific classification rule; if UBU-D0175's semantics have changed or are still in flux, this rule may need revisiting.",
+        "The enumerated 'Human only' and 'Human approval required' category lists are long and prescriptive; future decisions may conflict with or duplicate them, requiring retroactive harmonization."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20260527T040431Z-UBU-Q0035/responses/claude_score_codex-ubu-q0035-automation-coverage-taxonomy_stdout.json",
+        "stderr_path": null
+      }
+    }
+  ],
+  "score_aggregates": [
+    {
+      "proposal_id": "codex-ubu-q0035-automation-coverage-taxonomy",
+      "author_provider": "codex",
+      "cross_score_count": 1,
+      "score_mean": 85.0,
+      "score_spread": 0,
+      "frontier_score_gap": 0,
+      "disagreement_flags": []
+    }
+  ],
+  "cross_score_count": 1,
+  "score_mean": 85.0,
+  "score_spread": 0,
+  "frontier_score_gap": 0,
+  "disagreement_flags": [],
+  "quorum_result": {
+    "valid": true,
+    "human_review_required": false,
+    "selected_proposal_id": "codex-ubu-q0035-automation-coverage-taxonomy",
+    "selected_score": 85.0,
+    "selected_cross_score_count": 1,
+    "blocked_reasons": [],
+    "manual_override": false
+  },
+  "selected_proposal_id": "codex-ubu-q0035-automation-coverage-taxonomy",
+  "automated_selection_valid": true,
+  "human_review_required": false,
+  "artifact_publication_status": "operator_pending",
+  "prompt_size_warning": true
+}

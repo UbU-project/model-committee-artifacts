@@ -1,0 +1,22 @@
+{
+  "scores": [
+    {
+      "proposal_id": "codex-ubu-q0035-automation-coverage-taxonomy",
+      "score": 85,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": false,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "The UBU-D0190 decision text contains a forward reference to 'UBU-D0175 blocker certificate' with a specific classification rule; if UBU-D0175's semantics have changed or are still in flux, this rule may need revisiting.",
+        "The enumerated 'Human only' and 'Human approval required' category lists are long and prescriptive; future decisions may conflict with or duplicate them, requiring retroactive harmonization.",
+        "UBU-Q0035 declares 'Depends on: UBU-Q0032' in its metadata header; the proposal resolves it without verifying or documenting whether UBU-Q0032 is already resolved, which could violate the dependency gate."
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 1 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "codex-ubu-q0035-automation-coverage-taxonomy",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}

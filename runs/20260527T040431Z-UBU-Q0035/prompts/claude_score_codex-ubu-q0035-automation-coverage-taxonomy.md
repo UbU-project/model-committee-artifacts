@@ -1,0 +1,217 @@
+# Model-Committee Cross-Scoring Request
+
+You are scoring candidate work proposals for the UbU `model-committee` process.
+
+Return exactly one JSON object. Do not return prose outside the JSON object.
+
+This is a v0.2 cross-score. You are not making the final selection; model-committee
+will aggregate valid cross-scores locally.
+
+Scoring provider: `claude`
+Authoring provider for the candidate proposal(s): `codex`
+
+## Selected question
+
+Question ID: `UBU-Q0035`  
+Question title: `Automation Coverage Taxonomy`  
+Base commit: `4ad0f3efaf487fc7771d7ebee52ba6fa5d994fef`
+
+```markdown
+## UBU-Q0035: Automation Coverage Taxonomy
+
+Status: Open Priority: MVP important Phase: Phase 1 Decision type: Process Auto-choice eligibility: Auto eligible Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 90 Depends on: UBU-Q0032 Blocks: Question-ranking accuracy Resolved by: Unresolved Last scored: 2026-05-27 Scored from commit: None
+
+### Question
+
+How should remaining design work be classified by automation eligibility?
+
+### Resolution
+
+Unresolved.
+
+---
+
+```
+
+## Candidate proposals
+
+```json
+[
+  {
+    "proposal_id": "codex-ubu-q0035-automation-coverage-taxonomy",
+    "provider_id": "codex",
+    "model_name": "GPT-5 Codex",
+    "question_id": "UBU-Q0035",
+    "base_commit": "4ad0f3efaf487fc7771d7ebee52ba6fa5d994fef",
+    "summary": "Resolve UBU-Q0035 by defining a three-class automation eligibility taxonomy for model-committee question work and tombstoning the solved question.",
+    "rationale": "Question ranking currently has answerability and automation-likelihood scores but lacks a governance classification for when automation may select an answer versus only prepare human-review artifacts. The proposed decision separates those concerns using the existing metadata vocabulary: Auto eligible, Human approval required, and Human only.",
+    "changed_files": [
+      "DESIGN.md",
+      "DECISIONS.md",
+      "OPEN_QUESTIONS.md"
+    ],
+    "patch": "diff --git a/DESIGN.md b/DESIGN.md\n--- a/DESIGN.md\n+++ b/DESIGN.md\n@@ -559,6 +559,16 @@\n 3. risk ascending.\n \n Questions blocked by unresolved dependencies may be selected for decomposition rather than ordinary answering.\n+\n+### 3.7.1 Automation coverage taxonomy\n+\n+`Auto-choice eligibility` is a governance gate separate from answerability and automation-likelihood. The accepted values are:\n+\n+- `Auto eligible`: automation may propose, score, and select a review candidate when dependencies, validators, and quorum pass. This does not bypass human repository review.\n+- `Human approval required`: automation may draft, decompose, score, and prepare review artifacts, but the selected result must be marked human-review-required before it can resolve the question.\n+- `Human only`: automation may summarize context, detect consistency issues, or list options, but it must not auto-select an answer.\n+\n+Use the stricter category when classification is uncertain. A proposal may not lower a question's human-involvement category without human review.\n \n ### 3.8 v0.1 and v0.2 provider and network boundaries\n \ndiff --git a/DECISIONS.md b/DECISIONS.md\n--- a/DECISIONS.md\n+++ b/DECISIONS.md\n@@ -3954,3 +3954,34 @@\n - Human review remains required before public readiness claims, release decisions, or scope-freeze claims.\n \n ---\n+\n+## UBU-D0190: Automation eligibility uses three governance classes\n+\n+**Status:** Accepted \u2192 DESIGN.md \u00a73.7.1\n+\n+Resolved question: `UBU-Q0035`.\n+\n+`Auto-choice eligibility` classifies how much authority model-committee automation has over an open-question answer. It is separate from answerability, automation-likelihood, importance, and risk. Automatic selection remains advisory; canonical acceptance still requires ordinary human repository review and commit.\n+\n+Allowed values:\n+\n+- `Auto eligible`: automation may rank, propose, validate, score, and select a review candidate when dependencies, consistency, validators, quorum, and patch checks pass. Use only for bounded, mechanically reviewable work under accepted constraints.\n+- `Human approval required`: automation may draft, decompose, score, and prepare review artifacts, but the run must mark the result human-review-required. Use for durable schema/API/data-model decisions; security, privacy, Compartment, Identity, authority, worker, projection, relationship, affect, public-claim, release-outreach, or MVP-blocker decisions.\n+- `Human only`: automation may summarize, detect inconsistencies, ask clarifying questions, or prepare option memos, but it must not auto-select an answer. Use for project-owner directives, scope freeze, release/go-no-go, licensing or IP changes, funding acceptance, roadmap or mission pivots, legal commitments, public commitments, and overrides of failed consistency, quorum, disagreement, or validation gates.\n+\n+Classification rules:\n+\n+- Answerability remains the first gate. A blocked question is ineligible for ordinary answering regardless of automation class unless its dependencies are solved in the same work item.\n+- Automation-likelihood ranks questions only after answerability and automation eligibility are known.\n+- Unknown or mixed cases use the stricter class.\n+- A model-generated patch may not lower an existing question's human-involvement class without human review.\n+- A new `UBU-D0175` blocker certificate is `Human approval required` unless it also creates a `Human only` commitment.\n+\n+**Consequences:**\n+\n+- `UBU-Q0035` is resolved.\n+- Future question ranking can distinguish answerability, automation likelihood, and governance eligibility instead of treating them as one score.\n+- New or updated open questions should carry the strictest applicable `Auto-choice eligibility` value.\n+- Human-only and human-approval-required work may still benefit from automation, but only as bounded review support.\n+\n+---\ndiff --git a/OPEN_QUESTIONS.md b/OPEN_QUESTIONS.md\n--- a/OPEN_QUESTIONS.md\n+++ b/OPEN_QUESTIONS.md\n@@ -465,16 +465,8 @@\n \n ## UBU-Q0035: Automation Coverage Taxonomy\n \n-Status: Open Priority: MVP important Phase: Phase 1 Decision type: Process Auto-choice eligibility: Auto eligible Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 90 Depends on: UBU-Q0032 Blocks: Question-ranking accuracy Resolved by: Unresolved Last scored: 2026-05-27 Scored from commit: None\n-\n-### Question\n-\n-How should remaining design work be classified by automation eligibility?\n-\n-### Resolution\n-\n-Unresolved.\n-\n+Status: Solved Priority: MVP important Phase: Phase 1 Decision type: Process Auto-choice eligibility: Auto eligible Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 90 Depends on: UBU-Q0032 Blocks: Question-ranking accuracy Resolved by: UBU-D0190 Last scored: 2026-05-27 Scored from commit: None\n+Resolved. See UBU-D0190.\n ---\n \n ## UBU-Q0036: Committee Log and Provenance Format\n",
+    "commit_message": "Resolve automation coverage taxonomy",
+    "validation_notes": [
+      "Patch applies with git apply --check against the current workspace snapshot.",
+      "OPEN_QUESTIONS.md converts UBU-Q0035 to the required compact tombstone anchored at the selected question block.",
+      "No files outside DESIGN.md, DECISIONS.md, and OPEN_QUESTIONS.md are modified."
+    ],
+    "new_questions_added": [],
+    "questions_resolved": [
+      "UBU-Q0035"
+    ],
+    "decisions_added": [
+      "UBU-D0190"
+    ],
+    "requires_human_review": false
+  }
+]
+```
+
+## Mechanical validation results
+
+```json
+[
+  {
+    "proposal_id": "codex-ubu-q0035-automation-coverage-taxonomy",
+    "patch_applies": true,
+    "allowlist_passed": true,
+    "changed_files": [
+      "DECISIONS.md",
+      "DESIGN.md",
+      "OPEN_QUESTIONS.md"
+    ],
+    "error": null,
+    "normalized_patch": null,
+    "warnings": [],
+    "ordinary_error": null,
+    "recount_error": null,
+    "normalization_error": null
+  }
+]
+```
+
+## Provider weights
+
+Provider weights are historical diagnostic context only in v0.2. Do not use
+self-trust or author identity as score evidence.
+
+```json
+{}
+```
+
+## JSON Schema
+
+Your output must satisfy this schema:
+
+```json
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "scores",
+    "selected_proposal_id",
+    "selection_rationale"
+  ],
+  "properties": {
+    "scores": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "proposal_id",
+          "score",
+          "patch_applies",
+          "implements_selected_work",
+          "preserves_question_schema",
+          "avoids_unnecessary_scope",
+          "decomposition_quality",
+          "risks",
+          "required_fixes",
+          "rationale"
+        ],
+        "properties": {
+          "proposal_id": {
+            "type": "string"
+          },
+          "score": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "patch_applies": {
+            "type": "boolean"
+          },
+          "implements_selected_work": {
+            "type": "boolean"
+          },
+          "preserves_question_schema": {
+            "type": "boolean"
+          },
+          "avoids_unnecessary_scope": {
+            "type": "boolean"
+          },
+          "decomposition_quality": {
+            "type": "string",
+            "enum": [
+              "none",
+              "good",
+              "bad",
+              "not_applicable"
+            ]
+          },
+          "risks": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "required_fixes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "rationale": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "selected_proposal_id": {
+      "type": "string"
+    },
+    "selection_rationale": {
+      "type": "string"
+    }
+  }
+}
+```
+
+## Scoring requirements
+
+Score each proposal from 0 to 100.
+
+Consider:
+
+- whether the patch applies cleanly;
+- whether it implements the selected work;
+- whether it preserves the question schema;
+- whether it avoids unnecessary scope;
+- whether it modifies only allowed files;
+- whether it creates useful decomposition if decomposition occurs;
+- whether it introduces new risks;
+- whether required fixes remain.
+
+Rules:
+
+- Score every proposal in this prompt.
+- `selected_proposal_id` must refer to one scored proposal from this prompt.
+- Manual override is not allowed in v0.2.
+- Prefer a patch that is valid, minimal, auditable, and directly responsive.
+- Do not select a proposal whose patch failed mechanical validation.
+- Do not score your own provider's proposal unless explicitly asked for diagnostic self-score.
+
+Return only JSON.

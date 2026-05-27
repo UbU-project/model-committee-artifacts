@@ -1,0 +1,80 @@
+diff --git a/DESIGN.md b/DESIGN.md
+--- a/DESIGN.md
++++ b/DESIGN.md
+@@ -559,6 +559,16 @@
+ 3. risk ascending.
+ 
+ Questions blocked by unresolved dependencies may be selected for decomposition rather than ordinary answering.
++
++### 3.7.1 Automation coverage taxonomy
++
++`Auto-choice eligibility` is a governance gate separate from answerability and automation-likelihood. The accepted values are:
++
++- `Auto eligible`: automation may propose, score, and select a review candidate when dependencies, validators, and quorum pass. This does not bypass human repository review.
++- `Human approval required`: automation may draft, decompose, score, and prepare review artifacts, but the selected result must be marked human-review-required before it can resolve the question.
++- `Human only`: automation may summarize context, detect consistency issues, or list options, but it must not auto-select an answer.
++
++Use the stricter category when classification is uncertain. A proposal may not lower a question's human-involvement category without human review.
+ 
+ ### 3.8 v0.1 and v0.2 provider and network boundaries
+ 
+diff --git a/DECISIONS.md b/DECISIONS.md
+--- a/DECISIONS.md
++++ b/DECISIONS.md
+@@ -3954,3 +3954,34 @@
+ - Human review remains required before public readiness claims, release decisions, or scope-freeze claims.
+ 
+ ---
++
++## UBU-D0190: Automation eligibility uses three governance classes
++
++**Status:** Accepted → DESIGN.md §3.7.1
++
++Resolved question: `UBU-Q0035`.
++
++`Auto-choice eligibility` classifies how much authority model-committee automation has over an open-question answer. It is separate from answerability, automation-likelihood, importance, and risk. Automatic selection remains advisory; canonical acceptance still requires ordinary human repository review and commit.
++
++Allowed values:
++
++- `Auto eligible`: automation may rank, propose, validate, score, and select a review candidate when dependencies, consistency, validators, quorum, and patch checks pass. Use only for bounded, mechanically reviewable work under accepted constraints.
++- `Human approval required`: automation may draft, decompose, score, and prepare review artifacts, but the run must mark the result human-review-required. Use for durable schema/API/data-model decisions; security, privacy, Compartment, Identity, authority, worker, projection, relationship, affect, public-claim, release-outreach, or MVP-blocker decisions.
++- `Human only`: automation may summarize, detect inconsistencies, ask clarifying questions, or prepare option memos, but it must not auto-select an answer. Use for project-owner directives, scope freeze, release/go-no-go, licensing or IP changes, funding acceptance, roadmap or mission pivots, legal commitments, public commitments, and overrides of failed consistency, quorum, disagreement, or validation gates.
++
++Classification rules:
++
++- Answerability remains the first gate. A blocked question is ineligible for ordinary answering regardless of automation class unless its dependencies are solved in the same work item.
++- Automation-likelihood ranks questions only after answerability and automation eligibility are known.
++- Unknown or mixed cases use the stricter class.
++- A model-generated patch may not lower an existing question's human-involvement class without human review.
++- A new `UBU-D0175` blocker certificate is `Human approval required` unless it also creates a `Human only` commitment.
++
++**Consequences:**
++
++- `UBU-Q0035` is resolved.
++- Future question ranking can distinguish answerability, automation likelihood, and governance eligibility instead of treating them as one score.
++- New or updated open questions should carry the strictest applicable `Auto-choice eligibility` value.
++- Human-only and human-approval-required work may still benefit from automation, but only as bounded review support.
++
++---
+diff --git a/OPEN_QUESTIONS.md b/OPEN_QUESTIONS.md
+--- a/OPEN_QUESTIONS.md
++++ b/OPEN_QUESTIONS.md
+@@ -465,16 +465,8 @@
+ 
+ ## UBU-Q0035: Automation Coverage Taxonomy
+ 
+-Status: Open Priority: MVP important Phase: Phase 1 Decision type: Process Auto-choice eligibility: Auto eligible Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 90 Depends on: UBU-Q0032 Blocks: Question-ranking accuracy Resolved by: Unresolved Last scored: 2026-05-27 Scored from commit: None
+-
+-### Question
+-
+-How should remaining design work be classified by automation eligibility?
+-
+-### Resolution
+-
+-Unresolved.
+-
++Status: Solved Priority: MVP important Phase: Phase 1 Decision type: Process Auto-choice eligibility: Auto eligible Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 90 Depends on: UBU-Q0032 Blocks: Question-ranking accuracy Resolved by: UBU-D0190 Last scored: 2026-05-27 Scored from commit: None
++Resolved. See UBU-D0190.
+ ---
+ 
+ ## UBU-Q0036: Committee Log and Provenance Format
