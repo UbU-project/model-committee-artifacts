@@ -1,0 +1,30 @@
+[
+  {
+    "proposal_id": "ubu-q0033-codex-001",
+    "author_provider": "codex",
+    "scorer_provider": "claude",
+    "score": 86,
+    "valid": true,
+    "rationale": "The proposal is directly responsive to UBU-Q0033: it introduces a structured, evidence-backed rubric (UBU-D0189) with two top-level scores, per-slice status requirements, gated score caps, readiness bands, and explicit preservation of human review for public readiness claims and release decisions. The numeric weights sum correctly to 100. The patch is confined to the three clearly appropriate files (DESIGN.md, DECISIONS.md, OPEN_QUESTIONS.md), leaves README and derived public signals untouched, and the tombstone properly marks UBU-Q0033 as Solved with a pointer to UBU-D0189. Mechanical validation confirms a clean apply. Minor issues are a formatting gap in the tombstone, a potentially unverified cross-reference to UBU-D0175, a silent dependency on UBU-Q0001, and the inherent rigidity of hard-coded numeric weights in a long-lived decision record. None of these are blockers; the proposal is approvable with the small fixes noted.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [
+      "Add a blank line between the status metadata line and `---` in the OPEN_QUESTIONS.md tombstone to match standard tombstone formatting used elsewhere in the file.",
+      "Verify that UBU-D0175 exists and that its blocker-certificate semantics match those assumed in UBU-D0189; add an explicit cross-reference in DECISIONS.md if the reference is load-bearing.",
+      "Confirm or note that the UBU-Q0001 dependency is either already resolved or that this resolution is valid without it (a brief note in UBU-D0189 Consequences would suffice)."
+    ],
+    "risks": [
+      "The rubric encodes specific numeric weights (15/25/15/15/15/10/5) and score caps that may become load-bearing constraints that are difficult to adjust later without another decision cycle.",
+      "The tombstone in OPEN_QUESTIONS.md is missing a blank line before the trailing `---` separator, which may cause markdown parsing inconsistencies relative to other tombstoned questions in the file.",
+      "UBU-D0189 references UBU-D0175 heavily (blocker certificates, slice-by-slice judgement) without including a cross-reference or verifying UBU-D0175 exists with the expected semantics; a stale or misread reference could silently mis-scope the rubric.",
+      "Inserting \u00a74.1.0 into DESIGN.md between the existing UBU-D0175 paragraph and the dogfooding loop list may disrupt document flow; no surrounding context was shown to confirm section numbering integrity.",
+      "The resolution does not address the declared dependency on UBU-Q0001 \u2014 if UBU-Q0001 is still open, this resolution may be premature or may need a dependency note."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20260527T035056Z-UBU-Q0033/responses/claude_score_ubu-q0033-codex-001_stdout.json",
+      "stderr_path": null
+    }
+  }
+]

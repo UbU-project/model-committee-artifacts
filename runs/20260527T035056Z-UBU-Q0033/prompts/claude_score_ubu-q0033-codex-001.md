@@ -1,0 +1,218 @@
+# Model-Committee Cross-Scoring Request
+
+You are scoring candidate work proposals for the UbU `model-committee` process.
+
+Return exactly one JSON object. Do not return prose outside the JSON object.
+
+This is a v0.2 cross-score. You are not making the final selection; model-committee
+will aggregate valid cross-scores locally.
+
+Scoring provider: `claude`
+Authoring provider for the candidate proposal(s): `codex`
+
+## Selected question
+
+Question ID: `UBU-Q0033`  
+Question title: `Phase 1 MVP Readiness Scoring Rubric`  
+Base commit: `40e117e09d04a5474731abd9027962267378e240`
+
+```markdown
+## UBU-Q0033: Phase 1 MVP Readiness Scoring Rubric
+
+Status: Open Priority: MVP important Phase: Phase 1 Decision type: Process Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 90 Depends on: UBU-Q0001 Blocks: README readiness signal Resolved by: Unresolved Last scored: 2026-05-26 Scored from commit: None
+
+### Question
+
+How should UbU estimate how close the project is to Phase 1 scope freeze and MVP readiness?
+
+### Resolution
+
+Unresolved.
+
+---
+
+```
+
+## Candidate proposals
+
+```json
+[
+  {
+    "proposal_id": "ubu-q0033-codex-001",
+    "provider_id": "codex",
+    "model_name": "gpt-5",
+    "question_id": "UBU-Q0033",
+    "base_commit": "40e117e09d04a5474731abd9027962267378e240",
+    "summary": "Resolve UBU-Q0033 by adding a gated, evidence-backed Phase 1 readiness scoring rubric and tombstoning the open question.",
+    "rationale": "The rubric separates scope-freeze stability from MVP implementation readiness, matches the D0175 slice-by-slice stop rule, prevents raw open-question count or model confidence from becoming a release signal, and keeps README/public readiness updates under human review.",
+    "changed_files": [
+      "DESIGN.md",
+      "DECISIONS.md",
+      "OPEN_QUESTIONS.md"
+    ],
+    "patch": "diff --git a/DESIGN.md b/DESIGN.md\n--- a/DESIGN.md\n+++ b/DESIGN.md\n@@ -741,6 +741,10 @@\n \n After `UBU-D0175`, new MVP blockers are allowed only when discovered during implementation of a concrete Phase 1 slice and accompanied by a blocker certificate naming the blocked object or file, failed acceptance criterion, unsafe fallback, minimum answer needed, and persistence impact. Phase 1 readiness is judged slice-by-slice rather than by global philosophical completion of the model.\n \n+### 4.1.0 Phase 1 readiness scoring\n+\n+Phase 1 readiness is a derived, evidence-backed, human-reviewed signal. It reports `scope_freeze_readiness` and `mvp_readiness` from per-slice evidence, gates, and score caps rather than from raw open-question count or model confidence. Unresolved nonblocking questions do not reduce Phase 1 readiness after `UBU-D0175` unless they carry a valid blocker certificate. Model-committee may compute readiness reports and propose README readiness text, but it must not publish or update public readiness signals automatically. The accepted rubric is `UBU-D0189`.\n+\n The minimum dogfooding loop that proves UbU\u2019s core model is:\n \n 1. bootstrap the operator, project context, available work window, constraints, and current or stale affect Snapshot;\ndiff --git a/DECISIONS.md b/DECISIONS.md\n--- a/DECISIONS.md\n+++ b/DECISIONS.md\n@@ -3888,3 +3888,69 @@\n - Worker-created means worker-proposed and parent-admitted, not direct worker canonical write authority.\n \n ---\n+\n+## UBU-D0189: Phase 1 readiness scoring uses gated derived evidence\n+\n+**Status:** Accepted \u2192 DESIGN.md \u00a74.1\n+\n+Resolved question: `UBU-Q0033`.\n+\n+Phase 1 readiness is a derived planning signal, not canonical release authority. It may inform README or public status text only after human review; it must not by itself mark scope freeze, release readiness, or go/no-go decisions.\n+\n+Readiness reporting has two top-level scores:\n+\n+- `scope_freeze_readiness`: how stable Phase 1 design scope is after `UBU-D0097` and `UBU-D0175`.\n+- `mvp_readiness`: how close the implementation is to a public Phase 1 MVP demo.\n+\n+Both scores are `0-100` and include evidence refs, last input commit, scorer version, blocking gates, and stale-warning state. The report must also show per-slice status instead of only a single aggregate number.\n+\n+Required Phase 1 slices:\n+\n+- bootstrap and seed model;\n+- GitHub import and External References;\n+- Objective/Task/UniverseState/Log admission;\n+- Plan/Calendar generation and explanation;\n+- next-action focus plus feedback/recalculation;\n+- risk and human-complete plan-quality reports;\n+- Compartment, worker, and projection authority boundaries;\n+- GitHub projection preview or approved write plus reconciliation;\n+- release outreach and public dogfooding artifact package when relevant.\n+\n+Default `mvp_readiness` weights:\n+\n+- 15 scope and blocker discipline;\n+- 25 implementation slice coverage;\n+- 15 user-facing loop evidence;\n+- 15 integration/projection/worker/privacy boundaries;\n+- 15 verification, fixtures, and deterministic tests;\n+- 10 dogfooding/artifact/public-claim evidence;\n+- 5 operational polish and contributor-run diagnostics.\n+\n+Score caps:\n+\n+- no solved Phase 1 scope-freeze decision: maximum 39;\n+- any hard consistency failure in canonical files: maximum 49;\n+- any unresolved `UBU-D0175`-certified blocker for the reported slice: maximum 69;\n+- no runnable end-to-end dogfooding loop: maximum 59;\n+- missing or failing Compartment/export, worker-authority, or GitHub-projection hard-boundary checks: maximum 74;\n+- public demo or outreach claims without evidence labels: maximum 79;\n+- no human-reviewed readiness report: maximum 89.\n+\n+Readiness bands:\n+\n+- `0-39`: design or consistency not stable enough for implementation signal.\n+- `40-59`: implementation skeleton exists, but no reliable end-to-end loop.\n+- `60-74`: private dogfooding candidate with known blockers or boundary gaps.\n+- `75-89`: public-demo candidate requiring human review and polish.\n+- `90-100`: MVP readiness candidate; release and scope-freeze claims still require human approval.\n+\n+A readiness report must name blockers, failing gates, stale inputs, manual assumptions, fixture/mock/live-data boundaries, and the next implementation slice most likely to raise the score. Model-committee may compute the report and propose README readiness text, but it must not update derived public readiness signals automatically.\n+\n+**Consequences:**\n+\n+- `UBU-Q0033` is resolved.\n+- README readiness signals derive from an evidence-backed report, not from raw open-question count or model confidence.\n+- Readiness is judged slice-by-slice after `UBU-D0175`; unresolved post-MVP or nonblocking questions do not reduce Phase 1 readiness unless they carry a valid blocker certificate.\n+- Human review remains required before public readiness claims, release decisions, or scope-freeze claims.\n+\n+---\ndiff --git a/OPEN_QUESTIONS.md b/OPEN_QUESTIONS.md\n--- a/OPEN_QUESTIONS.md\n+++ b/OPEN_QUESTIONS.md\n@@ -448,17 +448,8 @@\n ---\n \n ## UBU-Q0033: Phase 1 MVP Readiness Scoring Rubric\n-\n-Status: Open Priority: MVP important Phase: Phase 1 Decision type: Process Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 90 Depends on: UBU-Q0001 Blocks: README readiness signal Resolved by: Unresolved Last scored: 2026-05-26 Scored from commit: None\n-\n-### Question\n-\n-How should UbU estimate how close the project is to Phase 1 scope freeze and MVP readiness?\n-\n-### Resolution\n-\n-Unresolved.\n-\n+Status: Solved Priority: MVP important Phase: Phase 1 Decision type: Process Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 90 Depends on: UBU-Q0001 Blocks: README readiness signal Resolved by: UBU-D0189 Last scored: 2026-05-26 Scored from commit: None\n+Resolved. See UBU-D0189.\n ---\n \n ## UBU-Q0034: Design Automation Stop Rule\n",
+    "commit_message": "Resolve Phase 1 readiness scoring rubric",
+    "validation_notes": [
+      "Patch applies cleanly with git apply --check against the current workspace snapshot.",
+      "OPEN_QUESTIONS.md change uses a compact tombstone for UBU-Q0033 with Status: Solved and Resolved by: UBU-D0189.",
+      "Patch only modifies DESIGN.md, DECISIONS.md, and OPEN_QUESTIONS.md; README and derived public files remain untouched.",
+      "Rubric preserves human review for public readiness claims and release decisions."
+    ],
+    "new_questions_added": [],
+    "questions_resolved": [
+      "UBU-Q0033"
+    ],
+    "decisions_added": [
+      "UBU-D0189"
+    ],
+    "requires_human_review": true
+  }
+]
+```
+
+## Mechanical validation results
+
+```json
+[
+  {
+    "proposal_id": "ubu-q0033-codex-001",
+    "patch_applies": true,
+    "allowlist_passed": true,
+    "changed_files": [
+      "DECISIONS.md",
+      "DESIGN.md",
+      "OPEN_QUESTIONS.md"
+    ],
+    "error": null,
+    "normalized_patch": null,
+    "warnings": [],
+    "ordinary_error": null,
+    "recount_error": null,
+    "normalization_error": null
+  }
+]
+```
+
+## Provider weights
+
+Provider weights are historical diagnostic context only in v0.2. Do not use
+self-trust or author identity as score evidence.
+
+```json
+{}
+```
+
+## JSON Schema
+
+Your output must satisfy this schema:
+
+```json
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "scores",
+    "selected_proposal_id",
+    "selection_rationale"
+  ],
+  "properties": {
+    "scores": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "proposal_id",
+          "score",
+          "patch_applies",
+          "implements_selected_work",
+          "preserves_question_schema",
+          "avoids_unnecessary_scope",
+          "decomposition_quality",
+          "risks",
+          "required_fixes",
+          "rationale"
+        ],
+        "properties": {
+          "proposal_id": {
+            "type": "string"
+          },
+          "score": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "patch_applies": {
+            "type": "boolean"
+          },
+          "implements_selected_work": {
+            "type": "boolean"
+          },
+          "preserves_question_schema": {
+            "type": "boolean"
+          },
+          "avoids_unnecessary_scope": {
+            "type": "boolean"
+          },
+          "decomposition_quality": {
+            "type": "string",
+            "enum": [
+              "none",
+              "good",
+              "bad",
+              "not_applicable"
+            ]
+          },
+          "risks": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "required_fixes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "rationale": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "selected_proposal_id": {
+      "type": "string"
+    },
+    "selection_rationale": {
+      "type": "string"
+    }
+  }
+}
+```
+
+## Scoring requirements
+
+Score each proposal from 0 to 100.
+
+Consider:
+
+- whether the patch applies cleanly;
+- whether it implements the selected work;
+- whether it preserves the question schema;
+- whether it avoids unnecessary scope;
+- whether it modifies only allowed files;
+- whether it creates useful decomposition if decomposition occurs;
+- whether it introduces new risks;
+- whether required fixes remain.
+
+Rules:
+
+- Score every proposal in this prompt.
+- `selected_proposal_id` must refer to one scored proposal from this prompt.
+- Manual override is not allowed in v0.2.
+- Prefer a patch that is valid, minimal, auditable, and directly responsive.
+- Do not select a proposal whose patch failed mechanical validation.
+- Do not score your own provider's proposal unless explicitly asked for diagnostic self-score.
+
+Return only JSON.
