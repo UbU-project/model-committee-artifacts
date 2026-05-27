@@ -1,0 +1,23 @@
+{
+  "scores": [
+    {
+      "proposal_id": "codex-ubu-q0017-coverage-regeneration-001",
+      "score": 88,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": false,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Excluding Objective recurrence uncertainty from MVP coverage is clearly flagged, but the phrase 'probabilistic recurrence may become a later stochastic input' is left without a tracking question or future-work marker, so it could silently stall.",
+        "The DECISIONS.md and DESIGN.md trigger policy contains a grammatical repetition ('can affect the current or next recommended Task, hard feasibility, affect legitimacy') that may cause ambiguity when implementers later read the trigger escalation rule.",
+        "The policy resolution order (Calendar-specific \u2192 execution-profile/Device \u2192 global) is reasonable but introduces a three-level lookup that must be consistently implemented in the CPU; a mismatch between implementations could make stored coverage_threshold_used unreliable for replay.",
+        "The tombstone in OPEN_QUESTIONS.md omits a blank line between the status metadata line and 'Resolved. See UBU-D0186.' which may confuse downstream markdown parsers or tooling that expects a blank separator."
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 1 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "codex-ubu-q0017-coverage-regeneration-001",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}

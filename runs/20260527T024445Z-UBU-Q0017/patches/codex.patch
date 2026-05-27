@@ -1,0 +1,149 @@
+diff --git a/DESIGN.md b/DESIGN.md
+--- a/DESIGN.md
++++ b/DESIGN.md
+@@ -1799,15 +1799,17 @@
+ 
+ ### 16.2 Coverage
+ 
+-Coverage belongs to the compact serialization, not the abstract Calendar.
+-
+-Coverage represents the probability mass of possible futures covered by the compact representation.
+-
+-The provisional short-horizon branch coverage target is `0.99` probability mass. This should be treated as a configurable heuristic, not as a mathematical guarantee for every device, scope, or resource mode.
++Coverage belongs to the compact serialization, not the abstract Calendar. It is an estimated regeneration metric in Phase 1, not an exact proof.
++
++Coverage represents the modeled probability mass of possible futures covered by the compact representation within the recorded coverage scope, usually the reactive horizon. MVP coverage includes modeled duration uncertainty, Task success/failure uncertainty when success probabilities affect branch reconstruction, and modeled external-event or interruption assumptions. Objective recurrence uncertainty is not included in MVP coverage; evergreen recurrence is evaluated deterministically before Calendar generation or repair unless a later schema adds stochastic recurrence inputs.
++
++A compact Calendar stores `coverage_estimate`, `uncovered_mass_estimate`, `coverage_scope`, `coverage_threshold_used`, `coverage_inputs_summary`, `probability_quality`, and warning or diagnostic refs when inputs are unmodeled, stale, or degraded.
++
++The default Phase 1 regeneration threshold is `0.99` short-horizon branch coverage. The effective policy resolves Calendar-specific override first, then execution-profile or Device policy, then the global default. The effective threshold is stored with the compact Calendar for replayable regeneration decisions.
+ 
+ After time advances, coverage is recalculated by conditioning the compact Calendar on elapsed time and accepted Logs, Snapshots, External Events, and user actions, then discarding expired branch mass and re-estimating the remaining covered mass.
+ 
+-If recalculated coverage falls below the configured threshold, UbU records a `low_compact_calendar_coverage` recalculation trigger or marks the Calendar stale according to trigger policy. Exact coverage proof is not an MVP requirement.
++If recalculated coverage falls below the effective threshold, UbU records or batches a `low_compact_calendar_coverage` recalculation trigger and includes the finding in risk reporting. Immediate recalculation is required only when low coverage can affect the current or next recommended Task, hard feasibility, affect legitimacy, or the default Plan; otherwise marking the Calendar stale is sufficient. Low coverage does not directly create a canonical Task or worker assignment.
+ 
+ ### 16.3 Planner grammar direction
+ 
+@@ -1896,7 +1898,7 @@
+ 
+ ### 16.9 MVP Compact Calendar implementation
+ 
+-The minimum Phase 1 Compact Calendar implementation stores the legitimized skeleton baseline, the default Plan, the active execution profile, coverage estimate, decision envelopes, Task criticality, cached explanation fragments, probability provenance, and last-legitimate-Plan reference. It stores user-previewed, risk-report, and debug/reproducibility Plans only when those artifacts are actually generated or needed for audit.
++The minimum Phase 1 Compact Calendar implementation stores the legitimized skeleton baseline, the default Plan, the active execution profile, coverage estimate, uncovered-mass estimate, effective coverage threshold, decision envelopes, Task criticality, cached explanation fragments, probability provenance, and last-legitimate-Plan reference. It stores user-previewed, risk-report, and debug/reproducibility Plans only when those artifacts are actually generated or needed for audit.
+ 
+ High-probability near-term alternatives within the reactive horizon may be stored as materialized branches or as deterministic reconstruction instructions. Non-selected candidate Plans, expensive global repairs, and low-probability branches are reconstructed on demand from the compact grammar, current UniverseState, Logs, Snapshots, External Events, repair recipes, and cached provenance.
+ 
+diff --git a/DECISIONS.md b/DECISIONS.md
+--- a/DECISIONS.md
++++ b/DECISIONS.md
+@@ -3777,3 +3777,43 @@
+ - Future RBAC or richer governance may add role and decision-procedure metadata without rewriting the MVP enum.
+ 
+ ---
++
++
++## UBU-D0186: Compact Calendar coverage is estimated regeneration metadata
++
++**Status:** Accepted → DESIGN.md §§16.2, 16.9; PLANNING_KERNEL_CONTRACT.md §§2, 4
++
++Resolved question: `UBU-Q0017`.
++
++Phase 1 compact Calendar coverage is an estimate, not an exact proof. It represents covered modeled probability mass within the recorded coverage scope, usually the reactive horizon. Exact coverage proof and complete post-MVP uncertainty coverage are not MVP requirements.
++
++MVP coverage includes only uncertainties represented in the compact grammar or PlanningRequest for that scope:
++
++- duration distributions and correlation groups;
++- Task success/failure probabilities when they affect branch reconstruction;
++- modeled external-event and interruption assumptions.
++
++Objective recurrence uncertainty is not included in MVP coverage. Evergreen recurrence is evaluated deterministically before generation or repair; probabilistic recurrence may become a later stochastic input.
++
++A compact Calendar stores:
++
++- `coverage_estimate`;
++- `uncovered_mass_estimate`;
++- `coverage_scope`;
++- `coverage_threshold_used`;
++- `coverage_inputs_summary`;
++- `probability_quality`;
++- warning or diagnostic refs when inputs are unmodeled, stale, or degraded.
++
++The default Phase 1 regeneration threshold is `0.99` for short-horizon branch coverage. Policy resolution is: Calendar-specific override, then execution profile or Device policy, then global default. The effective threshold is stored with the compact Calendar so later regeneration decisions are replayable.
++
++When recalculated coverage falls below the effective threshold, UbU records or batches a `low_compact_calendar_coverage` recalculation trigger and includes the finding in risk reporting. The requested action is `recalculate_now` when low coverage can affect the current or next recommended Task, hard feasibility, affect legitimacy, or default Plan; otherwise `mark_calendar_stale` is sufficient. Low coverage does not directly create a canonical Task or worker assignment. Follow-up Tasks or worker work may be recommended only through normal Task admission, worker assignment, and review policy.
++
++**Consequences:**
++
++- `UBU-Q0017` is resolved for Phase 1.
++- Coverage is auditable enough for regeneration without pretending mathematical completeness.
++- The same default `0.99` value remains the short-horizon branch target and regeneration threshold unless overridden by recorded policy.
++- Objective recurrence uncertainty can be added later as a typed stochastic input without changing the MVP coverage boundary.
++
++---
+diff --git a/OPEN_QUESTIONS.md b/OPEN_QUESTIONS.md
+--- a/OPEN_QUESTIONS.md
++++ b/OPEN_QUESTIONS.md
+@@ -320,36 +320,8 @@
+ ---
+ 
+ ## UBU-Q0017: Compact Calendar Coverage and Regeneration
+-
+-Status: Open Priority: MVP important Phase: Phase 1 Decision type: Data model Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 90 Depends on: UBU-Q0016 Blocks: Phase 1 implementation Resolved by: Unresolved Last scored: 2026-05-26 Scored from commit: None
+-
+-Coverage belongs to compact Calendar serialization.
+-
+-### Question
+-
+-1. Is coverage exact or estimated in MVP?
+-2. Does coverage include:
+-   - duration uncertainty
+-   - Task success/failure uncertainty
+-   - external-event uncertainty
+-   - Objective recurrence uncertainty
+-3. Does a compact Calendar store coverage value only, or also uncovered mass?
+-4. What is the default regeneration threshold?
+-5. Is the threshold global, device-specific, Calendar-specific, or all three?
+-6. Does low coverage create:
+-   - report only,
+-   - recalculation trigger,
+-   - Task,
+-   - worker assignment?
+-
+-### Current direction
+-
+-The provisional short-horizon branch coverage target is `0.99` probability mass. Coverage and regeneration thresholds may be device-specific, Calendar-specific, or execution-mode-specific. This is not final.
+-
+-### Resolution
+-
+-Unresolved.
+-
++Status: Solved Priority: MVP important Phase: Phase 1 Decision type: Data model Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 90 Depends on: UBU-Q0016 Blocks: Phase 1 implementation Resolved by: UBU-D0186 Last scored: 2026-05-26 Scored from commit: None
++Resolved. See UBU-D0186.
+ ---
+ 
+ ## UBU-Q0018: Risk Reporting Primitives
+diff --git a/PLANNING_KERNEL_CONTRACT.md b/PLANNING_KERNEL_CONTRACT.md
+--- a/PLANNING_KERNEL_CONTRACT.md
++++ b/PLANNING_KERNEL_CONTRACT.md
+@@ -45,7 +45,7 @@
+   - `planning_delta_seconds`: positive integer. Phase 1 default is `60`.
+ - `horizon_policy`:
+   - `reactive_horizon_seconds`: positive integer. Phase 1 default is `3600`.
+-  - `branch_coverage_target`: float in `(0, 1]`. Phase 1 default is `0.99`.
++  - `branch_coverage_target`: float in `(0, 1]`. The CPU supplies the effective value after Calendar, execution-profile, Device, and global policy resolution. Phase 1 default is `0.99`.
+ - `compute_budget`:
+   - `max_planning_tasks`: positive integer. Phase 1 default is `256`.
+   - `n_candidates`: positive integer chosen by the CPU kernel.
+@@ -193,7 +193,11 @@
+   - `rejection_counts_by_reason`
+   - `warnings`
+   - `probability_quality`: enum, one of `full`, `degraded_numeric_jitter`, `degraded_independence`, `not_estimated`.
++  - `coverage_scope`: optional enum, one of `reactive_horizon`, `full_window`, `repair_scope`.
+   - `coverage_estimate`: optional numeric branch-coverage estimate.
++  - `uncovered_mass_estimate`: optional numeric estimate, normally `max(0, 1 - coverage_estimate)` for the same scope.
++  - `coverage_threshold_used`: optional numeric threshold used for regeneration decisions.
++  - `coverage_below_threshold`: optional boolean.
+   - `compute_telemetry`: optional backend timing and resource summary, including `duration_ms` when available.
+ 
+ ### `PlanCandidate`

@@ -1,0 +1,19 @@
+[
+  {
+    "proposal_id": "codex-ubu-q0017-coverage-regeneration-001",
+    "patch_applies": true,
+    "allowlist_passed": true,
+    "changed_files": [
+      "DECISIONS.md",
+      "DESIGN.md",
+      "OPEN_QUESTIONS.md",
+      "PLANNING_KERNEL_CONTRACT.md"
+    ],
+    "error": null,
+    "normalized_patch": null,
+    "warnings": [],
+    "ordinary_error": null,
+    "recount_error": null,
+    "normalization_error": null
+  }
+]

@@ -1,0 +1,23 @@
+{
+  "scores": [
+    {
+      "proposal_id": "codex-ubu-q0017-coverage-regeneration-001",
+      "score": 88,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "The DECISIONS.md and DESIGN.md trigger policy contains a grammatical repetition ('can affect the current or next recommended Task, hard feasibility, affect legitimacy') that may cause ambiguity when implementers later read the trigger escalation rule.",
+        "The tombstone in OPEN_QUESTIONS.md omits a blank line between the status metadata line and 'Resolved. See UBU-D0186.' which may confuse downstream markdown parsers or tooling that expects a blank separator.",
+        "Excluding Objective recurrence uncertainty from MVP coverage is clearly flagged, but the phrase 'probabilistic recurrence may become a later stochastic input' is left without a tracking question or future-work marker, so it could silently stall.",
+        "The policy resolution order (Calendar-specific \u2192 execution-profile/Device \u2192 global) is reasonable but introduces a three-level lookup that must be consistently implemented in the CPU; a mismatch between implementations could make stored coverage_threshold_used unreliable for replay."
+      ],
+      "required_fixes": [],
+      "rationale": "The patch applies cleanly and directly resolves all six sub-questions posed by UBU-Q0017. Coverage is correctly characterized as estimated (Q1); the four uncertainty categories are addressed with Objective recurrence excluded from MVP (Q2); the compact Calendar is specified to store both coverage_estimate and uncovered_mass_estimate (Q3); the 0.99 default threshold is confirmed (Q4); the three-level policy resolution order is defined with effective threshold stored for replayability (Q5); and low coverage routes through recalculation trigger plus risk reporting rather than directly creating Tasks or worker assignments (Q6). Changed files are limited to the four documentation files appropriate for this resolution, and the allowlist check passed. The DECISIONS.md entry UBU-D0186 is internally consistent and provides good consequences framing. The PLANNING_KERNEL_CONTRACT.md additions (coverage_scope, uncovered_mass_estimate, coverage_threshold_used, coverage_below_threshold) extend the output schema minimally and coherently. Minor issues: the trigger escalation prose in both DECISIONS.md and DESIGN.md contains a grammatical tangle that should be cleaned up before merge, and the OPEN_QUESTIONS.md tombstone is missing a blank line before the 'Resolved.' sentence. Neither issue is blocking. No new open questions are introduced. Human review is correctly flagged."
+    }
+  ],
+  "selected_proposal_id": "codex-ubu-q0017-coverage-regeneration-001",
+  "selection_rationale": "There is one candidate proposal and it is valid: the patch applies, covers all six sub-questions in UBU-Q0017, is scoped to the four appropriate documentation files, and introduces a coherent DECISIONS.md entry (UBU-D0186) with a correct compact tombstone in OPEN_QUESTIONS.md. The minor prose and formatting issues noted do not rise to the level of required fixes. The proposal is selected."
+}

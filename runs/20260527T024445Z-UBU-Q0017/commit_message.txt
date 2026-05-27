@@ -1,0 +1,1 @@
+UMC: Resolve compact Calendar coverage regeneration semantics
