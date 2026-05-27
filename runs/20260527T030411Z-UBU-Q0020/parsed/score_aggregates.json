@@ -1,0 +1,11 @@
+[
+  {
+    "proposal_id": "codex-ubu-q0020-retry-semantics",
+    "author_provider": "openai-codex",
+    "cross_score_count": 2,
+    "score_mean": 91.0,
+    "score_spread": 2,
+    "frontier_score_gap": 2,
+    "disagreement_flags": []
+  }
+]

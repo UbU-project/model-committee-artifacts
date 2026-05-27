@@ -1,0 +1,21 @@
+{
+  "scores": [
+    {
+      "proposal_id": "codex-ubu-q0020-retry-semantics",
+      "score": 92,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Some retry metadata fields are introduced textually without confirming whether they already exist in the Task schema or need explicit schema entries elsewhere.",
+        "The distinction between worker-created child Tasks and Phase 1 workers not directly creating canonical child Tasks is handled, but implementers may still need clearer terminology around attempt Tasks versus underlying Tasks."
+      ],
+      "required_fixes": [],
+      "rationale": "The proposal directly answers all parts of UBU-Q0020: failed attempts are preserved, retry siblings are created, policy precedence is defined, logging uses existing event surfaces, retry caps and nonretryable classes prevent loops, and worker failure feeds derived risk reports. The patch is limited to the expected documentation files, applies cleanly, tombstones the open question with a decision reference, and keeps adjacent open questions scoped appropriately."
+    }
+  ],
+  "selected_proposal_id": "codex-ubu-q0020-retry-semantics",
+  "selection_rationale": "This is the only mechanically valid proposal and it is responsive, auditable, and tightly scoped to the selected retry-semantics decision."
+}

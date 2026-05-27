@@ -1,0 +1,24 @@
+{
+  "scores": [
+    {
+      "proposal_id": "codex-ubu-q0020-retry-semantics",
+      "score": 90,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Retry-sibling linkage fields (retry_of_task_ref, retry_root_task_ref, attempt_number, retry_policy_summary, source_failure_log_refs) are named in prose but not yet formally defined in any schema artifact; implementations could interpret field semantics divergently until a schema patch arrives.",
+        "The Phase 1 default cap of three total attempts is stated only in prose; without a machine-readable policy record or schema-level constraint there is no enforcement guarantee across implementations.",
+        "Event type worker_mutation_submitted / worker_mutation_applied / worker_mutation_rejected are referenced as existing surfaces but are not confirmed to be defined elsewhere in this patch set; if they are new names, they require a matching schema entry.",
+        "Interaction with UBU-Q0021 (automation parent/child structure) is acknowledged but underspecified: if Q0021 resolves with a different lineage model the retry_root / retry_of lineage fields defined here may need retrofitting.",
+        "The OPEN_QUESTIONS.md tombstone strips the full question body, replacing it with a single collapsed metadata line plus a forward reference; future readers cannot reconstruct intent from OPEN_QUESTIONS.md alone without consulting DECISIONS.md or git history."
+      ],
+      "required_fixes": [],
+      "rationale": "The patch applies cleanly and directly answers all five sub-questions of UBU-Q0020. (1) Failed attempt plus retry sibling is chosen, consistent with the stated current leaning and justified by auditability. (2) A clear four-level policy hierarchy is specified: Task/Delegation Substrate packet \u2192 parent Container/Objective \u2192 worker/integration default \u2192 global Phase 1 default. (3) Logging reuses existing event surfaces (task_failed, worker_assignment_updated, worker_mutation_* family, recalculation_triggered) without introducing new top-level event types. (4) Infinite-loop prevention is multi-layered: retry-root attempt cap (three total), idempotency keys, expected-prior-version checks, lease checks, failure-class non-retryability, and mandatory human review after cap exhaustion. (5) Worker failure state feeds worker_or_automation_bottleneck and downstream risk reports. DESIGN.md and DECISIONS.md are mutually consistent, and the new decision record UBU-D0187 is self-contained with clear consequences. The tombstone format in OPEN_QUESTIONS.md is appropriate for a resolved question: Status and Resolved-by fields are present. The only notable gaps are prose-only field definitions for retry linkage metadata (no schema artifact) and the unconfirmed existence of the worker_mutation_* event names \u2014 both are deferred implementation concerns rather than design errors. No unnecessary scope is introduced, no new open questions are added, and UBU-Q0021 correctly remains open."
+    }
+  ],
+  "selected_proposal_id": "codex-ubu-q0020-retry-semantics",
+  "selection_rationale": "Only one proposal is present and it passes mechanical validation. It is substantively sound: all five sub-questions are answered with clear, conservative, and mutually consistent policies; the patch is confined to the three expected design documents; and the decision record UBU-D0187 is complete enough to drive Phase 1 implementation without further open questions on retry semantics."
+}
