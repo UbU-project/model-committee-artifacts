@@ -1,0 +1,24 @@
+[
+  {
+    "proposal_id": "codex-ubu-q0013-authority-source-v1",
+    "author_provider": "codex",
+    "scorer_provider": "claude",
+    "score": 87,
+    "valid": true,
+    "rationale": "The patch applies cleanly and is mechanically valid. It directly resolves all three sub-questions of UBU-Q0013: it enumerates the Phase 1 carrier objects (org-mode Objective/Preference/Task, pipeline_state, worker assignment, worker mutation requests, external projection records, Delegation Substrate packets), it clarifies that authority_source is not required on plain user-mode value objects but is required in any mode for worker/projection/pipeline-state/mutation-request envelopes, and it adopts all seven candidate enum values with precise definitions including the important advisory-only constraint on llm_advisory. UBU-D0185 is a well-formed decision record with explicit consequences and a clear pointer back to the resolved question. The stale references in DECISIONS.md are cleaned up correctly \u2014 UBU-Q0013 is removed from the open list, and the organization-mode prose now points to \u00a717.9 rather than the open question. The OPEN_QUESTIONS.md tombstone is appropriately minimal. The only deductions are: the single-line collapsed metadata in the tombstone is a mild format risk; the \u00a725.1 cross-reference in UBU-D0185 is fragile to future renumbering; and no migration guidance exists for pre-existing records. None of these are blocking, and no required fixes are identified.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [
+      "The tombstone in OPEN_QUESTIONS.md collapses the structured metadata block into a single unwrapped line; if other tooling parses those headers as structured YAML-like fields, the format change may break extraction.",
+      "DECISIONS.md status line references DESIGN.md \u00a7\u00a717.9 and 25.1, but \u00a725.1 is not a new section introduced by this patch \u2014 only a one-sentence addition. If \u00a725.1 is renumbered by a later change, the cross-reference in UBU-D0185 becomes stale without an obvious audit trail.",
+      "The decision does not address schema versioning or migration for existing records that were written before this enum was closed; production instances that already have ad-hoc authority_source values will silently violate the new constraint until validation is enforced."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20260527T023349Z-UBU-Q0013/responses/claude_score_codex-ubu-q0013-authority-source-v1_stdout.json",
+      "stderr_path": null
+    }
+  }
+]

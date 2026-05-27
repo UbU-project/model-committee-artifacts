@@ -1,0 +1,167 @@
+diff --git a/DESIGN.md b/DESIGN.md
+--- a/DESIGN.md
++++ b/DESIGN.md
+@@ -2101,6 +2101,33 @@
+ - mark proposed habit patterns as user-endorsed, tolerated, unwanted, or unresolved.
+ 
+ Log review should not become a blame ritual. It is a model-maintenance Task for self-governance. The minimum Phase 1 annotation boundary is resolved by `UBU-D0181`.
++
++### 17.9 Authority source metadata
++
++`authority_source` is a coarse enum describing the authority/source path for an accepted object, projection state, or candidate mutation. It does not replace actor Identity, capability grants, External References, expected-prior-version checks, review policy, or Log provenance.
++
++Required in Phase 1:
++
++- organization-mode accepted `Objective`, `Preference`, and `Task` records;
++- `pipeline_state` projection-state records;
++- worker assignment records;
++- worker mutation requests;
++- external projection requests, previews, and applied projection records;
++- Delegation Substrate packets when present.
++
++It is not required on ordinary user-mode `Objective`, `Preference`, or `Task` records created directly by the user. It is still required in user mode for worker, projection, pipeline-state, and mutation-request records that use those envelopes.
++
++MVP values are:
++
++- `human_admin`: admin-equivalent human operator or human-approved import/projection action;
++- `automation_worker`: Automation Worker submission under a capability grant;
++- `github_event`: normalized GitHub event, webhook, fixture, or reconciliation observation;
++- `project_policy`: accepted project or organization policy/directive;
++- `imported_config`: bootstrap, fixture, or configured import source;
++- `llm_advisory`: model-generated candidate/advice; never sufficient authority without admission provenance;
++- `user_override`: user-mode explicit override of the current recommendation, Plan, Task choice, or modeled state.
++
++`authority_source` values are schema-controlled in MVP. Specific Identity, source object, and evidence path belong in surrounding fields such as `actor_identity_ref`, `created_by_identity_ref`, `capability_grant_ref`, `source_refs`, `external_reference_refs`, `provenance`, and the append-only Log entry.
+ 
+ ---
+ 
+@@ -2860,7 +2887,7 @@
+ 
+ Relationship objects may exist in organization mode without affect dimensions. An organization-mode Relationship represents structured UniverseState between Identities, such as contributor, maintainer, worker, project, vendor, or integration relationships. It may carry non-affect project metadata through ordinary UniverseState facts, External Events, Logs, External References, candidate AssociationAttestations, Objectives, or Tasks, but it must not claim the organization has a private emotional state toward another Identity.
+ 
+-Organization-created Objectives, Preferences, and Tasks require `authority_source` metadata. For MVP, `authority_source` may be coarse and may identify an admin-equivalent operator Identity, imported project policy, imported external event, Automation Worker submission, or human-approved projection/import action. The detailed authority-source vocabulary remains tracked by `UBU-Q0013`.
++Organization-created Objectives, Preferences, and Tasks require `authority_source` metadata as defined in `DESIGN.md` section 17.9.
+ 
+ Before RBAC exists, organization-mode users are represented as human operator Identities with admin-equivalent authority over the organization-mode instance. This is an MVP authority simplification, not a claim that all future organization users have the same role. Actions still write Logs with actor Identity and provenance so later RBAC can be introduced without erasing earlier history.
+ 
+@@ -2969,7 +2996,7 @@
+ 
+ Managed body blocks and comments must carry enough metadata to reconcile them later: projection id, source UbU object refs or External Reference refs, generated-at time, projection schema version, and a short human-readable statement that the block or comment is managed by UbU.
+ 
+-A human-approved live write and a dry-run preview use the same projection payload shape. Public demos may use dry-run projection when live GitHub mutation is unsafe, but the preview must show the exact labels, blocks, comments, milestones, or assignee changes that would be requested after approval.
++A human-approved live write and a dry-run preview use the same projection payload shape. Public demos may use dry-run projection when live GitHub mutation is unsafe, but the preview must show the exact labels, blocks, comments, milestones, or assignee changes that would be requested after approval. Projection requests, dry-run previews, and applied projection records carry `authority_source` plus actor/provenance fields so their source path is visible during reconciliation.
+ 
+ GitHub edits do not directly override canonical UbU state. A human GitHub edit, including an edit to a UbU-managed label, block, or comment, is imported as a GitHub External Event and may create drift, a mutation candidate, a projection repair request, a Task candidate, or a recalculation trigger after validation. Canonical UbU state changes only through UbU's normal admission path and Logs.
+ 
+diff --git a/DECISIONS.md b/DECISIONS.md
+--- a/DECISIONS.md
++++ b/DECISIONS.md
+@@ -1699,7 +1699,7 @@
+ 
+ Relationship objects may exist in organization mode without affect dimensions. Organization-mode Relationships represent structured UniverseState between Identities such as contributors, maintainers, workers, projects, vendors, integrations, or external organizations. Non-affect relationship-relevant project information belongs in ordinary UniverseState facts, External Events, Logs, External References, candidate AssociationAttestations, Objectives, Tasks, or risk reports. Organization mode must not claim that the organization has a private emotional state toward another Identity.
+ 
+-Organization-created Objectives, Preferences, and Tasks require `authority_source` metadata. In MVP this metadata may be coarse, but it must identify the authority path for the object, such as an admin-equivalent operator Identity, imported project policy, imported external event, Automation Worker submission, or human-approved import/projection action. The detailed vocabulary remains open in `UBU-Q0013`.
++Organization-created Objectives, Preferences, and Tasks require `authority_source` metadata as defined in `UBU-D0185`.
+ 
+ Before RBAC exists, organization-mode human users are represented as operator Identities with admin-equivalent authority over the instance. This is an MVP simplification only. Their actions must still be logged with actor Identity and provenance so future RBAC can be introduced without rewriting history.
+ 
+@@ -3074,7 +3074,7 @@
+ - Worker authority remains request-based and bounded by capability grants, Compartment policy, expected versions, idempotency, assignment leases, and review policy.
+ - Valid worker outputs can support automation without granting direct canonical write authority.
+ - Invalid and stale worker submissions remain auditable without polluting canonical state.
+-- `UBU-Q0013`, `UBU-Q0020`, `UBU-Q0021`, and `UBU-Q0084` remain open for authority-source vocabulary, retry construction, automation child structure, and external AgentAction side-effect modeling.
++- `UBU-Q0020`, `UBU-Q0021`, and `UBU-Q0084` remain open for retry construction, automation child structure, and external AgentAction side-effect modeling.
+ 
+ ---
+ 
+@@ -3736,3 +3736,44 @@
+ - Reconciliation and read-after-write verification remain part of the write path.
+ 
+ ---
++
++## UBU-D0185: Authority source is a closed MVP source-path enum
++
++**Status:** Accepted → DESIGN.md §§17.9, 25.1
++
++Resolved question: `UBU-Q0013`.
++
++`authority_source` is a coarse enum that records the authority/source path for an accepted object, projection state, or candidate mutation. It is not sufficient authorization by itself and does not replace actor Identity, capability grants, External References, expected-prior-version checks, review policy, or Log provenance.
++
++Phase 1 required carriers:
++
++- organization-mode accepted `Objective`, `Preference`, and `Task` records;
++- `pipeline_state` projection-state records;
++- worker assignment records;
++- worker mutation requests;
++- external projection requests, previews, and applied projection records;
++- Delegation Substrate packets when present.
++
++Ordinary user-mode `Objective`, `Preference`, and `Task` records created directly by the user do not require `authority_source`. Worker, projection, pipeline-state, and mutation-request records require it in any mode that uses those envelopes.
++
++MVP enum values:
++
++- `human_admin`: admin-equivalent human operator or human-approved import/projection action;
++- `automation_worker`: Automation Worker submission under a capability grant;
++- `github_event`: normalized GitHub event, webhook, fixture, or reconciliation observation;
++- `project_policy`: accepted project or organization policy/directive;
++- `imported_config`: bootstrap, fixture, or configured import source;
++- `llm_advisory`: model-generated candidate/advice; never sufficient authority without admission provenance;
++- `user_override`: user-mode explicit override of the current recommendation, Plan, Task choice, or modeled state.
++
++Values are schema-controlled for MVP. Specific Identity, source object, and evidence path belong in surrounding fields such as `actor_identity_ref`, `created_by_identity_ref`, `capability_grant_ref`, `source_refs`, `external_reference_refs`, `provenance`, and the append-only Log entry.
++
++**Consequences:**
++
++- `UBU-Q0013` is resolved for Phase 1.
++- Organization-mode value/work objects now have a closed coarse authority-source vocabulary without introducing RBAC.
++- Worker, projection, and mutation envelopes use the same vocabulary across modes.
++- `llm_advisory` remains advisory and cannot create canonical state without an admitting actor, review policy, and provenance.
++- Future RBAC or richer governance may add role and decision-procedure metadata without rewriting the MVP enum.
++
++---
+diff --git a/OPEN_QUESTIONS.md b/OPEN_QUESTIONS.md
+--- a/OPEN_QUESTIONS.md
++++ b/OPEN_QUESTIONS.md
+@@ -217,40 +217,8 @@
+ ---
+ 
+ ## UBU-Q0013: Authority Source Vocabulary
+-
+-Status: Open Priority: MVP important Phase: Phase 1 Decision type: Data model Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 90 Depends on: UBU-Q0012 Blocks: Phase 1 implementation Resolved by: Unresolved Last scored: 2026-05-26 Scored from commit: None
+-
+-Organizational directives and worker updates need authority/source metadata.
+-
+-### Question
+-
+-1. Which objects carry `authority_source`?
+-   - Preference
+-   - Objective
+-   - Task
+-   - pipeline state
+-   - worker assignment
+-   - external projection
+-   - mutation request
+-2. Is `authority_source` required only in organization mode?
+-3. What are MVP authority-source values?
+-
+-### Candidate values
+-
+-```text
+-human_admin
+-automation_worker
+-github_event
+-project_policy
+-imported_config
+-llm_advisory
+-user_override
+-```
+-
+-### Resolution
+-
+-Unresolved.
+-
++Status: Solved Priority: MVP important Phase: Phase 1 Decision type: Data model Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 90 Depends on: UBU-Q0012 Blocks: Phase 1 implementation Resolved by: UBU-D0185 Last scored: 2026-05-26 Scored from commit: None
++Resolved. See UBU-D0185.
+ ---
+ 
+ ## UBU-Q0014: UniverseState Mutation Schema

@@ -1,0 +1,22 @@
+{
+  "scores": [
+    {
+      "proposal_id": "codex-ubu-q0013-authority-source-v1",
+      "score": 87,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": false,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "DECISIONS.md status line references DESIGN.md \u00a7\u00a717.9 and 25.1, but \u00a725.1 is not a new section introduced by this patch \u2014 only a one-sentence addition. If \u00a725.1 is renumbered by a later change, the cross-reference in UBU-D0185 becomes stale without an obvious audit trail.",
+        "The decision does not address schema versioning or migration for existing records that were written before this enum was closed; production instances that already have ad-hoc authority_source values will silently violate the new constraint until validation is enforced.",
+        "The tombstone in OPEN_QUESTIONS.md collapses the structured metadata block into a single unwrapped line; if other tooling parses those headers as structured YAML-like fields, the format change may break extraction."
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 1 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "codex-ubu-q0013-authority-source-v1",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}
