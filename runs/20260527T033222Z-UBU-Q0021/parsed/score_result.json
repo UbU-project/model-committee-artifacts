@@ -1,0 +1,22 @@
+{
+  "scores": [
+    {
+      "proposal_id": "codex-ubu-q0021-d0188",
+      "score": 89,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": false,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "DESIGN.md top-of-patch cross-reference mentions \u00a724.1.2 but the patch adds content under a prose subheading ('Automation child Task structure') without an explicit \u00a724.1.2 section-number label; if DESIGN.md uses numbered sections, the cross-ref may be imprecise or drift.",
+        "Tombstone in OPEN_QUESTIONS.md omits a blank line between the metadata line and 'Resolved. See UBU-D0188.' \u2014 minor formatting inconsistency that could affect automated parsers depending on how Q0020's tombstone was actually formatted.",
+        "Workers-may-propose constraint is stated in both DESIGN.md \u00a79.4 (retained paragraph stub) and new \u00a724.1.2 \u2014 slight redundancy that could diverge on future edits."
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 1 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "codex-ubu-q0021-d0188",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}

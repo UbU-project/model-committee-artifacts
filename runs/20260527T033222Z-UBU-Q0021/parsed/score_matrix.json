@@ -1,0 +1,24 @@
+[
+  {
+    "proposal_id": "codex-ubu-q0021-d0188",
+    "author_provider": "codex",
+    "scorer_provider": "claude",
+    "score": 89,
+    "valid": true,
+    "rationale": "Patch applies cleanly and mechanical validation is fully green. The proposal directly and completely answers all six sub-questions of UBU-Q0021: (1/2) separate Container, not the outer task reused; (3/4) ordinary Dynamic Tasks, no automation-step subtype; (5) metadata stays in existing envelopes (delegation fields, Delegation Substrate, worker assignment records, capability grants, ContextBundle refs, External References, Logs); (6) retries are sibling Tasks under UBU-D0187 semantics. Decision UBU-D0188 is well-drafted: it recites the rationale, names the consequences clearly, and does not over-specify. Stale 'UBU-Q0021 remains open' references in two earlier decision consequence blocks are correctly cleaned up. OPEN_QUESTIONS.md tombstone updates Status and Resolved-by fields in place and follows the same pattern used for Q0020. No new questions are introduced; the proposal correctly identifies that the existing worker-mutation, retry, and task-to-container decisions already supply the necessary sub-answers. Minor deductions for the section-numbering cross-reference risk and the tombstone blank-line inconsistency, but neither is blocking.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [
+      "DESIGN.md top-of-patch cross-reference mentions \u00a724.1.2 but the patch adds content under a prose subheading ('Automation child Task structure') without an explicit \u00a724.1.2 section-number label; if DESIGN.md uses numbered sections, the cross-ref may be imprecise or drift.",
+      "Tombstone in OPEN_QUESTIONS.md omits a blank line between the metadata line and 'Resolved. See UBU-D0188.' \u2014 minor formatting inconsistency that could affect automated parsers depending on how Q0020's tombstone was actually formatted.",
+      "Workers-may-propose constraint is stated in both DESIGN.md \u00a79.4 (retained paragraph stub) and new \u00a724.1.2 \u2014 slight redundancy that could diverge on future edits."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20260527T033222Z-UBU-Q0021/responses/claude_score_codex-ubu-q0021-d0188_stdout.json",
+      "stderr_path": null
+    }
+  }
+]
