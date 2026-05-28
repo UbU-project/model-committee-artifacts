@@ -1,0 +1,22 @@
+{
+  "scores": [
+    {
+      "proposal_id": "codex-ubu-q0051-d0200",
+      "score": 88,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": false,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Calibration dimensions list (`urgent_value`, `emotional_cost`, `social_pressure`, `recovery_value`, `long_term_importance`) omits `ambiguity_vs_decomposition` from the dimension taxonomy even though it is listed as a frame \u2014 minor internal inconsistency.",
+        "OPEN_QUESTIONS.md tombstone drops all subquestion text; future auditors cannot inspect the original question without git history.",
+        "Six example frames are a judgment call; the specific set may need revision as Phase 1 testing reveals gaps or redundancy, but the versioning mechanism mitigates this."
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 1 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "codex-ubu-q0051-d0200",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}

@@ -1,0 +1,24 @@
+[
+  {
+    "proposal_id": "codex-ubu-q0051-d0200",
+    "author_provider": "codex",
+    "scorer_provider": "claude",
+    "score": 88,
+    "valid": true,
+    "rationale": "Patch applies cleanly per mechanical validation. The proposal directly answers all six subquestions of UBU-Q0051: it specifies six neutral frames (Q1), a strict per-surface presentation budget of 1-2 examples (Q2), explicit admission rules mapping answers to Preferences/Snapshots/Logs/annotations/noncanonical notes (Q3), neutrality rules that prohibit leading language and require escape paths (Q4), a calibration-dimension taxonomy covering all five dimensions named in the question (Q5), and versioned revision/retirement semantics tied to skip signals and user corrections (Q6). Changes are confined to DESIGN.md, DECISIONS.md, and OPEN_QUESTIONS.md \u2014 the expected allowlist. No new canonical schema objects are introduced, keeping onboarding lightweight. The decision entry in DECISIONS.md is well-structured with consequences. Minor issue: the `ambiguity_vs_decomposition` frame is not assigned any calibration dimension tag in the dimension list, creating a small inconsistency. Tombstone format is compact but sufficient. Overall a solid, minimal, auditable resolution.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [
+      "Six example frames are a judgment call; the specific set may need revision as Phase 1 testing reveals gaps or redundancy, but the versioning mechanism mitigates this.",
+      "Calibration dimensions list (`urgent_value`, `emotional_cost`, `social_pressure`, `recovery_value`, `long_term_importance`) omits `ambiguity_vs_decomposition` from the dimension taxonomy even though it is listed as a frame \u2014 minor internal inconsistency.",
+      "OPEN_QUESTIONS.md tombstone drops all subquestion text; future auditors cannot inspect the original question without git history."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20260528T014153Z-UBU-Q0051/responses/claude_score_codex-ubu-q0051-d0200_stdout.json",
+      "stderr_path": null
+    }
+  }
+]

@@ -1,0 +1,22 @@
+{
+  "scores": [
+    {
+      "proposal_id": "codex-ubu-q0051-d0200",
+      "score": 88,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Six example frames are a judgment call; the specific set may need revision as Phase 1 testing reveals gaps or redundancy, but the versioning mechanism mitigates this.",
+        "Calibration dimensions list (`urgent_value`, `emotional_cost`, `social_pressure`, `recovery_value`, `long_term_importance`) omits `ambiguity_vs_decomposition` from the dimension taxonomy even though it is listed as a frame \u2014 minor internal inconsistency.",
+        "OPEN_QUESTIONS.md tombstone drops all subquestion text; future auditors cannot inspect the original question without git history."
+      ],
+      "required_fixes": [],
+      "rationale": "Patch applies cleanly per mechanical validation. The proposal directly answers all six subquestions of UBU-Q0051: it specifies six neutral frames (Q1), a strict per-surface presentation budget of 1-2 examples (Q2), explicit admission rules mapping answers to Preferences/Snapshots/Logs/annotations/noncanonical notes (Q3), neutrality rules that prohibit leading language and require escape paths (Q4), a calibration-dimension taxonomy covering all five dimensions named in the question (Q5), and versioned revision/retirement semantics tied to skip signals and user corrections (Q6). Changes are confined to DESIGN.md, DECISIONS.md, and OPEN_QUESTIONS.md \u2014 the expected allowlist. No new canonical schema objects are introduced, keeping onboarding lightweight. The decision entry in DECISIONS.md is well-structured with consequences. Minor issue: the `ambiguity_vs_decomposition` frame is not assigned any calibration dimension tag in the dimension list, creating a small inconsistency. Tombstone format is compact but sufficient. Overall a solid, minimal, auditable resolution."
+    }
+  ],
+  "selected_proposal_id": "codex-ubu-q0051-d0200",
+  "selection_rationale": "Only one proposal is present and it passes mechanical validation. It is directly responsive to all six subquestions, stays within the allowed file set, introduces no new canonical schema, and provides clear admission, neutrality, and retirement rules that implementers can act on without additional design work."
+}

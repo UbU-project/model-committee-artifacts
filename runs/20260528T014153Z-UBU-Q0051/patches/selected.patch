@@ -1,0 +1,151 @@
+diff --git a/DESIGN.md b/DESIGN.md
+--- a/DESIGN.md
++++ b/DESIGN.md
+@@ -1254,20 +1254,56 @@ Util derivation is typically local to the Objective subset being compared in a s
+ ### 8.6 Preference calibration examples
+ 
+ A **PreferenceCalibrationExample** is a user-facing prompt or scenario used to help the user make better Preference judgments. It may describe a common emotional cost, common emotional reward, motivation ambiguity, social-pressure pattern, or tradeoff.
+ 
+ Preference calibration examples are MVP-important onboarding and review aids. They are not canonical value objects unless the user accepts or edits the resulting judgment into a Preference or other canonical entry.
+ 
++The minimum Phase 1 calibration library has six example frames:
++
++- `urgent_vs_important`: urgent external commitment versus important but nonurgent Objective;
++- `emotional_cost_vs_visible_progress`: emotionally costly repair, clarification, or maintenance work versus easier visible progress;
++- `social_pressure_vs_planned_objective`: socially pressured request versus planned user-chosen Objective;
++- `recovery_vs_more_work`: recovery or rest versus another useful Task;
++- `short_term_relief_vs_long_term_importance`: short-term relief or cleanup versus long-term capability, relationship, or project importance;
++- `ambiguity_vs_decomposition`: decomposition of ambiguous work versus starting a larger unclear Task.
++
++Each example identifies one or more calibration dimensions: `urgent_value`, `emotional_cost`, `social_pressure`, `recovery_value`, and `long_term_importance`.
++
++Default presentation budget:
++
++- Bootstrap interview: at most two examples after the user has named real Objectives or candidate Tasks.
++- Calendar preview: at most one relevant example when the default Plan appears value-misaligned, socially pressured, recovery-fragile, or unusually urgent.
++- Log review: at most one relevant example for an unreconciled rejection, override, failure, or repeated deviation unless the user asks for more.
++
++Answers become canonical only through normal admission:
++
++- explicit accepted pairwise Objective comparisons become Preferences;
++- current affect, availability, capacity, or recovery reports become Snapshots or UniverseState facts when they describe observed current state;
++- preview/review answers that explain outcomes, rejections, overrides, or calibration interactions become Logs, Log annotations, or Log corrections;
++- comments about Objective importance or fit that do not declare pairwise order become Objective annotations or review notes;
++- raw feelings, social-pressure comments, skipped examples, and unaccepted hypotheses remain noncanonical review notes.
++
++Calibration wording must avoid leading the user:
++
++- use the user's actual Objectives or Tasks when possible;
++- present plausible costs and rewards for both sides;
++- avoid preselected answers, hidden scoring, therapy, diagnosis, moral judgment, and "should" language;
++- offer `neither`, `indifferent`, `not applicable`, edit, and free-text paths;
++- disclose that examples are prompts for self-reporting, not UbU's values.
++
+ Candidate fields for a calibration example include:
+ 
+ - `example_id`
++- `version`
+ - `situation_summary`
++- `calibration_dimensions`
+ - `common_emotional_costs`
+ - `common_emotional_rewards`
+ - `possible_tradeoffs`
+ - `calibration_question`
+ - `resulting_object_refs`
+ - `source`
++- `revision_status`
+ 
+-Open details are tracked in `UBU-Q0051`.
++Example definitions are versioned derived content. UbU may revise or retire examples when user corrections, skips, edits, repeated non-use, or review feedback show that an example is confusing or leading. Historical Logs are not rewritten.
+ 
+ ---
+diff --git a/DECISIONS.md b/DECISIONS.md
+--- a/DECISIONS.md
++++ b/DECISIONS.md
+@@ -4190,3 +4190,54 @@ The `UBU-D0175` stop rule applies to replacement questions. A replacement questi
+ - Future parser work may add first-class decomposed-status and lineage fields without changing the scoring rule.
+ 
+ ---
++
++## UBU-D0200: Phase 1 preference calibration uses six neutral example frames
++
++**Status:** Accepted → DESIGN.md §§2.2.1, 4.1.2, 8.6
++
++Resolved question: `UBU-Q0051`.
++
++Phase 1 preference calibration is a small prompt library, not a new canonical value object or hidden utility model. The minimum library has six neutral example frames:
++
++- urgent external commitment versus important but nonurgent Objective;
++- emotionally costly repair, clarification, or maintenance work versus easier visible progress;
++- socially pressured request versus planned user-chosen Objective;
++- recovery or rest versus another useful Task;
++- short-term relief or cleanup versus long-term capability, relationship, or project importance;
++- decomposition of ambiguous work versus starting a larger unclear Task.
++
++Presentation budget:
++
++- Bootstrap shows at most two examples by default, after the user has named real Objectives or candidate Tasks.
++- Calendar preview shows at most one relevant example for the Plan being previewed.
++- Log review shows at most one relevant example for an unreconciled rejection, override, failure, or repeated deviation unless the user asks for more.
++- Skipping calibration is allowed; UbU records only the ordinary note or decision evidence needed for review.
++
++Each example is tagged with one or more Phase 1 calibration dimensions: `urgent_value`, `emotional_cost`, `social_pressure`, `recovery_value`, and `long_term_importance`. These tags explain the tradeoff being surfaced; they are not utility components.
++
++Admission rules:
++
++- accepted explicit pairwise Objective comparisons become Preferences;
++- current affect, availability, capacity, or recovery reports become Snapshots or UniverseState facts when they describe observed current state;
++- preview/review explanations for outcomes, rejections, overrides, or calibration interactions become Logs, Log annotations, or Log corrections;
++- Objective-importance comments without pairwise order become Objective annotations or noncanonical review notes;
++- raw feelings, social-pressure comments, skipped examples, and unaccepted hypotheses remain noncanonical review notes.
++
++Neutrality rules:
++
++- use actual user Objectives or Tasks when possible;
++- present plausible costs and rewards for both sides;
++- provide `neither`, `indifferent`, `not applicable`, edit, and free-text paths;
++- avoid preselected answers, hidden scoring, therapy, diagnosis, moral judgment, and "should" language;
++- disclose that examples are prompts for self-reporting, not UbU's values.
++
++Examples are versioned derived content. UbU may revise or retire an example when corrections, skips, edits, repeated non-use, or review feedback show that it is confusing, leading, or unhelpful. Historical Logs stay append-only; only future example presentation changes.
++
++**Consequences:**
++
++- `UBU-Q0051` is resolved for Phase 1.
++- Preference calibration can improve onboarding, Calendar preview, and Log review without adding a psychology ontology or canonical value objects.
++- Phase 1 onboarding remains lightweight because calibration has a strict presentation budget and can be skipped.
++- Future richer examples may be added as versioned prompt content without schema migration unless they change admission rules or canonical fields.
++
++---
+diff --git a/OPEN_QUESTIONS.md b/OPEN_QUESTIONS.md
+--- a/OPEN_QUESTIONS.md
++++ b/OPEN_QUESTIONS.md
+@@ -630,26 +630,4 @@ Resolved. See UBU-D0129.
+ ## UBU-Q0051: Minimum preference-calibration examples for Phase 1 onboarding and review
+-
+-Status: Open Priority: MVP important Phase: Phase 1 Decision type: Data model Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 90 Depends on: UBU-Q0050 Blocks: Phase 1 onboarding quality, Preference calibration, Calendar preview, Log review Resolved by: None Last scored: 2026-05-27 Scored from commit: None
+-
+-### Question
+-
+-What is the minimum useful set of preference-calibration examples for Phase 1 onboarding, Calendar preview, and Log review?
+-
+-### Subquestions
+-
+-1. Which common situations should UbU use to emotionally ground early Preference judgments?
+-2. How many examples are enough for Phase 1 without making onboarding burdensome?
+-3. Which answers become Preferences, Snapshots, Logs, Objective annotations, or noncanonical review notes?
+-4. How should examples avoid leading the user toward an assumed value model?
+-5. How should calibration examples distinguish urgent value, emotional cost, social pressure, recovery value, and long-term importance?
+-6. How should UbU revise or retire examples that repeatedly fail to help the user make accurate judgments?
+-
+-### Current direction
+-
+-Preference calibration is MVP important but not an MVP blocker. UbU should use examples of common emotional costs, rewards, and tradeoffs to help users make better Preference statements. Examples are grounding aids, not canonical Preferences, unless the user accepts or edits them into canonical entries.
+-
+-### Resolution
+-
+-Open.
+-
++Status: Solved Priority: MVP important Phase: Phase 1 Decision type: Data model Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 90 Depends on: UBU-Q0050 Blocks: Phase 1 onboarding quality, Preference calibration, Calendar preview, Log review Resolved by: UBU-D0200 Last scored: 2026-05-27 Scored from commit: None
++Resolved. See UBU-D0200.
+ ---
