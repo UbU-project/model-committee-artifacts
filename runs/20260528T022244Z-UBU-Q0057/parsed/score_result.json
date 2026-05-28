@@ -1,0 +1,25 @@
+{
+  "scores": [
+    {
+      "proposal_id": "codex-ubu-q0057-evergreen-gap-fillers-v1",
+      "score": 87,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": false,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "OPEN_QUESTIONS.md entry is collapsed to two lines, losing the structured subquestion and field inventory that could be useful for future readers cross-referencing resolution context",
+        "cooldown_policy with explicit none_declared sentinel value is novel semantics not defined elsewhere in DESIGN.md; may conflict with existing precondition or recurrence patterns",
+        "gap_fill_policy is introduced as a named field bundle but no schema stub or JSON Schema fragment is provided, leaving implementers to infer field types and validation rules from prose alone",
+        "rank_hint as an optional field for local tie-breaking is underspecified \u2014 without a type or range it is ambiguous whether this is a float weight, an enum, or a user-settable priority level"
+      ],
+      "required_fixes": [
+        "OPEN_QUESTIONS.md should retain the structured question header block with Resolved by and resolution text rather than collapsing to a single status line \u2014 the schema requires the full header fields"
+      ],
+      "rationale": "Aggregate cross-score mean from 1 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "codex-ubu-q0057-evergreen-gap-fillers-v1",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}

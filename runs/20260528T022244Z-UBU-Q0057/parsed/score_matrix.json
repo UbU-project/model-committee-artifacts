@@ -1,0 +1,27 @@
+[
+  {
+    "proposal_id": "codex-ubu-q0057-evergreen-gap-fillers-v1",
+    "author_provider": "codex",
+    "scorer_provider": "claude",
+    "score": 87,
+    "valid": true,
+    "rationale": "Patch applies cleanly and is mechanically validated. The proposal correctly answers all six subquestions: gap-fillers are a Task property (gap_fill_policy) rather than a new subtype, required and optional fields are enumerated, ranking semantics are specified, autonomy protections are explicit, reactive-layer integration is described, and Phase 1 vs future scope is clearly delineated. DESIGN.md sections 9.3.1, 15.4, 16.4, and 16.6 are updated coherently. UBU-D0202 in DECISIONS.md is well-formed with consequences. The main weakness is the OPEN_QUESTIONS.md collapse: the structured header with all metadata fields is replaced by a one-line status, which loses the schema-required field inventory even though Resolved by and Last scored are present inline. This is a minor schema preservation issue. No unnecessary scope is introduced \u2014 no new WorkItem subtypes, no planning kernel contract changes, no Technique dependencies. The prose is precise and internally consistent.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [
+      "OPEN_QUESTIONS.md should retain the structured question header block with Resolved by and resolution text rather than collapsing to a single status line \u2014 the schema requires the full header fields"
+    ],
+    "risks": [
+      "OPEN_QUESTIONS.md entry is collapsed to two lines, losing the structured subquestion and field inventory that could be useful for future readers cross-referencing resolution context",
+      "gap_fill_policy is introduced as a named field bundle but no schema stub or JSON Schema fragment is provided, leaving implementers to infer field types and validation rules from prose alone",
+      "rank_hint as an optional field for local tie-breaking is underspecified \u2014 without a type or range it is ambiguous whether this is a float weight, an enum, or a user-settable priority level",
+      "cooldown_policy with explicit none_declared sentinel value is novel semantics not defined elsewhere in DESIGN.md; may conflict with existing precondition or recurrence patterns"
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20260528T022244Z-UBU-Q0057/responses/claude_score_codex-ubu-q0057-evergreen-gap-fillers-v1_stdout.json",
+      "stderr_path": null
+    }
+  }
+]

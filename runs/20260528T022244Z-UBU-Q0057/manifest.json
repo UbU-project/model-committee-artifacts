@@ -1,0 +1,117 @@
+{
+  "schema_version": "0.3",
+  "run_id": "20260528T022244Z-UBU-Q0057",
+  "created_at_utc": "2026-05-28T02:22:44Z",
+  "repo_path": "../ubu-design",
+  "base_commit": "c73e4cfe3a1f0a29e90c41b45805c99a2e3146f0",
+  "selected_question_id": "UBU-Q0057",
+  "phase": "work-select",
+  "config_path": "config/models.json",
+  "status": "selected",
+  "commands": [
+    "model-committee run-loop"
+  ],
+  "providers_attempted": [
+    "codex",
+    "claude"
+  ],
+  "providers_succeeded": [
+    "codex",
+    "claude"
+  ],
+  "providers_failed": [],
+  "provider_attempts": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "sonnet",
+      "phase": "work-score",
+      "target_proposal_id": "codex-ubu-q0057-evergreen-gap-fillers-v1",
+      "response_path": "runs/20260528T022244Z-UBU-Q0057/responses/claude_score_codex-ubu-q0057-evergreen-gap-fillers-v1_stdout.json",
+      "stderr_path": null
+    }
+  ],
+  "provider_successes": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20260528T022244Z-UBU-Q0057/parsed/codex_work_proposal.json"
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "sonnet",
+      "phase": "work-score",
+      "target_proposal_id": "codex-ubu-q0057-evergreen-gap-fillers-v1",
+      "response_path": "runs/20260528T022244Z-UBU-Q0057/responses/claude_score_codex-ubu-q0057-evergreen-gap-fillers-v1_stdout.json",
+      "parsed_path": "runs/20260528T022244Z-UBU-Q0057/parsed/claude_score_codex-ubu-q0057-evergreen-gap-fillers-v1_result.json"
+    }
+  ],
+  "provider_failures": [],
+  "score_matrix": [
+    {
+      "proposal_id": "codex-ubu-q0057-evergreen-gap-fillers-v1",
+      "author_provider": "codex",
+      "scorer_provider": "claude",
+      "score": 87,
+      "valid": true,
+      "rationale": "Patch applies cleanly and is mechanically validated. The proposal correctly answers all six subquestions: gap-fillers are a Task property (gap_fill_policy) rather than a new subtype, required and optional fields are enumerated, ranking semantics are specified, autonomy protections are explicit, reactive-layer integration is described, and Phase 1 vs future scope is clearly delineated. DESIGN.md sections 9.3.1, 15.4, 16.4, and 16.6 are updated coherently. UBU-D0202 in DECISIONS.md is well-formed with consequences. The main weakness is the OPEN_QUESTIONS.md collapse: the structured header with all metadata fields is replaced by a one-line status, which loses the schema-required field inventory even though Resolved by and Last scored are present inline. This is a minor schema preservation issue. No unnecessary scope is introduced \u2014 no new WorkItem subtypes, no planning kernel contract changes, no Technique dependencies. The prose is precise and internally consistent.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [
+        "OPEN_QUESTIONS.md should retain the structured question header block with Resolved by and resolution text rather than collapsing to a single status line \u2014 the schema requires the full header fields"
+      ],
+      "risks": [
+        "OPEN_QUESTIONS.md entry is collapsed to two lines, losing the structured subquestion and field inventory that could be useful for future readers cross-referencing resolution context",
+        "gap_fill_policy is introduced as a named field bundle but no schema stub or JSON Schema fragment is provided, leaving implementers to infer field types and validation rules from prose alone",
+        "rank_hint as an optional field for local tie-breaking is underspecified \u2014 without a type or range it is ambiguous whether this is a float weight, an enum, or a user-settable priority level",
+        "cooldown_policy with explicit none_declared sentinel value is novel semantics not defined elsewhere in DESIGN.md; may conflict with existing precondition or recurrence patterns"
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20260528T022244Z-UBU-Q0057/responses/claude_score_codex-ubu-q0057-evergreen-gap-fillers-v1_stdout.json",
+        "stderr_path": null
+      }
+    }
+  ],
+  "score_aggregates": [
+    {
+      "proposal_id": "codex-ubu-q0057-evergreen-gap-fillers-v1",
+      "author_provider": "codex",
+      "cross_score_count": 1,
+      "score_mean": 87.0,
+      "score_spread": 0,
+      "frontier_score_gap": 0,
+      "disagreement_flags": []
+    }
+  ],
+  "cross_score_count": 1,
+  "score_mean": 87.0,
+  "score_spread": 0,
+  "frontier_score_gap": 0,
+  "disagreement_flags": [],
+  "quorum_result": {
+    "valid": true,
+    "human_review_required": false,
+    "selected_proposal_id": "codex-ubu-q0057-evergreen-gap-fillers-v1",
+    "selected_score": 87.0,
+    "selected_cross_score_count": 1,
+    "blocked_reasons": [],
+    "manual_override": false
+  },
+  "selected_proposal_id": "codex-ubu-q0057-evergreen-gap-fillers-v1",
+  "automated_selection_valid": true,
+  "human_review_required": false,
+  "artifact_publication_status": "operator_pending",
+  "prompt_size_warning": true
+}
