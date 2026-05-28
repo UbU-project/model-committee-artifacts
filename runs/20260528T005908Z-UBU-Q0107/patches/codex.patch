@@ -1,0 +1,130 @@
+diff --git a/DESIGN.md b/DESIGN.md
+--- a/DESIGN.md
++++ b/DESIGN.md
+@@ -2125,13 +2125,43 @@ A Log consists of timestamped entries recording:
+ Logs are immutable once written, but may be annotated or corrected through new entries.
+ 
+ ### 17.0 Counterfactual logging requirement
+ 
+-The Log must record not only what happened but what the user was offered and rejected. All decision-bearing interactions between the system and the user produce a reviewable Log entry. This includes: rejected Plan candidates, dismissed Task suggestions, declined worker proposals, overridden system recommendations, and bypassed safeguard advisories.
++The Log records user-facing choices that did not become the selected path. A counterfactual decision is recorded with the existing `decision_recorded` event type whenever UbU presents a meaningful option, warning, proposal, alert, or recommendation and the user rejects, dismisses, overrides, bypasses, or ignores it.
+ 
+-Without counterfactual entries, the introspection review and future preference inference systems have only half the picture: they know what the user accepted but not what the user chose against. Omitting counterfactual entries is a design flaw.
++Minimum MVP `decision_kind` values:
+ 
+-The minimum counterfactual log entry schema — what was presented, what the user chose, the stated or inferred reason, and the system state at decision time — must be specified before the introspection review system is implemented. See `UBU-Q0107`.
++- `plan_candidate_rejected`
++- `task_suggestion_dismissed`
++- `suggestion_declined`
++- `system_recommendation_overridden`
++- `worker_proposal_declined`
++- `safeguard_advisory_bypassed`
++- `alert_dismissed_or_ignored`
++
++Minimum `event_payload` fields:
++
++- `decision_kind`
++- `presented_ref` or `presented_candidate_summary`
++- `presented_at`
++- `decision_surface`
++- `available_actions`
++- `user_action`
++- `chosen_ref` when the user chose another option
++- `rejected_ref` or `rejected_refs`
++- `reason_capture`
++- `decision_context`
++- `preference_inference_allowed`
++
++`presented_candidate_summary` is a compact, redacted snapshot sufficient for review when the full candidate is transient or expensive to retain. It records identifiers, title or label, rank or recommendation status, score or explanation fragments when shown, and source or provenance refs; it must not embed denied Compartment payload.
++
++`reason_capture` records optional reason evidence without making explanation mandatory. It contains `reason_source` (`user_stated`, `user_selected_code`, `system_inferred`, or `none_given`), optional `reason_code`, optional `reason_text`, and optional `confidence` for inferred reasons. If the user skips the prompt, UbU records `none_given`. System-inferred reasons are review notes, not canonical Preferences.
++
++`decision_context` records the system state needed to understand the choice: related Calendar or Plan refs, current recommendation ref, Task or Objective refs, active Identity or acting-as context beyond `actor_identity_ref` when relevant, active Compartment or policy result refs, Snapshot or UniverseState refs, risk-report refs, worker assignment or proposal refs, safeguard or alert refs, and source External References. Context should use refs, hashes, and summaries rather than copied payload whenever possible.
++
++Counterfactual entries are append-only Log entries. They are corrected or annotated only through later `log_correction_added` or `log_annotation_added` entries. A later accepted Preference, Task update, Objective update, safeguard policy change, or worker reassignment may cite the counterfactual Log ref but does not rewrite it.
++
++Preference inference may consume only uncorrected counterfactual entries and must distinguish user-stated, selected-code, inferred, and missing reasons. Absence of a counterfactual entry is not evidence of user acceptance.
+ 
+ ### 17.1 MVP Log entry fields
+ 
+ MVP Log entries use a shared event envelope. Required fields:
+diff --git a/DECISIONS.md b/DECISIONS.md
+--- a/DECISIONS.md
++++ b/DECISIONS.md
+@@ -4107,3 +4107,45 @@ Phase 3B should expand user-facing Resource, Skill, Technique, DIY-versus-purcha
+ - Full version 1.0 messaging can emphasize life logistics, real-world capability acquisition, and Skill Barter direction without promising those features in Phase 1.
+ 
+ ---
++
++## UBU-D0198: Counterfactual decisions use decision_recorded payloads
++
++**Status:** Accepted → DESIGN.md §17.0
++
++Resolved question: `UBU-Q0107`.
++
++MVP counterfactual logging uses the existing `decision_recorded` Log event type. It does not add separate event types for every rejected candidate. A `decision_recorded` entry is required whenever UbU presents a meaningful user-facing option, warning, proposal, alert, or recommendation and the user rejects, dismisses, overrides, bypasses, or ignores it.
++
++Required `decision_kind` values:
++
++- `plan_candidate_rejected`;
++- `task_suggestion_dismissed`;
++- `suggestion_declined`;
++- `system_recommendation_overridden`;
++- `worker_proposal_declined`;
++- `safeguard_advisory_bypassed`;
++- `alert_dismissed_or_ignored`.
++
++Minimum `event_payload` records:
++
++- `presented_ref` or compact redacted `presented_candidate_summary`;
++- available actions and the observed `user_action`;
++- chosen and rejected refs when applicable;
++- optional `reason_capture`;
++- system-state refs in `decision_context`;
++- whether the entry is eligible for future preference inference.
++
++User-stated reasons are never mandatory. `reason_capture.reason_source` is one of `user_stated`, `user_selected_code`, `system_inferred`, or `none_given`; inferred reasons are review notes, not canonical Preferences.
++
++Counterfactual decision entries are append-only. Later Preferences, Task changes, Objective changes, safeguard policy changes, worker reassignments, annotations, or corrections may cite the decision Log ref, but they do not rewrite the original decision entry.
++
++Preference inference may consume only uncorrected counterfactual entries and must distinguish stated, selected-code, inferred, and missing reasons. Absence of a counterfactual entry is not evidence of user acceptance.
++
++**Consequences:**
++
++- `UBU-Q0107` is resolved for Phase 1.
++- Introspection and preference inference have reviewable evidence for rejected options, not only accepted outcomes.
++- Optional reason prompts can stay lightweight without losing the fact of the decision.
++- No new Log event type is required beyond `decision_recorded`.
++
++---
+diff --git a/OPEN_QUESTIONS.md b/OPEN_QUESTIONS.md
+--- a/OPEN_QUESTIONS.md
++++ b/OPEN_QUESTIONS.md
+@@ -2042,25 +2042,4 @@ Resolved for Phase 1. See `UBU-D0174` and `PLANNING_KERNEL_CONTRACT.md §3`.
+ ## UBU-Q0107: Counterfactual logging and decision completeness
+-
+-Status: Open Priority: MVP important Phase: Phase 1 Decision type: Architecture Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 100 Depends on: None Blocks: preference inference, override review, introspection completeness Resolved by: None Last scored: 2026-05-27 Scored from commit: None
+-
+-### Question
+-
+-The Log records what happened. It does not currently record what the user considered and rejected — overridden plan candidates, dismissed Task suggestions, declined worker proposals, ignored alerts, or bypassed safeguard advisories. Without these, the introspection review and future preference inference systems have only half the picture. What is the minimum counterfactual log entry schema for MVP?
+-
+-### Subquestions
+-
+-1. Which user-facing decision types must be logged: plan candidate rejection, task dismissal, safeguard bypass, suggestion decline, override of a worker proposal, others?
+-2. What fields does a counterfactual log entry carry beyond the decision itself: the presented candidate, the stated or inferred reason, the system state at decision time, the identity context?
+-3. How is user-stated reason captured without becoming a friction-creating mandatory field?
+-4. How do counterfactual entries interact with the existing Log immutability model?
+-5. What is the minimum set of counterfactual entry types required before preference inference is meaningful?
+-
+-### Current direction
+-
+-The absence of counterfactual logging is a design flaw identified during design review. All decision-bearing interactions between the system and the user must produce a reviewable log entry, including rejected candidates, dismissed suggestions, and bypassed advisories. The schema must be specified before the introspection review system is implemented.
+-
+-### Resolution
+-
+-Open.
+-
++Status: Solved Priority: MVP important Phase: Phase 1 Decision type: Architecture Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 100 Depends on: None Blocks: preference inference, override review, introspection completeness Resolved by: UBU-D0198 Last scored: 2026-05-27 Scored from commit: None
++Resolved. See UBU-D0198.
+ ---

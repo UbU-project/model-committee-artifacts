@@ -1,0 +1,29 @@
+[
+  {
+    "proposal_id": "codex-ubu-q0107-counterfactual-logging-001",
+    "author_provider": "codex",
+    "scorer_provider": "claude",
+    "score": 85,
+    "valid": true,
+    "rationale": "The proposal cleanly resolves all five UBU-Q0107 subquestions in the correct files. Decision kinds are enumerated, the reason_capture struct elegantly avoids making explanation mandatory while preserving evidence, append-only correction semantics are explicitly stated, and preference inference constraints are included. DECISIONS.md entry UBU-D0198 mirrors the DESIGN.md content appropriately. The tombstone in OPEN_QUESTIONS.md follows the established pattern (e.g., \u00a7UBU-Q0106) and preserves the heading. Two fields \u2014 decision_surface and preference_inference_allowed \u2014 are listed without normative definition, which leaves ambiguity for implementers. The omission of the \u00a717.1 cross-reference is a minor coherence gap. Neither issue is blocking, but both should be addressed before implementation.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [
+      "Define decision_surface with an enumerated set of values or a normative description",
+      "Add at least one sentence specifying when preference_inference_allowed must be set to false"
+    ],
+    "risks": [
+      "decision_surface field is listed in the minimum payload but never defined \u2014 implementers have no guidance on expected values or enumeration",
+      "preference_inference_allowed is listed as a field but no rules are given for when it should be false, leaving the gate condition underspecified",
+      "presented_at duplicates or conflicts with the existing Log entry timestamp; the relationship is not clarified",
+      "The tombstone removes all five subquestions from OPEN_QUESTIONS.md, which loses reviewable traceability of what was actually asked; future readers must cross-reference DECISIONS.md to reconstruct the question scope",
+      "No cross-reference added from DESIGN.md \u00a717.0 to \u00a717.1 to show how decision_recorded slots into the shared MVP event envelope already specified there"
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20260528T005908Z-UBU-Q0107/responses/claude_score_codex-ubu-q0107-counterfactual-logging-001_stdout.json",
+      "stderr_path": null
+    }
+  }
+]

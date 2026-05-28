@@ -1,0 +1,27 @@
+{
+  "scores": [
+    {
+      "proposal_id": "codex-ubu-q0107-counterfactual-logging-001",
+      "score": 85,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": false,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "No cross-reference added from DESIGN.md \u00a717.0 to \u00a717.1 to show how decision_recorded slots into the shared MVP event envelope already specified there",
+        "The tombstone removes all five subquestions from OPEN_QUESTIONS.md, which loses reviewable traceability of what was actually asked; future readers must cross-reference DECISIONS.md to reconstruct the question scope",
+        "decision_surface field is listed in the minimum payload but never defined \u2014 implementers have no guidance on expected values or enumeration",
+        "preference_inference_allowed is listed as a field but no rules are given for when it should be false, leaving the gate condition underspecified",
+        "presented_at duplicates or conflicts with the existing Log entry timestamp; the relationship is not clarified"
+      ],
+      "required_fixes": [
+        "Add at least one sentence specifying when preference_inference_allowed must be set to false",
+        "Define decision_surface with an enumerated set of values or a normative description"
+      ],
+      "rationale": "Aggregate cross-score mean from 1 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "codex-ubu-q0107-counterfactual-logging-001",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}
