@@ -1,0 +1,127 @@
+diff --git a/DESIGN.md b/DESIGN.md
+--- a/DESIGN.md
++++ b/DESIGN.md
+@@ -2103,19 +2103,26 @@ This forward-pull semantic is the natural counterpart to the log-normal duration
+ 
+ ### 16.7 Adaptive granularity and offline operation
+ 
+-Compact Calendar planning should support configurable time deltas.
+-
+-Provisional defaults:
+-
+-- full-detail planning delta: `1 minute`;
+-- mobile moderate delta: `5 minutes`;
+-- mobile low-power or offline delta: `15 minutes`;
+-- reactive branch horizon: `1 hour`;
+-- short-horizon branch coverage target: `0.99` probability mass.
+-
+-A one-minute delta aligns with common calendar behavior and should be available when compute resources permit it. Mobile-only operation may use coarser granularity to preserve battery, reduce memory and CPU/GPU load, and keep local recalculation responsive. Offline or low-power mode may dynamically switch to a coarser delta, such as fifteen minutes, while preserving the core UbU experience.
+-
+-Known offline windows, such as flights or planned disconnection, should trigger preparatory precomputation while connectivity and compute are available. If the offline state is unexpected, UbU should gracefully degrade to cached state, local explicit algorithms, coarser deltas, reduced branch depth, and mobile stewardship metadata.
++Compact Calendar runtime uses configurable execution profiles. The default Phase 1 presets are:
++
++- `full_detail`: 60-second delta, 3600-second reactive horizon, `0.99` branch coverage target;
++- `mobile_moderate`: 300-second delta, 3600-second reactive horizon, `0.99` branch coverage target;
++- `mobile_low_power`: 900-second delta, 1800-second reactive horizon, `0.95` branch coverage target;
++- `offline_steward`: 900-second delta, 1800-second reactive horizon, `0.95` branch coverage target, using precomputed branches and local repair metadata.
++
++The one-, five-, and fifteen-minute deltas are presets, not schema constants. Calendar policy, Device policy, user settings, and runtime conditions may choose different positive deltas, horizons, coverage targets, and compute budgets. The effective values are stored with the compact Calendar or PlanningRequest so replay and explanation use the same policy inputs.
++
++Switching to a coarser profile is allowed for `low_battery`, `low_power_mode`, `thermal_pressure`, `offline`, `expected_offline_window`, `heavy_workload`, `user_setting`, `external_worker_unavailable`, and `compute_budget_exceeded`. Returning to a finer profile is allowed when power, temperature, connectivity, worker availability, idle time, or user settings permit it. A switch records its reason in runtime or compact Calendar metadata; if it can affect the current or next recommendation, hard feasibility, affect legitimacy, or coverage threshold result, UbU records or batches a recalculation trigger using the relevant existing trigger kind.
++
++When UbU switches to a coarser delta, the user-facing explanation must disclose the active profile, reason, effective delta, reactive horizon, coverage target or estimate, expected loss of precision, guarantees that still hold, and how to request more detailed planning or wait for a finer-capability backend.
++
++Known offline windows trigger preparatory precomputation when connectivity and compute are available. The precompute package should cover the declared offline window plus the current reactive horizon when feasible, and should store the default Plan, last legitimate Plan, decision envelopes, Task criticality, cached explanations, simple repair recipes, and high-probability branch materialization or reconstruction instructions up to the effective coverage target. Precomputation is bounded by battery, thermal, user, Compartment, and compute-budget policy.
++
++Unexpected offline operation degrades to cached compact Calendar state, local explicit algorithms, coarser deltas, reduced branch horizon and coverage target, simple repair recipes, and next-best-action mode. It must not pretend cloud, worker, or LLM-assisted analysis is still available.
++
++Cached branches remain usable only while accepted Logs, Snapshots, External Events, elapsed time, and user actions stay inside their decision envelopes and while dependencies, preconditions, affect assumptions, and coverage remain valid. A branch expires when divergence leaves its envelope, a required dependency or precondition changes, a Static Task conflict appears, affect data becomes invalid for the Plan, coverage falls below the effective threshold, or the branch passes its recorded expiry.
++
++The minimum mobile-only guarantee is the core UbU loop on one local device: preserve explicit state, show one recommended next Task or a clarification Task, explain why it matters now, honor Static Tasks and hard constraints conservatively, expose affect/staleness and coverage degradation, record user feedback in Logs, and run local repair for the current or next Task. Mobile may use coarser granularity, shallower branch coverage, reduced analysis depth, and fewer LLM-assisted features; it may not hide a mandatory external compute dependency.
+ 
+ ### 16.8 GPU-aware execution backends and privacy boundary
+ 
+diff --git a/DECISIONS.md b/DECISIONS.md
+--- a/DECISIONS.md
++++ b/DECISIONS.md
+@@ -4322,3 +4322,37 @@ The reactive branch layer may compute a small ranked suggestion set when early c
+ - Later richer maintenance automation remains compatible with ordinary Task, Objective recurrence, and planner behavior.
+ 
+ ---
++
++## UBU-D0203: Adaptive planning granularity uses explicit execution profiles
++
++**Status:** Accepted → DESIGN.md §16.7
++
++Resolved question: `UBU-Q0058`.
++
++Compact Calendar runtime chooses from configurable execution profiles. Phase 1 default presets are:
++
++- `full_detail`: 60-second delta, 3600-second reactive horizon, `0.99` branch coverage target;
++- `mobile_moderate`: 300-second delta, 3600-second reactive horizon, `0.99` branch coverage target;
++- `mobile_low_power`: 900-second delta, 1800-second reactive horizon, `0.95` branch coverage target;
++- `offline_steward`: 900-second delta, 1800-second reactive horizon, `0.95` branch coverage target, with precomputed branches and local repair metadata.
++
++The one-, five-, and fifteen-minute deltas are presets, not schema constants. Calendar policy, Device policy, user settings, and runtime conditions may override delta, horizon, coverage target, and compute budget. The effective values are stored with the compact Calendar or PlanningRequest for replay and explanation.
++
++Coarser switching is allowed for `low_battery`, `low_power_mode`, `thermal_pressure`, `offline`, `expected_offline_window`, `heavy_workload`, `user_setting`, `external_worker_unavailable`, and `compute_budget_exceeded`. Finer switching is allowed when power, temperature, connectivity, worker availability, idle time, or user settings permit it. A switch records its reason in runtime or compact Calendar metadata. If it can affect the current or next recommendation, hard feasibility, affect legitimacy, or coverage threshold result, UbU records or batches a recalculation trigger using an existing trigger kind. No new Phase 1 trigger kind is required.
++
++A coarser-profile explanation must show the active profile, switch reason, effective delta, reactive horizon, coverage target or estimate, expected loss of precision, guarantees still in force, and how the user can request more detailed planning or wait for a finer-capability backend.
++
++Known offline windows trigger precomputation when connectivity and compute are available. The precompute package should cover the declared offline window plus the current reactive horizon when feasible. It stores the default Plan, last legitimate Plan, decision envelopes, Task criticality, cached explanations, simple repair recipes, and high-probability branch materialization or reconstruction instructions up to the effective coverage target. Precomputation is bounded by battery, thermal, user, Compartment, and compute-budget policy.
++
++Cached branches expire when accepted Logs, Snapshots, External Events, elapsed time, or user actions leave their decision envelopes; when dependencies, preconditions, Static Task constraints, affect assumptions, or coverage become invalid; or when the branch passes its recorded expiry. Expiration falls back to the last legitimate Plan, local repair, clarification, or stale marking.
++
++The minimum mobile-only guarantee is the core UbU loop on one local device: explicit state, one next Task or clarification Task, explanation, conservative hard-constraint checks, affect/staleness and coverage-degradation disclosure, feedback Logs, and local repair for the current or next Task. Mobile may reduce granularity, coverage, analysis depth, and LLM-assisted features; it may not hide a mandatory external compute dependency.
++
++**Consequences:**
++
++- `UBU-Q0058` is resolved for Phase 1 runtime policy.
++- `UBU-Q0073` can define exact mobile stewardship schemas and repair recipes on top of this profile policy.
++- Low-power or offline degradation is user-visible and auditable rather than a silent quality change.
++- The default `0.99` coverage target remains normal/full-detail policy; low-power and offline profiles use explicit profile overrides.
++
++---
+diff --git a/OPEN_QUESTIONS.md b/OPEN_QUESTIONS.md
+--- a/OPEN_QUESTIONS.md
++++ b/OPEN_QUESTIONS.md
+@@ -740,37 +740,8 @@ Resolved. See UBU-D0202.
+ ---
+ 
+ ## UBU-Q0058: Adaptive planning granularity and offline precomputation policy
+-
+-Status: Open Priority: MVP important Phase: Phase 1 Decision type: Architecture Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 90 Depends on: UBU-Q0016 Blocks: Mobile-only planning, offline mode, low-power mode, Compact Calendar runtime policy Resolved by: None Last scored: 2026-05-27 Scored from commit: None
+-
+-### Question
+-
+-How should UbU choose, switch, and explain Compact Calendar time delta, branch horizon, and branch coverage settings across full-detail, mobile, low-power, and offline execution modes?
+-
+-### Subquestions
+-
+-1. Should default deltas be exactly one minute, five minutes, and fifteen minutes, or configurable presets?
+-2. What user-visible explanation is required when UbU switches to a coarser delta?
+-3. Which triggers cause dynamic execution-mode switching?
+-   - low battery
+-   - thermal throttling
+-   - offline state
+-   - expected offline window
+-   - heavy workload
+-   - user setting
+-   - missing external worker
+-4. How much precomputation should UbU run before a known offline window?
+-5. How should cached plans expire after the user's actual behavior diverges from the precomputed branch?
+-6. What is the minimum mobile-only guarantee for preserving the core UbU experience?
+-
+-### Current direction
+-
+-Provisional defaults are one-minute full-detail delta, five-minute moderate mobile delta, fifteen-minute low-power/offline delta, one-hour reactive horizon, and `0.99` short-horizon branch coverage target. Mobile-only UbU must preserve the core experience, but may use coarser granularity, shallower branch coverage, reduced analysis depth, and fewer LLM-assisted features.
+-
+-### Resolution
+-
+-Open.
+-
++Status: Solved Priority: MVP important Phase: Phase 1 Decision type: Architecture Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 90 Depends on: UBU-Q0016 Blocks: Mobile-only planning, offline mode, low-power mode, Compact Calendar runtime policy Resolved by: UBU-D0203 Last scored: 2026-05-27 Scored from commit: None
++Resolved. See UBU-D0203.
+ ---
+ 
+ ## UBU-Q0059: Execution-provider trust, worker backends, and privacy-preserving compute roadmap

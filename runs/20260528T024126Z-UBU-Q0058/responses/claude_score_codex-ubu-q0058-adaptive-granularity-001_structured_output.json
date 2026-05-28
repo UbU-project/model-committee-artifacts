@@ -1,0 +1,22 @@
+{
+  "scores": [
+    {
+      "proposal_id": "codex-ubu-q0058-adaptive-granularity-001",
+      "score": 88,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "The tombstone in OPEN_QUESTIONS.md drops the heading separator blank line before the status line, which may cause minor markdown rendering inconsistency relative to other tombstoned questions in the file.",
+        "The offline_steward and mobile_low_power profiles share identical numeric values (900s delta, 1800s horizon, 0.95 coverage) with no distinguishing runtime constraint \u2014 a future reader may not know when to prefer one over the other.",
+        "The cache-expiry rules list many independent triggers but provide no priority ordering or conflict-resolution rule when multiple triggers fire simultaneously, leaving ambiguity for implementors."
+      ],
+      "required_fixes": [],
+      "rationale": "Patch applies cleanly and is mechanically valid. It directly answers all six subquestions from UBU-Q0058: presets vs. constants (subq 1), required explanation content (subq 2), full trigger enumeration (subq 3), precompute bounds and scope (subq 4), cache expiry conditions (subq 5), and the minimum mobile-only guarantee (subq 6). The DECISIONS.md entry UBU-D0203 is well-structured with clear consequences. The DESIGN.md replacement is substantive and replaces vague provisional text with concrete, auditable policy. The OPEN_QUESTIONS.md tombstone correctly marks the question solved and references the decision record. No new schema fields, trigger kinds, or out-of-scope Phase 1 features are introduced. Minor deductions for the tombstone formatting, the indistinguishable offline_steward vs. mobile_low_power profiles, and the absence of expiry-trigger priority ordering."
+    }
+  ],
+  "selected_proposal_id": "codex-ubu-q0058-adaptive-granularity-001",
+  "selection_rationale": "The sole candidate is mechanically valid, directly resolves all six subquestions, introduces no new Phase 1 schema or trigger kinds, and produces auditable policy text in all three required files. Minor ambiguities (profile distinguishability, expiry-trigger ordering) are acceptable for a Phase 1 architecture decision that explicitly defers exact mobile schemas to UBU-Q0073."
+}

@@ -1,0 +1,22 @@
+{
+  "scores": [
+    {
+      "proposal_id": "codex-ubu-q0058-adaptive-granularity-001",
+      "score": 88,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": false,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "The cache-expiry rules list many independent triggers but provide no priority ordering or conflict-resolution rule when multiple triggers fire simultaneously, leaving ambiguity for implementors.",
+        "The offline_steward and mobile_low_power profiles share identical numeric values (900s delta, 1800s horizon, 0.95 coverage) with no distinguishing runtime constraint \u2014 a future reader may not know when to prefer one over the other.",
+        "The tombstone in OPEN_QUESTIONS.md drops the heading separator blank line before the status line, which may cause minor markdown rendering inconsistency relative to other tombstoned questions in the file."
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 1 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "codex-ubu-q0058-adaptive-granularity-001",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}
