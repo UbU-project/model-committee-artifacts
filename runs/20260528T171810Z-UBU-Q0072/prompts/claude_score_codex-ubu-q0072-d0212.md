@@ -1,0 +1,240 @@
+# Model-Committee Cross-Scoring Request
+
+You are scoring candidate work proposals for the UbU `model-committee` process.
+
+Return exactly one JSON object. Do not return prose outside the JSON object.
+
+This is a v0.2 cross-score. You are not making the final selection; model-committee
+will aggregate valid cross-scores locally.
+
+Scoring provider: `claude`
+Authoring provider for the candidate proposal(s): `codex`
+
+## Selected question
+
+Question ID: `UBU-Q0072`  
+Question title: `GPU-aware planner kernels and solver selection`  
+Base commit: `4c32ab30bf18a56438bc152129a905e5f9a419b5`
+
+```markdown
+## UBU-Q0072: GPU-aware planner kernels and solver selection
+
+Status: Open Priority: MVP important Phase: Phase 1 Decision type: Process Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 90 Depends on: UBU-Q0016 Blocks: practical planner implementation, mobile/desktop/cloud execution profile Resolved by: UBU-D0166, UBU-D0167, UBU-D0168, UBU-D0169, UBU-D0170, UBU-D0171, UBU-D0172, UBU-D0173, UBU-D0174 Last scored: 2026-05-28 Scored from commit: None
+
+### Question
+
+Which parts of UbU planning should use CPU-exact logic, and which parts should use GPU-friendly search, simulation, scoring, or learned-model inference?
+
+### Subquestions
+
+1. Which solver/library candidates should be evaluated for skeleton validation, finalist validation, contradiction diagnosis, and candidate optimization?
+2. Which candidate expansion, stochastic simulation, affect scoring, and robustness scoring operations can be batched for GPU execution?
+3. What are the mobile GPU targets for Android and iOS, and what CPU fallback is required?
+4. What desktop/laptop GPU path is appropriate for power users?
+5. What cloud GPU path is appropriate for premium wide-horizon planning?
+6. How does UbU enforce the rule that GPU search may propose but exact/conservative validation must certify?
+
+### Current direction
+
+Subquestions 2, 4, and 6 are substantially resolved for Phase 1.
+
+**Subquestion 2 (GPU-batchable operations):** The four Phase 1 GPU pipeline stages are `skeleton_sampling`, `affect_legitimacy_filter`, `value_scoring`, and `monte_carlo_rollout`. Their semantic stage boundaries are specified in `PLANNING_KERNEL_CONTRACT.md`. The `affect_legitimacy_filter` stage implements only sigmoid affect-constraint evaluation, not full UbU legitimization.
+
+**Subquestion 4 (desktop/laptop GPU path):** Resolved for Phase 1. The performance target is a local desktop/laptop GPU backend using PyTorch and a typed pure-function call boundary. `MAX_PLANNING_TASKS = 256` is the Phase 1 planning window ceiling. A CPU reference path or fixture-backed deterministic path is also required for tests, CI, and contributors without GPU hardware. Future premium or wide-horizon tiers may raise the task ceiling by scalar configuration subject to memory, scenario-count, correlation-matrix, validation-cost, and backend performance limits; linear scaling is not assumed.
+
+**Subquestion 6 (CPU certifies, GPU proposes):** Resolved. The GPU engine is advisory and writes no canonical state. Hard constraint certification, provenance validation, final Plan validity, and canonical Plan commit are CPU kernel responsibilities.
+
+Subquestions 1 (solver library evaluation), 3 (mobile GPU targets), and 5 (cloud GPU path) remain open and are deferred beyond Phase 1.
+
+### Resolution
+
+Partially resolved. See `UBU-D0166`, `UBU-D0167`, `UBU-D0168`, `UBU-D0169`, `UBU-D0170`, `UBU-D0171`, `UBU-D0172`, `UBU-D0173`, `UBU-D0174`, and `PLANNING_KERNEL_CONTRACT.md`. Subquestions 1, 3, and 5 remain open.
+
+---
+
+```
+
+## Candidate proposals
+
+```json
+[
+  {
+    "proposal_id": "codex-ubu-q0072-d0212",
+    "provider_id": "codex",
+    "model_name": "gpt-5",
+    "question_id": "UBU-Q0072",
+    "base_commit": "4c32ab30bf18a56438bc152129a905e5f9a419b5",
+    "summary": "Resolve UBU-Q0072 for Phase 1 by making CPU certification mandatory, treating GPU/search/solver backends as advisory, naming optional solver-library evaluation targets, and explicitly deferring mobile and cloud GPU targets to existing later-phase questions.",
+    "rationale": "The selected question is already mostly resolved by the planning-kernel contract. This proposal closes the remaining Phase 1 ambiguity without expanding scope: no external exact solver is mandatory, built-in CPU validation remains the certification source, PyTorch GPU remains the local desktop/laptop advisory accelerator, OR-Tools/Z3/local-search are evaluation targets only, and mobile/cloud GPU specifics remain deferred without blocking Phase 1 implementation.",
+    "changed_files": [
+      "DESIGN.md",
+      "DECISIONS.md",
+      "OPEN_QUESTIONS.md",
+      "PLANNING_KERNEL_CONTRACT.md"
+    ],
+    "patch": "diff --git a/DESIGN.md b/DESIGN.md\n--- a/DESIGN.md\n+++ b/DESIGN.md\n@@ -2264,13 +2264,29 @@ For lay audiences this is well described as a stop-light model: a sequence of in\n #### 16.10.6 Correlation groups and rollout matrix\n \n Each stochastic-duration Task may carry `correlation_groups: [{group: str, strength: float}]`. In Phase 1, `strength` is a positive latent-factor loading in `[0, 1]`; negative correlations are deferred.\n \n The CPU kernel constructs a deterministic positive semi-definite correlation matrix by normalizing per-Task positive factor loadings and computing `C = L * L^T + diag(1 - row_norm(L)^2)`. Multiple shared groups combine through the dot product of normalized loading vectors. Numeric jitter may be applied for floating-point error with explicit degraded diagnostics. Silent nearest-PSD projection is not a Phase 1 semantic repair.\n \n Negative correlations are not rejected philosophically. They are deferred because signed pairwise-correlation declarations can create non-PSD matrices and confusing validation failures. Phase 2 should support anti-correlations through signed latent factors, explicit Cholesky-style parameterization, or a signed partial-correlation model.\n \n The RNG seed is an explicit required input, ensuring plan generation is reproducible for peer debugging.\n \n-See also: `UBU-D0166`, `UBU-D0167`, `UBU-D0168`, `UBU-D0169`, `UBU-D0170`, `UBU-D0171`, `UBU-D0172`, `UBU-D0173`, `UBU-D0174`, and `PLANNING_KERNEL_CONTRACT.md`.\n+#### 16.10.7 Solver selection and deferred backend targets\n+\n+Phase 1 does not require OR-Tools, Z3, CP-SAT, SMT, MaxSMT, or another external exact solver as a runtime dependency. The mandatory certification path is the built-in CPU kernel: dependency DAG validation, deterministic precondition and effect evaluation, skeleton validity, bounded contradiction diagnostics, full legitimization, hard Calendar Logic checks, provenance validation, payload-safety validation, and final Plan commit.\n+\n+Solver and library candidates are evaluation targets:\n+\n+- built-in CPU graph and precondition validator: required reference path and certification source;\n+- OR-Tools CP-SAT: optional finalist schedule-feasibility and contradiction-minimization experiment;\n+- Z3 or comparable SMT/MaxSMT: optional logical contradiction-diagnosis experiment;\n+- PyTorch or CPU local-search libraries: optional advisory candidate-optimization experiments;\n+- learned models: post-MVP advisory ranking or parameter estimation unless CPU admission certifies the output.\n+\n+Phase 1 has no mobile GPU target. The required mobile fallback is CPU stewardship for current or next Task hard checks, cached last-legitimate Plan repair, decision envelopes, and simple repair recipes; exact mobile metadata remains in `UBU-Q0073`.\n+\n+Premium or cloud GPU planning is deferred to `UBU-Q0059` and later provider work. Any future cloud backend must preserve the same typed `PlanningRequest`/`PlanningResponse` boundary, Compartment and export gating, payload minimization, provenance, and CPU certification on return.\n+\n+See also: `UBU-D0166`, `UBU-D0167`, `UBU-D0168`, `UBU-D0169`, `UBU-D0170`, `UBU-D0171`, `UBU-D0172`, `UBU-D0173`, `UBU-D0174`, `UBU-D0212`, and `PLANNING_KERNEL_CONTRACT.md`.\n \n ---\ndiff --git a/DECISIONS.md b/DECISIONS.md\n--- a/DECISIONS.md\n+++ b/DECISIONS.md\n@@ -4475,8 +4475,49 @@ Recuperative work required for legitimacy is not optional gap-filling. Meals, sl\n **Consequences:**\n \n - Candidate search can use cheap pruning without making semi-legitimization a hidden validity oracle.\n - Full legitimacy remains CPU-certified before default Plan selection.\n - Planner scoring can compare humane and brittle Plans without treating hard human-viability constraints as ordinary utility penalties.\n - Recuperative Tasks are represented through ordinary Plan support work, not as evergreen gap-fillers.\n \n ---\n+\n+## UBU-D0212: Phase 1 planner solver selection uses CPU certification\n+\n+**Status:** Accepted \u2192 DESIGN.md \u00a716.10; PLANNING_KERNEL_CONTRACT.md \u00a72\n+\n+Resolved question: `UBU-Q0072`.\n+\n+Phase 1 planner backend selection uses a mandatory CPU certification layer and optional advisory accelerators.\n+\n+Mandatory CPU responsibilities:\n+\n+- dependency DAG and topological-order validation;\n+- deterministic precondition and UniverseState effect evaluation;\n+- skeleton validity and bounded contradiction diagnostics;\n+- full legitimization and semi-legitimization admission;\n+- hard Calendar Logic validation, provenance validation, payload-safety validation, and final Plan commit.\n+\n+Advisory acceleration responsibilities:\n+\n+- PyTorch GPU execution for `skeleton_sampling`, `affect_legitimacy_filter`, `value_scoring`, and `monte_carlo_rollout`;\n+- PyTorch or CPU local-search experiments for candidate optimization and ranking;\n+- learned-model inference only as advisory candidate ranking or parameter estimation until the CPU layer admits the output.\n+\n+Solver/library candidates are evaluation targets, not Phase 1 dependencies:\n+\n+- built-in CPU graph/precondition validator: required reference path and certification source;\n+- OR-Tools CP-SAT: optional finalist schedule-feasibility and contradiction-minimization experiment;\n+- Z3 or comparable SMT/MaxSMT: optional logical contradiction-diagnosis experiment;\n+- additional local-search libraries: optional candidate-optimization experiments only.\n+\n+Phase 1 has no mobile GPU target and no cloud GPU provider target. The required mobile fallback is CPU stewardship for current/next Task hard checks, cached last-legitimate Plan repair, decision envelopes, and simple repair recipes, with exact mobile metadata deferred to `UBU-Q0073`. Premium or cloud GPU planning is deferred to `UBU-Q0059` and later provider work; any future backend must preserve the same request/response contract, Compartment/export gating, and CPU certification on return.\n+\n+No solver, GPU backend, or learned model may write canonical state or certify final validity. If optional solver output and the CPU validator disagree, the CPU validator blocks commit and records diagnostics.\n+\n+**Consequences:**\n+\n+- `UBU-Q0072` is resolved for Phase 1.\n+- Solver benchmarking becomes implementation work rather than an open design blocker.\n+- Mobile GPU, cloud GPU, and premium wide-horizon provider details remain deferred without blocking the local desktop/laptop Phase 1 backend.\n+\n+---\ndiff --git a/OPEN_QUESTIONS.md b/OPEN_QUESTIONS.md\n--- a/OPEN_QUESTIONS.md\n+++ b/OPEN_QUESTIONS.md\n@@ -1051,34 +1051,4 @@ Resolved. See UBU-D0211.\n ## UBU-Q0072: GPU-aware planner kernels and solver selection\n-\n-Status: Open Priority: MVP important Phase: Phase 1 Decision type: Process Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 90 Depends on: UBU-Q0016 Blocks: practical planner implementation, mobile/desktop/cloud execution profile Resolved by: UBU-D0166, UBU-D0167, UBU-D0168, UBU-D0169, UBU-D0170, UBU-D0171, UBU-D0172, UBU-D0173, UBU-D0174 Last scored: 2026-05-28 Scored from commit: None\n-\n-### Question\n-\n-Which parts of UbU planning should use CPU-exact logic, and which parts should use GPU-friendly search, simulation, scoring, or learned-model inference?\n-\n-### Subquestions\n-\n-1. Which solver/library candidates should be evaluated for skeleton validation, finalist validation, contradiction diagnosis, and candidate optimization?\n-2. Which candidate expansion, stochastic simulation, affect scoring, and robustness scoring operations can be batched for GPU execution?\n-3. What are the mobile GPU targets for Android and iOS, and what CPU fallback is required?\n-4. What desktop/laptop GPU path is appropriate for power users?\n-5. What cloud GPU path is appropriate for premium wide-horizon planning?\n-6. How does UbU enforce the rule that GPU search may propose but exact/conservative validation must certify?\n-\n-### Current direction\n-\n-Subquestions 2, 4, and 6 are substantially resolved for Phase 1.\n-\n-**Subquestion 2 (GPU-batchable operations):** The four Phase 1 GPU pipeline stages are `skeleton_sampling`, `affect_legitimacy_filter`, `value_scoring`, and `monte_carlo_rollout`. Their semantic stage boundaries are specified in `PLANNING_KERNEL_CONTRACT.md`. The `affect_legitimacy_filter` stage implements only sigmoid affect-constraint evaluation, not full UbU legitimization.\n-\n-**Subquestion 4 (desktop/laptop GPU path):** Resolved for Phase 1. The performance target is a local desktop/laptop GPU backend using PyTorch and a typed pure-function call boundary. `MAX_PLANNING_TASKS = 256` is the Phase 1 planning window ceiling. A CPU reference path or fixture-backed deterministic path is also required for tests, CI, and contributors without GPU hardware. Future premium or wide-horizon tiers may raise the task ceiling by scalar configuration subject to memory, scenario-count, correlation-matrix, validation-cost, and backend performance limits; linear scaling is not assumed.\n-\n-**Subquestion 6 (CPU certifies, GPU proposes):** Resolved. The GPU engine is advisory and writes no canonical state. Hard constraint certification, provenance validation, final Plan validity, and canonical Plan commit are CPU kernel responsibilities.\n-\n-Subquestions 1 (solver library evaluation), 3 (mobile GPU targets), and 5 (cloud GPU path) remain open and are deferred beyond Phase 1.\n-\n-### Resolution\n-\n-Partially resolved. See `UBU-D0166`, `UBU-D0167`, `UBU-D0168`, `UBU-D0169`, `UBU-D0170`, `UBU-D0171`, `UBU-D0172`, `UBU-D0173`, `UBU-D0174`, and `PLANNING_KERNEL_CONTRACT.md`. Subquestions 1, 3, and 5 remain open.\n-\n+Status: Solved Priority: MVP important Phase: Phase 1 Decision type: Process Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 90 Depends on: UBU-Q0016 Blocks: practical planner implementation, mobile/desktop/cloud execution profile Resolved by: UBU-D0212 Last scored: 2026-05-28 Scored from commit: None\n+Resolved. See UBU-D0212.\n ---\ndiff --git a/PLANNING_KERNEL_CONTRACT.md b/PLANNING_KERNEL_CONTRACT.md\n--- a/PLANNING_KERNEL_CONTRACT.md\n+++ b/PLANNING_KERNEL_CONTRACT.md\n@@ -94,5 +94,7 @@\n ### Deferred fields\n \n The Phase 1 contract deliberately defers mobile GPU targets, cloud GPU provider metadata, encrypted-compute metadata, cross-user coordination payloads, realtime stream state, and premium wide-horizon planning-provider negotiation. These may be added later without changing the Phase 1 CPU/GPU authority boundary.\n+\n+Solver/library identity is not part of `PlanningRequest`. Optional OR-Tools, SMT/MaxSMT, local-search, mobile GPU, cloud GPU, or learned-model backends must preserve this request/response contract and remain advisory until CPU certification.\n \n ---\n",
+    "commit_message": "Resolve UBU-Q0072 planner solver selection",
+    "validation_notes": [
+      "Patch validates with git apply --check against base commit 4c32ab30bf18a56438bc152129a905e5f9a419b5.",
+      "Tombstones UBU-Q0072 and adds UBU-D0212 as the closing Phase 1 decision.",
+      "No new questions are added; mobile stewardship remains under UBU-Q0073 and external/cloud execution policy remains under UBU-Q0059."
+    ],
+    "new_questions_added": [],
+    "questions_resolved": [
+      "UBU-Q0072"
+    ],
+    "decisions_added": [
+      "UBU-D0212"
+    ],
+    "requires_human_review": true
+  }
+]
+```
+
+## Mechanical validation results
+
+```json
+[
+  {
+    "proposal_id": "codex-ubu-q0072-d0212",
+    "patch_applies": true,
+    "allowlist_passed": true,
+    "changed_files": [
+      "DECISIONS.md",
+      "DESIGN.md",
+      "OPEN_QUESTIONS.md",
+      "PLANNING_KERNEL_CONTRACT.md"
+    ],
+    "error": null,
+    "normalized_patch": null,
+    "warnings": [],
+    "ordinary_error": null,
+    "recount_error": null,
+    "normalization_error": null
+  }
+]
+```
+
+## Provider weights
+
+Provider weights are historical diagnostic context only in v0.2. Do not use
+self-trust or author identity as score evidence.
+
+```json
+{}
+```
+
+## JSON Schema
+
+Your output must satisfy this schema:
+
+```json
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "scores",
+    "selected_proposal_id",
+    "selection_rationale"
+  ],
+  "properties": {
+    "scores": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "proposal_id",
+          "score",
+          "patch_applies",
+          "implements_selected_work",
+          "preserves_question_schema",
+          "avoids_unnecessary_scope",
+          "decomposition_quality",
+          "risks",
+          "required_fixes",
+          "rationale"
+        ],
+        "properties": {
+          "proposal_id": {
+            "type": "string"
+          },
+          "score": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "patch_applies": {
+            "type": "boolean"
+          },
+          "implements_selected_work": {
+            "type": "boolean"
+          },
+          "preserves_question_schema": {
+            "type": "boolean"
+          },
+          "avoids_unnecessary_scope": {
+            "type": "boolean"
+          },
+          "decomposition_quality": {
+            "type": "string",
+            "enum": [
+              "none",
+              "good",
+              "bad",
+              "not_applicable"
+            ]
+          },
+          "risks": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "required_fixes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "rationale": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "selected_proposal_id": {
+      "type": "string"
+    },
+    "selection_rationale": {
+      "type": "string"
+    }
+  }
+}
+```
+
+## Scoring requirements
+
+Score each proposal from 0 to 100.
+
+Consider:
+
+- whether the patch applies cleanly;
+- whether it implements the selected work;
+- whether it preserves the question schema;
+- whether it avoids unnecessary scope;
+- whether it modifies only allowed files;
+- whether it creates useful decomposition if decomposition occurs;
+- whether it introduces new risks;
+- whether required fixes remain.
+
+Rules:
+
+- Score every proposal in this prompt.
+- `selected_proposal_id` must refer to one scored proposal from this prompt.
+- Manual override is not allowed in v0.2.
+- Prefer a patch that is valid, minimal, auditable, and directly responsive.
+- Do not select a proposal whose patch failed mechanical validation.
+- Do not score your own provider's proposal unless explicitly asked for diagnostic self-score.
+
+Return only JSON.

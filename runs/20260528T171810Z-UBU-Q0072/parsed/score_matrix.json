@@ -1,0 +1,24 @@
+[
+  {
+    "proposal_id": "codex-ubu-q0072-d0212",
+    "author_provider": "codex",
+    "scorer_provider": "claude",
+    "score": 87,
+    "valid": true,
+    "rationale": "Patch applies cleanly and is mechanically valid. It correctly closes the Phase 1 scope of UBU-Q0072 by formalising the CPU-certifies/GPU-proposes authority boundary, adding UBU-D0212 as a closing decision, updating DESIGN.md \u00a716.10.7, and extending PLANNING_KERNEL_CONTRACT.md with the solver-identity deferral note. The tombstone in OPEN_QUESTIONS.md is terse but acceptable. The decision record is well-structured with mandatory vs advisory split and explicit consequences. No new open questions are added and deferred items (mobile, cloud) are correctly pointed to existing questions (UBU-Q0073, UBU-Q0059). Minor concern: the tombstone says 'Solved' where the question had subquestions 1, 3, 5 still open; 'Partially resolved' with explicit forward pointers would be more accurate, but this is editorial rather than a blocking defect.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [
+      "OPEN_QUESTIONS.md tombstone collapses the full question body to a single line, losing subquestion text that could aid future Phase 2 work on Q1/Q3/Q5",
+      "Solver evaluation targets (OR-Tools, Z3) listed in DESIGN.md and DECISIONS.md are advisory-only but naming them may create implicit expectation pressure in later phases",
+      "UBU-D0212 marks UBU-Q0072 as fully 'Solved' in the tombstone while subquestions 1, 3, and 5 remain open per the question itself; the tombstone should reflect partial resolution or cross-reference those open subquestions explicitly"
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20260528T171810Z-UBU-Q0072/responses/claude_score_codex-ubu-q0072-d0212_stdout.json",
+      "stderr_path": null
+    }
+  }
+]

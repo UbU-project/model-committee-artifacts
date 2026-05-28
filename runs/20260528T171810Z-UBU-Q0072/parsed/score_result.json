@@ -1,0 +1,22 @@
+{
+  "scores": [
+    {
+      "proposal_id": "codex-ubu-q0072-d0212",
+      "score": 87,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": false,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "OPEN_QUESTIONS.md tombstone collapses the full question body to a single line, losing subquestion text that could aid future Phase 2 work on Q1/Q3/Q5",
+        "Solver evaluation targets (OR-Tools, Z3) listed in DESIGN.md and DECISIONS.md are advisory-only but naming them may create implicit expectation pressure in later phases",
+        "UBU-D0212 marks UBU-Q0072 as fully 'Solved' in the tombstone while subquestions 1, 3, and 5 remain open per the question itself; the tombstone should reflect partial resolution or cross-reference those open subquestions explicitly"
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 1 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "codex-ubu-q0072-d0212",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}
