@@ -1,0 +1,22 @@
+{
+  "scores": [
+    {
+      "proposal_id": "codex-ubu-q0071-legitimization-cost-model",
+      "score": 88,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "legitimacy_delta_estimate in PLANNING_KERNEL_CONTRACT.md is typed as 'optional numeric' with no explicit units or normalization reference, which may create ambiguity for implementors comparing across Plans with different value scales",
+        "The semi-legitimization result enum (passes_cheap_checks, reject_obvious, needs_full_legitimization) is defined inline in two places (DESIGN.md and PLANNING_KERNEL_CONTRACT.md) without a shared type definition, creating a minor divergence risk if one is updated independently",
+        "The condition under which a brittle Plan may beat a humane Plan lists five pass criteria but does not specify whether all five must be satisfied simultaneously or whether they form a priority-ordered checklist, leaving room for inconsistent implementation interpretations"
+      ],
+      "required_fixes": [],
+      "rationale": "The patch cleanly resolves all five subquestions of UBU-Q0071. DESIGN.md \u00a715.2.2 now defines the cost boundary (finalist oracle vs. cheap pruning), names the six MVP semi-legitimization heuristics, establishes legitimacy as both binary (validity gate) and graded (advisory ranking), specifies when a brittle Plan may displace a humane Plan, and re-classifies recuperative support as protected ordinary Tasks rather than gap-filling. DECISIONS.md adds UBU-D0211 with full consequence enumeration. OPEN_QUESTIONS.md converts UBU-Q0071 to a compact solved tombstone in the expected format. PLANNING_KERNEL_CONTRACT.md adds a concrete semi_legitimization_summary schema. All changes are scoped to the four relevant canonical files and no new open questions are introduced. Minor risks around enum definition duplication and underspecified numeric field semantics do not require fixes before selection."
+    }
+  ],
+  "selected_proposal_id": "codex-ubu-q0071-legitimization-cost-model",
+  "selection_rationale": "Only one proposal is present and it passes all mechanical checks. It directly and completely addresses all five subquestions of UBU-Q0071 with minimal scope, auditable diffs, and a concrete contract addition. No required fixes prevent selection."
+}

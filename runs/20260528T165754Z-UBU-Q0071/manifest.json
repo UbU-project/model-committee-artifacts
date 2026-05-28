@@ -1,0 +1,151 @@
+{
+  "schema_version": "0.3",
+  "run_id": "20260528T165754Z-UBU-Q0071",
+  "created_at_utc": "2026-05-28T16:57:54Z",
+  "repo_path": "../ubu-design",
+  "base_commit": "b2a846b0205508fd94fe9750b42ff1d4e381c57a",
+  "selected_question_id": "UBU-Q0071",
+  "phase": "work-select",
+  "config_path": "config/models.json",
+  "status": "selected",
+  "commands": [
+    "model-committee run-loop"
+  ],
+  "providers_attempted": [
+    "codex",
+    "claude"
+  ],
+  "providers_succeeded": [
+    "codex",
+    "claude"
+  ],
+  "providers_failed": [],
+  "provider_attempts": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-score",
+      "target_proposal_id": "codex-ubu-q0071-legitimization-cost-model",
+      "response_path": "runs/20260528T165754Z-UBU-Q0071/responses/codex_score_codex-ubu-q0071-legitimization-cost-model_response.json",
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "sonnet",
+      "phase": "work-score",
+      "target_proposal_id": "codex-ubu-q0071-legitimization-cost-model",
+      "response_path": "runs/20260528T165754Z-UBU-Q0071/responses/claude_score_codex-ubu-q0071-legitimization-cost-model_stdout.json",
+      "stderr_path": null
+    }
+  ],
+  "provider_successes": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20260528T165754Z-UBU-Q0071/parsed/codex_work_proposal.json"
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-score",
+      "target_proposal_id": "codex-ubu-q0071-legitimization-cost-model",
+      "response_path": "runs/20260528T165754Z-UBU-Q0071/responses/codex_score_codex-ubu-q0071-legitimization-cost-model_response.json",
+      "parsed_path": "runs/20260528T165754Z-UBU-Q0071/parsed/codex_score_codex-ubu-q0071-legitimization-cost-model_result.json"
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "sonnet",
+      "phase": "work-score",
+      "target_proposal_id": "codex-ubu-q0071-legitimization-cost-model",
+      "response_path": "runs/20260528T165754Z-UBU-Q0071/responses/claude_score_codex-ubu-q0071-legitimization-cost-model_stdout.json",
+      "parsed_path": "runs/20260528T165754Z-UBU-Q0071/parsed/claude_score_codex-ubu-q0071-legitimization-cost-model_result.json"
+    }
+  ],
+  "provider_failures": [],
+  "score_matrix": [
+    {
+      "proposal_id": "codex-ubu-q0071-legitimization-cost-model",
+      "author_provider": "openai-codex",
+      "scorer_provider": "codex",
+      "score": 90,
+      "valid": true,
+      "rationale": "The proposal directly resolves all five subquestions with a minimal decision, design update, solved-question tombstone, and contract extension. It preserves the baseline feasible Plan concept, keeps hard legitimacy as the validity gate, treats graded legitimacy as advisory, identifies a sufficient MVP semi-legitimization heuristic set, and protects recuperative work from being treated as optional gap filling. Scope is limited to canonical planning documents and the mechanical validation passes.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "The cost model is qualitative rather than measured; it defines when full legitimization runs but does not add concrete complexity bounds or instrumentation requirements.",
+        "PLANNING_KERNEL_CONTRACT.md only adds the semi-legitimization summary fields, while some newly named full-legitimization outputs such as protected support refs and legitimacy margins may need later schema tightening."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20260528T165754Z-UBU-Q0071/responses/codex_score_codex-ubu-q0071-legitimization-cost-model_response.json",
+        "stderr_path": null
+      }
+    },
+    {
+      "proposal_id": "codex-ubu-q0071-legitimization-cost-model",
+      "author_provider": "openai-codex",
+      "scorer_provider": "claude",
+      "score": 88,
+      "valid": true,
+      "rationale": "The patch cleanly resolves all five subquestions of UBU-Q0071. DESIGN.md \u00a715.2.2 now defines the cost boundary (finalist oracle vs. cheap pruning), names the six MVP semi-legitimization heuristics, establishes legitimacy as both binary (validity gate) and graded (advisory ranking), specifies when a brittle Plan may displace a humane Plan, and re-classifies recuperative support as protected ordinary Tasks rather than gap-filling. DECISIONS.md adds UBU-D0211 with full consequence enumeration. OPEN_QUESTIONS.md converts UBU-Q0071 to a compact solved tombstone in the expected format. PLANNING_KERNEL_CONTRACT.md adds a concrete semi_legitimization_summary schema. All changes are scoped to the four relevant canonical files and no new open questions are introduced. Minor risks around enum definition duplication and underspecified numeric field semantics do not require fixes before selection.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "legitimacy_delta_estimate in PLANNING_KERNEL_CONTRACT.md is typed as 'optional numeric' with no explicit units or normalization reference, which may create ambiguity for implementors comparing across Plans with different value scales",
+        "The semi-legitimization result enum (passes_cheap_checks, reject_obvious, needs_full_legitimization) is defined inline in two places (DESIGN.md and PLANNING_KERNEL_CONTRACT.md) without a shared type definition, creating a minor divergence risk if one is updated independently",
+        "The condition under which a brittle Plan may beat a humane Plan lists five pass criteria but does not specify whether all five must be satisfied simultaneously or whether they form a priority-ordered checklist, leaving room for inconsistent implementation interpretations"
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20260528T165754Z-UBU-Q0071/responses/claude_score_codex-ubu-q0071-legitimization-cost-model_stdout.json",
+        "stderr_path": null
+      }
+    }
+  ],
+  "score_aggregates": [
+    {
+      "proposal_id": "codex-ubu-q0071-legitimization-cost-model",
+      "author_provider": "openai-codex",
+      "cross_score_count": 2,
+      "score_mean": 89.0,
+      "score_spread": 2,
+      "frontier_score_gap": 2,
+      "disagreement_flags": []
+    }
+  ],
+  "cross_score_count": 2,
+  "score_mean": 89.0,
+  "score_spread": 2,
+  "frontier_score_gap": 2,
+  "disagreement_flags": [],
+  "quorum_result": {
+    "valid": true,
+    "human_review_required": false,
+    "selected_proposal_id": "codex-ubu-q0071-legitimization-cost-model",
+    "selected_score": 89.0,
+    "selected_cross_score_count": 2,
+    "blocked_reasons": [],
+    "manual_override": false
+  },
+  "selected_proposal_id": "codex-ubu-q0071-legitimization-cost-model",
+  "automated_selection_valid": true,
+  "human_review_required": false,
+  "artifact_publication_status": "operator_pending",
+  "prompt_size_warning": true
+}

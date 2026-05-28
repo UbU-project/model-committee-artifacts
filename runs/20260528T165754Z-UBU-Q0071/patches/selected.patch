@@ -1,0 +1,127 @@
+diff --git a/DESIGN.md b/DESIGN.md
+--- a/DESIGN.md
++++ b/DESIGN.md
+@@ -1973,7 +1973,7 @@
+ 
+ After skeletonization, UbU performs **legitimization**. Legitimization adds the minimum human-viability constraints and support Tasks needed to make the skeleton Plan plausibly executable by the user. Examples include affect constraints, breaks, recovery Tasks, meals, sleep, transition buffers, setup/teardown time, context-switch limits, and basic sustainability requirements.
+ 
+-The legitimized skeleton Plan is the baseline feasible Plan. Optional Dynamic Tasks, gap-filling work, and richer candidate Plans are compared against it by value, risk, fragility, and user-fit. If full legitimization is cheap, it may be used directly while testing candidate Plans. If it is expensive, UbU should use semi-legitimization heuristics before invoking full legitimization on finalists.
++The legitimized skeleton Plan is the baseline feasible Plan. Phase 1 treats full legitimization as a finalist oracle: it runs for the baseline and for the small finalist set selected after cheap pruning, not inside every high-fan-out candidate-construction step unless measurements show it is cheap enough. Semi-legitimization is a conservative cheap filter and ranking signal. It may reject obvious legitimacy failures, but uncertain candidates must reach full legitimization before becoming the default Plan.
+ 
+ Minimum skeleton Plan representation records:
+ 
+@@ -1996,9 +1996,15 @@
+ 
+ A skeleton failure becomes an immediate blocking prompt when it prevents any valid baseline for the current Calendar, current or next recommended Task, a Static Task placement, a hard dependency or precondition, deadline feasibility, or a required Resource or External Event. It may remain a normal planning warning only when a valid skeleton exists and the failed chain is outside the current recommendation path or future horizon, in which case UbU records the diagnostic and marks the relevant Calendar, explanation, or risk report stale.
+ 
+-Legitimization records the constraints it enforced and any support Tasks or buffers it inserted. The minimum legitimization output includes affect limits in `user_mode`, recovery, breaks, meals, sleep, rest, transition buffers, setup and teardown time, context-switch limits, slack thresholds, dependency-fragility thresholds, and a threshold result of `passed`, `failed`, or `needs_clarification`.
+-
+-After legitimization, the minimum candidate Plan representation includes materialized Task placements, decision envelopes for movable Tasks, Plan probability metadata, value score, legitimacy threshold result or score, hard-validation status, and explanation lineage back to Objectives, dependencies, preconditions, affect constraints, worker status, risk findings, and probability inputs.
++Full legitimization records the constraints it enforced and any support Tasks or buffers it inserted. Its hard result is `passed`, `failed`, or `needs_clarification`. Graded fields such as `legitimacy_score`, `legitimacy_margin`, and `legitimacy_delta_from_baseline` are advisory comparison signals, not permission to violate hard legitimacy.
++
++The Phase 1 semi-legitimization heuristic set is affect budget, slack preservation, dependency fragility, user-mode compatibility, local repair viability, and legitimacy-delta estimate. Semi-legitimization returns `passes_cheap_checks`, `reject_obvious`, or `needs_full_legitimization`; it is not sufficient to certify a default Plan.
++
++A higher-value brittle Plan may beat a lower-value humane Plan only when it passes full legitimization, preserves minimum slack and repair envelopes, avoids destructive pressure, and does not leave the user in a worse post-plan state. Otherwise the lower-value humane Plan, or the legitimized skeleton baseline, remains the default.
++
++Recuperative support required for legitimacy is not gap-filling. Meals, sleep, rest, breaks, recovery, setup/teardown, transition buffers, affect collection, and checkpoint work inserted or protected by legitimization are ordinary Tasks or buffers with explanation lineage and protected criticality. They are placed before optional Dynamic Tasks and before `gap_fill_policy` suggestions; crowding them out invalidates or degrades the candidate.
++
++After legitimization, the minimum candidate Plan representation includes materialized Task placements, decision envelopes for movable Tasks, Plan probability metadata, value score, semi-legitimization summary when used, full legitimacy result or score, hard-validation status, protected support refs, and explanation lineage back to Objectives, dependencies, preconditions, affect constraints, worker status, risk findings, and probability inputs.
+ 
+ ### 15.2.3 Planning horizon and early preparation
+ 
+diff --git a/DECISIONS.md b/DECISIONS.md
+--- a/DECISIONS.md
++++ b/DECISIONS.md
+@@ -4444,3 +4444,39 @@
+ - Implementations can validate failure handling through the `SkeletonFailureDiagnostic` payload in `PLANNING_KERNEL_CONTRACT.md`.
+ 
+ ---
++
++## UBU-D0211: Semi-legitimization prunes candidates before full legitimacy validation
++
++**Status:** Accepted → DESIGN.md §15.2.2; PLANNING_KERNEL_CONTRACT.md §4
++
++Resolved question: `UBU-Q0071`.
++
++Phase 1 treats full legitimization as a finalist oracle. Full legitimization must run for the legitimized skeleton baseline and for any Plan that can become the default Plan. It does not run inside every high-fan-out candidate-construction step unless implementation measurements show it is cheap enough.
++
++Full legitimization includes exact or conservative validation of Calendar Logic, dependencies, preconditions, affect limits in `user_mode`, required recovery, breaks, meals, sleep, rest, transition buffers, setup and teardown time, context-switch limits, slack thresholds, dependency-fragility thresholds, support Task or buffer insertion, and user-facing diagnostics.
++
++Semi-legitimization is the cheap prevalidation layer. The MVP heuristic set is sufficient:
++
++- affect budget;
++- slack preservation;
++- dependency fragility;
++- user-mode compatibility;
++- local repair viability;
++- legitimacy-delta estimate against the legitimized skeleton baseline.
++
++Semi-legitimization returns `passes_cheap_checks`, `reject_obvious`, or `needs_full_legitimization`. It may prune obvious failures and rank candidates, but it cannot certify a default Plan. Any uncertain or selected candidate requires full legitimization before default selection.
++
++Legitimacy is both binary and graded. Binary legitimacy is the validity gate: `passed`, `failed`, or `needs_clarification`. Graded legitimacy fields such as `legitimacy_score`, `legitimacy_margin`, and `legitimacy_delta_from_baseline` are advisory ranking and explanation signals only.
++
++A high-value brittle Plan may beat a lower-value humane Plan only after full legitimization passes and minimum slack, local repair envelope, affect margin, destructive-pressure, and post-plan-state checks pass. Objective value cannot buy down hard legitimacy failure. If no richer candidate clears that bar, the default remains the lower-value humane finalist or the legitimized skeleton baseline.
++
++Recuperative work required for legitimacy is not optional gap-filling. Meals, sleep, rest, breaks, recovery, setup/teardown, transition buffers, affect collection, and checkpoint work inserted or protected by legitimization are ordinary Tasks or buffers with explanation lineage, protected criticality, and support refs. Optional `gap_fill_policy` suggestions are considered only after that support work is protected.
++
++**Consequences:**
++
++- Candidate search can use cheap pruning without making semi-legitimization a hidden validity oracle.
++- Full legitimacy remains CPU-certified before default Plan selection.
++- Planner scoring can compare humane and brittle Plans without treating hard human-viability constraints as ordinary utility penalties.
++- Recuperative Tasks are represented through ordinary Plan support work, not as evergreen gap-fillers.
++
++---
+diff --git a/OPEN_QUESTIONS.md b/OPEN_QUESTIONS.md
+--- a/OPEN_QUESTIONS.md
++++ b/OPEN_QUESTIONS.md
+@@ -1041,29 +1041,8 @@
+ ---
+ 
+ ## UBU-Q0071: Legitimization and semi-legitimization cost model
+-
+-Status: Open Priority: MVP important Phase: Phase 1 Decision type: Process Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 90 Depends on: UBU-Q0016, UBU-Q0053 Blocks: realistic candidate Plan search Resolved by: None Last scored: 2026-05-28 Scored from commit: None
+-
+-### Question
+-
+-How expensive is full legitimization, and what semi-legitimization heuristics are needed before full candidate validation?
+-
+-### Subquestions
+-
+-1. Which constraints belong to full legitimization versus cheap semi-legitimization?
+-2. Are affect budget, slack preservation, dependency fragility, user-mode compatibility, local repair, and legitimacy-delta estimates sufficient for MVP?
+-3. Is legitimacy binary, graded, or both?
+-4. How does the planner compare a high-value but brittle Plan against a lower-value but more humane Plan?
+-5. How are recuperative Tasks represented when they are required for Plan legitimacy rather than optional gap-filling?
+-
+-### Current direction
+-
+-The legitimized skeleton Plan is the baseline feasible Plan. If full legitimization is cheap, it can be used as a frequent validity oracle. If expensive, UbU needs approximate semi-legitimization before full validation of finalists.
+-
+-### Resolution
+-
+-Open.
+-
++Status: Solved Priority: MVP important Phase: Phase 1 Decision type: Process Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 90 Depends on: UBU-Q0016, UBU-Q0053 Blocks: realistic candidate Plan search Resolved by: UBU-D0211 Last scored: 2026-05-28 Scored from commit: None
++Resolved. See UBU-D0211.
+ ---
+ 
+ ## UBU-Q0072: GPU-aware planner kernels and solver selection
+diff --git a/PLANNING_KERNEL_CONTRACT.md b/PLANNING_KERNEL_CONTRACT.md
+--- a/PLANNING_KERNEL_CONTRACT.md
++++ b/PLANNING_KERNEL_CONTRACT.md
+@@ -242,6 +242,14 @@
+   - `affect_feasible`: boolean.
+   - `minimum_affect_score`.
+   - `violated_affect_dimensions`.
++- `semi_legitimization_summary`: optional cheap prevalidation summary:
++  - `result`: enum, one of `passes_cheap_checks`, `reject_obvious`, `needs_full_legitimization`.
++  - `affect_budget_ok`: optional boolean.
++  - `slack_preserved`: optional boolean.
++  - `dependency_fragility_ok`: optional boolean.
++  - `user_mode_compatible`: optional boolean.
++  - `local_repair_viable`: optional boolean.
++  - `legitimacy_delta_estimate`: optional numeric estimate relative to the legitimized skeleton baseline.
+ - `probability_summary`:
+   - `display_probability`: optional scalar.
+   - `log_probability`: optional numeric value for stable computation.

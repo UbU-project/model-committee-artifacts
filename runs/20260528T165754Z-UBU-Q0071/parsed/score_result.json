@@ -1,0 +1,24 @@
+{
+  "scores": [
+    {
+      "proposal_id": "codex-ubu-q0071-legitimization-cost-model",
+      "score": 89,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": false,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "PLANNING_KERNEL_CONTRACT.md only adds the semi-legitimization summary fields, while some newly named full-legitimization outputs such as protected support refs and legitimacy margins may need later schema tightening.",
+        "The condition under which a brittle Plan may beat a humane Plan lists five pass criteria but does not specify whether all five must be satisfied simultaneously or whether they form a priority-ordered checklist, leaving room for inconsistent implementation interpretations",
+        "The cost model is qualitative rather than measured; it defines when full legitimization runs but does not add concrete complexity bounds or instrumentation requirements.",
+        "The semi-legitimization result enum (passes_cheap_checks, reject_obvious, needs_full_legitimization) is defined inline in two places (DESIGN.md and PLANNING_KERNEL_CONTRACT.md) without a shared type definition, creating a minor divergence risk if one is updated independently",
+        "legitimacy_delta_estimate in PLANNING_KERNEL_CONTRACT.md is typed as 'optional numeric' with no explicit units or normalization reference, which may create ambiguity for implementors comparing across Plans with different value scales"
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "codex-ubu-q0071-legitimization-cost-model",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}
