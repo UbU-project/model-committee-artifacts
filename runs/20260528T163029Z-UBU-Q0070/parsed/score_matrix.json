@@ -1,0 +1,23 @@
+[
+  {
+    "proposal_id": "codex-ubu-q0070-skeleton-diagnostics-d0210",
+    "author_provider": "codex",
+    "scorer_provider": "claude",
+    "score": 88,
+    "valid": true,
+    "rationale": "The patch cleanly applies and fully addresses all four subquestions of UBU-Q0070: all eight MVP failure classes are enumerated, the explanation budget (three causal-chain steps default, full detail via inspector) is specified, nine safe alternatives are listed with explicit prohibition on inventing canonical resources, and the blocking-vs-warning policy is clearly defined. The SkeletonFailureDiagnostic schema in PLANNING_KERNEL_CONTRACT.md is well-bounded and actionable for implementers. DESIGN.md additions are minimal and well-scoped. The OPEN_QUESTIONS.md tombstone correctly updates status, resolved-by, and collapses the body while preserving the metadata line. DECISIONS.md entry UBU-D0210 is well-structured with consequences noted. The only minor concern is the section reference '\u00a715.2.2' in DECISIONS.md, which is unverifiable without seeing DESIGN.md section numbering.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [
+      "DECISIONS.md references 'DESIGN.md \u00a715.2.2' but the patch does not show section headers being renumbered or confirmed; if DESIGN.md sections shift, this pointer will be stale.",
+      "SkeletonFailureDiagnostic is defined in PKC with a fixed field list; future questions about optional vs required fields or versioning may conflict with this schema definition."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20260528T163029Z-UBU-Q0070/responses/claude_score_codex-ubu-q0070-skeleton-diagnostics-d0210_stdout.json",
+      "stderr_path": null
+    }
+  }
+]

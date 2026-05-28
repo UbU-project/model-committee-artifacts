@@ -1,0 +1,21 @@
+{
+  "scores": [
+    {
+      "proposal_id": "codex-ubu-q0070-skeleton-diagnostics-d0210",
+      "score": 88,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": false,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "DECISIONS.md references 'DESIGN.md \u00a715.2.2' but the patch does not show section headers being renumbered or confirmed; if DESIGN.md sections shift, this pointer will be stale.",
+        "SkeletonFailureDiagnostic is defined in PKC with a fixed field list; future questions about optional vs required fields or versioning may conflict with this schema definition."
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 1 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "codex-ubu-q0070-skeleton-diagnostics-d0210",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}
