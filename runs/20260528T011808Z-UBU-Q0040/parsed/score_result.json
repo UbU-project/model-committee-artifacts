@@ -1,0 +1,22 @@
+{
+  "scores": [
+    {
+      "proposal_id": "codex-ubu-q0040-d0199",
+      "score": 88,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": false,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Lineage metadata (Decomposes: UBU-Qxxxx) is deferred until parser support exists; in the interim, parent questions remain open, which means the rule has a gap during which decomposition lineage is tracked only informally.",
+        "The burden-component list (dependency, ambiguity, automation, implementation) is defined in prose but has no quantitative weights or normalization rules, leaving scoring open to interpretation until future parser or tooling work lands.",
+        "UBU-D0068 was listed as a prior partial resolution in the original question header; the patch replaces it with UBU-D0199 in the tombstone without explicitly stating D0068 is superseded, which may create ambiguity in the decision log."
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 1 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "codex-ubu-q0040-d0199",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}

@@ -1,0 +1,114 @@
+{
+  "schema_version": "0.3",
+  "run_id": "20260528T011808Z-UBU-Q0040",
+  "created_at_utc": "2026-05-28T01:18:08Z",
+  "repo_path": "../ubu-design",
+  "base_commit": "2775280826b20e1f0f3da48fb8afc450b76ff159",
+  "selected_question_id": "UBU-Q0040",
+  "phase": "work-select",
+  "config_path": "config/models.json",
+  "status": "selected",
+  "commands": [
+    "model-committee run-loop"
+  ],
+  "providers_attempted": [
+    "codex",
+    "claude"
+  ],
+  "providers_succeeded": [
+    "codex",
+    "claude"
+  ],
+  "providers_failed": [],
+  "provider_attempts": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "sonnet",
+      "phase": "work-score",
+      "target_proposal_id": "codex-ubu-q0040-d0199",
+      "response_path": "runs/20260528T011808Z-UBU-Q0040/responses/claude_score_codex-ubu-q0040-d0199_stdout.json",
+      "stderr_path": null
+    }
+  ],
+  "provider_successes": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20260528T011808Z-UBU-Q0040/parsed/codex_work_proposal.json"
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "sonnet",
+      "phase": "work-score",
+      "target_proposal_id": "codex-ubu-q0040-d0199",
+      "response_path": "runs/20260528T011808Z-UBU-Q0040/responses/claude_score_codex-ubu-q0040-d0199_stdout.json",
+      "parsed_path": "runs/20260528T011808Z-UBU-Q0040/parsed/claude_score_codex-ubu-q0040-d0199_result.json"
+    }
+  ],
+  "provider_failures": [],
+  "score_matrix": [
+    {
+      "proposal_id": "codex-ubu-q0040-d0199",
+      "author_provider": "codex",
+      "scorer_provider": "claude",
+      "score": 88,
+      "valid": true,
+      "rationale": "The patch cleanly applies and directly addresses all 12 subquestions in UBU-Q0040. DESIGN.md \u00a73.6 gains a concrete definition of design burden with four named components and distinguishes valid from invalid decomposition. \u00a73.7 gains the hard-gate / decomposition-path distinction that answers subquestion 12. DECISIONS.md adds UBU-D0199 with full consequence enumeration. OPEN_QUESTIONS.md converts Q0040 to a compact solved tombstone pointing to UBU-D0199. The patch is minimal, touches only the three appropriate documentation files, and is directly responsive to the selected question. The main gap is that the relationship between UBU-D0068 and UBU-D0199 is implicit rather than stated, and quantitative burden scoring remains deferred, but neither constitutes a required fix given the question's resolution scope.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "UBU-D0068 was listed as a prior partial resolution in the original question header; the patch replaces it with UBU-D0199 in the tombstone without explicitly stating D0068 is superseded, which may create ambiguity in the decision log.",
+        "The burden-component list (dependency, ambiguity, automation, implementation) is defined in prose but has no quantitative weights or normalization rules, leaving scoring open to interpretation until future parser or tooling work lands.",
+        "Lineage metadata (Decomposes: UBU-Qxxxx) is deferred until parser support exists; in the interim, parent questions remain open, which means the rule has a gap during which decomposition lineage is tracked only informally."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20260528T011808Z-UBU-Q0040/responses/claude_score_codex-ubu-q0040-d0199_stdout.json",
+        "stderr_path": null
+      }
+    }
+  ],
+  "score_aggregates": [
+    {
+      "proposal_id": "codex-ubu-q0040-d0199",
+      "author_provider": "codex",
+      "cross_score_count": 1,
+      "score_mean": 88.0,
+      "score_spread": 0,
+      "frontier_score_gap": 0,
+      "disagreement_flags": []
+    }
+  ],
+  "cross_score_count": 1,
+  "score_mean": 88.0,
+  "score_spread": 0,
+  "frontier_score_gap": 0,
+  "disagreement_flags": [],
+  "quorum_result": {
+    "valid": true,
+    "human_review_required": false,
+    "selected_proposal_id": "codex-ubu-q0040-d0199",
+    "selected_score": 88.0,
+    "selected_cross_score_count": 1,
+    "blocked_reasons": [],
+    "manual_override": false
+  },
+  "selected_proposal_id": "codex-ubu-q0040-d0199",
+  "automated_selection_valid": true,
+  "human_review_required": false,
+  "artifact_publication_status": "operator_pending",
+  "prompt_size_warning": true
+}

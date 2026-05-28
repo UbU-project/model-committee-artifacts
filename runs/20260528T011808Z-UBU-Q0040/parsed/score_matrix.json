@@ -1,0 +1,24 @@
+[
+  {
+    "proposal_id": "codex-ubu-q0040-d0199",
+    "author_provider": "codex",
+    "scorer_provider": "claude",
+    "score": 88,
+    "valid": true,
+    "rationale": "The patch cleanly applies and directly addresses all 12 subquestions in UBU-Q0040. DESIGN.md \u00a73.6 gains a concrete definition of design burden with four named components and distinguishes valid from invalid decomposition. \u00a73.7 gains the hard-gate / decomposition-path distinction that answers subquestion 12. DECISIONS.md adds UBU-D0199 with full consequence enumeration. OPEN_QUESTIONS.md converts Q0040 to a compact solved tombstone pointing to UBU-D0199. The patch is minimal, touches only the three appropriate documentation files, and is directly responsive to the selected question. The main gap is that the relationship between UBU-D0068 and UBU-D0199 is implicit rather than stated, and quantitative burden scoring remains deferred, but neither constitutes a required fix given the question's resolution scope.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [
+      "UBU-D0068 was listed as a prior partial resolution in the original question header; the patch replaces it with UBU-D0199 in the tombstone without explicitly stating D0068 is superseded, which may create ambiguity in the decision log.",
+      "The burden-component list (dependency, ambiguity, automation, implementation) is defined in prose but has no quantitative weights or normalization rules, leaving scoring open to interpretation until future parser or tooling work lands.",
+      "Lineage metadata (Decomposes: UBU-Qxxxx) is deferred until parser support exists; in the interim, parent questions remain open, which means the rule has a gap during which decomposition lineage is tracked only informally."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20260528T011808Z-UBU-Q0040/responses/claude_score_codex-ubu-q0040-d0199_stdout.json",
+      "stderr_path": null
+    }
+  }
+]

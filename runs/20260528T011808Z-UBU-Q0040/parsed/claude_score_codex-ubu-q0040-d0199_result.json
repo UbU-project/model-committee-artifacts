@@ -1,0 +1,22 @@
+{
+  "scores": [
+    {
+      "proposal_id": "codex-ubu-q0040-d0199",
+      "score": 88,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "UBU-D0068 was listed as a prior partial resolution in the original question header; the patch replaces it with UBU-D0199 in the tombstone without explicitly stating D0068 is superseded, which may create ambiguity in the decision log.",
+        "The burden-component list (dependency, ambiguity, automation, implementation) is defined in prose but has no quantitative weights or normalization rules, leaving scoring open to interpretation until future parser or tooling work lands.",
+        "Lineage metadata (Decomposes: UBU-Qxxxx) is deferred until parser support exists; in the interim, parent questions remain open, which means the rule has a gap during which decomposition lineage is tracked only informally."
+      ],
+      "required_fixes": [],
+      "rationale": "The patch cleanly applies and directly addresses all 12 subquestions in UBU-Q0040. DESIGN.md \u00a73.6 gains a concrete definition of design burden with four named components and distinguishes valid from invalid decomposition. \u00a73.7 gains the hard-gate / decomposition-path distinction that answers subquestion 12. DECISIONS.md adds UBU-D0199 with full consequence enumeration. OPEN_QUESTIONS.md converts Q0040 to a compact solved tombstone pointing to UBU-D0199. The patch is minimal, touches only the three appropriate documentation files, and is directly responsive to the selected question. The main gap is that the relationship between UBU-D0068 and UBU-D0199 is implicit rather than stated, and quantitative burden scoring remains deferred, but neither constitutes a required fix given the question's resolution scope."
+    }
+  ],
+  "selected_proposal_id": "codex-ubu-q0040-d0199",
+  "selection_rationale": "There is one candidate and it passes mechanical validation, implements the selected work fully, preserves the question schema, and avoids unnecessary scope. The identified risks are all low-severity deferred items, none requiring a fix before acceptance."
+}

@@ -1,0 +1,122 @@
+diff --git a/DESIGN.md b/DESIGN.md
+--- a/DESIGN.md
++++ b/DESIGN.md
+@@ -550,9 +550,15 @@
+ 
+ The relevant metric is unresolved design burden, not merely raw open-question count.
+ 
+-A decomposition is bad when it creates more, harder, vaguer, or more coupled questions.
++For derived ranking, unresolved design burden combines dependency burden, ambiguity burden, automation burden, and implementation burden. Dependency burden includes unresolved dependency count, dependency depth, and whether a dependency blocks Phase 1 work. Ambiguity burden includes mixed decision types, vague scope, and missing acceptance criteria. Automation burden includes automation-likelihood, validator availability, risk, and human-involvement class. Implementation burden includes whether the question blocks a concrete Phase 1 slice, hard invariant, needed contract, or persistent schema choice.
++
++A decomposition is valid when replacement questions preserve the parent intent, are individually narrower, include dependency and lineage metadata, and reduce total estimated burden. The strongest decomposition creates at least one immediately answerable replacement question.
++
++A decomposition is bad when it creates more, harder, vaguer, more coupled, or lineage-free questions.
+ 
+ A decomposition is good when it exposes smaller answerable units and improves future automation.
++
++Replacement questions should link to the original with `Decomposes: UBU-Qxxxx` or equivalent metadata once parser support exists. Until decomposed-status metadata is parser-supported, parent questions should remain open unless an accepted decision also resolves the parent; resolved parent questions are tombstoned normally.
+ 
+ ### 3.7 Answerability-first prioritization
+ 
+@@ -563,6 +569,8 @@
+ - it has no dependencies;
+ - all dependencies are solved;
+ - or all dependencies are being answered in the same work item.
++
++Answerability is a hard gate for ordinary answering, not for decomposition work. For ordinary work, unresolved dependencies make the question ineligible unless included in the same work item. For decomposition selection, unresolved dependencies contribute to burden and can raise priority when replacement questions are expected to have fewer, simpler, or no dependencies. Dependency simplification improves ranking only through the decomposition path; it does not make the blocked parent ordinarily answerable.
+ 
+ After answerability is established, questions are ranked by:
+ 
+diff --git a/DECISIONS.md b/DECISIONS.md
+--- a/DECISIONS.md
++++ b/DECISIONS.md
+@@ -4148,4 +4148,45 @@
+ - Optional reason prompts can stay lightweight without losing the fact of the decision.
+ - No new Log event type is required beyond `decision_recorded`.
+ 
+----
++
++## UBU-D0199: Question decomposition reduces design burden, not question count
++
++**Status:** Accepted → DESIGN.md §§3.6, 3.7
++
++Resolved question: `UBU-Q0040`.
++
++Model-committee evaluates decomposition by unresolved design burden, not raw open-question count. A burden estimate combines:
++
++- dependency burden: unresolved dependency count, dependency depth, and blocker status;
++- ambiguity burden: mixed decision types, vague scope, missing acceptance criteria, or unclear authority class;
++- automation burden: automation-likelihood, validator availability, patchability, risk, and human-involvement class;
++- implementation burden: whether the question blocks a concrete Phase 1 slice, hard invariant, needed contract, or persistent schema choice.
++
++Answerability is a hard gate for ordinary answering:
++
++- no dependencies, solved dependencies, or dependencies answered in the same work item: eligible;
++- unresolved dependencies outside the work item: not eligible for ordinary answering;
++- blocked questions may be selected only for decomposition or consistency repair.
++
++A decomposition is valid when replacement questions:
++
++- preserve the parent's intent without expanding scope;
++- are narrower and have clear decision type, phase, priority, dependencies, automation class, blockers, and resolution conditions;
++- include lineage metadata, using `Decomposes: UBU-Qxxxx` or equivalent metadata once parser support exists;
++- reduce total burden, dependency depth, ambiguity, risk, or automation difficulty;
++- produce at least one answerable replacement now, or clearly shorten the path to answerability.
++
++A parent question may be marked decomposed only when accepted replacement questions are canonical and the parent no longer needs ordinary answering as one unit. It may be marked solved only when an accepted decision answers the parent. Until parser support for decomposed status and lineage metadata exists, leave the parent open unless an accepted decision resolves it.
++
++Work scoring rewards valid decomposition when it lowers burden or unlocks immediate work, even if open-question count rises. It penalizes proliferation that creates vaguer, harder, more coupled, dependency-heavier, or lineage-free questions.
++
++The `UBU-D0175` stop rule applies to replacement questions. A replacement question is not an MVP blocker unless it includes a valid blocker certificate. Dependency-reducing decomposition is preferred over waiting when it can create answerable work without violating accepted dependencies, hard invariants, or file/schema consistency.
++
++**Consequences:**
++
++- `UBU-Q0040` is resolved for model-committee prioritization.
++- Raw open-question count is not used as the stop rule or decomposition score.
++- Blocked questions can be selected for decomposition, but not ordinary answering.
++- Future parser work may add first-class decomposed-status and lineage fields without changing the scoring rule.
++
++---
+diff --git a/OPEN_QUESTIONS.md b/OPEN_QUESTIONS.md
+--- a/OPEN_QUESTIONS.md
++++ b/OPEN_QUESTIONS.md
+@@ -544,36 +544,9 @@
+ 
+ ## UBU-Q0040: Question Decomposition and Design Burden Scoring
+ 
+-Status: Open Priority: MVP important Phase: Phase 1 Decision type: Process Auto-choice eligibility: Auto eligible Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 90 Depends on: UBU-Q0039 Blocks: model-committee prioritization accuracy Resolved by: UBU-D0068 Last scored: 2026-05-27 Scored from commit: None
+-
+-### Question
+-
+-How should model-committee distinguish harmful question proliferation from valuable decomposition of hard questions into simpler, more automatable questions?
+-
+-### Subquestions
+-
+-1. How is unresolved design burden measured?
+-2. How is automation difficulty compared between an original question and its replacements?
+-3. When may a question be marked decomposed rather than solved?
+-4. What metadata should link replacement questions to the original question?
+-5. How should work scoring reward valid decomposition?
+-6. How should the stop rule account for decomposition that increases question count but lowers total difficulty?
+-7. When is dependency-reducing decomposition preferable to waiting for all dependencies to be answered?
+-8. How should the system score decompositions that produce at least one immediately answerable replacement question?
+-9. How should dependency simplification affect question ranking?
+-10. How should answerability be computed from dependency metadata?
+-11. When should a blocked question be selected for decomposition rather than skipped?
+-12. Should answerability be a hard gate or a weighted score?
+-
+-### Current direction
+-
+-Increasing the number of open questions is acceptable when a hard or blocked question is split into simpler, clearer, lower-risk, or more automatable questions. This is especially valuable when at least one replacement question has fewer dependencies, simpler dependencies, or no dependencies, allowing the system to make progress without waiting for the full original dependency chain.
+-
+-Question selection should use answerability as the first gate. Ordinary work should only run on questions whose dependencies are resolved, absent, or handled in the same work item. Blocked questions may still be selected for decomposition if the decomposition is expected to produce replacement questions with fewer, simpler, or no dependencies.
+-
+-### Resolution
+-
+-Partially resolved by `UBU-D0068`; detailed scoring mechanics remain open.
++Status: Solved Priority: MVP important Phase: Phase 1 Decision type: Process Auto-choice eligibility: Auto eligible Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 90 Depends on: UBU-Q0039 Blocks: model-committee prioritization accuracy Resolved by: UBU-D0199 Last scored: 2026-05-27 Scored from commit: None
++
++Resolved. See UBU-D0199.
+ 
+ ---
+ 
