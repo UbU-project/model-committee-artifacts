@@ -1,0 +1,113 @@
+{
+  "schema_version": "0.3",
+  "run_id": "20260528T025714Z-UBU-Q0063",
+  "created_at_utc": "2026-05-28T02:57:14Z",
+  "repo_path": "../ubu-design",
+  "base_commit": "4ba082d282b791e97fd46d6e753e4327e21abe51",
+  "selected_question_id": "UBU-Q0063",
+  "phase": "work-select",
+  "config_path": "config/models.json",
+  "status": "selected",
+  "commands": [
+    "model-committee run-loop"
+  ],
+  "providers_attempted": [
+    "codex",
+    "claude"
+  ],
+  "providers_succeeded": [
+    "codex",
+    "claude"
+  ],
+  "providers_failed": [],
+  "provider_attempts": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "sonnet",
+      "phase": "work-score",
+      "target_proposal_id": "codex-ubu-q0063-org-introspection-mvp",
+      "response_path": "runs/20260528T025714Z-UBU-Q0063/responses/claude_score_codex-ubu-q0063-org-introspection-mvp_stdout.json",
+      "stderr_path": null
+    }
+  ],
+  "provider_successes": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20260528T025714Z-UBU-Q0063/parsed/codex_work_proposal.json"
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "sonnet",
+      "phase": "work-score",
+      "target_proposal_id": "codex-ubu-q0063-org-introspection-mvp",
+      "response_path": "runs/20260528T025714Z-UBU-Q0063/responses/claude_score_codex-ubu-q0063-org-introspection-mvp_stdout.json",
+      "parsed_path": "runs/20260528T025714Z-UBU-Q0063/parsed/claude_score_codex-ubu-q0063-org-introspection-mvp_result.json"
+    }
+  ],
+  "provider_failures": [],
+  "score_matrix": [
+    {
+      "proposal_id": "codex-ubu-q0063-org-introspection-mvp",
+      "author_provider": "codex",
+      "scorer_provider": "claude",
+      "score": 88,
+      "valid": true,
+      "rationale": "Patch applies cleanly per mechanical validation. All three changed files are within the allowed set. DESIGN.md \u00a74.1.4 is expanded with a well-structured minimum evidence set, minimum outputs, core review prompt, public-artifact safety constraints, and explicit acceptance criteria that directly answer all six subquestions. DECISIONS.md gains UBU-D0204 with status, resolved question reference, accepted constraints, and consequences \u2014 correctly formatted per the existing decision schema. OPEN_QUESTIONS.md converts UBU-Q0063 to a compact tombstone pointing at UBU-D0204. The patch stays strictly within Phase 1 scope, avoids Association automation, avoids contact surveillance, and does not introduce new objects or data types beyond what already exists. Minor nits: the tombstone line lacks a trailing blank line before the separator (cosmetic), and the metadata header does not update Scored from commit to reflect resolution, but neither is a blocking issue. No decomposition was needed for a single-question resolution. Human approval is correctly flagged.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "OPEN_QUESTIONS.md tombstone collapses the full question block into a single-line status header with no blank line before the closing separator, which may cause formatting inconsistency with other tombstoned questions",
+        "Resolved by field in the tombstone header references UBU-D0204 but the question metadata line omits any updated Last scored / Scored from commit values that reflect the resolution commit"
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20260528T025714Z-UBU-Q0063/responses/claude_score_codex-ubu-q0063-org-introspection-mvp_stdout.json",
+        "stderr_path": null
+      }
+    }
+  ],
+  "score_aggregates": [
+    {
+      "proposal_id": "codex-ubu-q0063-org-introspection-mvp",
+      "author_provider": "codex",
+      "cross_score_count": 1,
+      "score_mean": 88.0,
+      "score_spread": 0,
+      "frontier_score_gap": 0,
+      "disagreement_flags": []
+    }
+  ],
+  "cross_score_count": 1,
+  "score_mean": 88.0,
+  "score_spread": 0,
+  "frontier_score_gap": 0,
+  "disagreement_flags": [],
+  "quorum_result": {
+    "valid": true,
+    "human_review_required": false,
+    "selected_proposal_id": "codex-ubu-q0063-org-introspection-mvp",
+    "selected_score": 88.0,
+    "selected_cross_score_count": 1,
+    "blocked_reasons": [],
+    "manual_override": false
+  },
+  "selected_proposal_id": "codex-ubu-q0063-org-introspection-mvp",
+  "automated_selection_valid": true,
+  "human_review_required": false,
+  "artifact_publication_status": "operator_pending",
+  "prompt_size_warning": true
+}

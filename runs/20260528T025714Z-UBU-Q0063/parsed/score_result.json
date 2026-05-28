@@ -1,0 +1,21 @@
+{
+  "scores": [
+    {
+      "proposal_id": "codex-ubu-q0063-org-introspection-mvp",
+      "score": 88,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": false,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "OPEN_QUESTIONS.md tombstone collapses the full question block into a single-line status header with no blank line before the closing separator, which may cause formatting inconsistency with other tombstoned questions",
+        "Resolved by field in the tombstone header references UBU-D0204 but the question metadata line omits any updated Last scored / Scored from commit values that reflect the resolution commit"
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 1 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "codex-ubu-q0063-org-introspection-mvp",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}
