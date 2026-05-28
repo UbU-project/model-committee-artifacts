@@ -1,0 +1,28 @@
+[
+  {
+    "proposal_id": "codex-ubu-q0052-d0201",
+    "author_provider": "codex",
+    "scorer_provider": "claude",
+    "score": 88,
+    "valid": true,
+    "rationale": "The proposal cleanly answers all seven subquestions of UBU-Q0052: it defines session lifecycle states, enumerates allowed and excluded Phase 1 signals, specifies admission rules for each override type, provides the required habit-pattern clarification prompt with explicit valid answers, gives reconciliation options for undetailed periods, and codifies sovereignty/anti-surveillance constraints. The patch applies cleanly, touches only the three allowed canonical files, introduces UBU-D0201 in DECISIONS.md with full provenance, and converts the OPEN_QUESTIONS.md entry to a compact solved tombstone anchored at its heading. Scope is appropriately minimal \u2014 it reuses existing Log, Snapshot, Preference, Task, Objective, and recalculation mechanisms rather than inventing a parallel ontology. The main weaknesses are: (1) minor label casing divergence between DESIGN.md and DECISIONS.md that could cause implementation confusion; (2) `decision_kind` values are named but not enumerated in any schema; (3) the tombstone formatting is slightly irregular. None of these block acceptance but should be addressed before the decision is treated as implementation-ready.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [
+      "Reconcile label casing inconsistency: DESIGN.md \u00a712.2 lists 'planned Task' and 'different Task' while DECISIONS.md UBU-D0201 lists `planned_task` and `different_task`; one form should be canonical.",
+      "The tombstone in OPEN_QUESTIONS.md omits a blank line between the status line and the 'Resolved.' line, and the separator `---` follows immediately with no blank line before it; formatting should match surrounding question entries."
+    ],
+    "risks": [
+      "The OPEN_QUESTIONS.md tombstone strips the question body and subquestions entirely; if a future reader needs to understand what was asked without consulting git history, the compact tombstone may be insufficient.",
+      "The habit-pattern clarification prompt is a hardcoded string in DESIGN.md and DECISIONS.md with slight wording divergence between the two locations ('more than once' vs same), which could cause inconsistency if either is updated independently.",
+      "Admission rules for overrides use `decision_recorded` with a specific `decision_kind` value (`system_recommendation_overridden`), but no validation schema or enumeration for `decision_kind` is defined in this patch, leaving the contract partially underspecified.",
+      "The review UI label list in DESIGN.md uses mixed snake_case and prose ('planned Task', 'different Task') while DECISIONS.md uses consistent snake_case (`planned_task`, `different_task`); this inconsistency should be resolved before implementation."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20260528T015837Z-UBU-Q0052/responses/claude_score_codex-ubu-q0052-d0201_stdout.json",
+      "stderr_path": null
+    }
+  }
+]

@@ -1,0 +1,26 @@
+{
+  "scores": [
+    {
+      "proposal_id": "codex-ubu-q0052-d0201",
+      "score": 88,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": false,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Admission rules for overrides use `decision_recorded` with a specific `decision_kind` value (`system_recommendation_overridden`), but no validation schema or enumeration for `decision_kind` is defined in this patch, leaving the contract partially underspecified.",
+        "The OPEN_QUESTIONS.md tombstone strips the question body and subquestions entirely; if a future reader needs to understand what was asked without consulting git history, the compact tombstone may be insufficient.",
+        "The habit-pattern clarification prompt is a hardcoded string in DESIGN.md and DECISIONS.md with slight wording divergence between the two locations ('more than once' vs same), which could cause inconsistency if either is updated independently.",
+        "The review UI label list in DESIGN.md uses mixed snake_case and prose ('planned Task', 'different Task') while DECISIONS.md uses consistent snake_case (`planned_task`, `different_task`); this inconsistency should be resolved before implementation."
+      ],
+      "required_fixes": [
+        "Reconcile label casing inconsistency: DESIGN.md \u00a712.2 lists 'planned Task' and 'different Task' while DECISIONS.md UBU-D0201 lists `planned_task` and `different_task`; one form should be canonical.",
+        "The tombstone in OPEN_QUESTIONS.md omits a blank line between the status line and the 'Resolved.' line, and the separator `---` follows immediately with no blank line before it; formatting should match surrounding question entries."
+      ],
+      "rationale": "Aggregate cross-score mean from 1 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "codex-ubu-q0052-d0201",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}
