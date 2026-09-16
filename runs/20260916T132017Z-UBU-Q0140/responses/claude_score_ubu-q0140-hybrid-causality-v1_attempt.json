@@ -1,0 +1,28 @@
+{
+  "provider_name": "claude",
+  "model_name": "sonnet",
+  "argv": [
+    "claude",
+    "--print",
+    "-",
+    "--output-format",
+    "json",
+    "--json-schema",
+    "<json-schema>",
+    "--tools",
+    "",
+    "--model",
+    "sonnet",
+    "--max-turns",
+    "5"
+  ],
+  "stdout_path": "runs/20260916T132017Z-UBU-Q0140/responses/claude_score_ubu-q0140-hybrid-causality-v1_stdout.json",
+  "stderr_path": "runs/20260916T132017Z-UBU-Q0140/responses/claude_score_ubu-q0140-hybrid-causality-v1_stderr.txt",
+  "exit_status": 0,
+  "timeout_seconds": 3600,
+  "schema_validation": {
+    "valid": true,
+    "message": null
+  },
+  "parsed_structured_output_path": "runs/20260916T132017Z-UBU-Q0140/responses/claude_score_ubu-q0140-hybrid-causality-v1_structured_output.json"
+}

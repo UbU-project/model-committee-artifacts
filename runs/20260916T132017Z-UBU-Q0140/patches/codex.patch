@@ -1,0 +1,59 @@
+diff --git a/OPEN_QUESTIONS.md b/OPEN_QUESTIONS.md
+--- a/OPEN_QUESTIONS.md
++++ b/OPEN_QUESTIONS.md
+@@ -2494,16 +2494,18 @@ Open.
+ ## UBU-Q0140: Phase 2 causality mechanism for sync ordering
+ 
+-Status: Open Priority: MVP important Phase: Phase 1b Decision type: Data model Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 100 Depends on: None Blocks: UBU-Q0130, Phase 2 sync statement compatibility Resolved by: None Last scored: 2026-09-16 Scored from commit: None
++Status: Resolved Priority: MVP important Phase: Phase 1b Decision type: Data model Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 100 Depends on: None Blocks: UBU-Q0130, Phase 2 sync statement compatibility Resolved by: UBU-D0247 Last scored: 2026-09-16 Scored from commit: None
+ 
+ Formerly UBU-QSYNC-002 (retired from DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md section 28). Defining context: DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md §8, §15.
+ 
+ ### Question
+ 
+ What exact causality mechanism should Phase 2 use: hybrid logical clocks, Lamport clocks, vector
+ clocks, per-object version counters, content-addressed logs, or a hybrid?
+ 
+ ### Resolution
+ 
+-Open.
++Resolved by `UBU-D0247`: Phase 2 uses a hybrid causality stack: content-addressed signed sync statements form the durable append-only log; every statement carries a per-origin hybrid logical clock tick for compact total-order tie breaking and queue progress; `causal_parents` preserve the statement DAG; `observed_versions` and `observed_policy_versions` are per-object/version preconditions used for deterministic conflict detection, not the sole clock.
++
++This rejects a pure Lamport clock because wall-time adjacency is useful for operator review, a pure vector clock because N-device and partial replicas make vectors too wide and leaky, and pure per-object counters because cross-object mutations and policy updates must retain causal edges.
+ 
+ ---
+diff --git a/DECISIONS.md b/DECISIONS.md
+--- a/DECISIONS.md
++++ b/DECISIONS.md
+@@ -3709,3 +3709,31 @@ Consequences for this repository, which are the load-bearing part of this decisi
+ 5. **Runs stay auditable.** `manifest.prompt_context` records the exact questions, decisions, and sections a prompt was built from, and `runs/<run-id>/snapshot/` still holds the full files. A reviewer can see both what the model was shown and what the repository contained.
+ 
+ This does not change what is canonical. Accepted design state still exists only when a human operator commits to this repository.
++
++---
++
++## UBU-D0247: Phase 2 sync uses hybrid HLC, DAG, and content-addressed statements
++
++**Status:** Accepted → DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md §8, §15. Resolves `UBU-Q0140`.
++
++Phase 2 sync ordering uses a hybrid causality mechanism rather than selecting a single scalar clock.
++
++Canonical components:
++
++- The durable unit is the signed or integrity-protected `SyncStatement`; accepted statements are retained as an append-only, content-addressed log or bundle record.
++- Each statement has a deterministic content address computed over its canonical signed payload, excluding replica-local metadata such as `received_time` and `admitted_time`.
++- Each origin Device maintains a hybrid logical clock. The HLC tick is included in the statement payload and advances on local statement creation and on admitting remote causal parents.
++- `causal_parents` define the statement DAG and are the authoritative happened-before evidence across Devices.
++- `observed_versions` and `observed_policy_versions` are per-object preconditions used to detect stale writes, policy races, and deterministic conflicts; they are not a replacement for the statement DAG.
++- Admitted-state application order is a deterministic topological traversal of available causal parents, with ties broken by HLC tick, origin Device ID, and sync statement ID.
++
++The HLC tick is an ordering aid and operator-review affordance, not an authority source. It never overrides missing causal parents, observed-version failures, policy failures, or invalid statement integrity. `effective_time`, `recorded_time`, `received_time`, and `admitted_time` retain their separate meanings and must not be collapsed into the causality clock.
++
++Rejected alternatives:
++
++- Pure Lamport clocks lose useful physical-time adjacency for review and diagnostics while still requiring deterministic tie breakers.
++- Pure vector clocks are too large and privacy-leaky for N-device sync with partial, redacted, stale, or restricted replicas.
++- Pure per-object counters cannot represent cross-object mutations, policy races, worker results, or conflict-resolution statements without an additional statement-level causal graph.
++- Pure content-addressed bundles provide integrity and deduplication but do not, by themselves, encode happened-before ordering.
++
++This decision is design-compatible with direct peer, local LAN, removable-file, and encrypted indirect transports because the causality evidence lives in the signed statement payload and its content address rather than in any canonical server.

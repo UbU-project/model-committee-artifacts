@@ -1,0 +1,24 @@
+{
+  "scores": [
+    {
+      "proposal_id": "ubu-q0140-hybrid-causality-v1",
+      "score": 90,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": false,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Adding an accepted decision without modifying the referenced contract sections leaves implementation detail centralized in DECISIONS.md rather than fully propagated, though that is consistent with the allowed file scope.",
+        "The decision is still fairly high-level and may need later schema-level precision for exact field formats, HLC tuple representation, parent cardinality, and canonicalization rules.",
+        "The decision text introduces new terminology (observed_policy_versions, admitted_time) that must stay consistent with DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md \u00a78/\u00a715, which the patch does not modify \u2014 a human reviewer should confirm no drift with the referenced contract sections.",
+        "This is a foundational data-model decision affecting Phase 2 sync; if the hybrid HLC+DAG+content-address design has a flaw it will be costly to unwind since it blocks UBU-Q0130 and Phase 2 sync statement compatibility.",
+        "Tie-breaking order (HLC tick, origin Device ID, statement ID) is asserted but not justified in depth; worth confirming determinism holds for concurrent partial-replica scenarios."
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "ubu-q0140-hybrid-causality-v1",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}
