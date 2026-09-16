@@ -1,0 +1,45 @@
+[
+  {
+    "proposal_id": "ubu-q0143-gpt5-20260916",
+    "author_provider": "openai",
+    "scorer_provider": "codex",
+    "score": 90,
+    "valid": true,
+    "rationale": "The patch applies after normalization, stays within the allowed files, preserves the question block format, and directly resolves UBU-Q0143 by drawing a conservative boundary between deterministic auto-resolution, containment/recalculation, and human-review-required cases. The decision is auditable, scoped to the process question, and aligns with the referenced sync-conflict context without modifying the contract itself. The main residual risk is that some conditional auto-resolution classes require careful implementation discipline, but the proposal states those conditions clearly enough for a design decision.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [
+      "The automatic field-level merge allowance for non-overlapping stale_prior_version depends on strong proof of non-interference; implementations may need precise invariant and causal-precondition checks to avoid over-admitting stale writes.",
+      "The device_revoked_conflict exception for deterministic rejection is reasonable but should be kept narrowly interpreted so it does not bypass review during recovery flows."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20260916T141203Z-UBU-Q0143/responses/codex_score_ubu-q0143-gpt5-20260916_response.json",
+      "stderr_path": null
+    }
+  },
+  {
+    "proposal_id": "ubu-q0143-gpt5-20260916",
+    "author_provider": "openai",
+    "scorer_provider": "claude",
+    "score": 85,
+    "valid": true,
+    "rationale": "The patch touches only DECISIONS.md and OPEN_QUESTIONS.md, both allowlisted, and does not modify the read-only device-sync contract it references. OPEN_QUESTIONS.md correctly updates Status to Solved, sets Resolved by to the new decision ID, and writes a resolution paragraph without altering other metadata fields or introducing new open questions. The new DECISIONS.md entry (UBU-D0248) directly answers the question by enumerating concrete conflict classes already named in the contract and sorting them into auto-resolvable, containable/recalculable, and human-review-required buckets with a fail-closed default for authority/intent/privacy conflicts, which is a sound and conservative policy stance. Mechanical validation reports patch_applies true only after --recount normalization was needed (ordinary apply hit 'corrupt patch at line 44'), which is a minor but real fragility flag rather than a clean apply.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [
+      "Patch required --recount normalization to apply (corrupt patch at line 44 under ordinary apply), which is a mechanical fragility even though it ultimately applies cleanly",
+      "The three-tier classification (auto-resolvable / containable-recalculable / human-review-required) is a reasonable but somewhat elaborate framework for a question that could have been answered more tersely; some readers may find the containable/recalculable middle tier blurs the auto-vs-review line the question asks for",
+      "Edge-case carve-outs (e.g., deterministic rejection of pending statements from a revoked device, non-overlapping stale_prior_version merges) introduce judgment calls that could themselves become sources of future disputes about what counts as 'deterministic' or 'non-overlapping'"
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20260916T141203Z-UBU-Q0143/responses/claude_score_ubu-q0143-gpt5-20260916_stdout.json",
+      "stderr_path": null
+    }
+  }
+]

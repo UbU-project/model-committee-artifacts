@@ -1,0 +1,22 @@
+{
+  "scores": [
+    {
+      "proposal_id": "ubu-q0143-gpt5-20260916",
+      "score": 85,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Patch required --recount normalization to apply (corrupt patch at line 44 under ordinary apply), which is a mechanical fragility even though it ultimately applies cleanly",
+        "The three-tier classification (auto-resolvable / containable-recalculable / human-review-required) is a reasonable but somewhat elaborate framework for a question that could have been answered more tersely; some readers may find the containable/recalculable middle tier blurs the auto-vs-review line the question asks for",
+        "Edge-case carve-outs (e.g., deterministic rejection of pending statements from a revoked device, non-overlapping stale_prior_version merges) introduce judgment calls that could themselves become sources of future disputes about what counts as 'deterministic' or 'non-overlapping'"
+      ],
+      "required_fixes": [],
+      "rationale": "The patch touches only DECISIONS.md and OPEN_QUESTIONS.md, both allowlisted, and does not modify the read-only device-sync contract it references. OPEN_QUESTIONS.md correctly updates Status to Solved, sets Resolved by to the new decision ID, and writes a resolution paragraph without altering other metadata fields or introducing new open questions. The new DECISIONS.md entry (UBU-D0248) directly answers the question by enumerating concrete conflict classes already named in the contract and sorting them into auto-resolvable, containable/recalculable, and human-review-required buckets with a fail-closed default for authority/intent/privacy conflicts, which is a sound and conservative policy stance. Mechanical validation reports patch_applies true only after --recount normalization was needed (ordinary apply hit 'corrupt patch at line 44'), which is a minor but real fragility flag rather than a clean apply."
+    }
+  ],
+  "selected_proposal_id": "ubu-q0143-gpt5-20260916",
+  "selection_rationale": "Only one candidate proposal was submitted for cross-scoring. It passes mechanical validation (applies after --recount normalization, stays within the allowlist), directly resolves UBU-Q0143 with a substantive and conservative auto-resolve/review-required classification grounded in the existing contract's conflict types, preserves the OPEN_QUESTIONS.md schema, and avoids touching the read-only contract file. It is selected by default as the sole valid candidate."
+}

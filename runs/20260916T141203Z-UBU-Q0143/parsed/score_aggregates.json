@@ -1,0 +1,11 @@
+[
+  {
+    "proposal_id": "ubu-q0143-gpt5-20260916",
+    "author_provider": "openai",
+    "cross_score_count": 2,
+    "score_mean": 87.5,
+    "score_spread": 5,
+    "frontier_score_gap": 5,
+    "disagreement_flags": []
+  }
+]

@@ -1,0 +1,221 @@
+# Model-Committee Cross-Scoring Request
+
+You are scoring candidate work proposals for the UbU `model-committee` process.
+
+Return exactly one JSON object. Do not return prose outside the JSON object.
+
+This is a v0.2 cross-score. You are not making the final selection; model-committee
+will aggregate valid cross-scores locally.
+
+Scoring provider: `claude`
+Authoring provider for the candidate proposal(s): `openai`
+
+## Selected question
+
+Question ID: `UBU-Q0143`  
+Question title: `Auto-resolvable versus review-required conflict classes`  
+Base commit: `78a14eb5860c3595821c6f6f90f73844166592fb`
+
+```markdown
+## UBU-Q0143: Auto-resolvable versus review-required conflict classes
+
+Status: Open Priority: MVP important Phase: Phase 1b Decision type: Process Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 100 Depends on: None Blocks: UBU-Q0134, Phase 2 conflict resolution Resolved by: None Last scored: 2026-09-16 Scored from commit: None
+
+Formerly UBU-QSYNC-005 (retired from DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md section 28). Defining context: DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md §16, §17.
+
+### Question
+
+Which conflict classes can be auto-resolved safely, and which must always require user review?
+
+### Resolution
+
+Open.
+
+---
+
+```
+
+## Candidate proposals
+
+```json
+[
+  {
+    "proposal_id": "ubu-q0143-gpt5-20260916",
+    "provider_id": "openai",
+    "model_name": "gpt-5-codex",
+    "question_id": "UBU-Q0143",
+    "base_commit": "78a14eb5860c3595821c6f6f90f73844166592fb",
+    "summary": "Classifies sync conflicts into deterministic auto-resolution, automatic containment/recalculation, and human-review-required classes, resolving UBU-Q0143 with a conservative fail-closed policy for authority, privacy, policy, protected calendar, and irreducible intent conflicts.",
+    "rationale": "The contract already contains concrete conflict classes and several default outcomes, but it leaves the auto/manual boundary implicit. This proposal makes that boundary explicit without changing the read-only device-sync contract: duplicate and mechanically recoverable cases may be handled automatically; stale derived or projection state may trigger recalculation or bounded projection repair; conflicts that can change user intent, privacy visibility, policy authority, device trust, or protected calendar regions require a blocking diagnostic and user-issued conflict_resolution statement.",
+    "changed_files": [
+      "DECISIONS.md",
+      "OPEN_QUESTIONS.md"
+    ],
+    "patch": "diff --git a/DECISIONS.md b/DECISIONS.md\nindex 68a3ec7..82fafd9 100644\n--- a/DECISIONS.md\n+++ b/DECISIONS.md\n@@ -3741,3 +3741,39 @@ Rejected alternatives:\n - Pure content-addressed bundles provide integrity and deduplication but do not, by themselves, encode happened-before ordering.\n \n This decision is design-compatible with direct peer, local LAN, removable-file, and encrypted indirect transports because the causality evidence lives in the signed statement payload and its content address rather than in any canonical server.\n+\n+---\n+\n+## UBU-D0248: Sync conflict auto-resolution is limited to deterministic non-authority cases\n+\n+**Status:** Accepted \u2192 DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md \u00a716, \u00a717. Resolves `UBU-Q0143`.\n+\n+Phase 1b and Phase 2 distinguish three conflict-handling classes:\n+\n+1. **Automatically resolvable.** A Device may resolve the condition without prompting the user when the result is deterministic, idempotent, and does not choose between incompatible user intent, visibility authority, policy authority, Device trust, protected Calendar ownership, or third-party truth.\n+2. **Automatically containable or recalculable.** A Device may quarantine, retry, resume, discard an incomplete import, or trigger recalculation without treating the conflicting mutation as admitted.\n+3. **Human-review-required.** A Device must surface a blocking diagnostic with an immediate `manual_decision` safe-alternative; only the resulting `conflict_resolution` sync statement can enter admitted state.\n+\n+Automatically resolvable classes:\n+\n+- `duplicate_statement`: collapse duplicate idempotency keys or duplicate content to the already-admitted statement result.\n+- Non-overlapping `stale_prior_version`: admit only when deterministic field-level merge proves the stale statement does not affect a field, invariant, policy input, schedule region, or causal precondition changed by the newer version.\n+\n+Automatically containable or recalculable classes:\n+\n+- `derived_state_stale`: reject or defer the derived result and recompute from current Plan, Calendar, risk, and policy state.\n+- `incomplete_sync_session`: do not mark the session complete; resume, retry, or discard while preserving idempotency and dependency metadata.\n+- Low-risk `projection_conflict`: perform deterministic projection repair only when the canonical-vs-projection rule for that integration explicitly says the external delta can be imported, ignored, or logged without changing protected canonical intent.\n+\n+Human-review-required classes:\n+\n+- `concurrent_status_change` whenever the competing statuses encode incompatible user intent, including complete-vs-reject.\n+- Overlapping or invariant-affecting `stale_prior_version`.\n+- `compartment_policy_conflict`.\n+- `policy_version_conflict`.\n+- `device_revoked_conflict`, except for deterministic rejection of still-pending statements from the revoked Device before any user recovery flow.\n+- `calendar_region_conflict` whenever the mutation would alter or override a protected Calendar region; deterministic rejection is allowed only when the contract for that region leaves no admissible override path.\n+- `payload_visibility_conflict`.\n+- `projection_conflict` whenever projection repair would choose between canonical user intent and independently changed third-party state.\n+\n+For auditability, automatic handling must still emit enough local diagnostic and log metadata to explain what was collapsed, recomputed, quarantined, rejected, or admitted. Review-required conflicts are surfaced through the diagnostic/prompt path, not as synchronized Tasks.\ndiff --git a/OPEN_QUESTIONS.md b/OPEN_QUESTIONS.md\nindex b8ad55e..1b17e35 100644\n--- a/OPEN_QUESTIONS.md\n+++ b/OPEN_QUESTIONS.md\n@@ -2545,7 +2545,7 @@ Open.\n \n ## UBU-Q0143: Auto-resolvable versus review-required conflict classes\n \n-Status: Open Priority: MVP important Phase: Phase 1b Decision type: Process Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 100 Depends on: None Blocks: UBU-Q0134, Phase 2 conflict resolution Resolved by: None Last scored: 2026-09-16 Scored from commit: None\n+Status: Solved Priority: MVP important Phase: Phase 1b Decision type: Process Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 100 Depends on: None Blocks: UBU-Q0134, Phase 2 conflict resolution Resolved by: UBU-D0248 Last scored: 2026-09-16 Scored from commit: None\n \n Formerly UBU-QSYNC-005 (retired from DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md section 28). Defining context: DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md \u00a716, \u00a717.\n \n@@ -2555,7 +2555,11 @@ Which conflict classes can be auto-resolved safely, and which must always requir\n \n ### Resolution\n \n-Open.\n+Resolved by `UBU-D0248`: automatic handling is permitted only for deterministic, idempotent, non-authority-changing cases. `duplicate_statement` is auto-collapsed; non-overlapping `stale_prior_version` may be field-merged; `derived_state_stale`, `incomplete_sync_session`, and low-risk `projection_conflict` may be contained, retried, discarded, or recalculated without admitting an unsafe mutation.\n+\n+Human review is required for conflicts that choose between incompatible user intent, visibility authority, policy authority, Device trust, protected Calendar ownership, or third-party truth. That includes incompatible `concurrent_status_change`, overlapping `stale_prior_version`, `compartment_policy_conflict`, `policy_version_conflict`, `payload_visibility_conflict`, review-worthy `calendar_region_conflict`, review-worthy `projection_conflict`, and any `device_revoked_conflict` that is not merely deterministic rejection of still-pending statements.\n+\n+Review-required cases surface as blocking diagnostics with `manual_decision` safe-alternatives; the user's decision is admitted only through a `conflict_resolution` sync statement.\n \n ---\n \n",
+    "commit_message": "Resolve sync conflict auto-review classes",
+    "validation_notes": [
+      "Patch is limited to DECISIONS.md and OPEN_QUESTIONS.md, both in the allowlist.",
+      "OPEN_QUESTIONS.md keeps the selected question metadata on a single line and edits only the UBU-Q0143 block.",
+      "DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md is used only as context and is not modified.",
+      "No new open questions are introduced.",
+      "Patch required --recount normalization."
+    ],
+    "new_questions_added": [],
+    "questions_resolved": [
+      "UBU-Q0143"
+    ],
+    "decisions_added": [
+      "UBU-D0248"
+    ],
+    "requires_human_review": true
+  }
+]
+```
+
+## Mechanical validation results
+
+```json
+[
+  {
+    "proposal_id": "ubu-q0143-gpt5-20260916",
+    "patch_applies": true,
+    "allowlist_passed": true,
+    "changed_files": [
+      "DECISIONS.md",
+      "OPEN_QUESTIONS.md"
+    ],
+    "error": null,
+    "normalized_patch": "diff --git a/DECISIONS.md b/DECISIONS.md\nindex 68a3ec7..82fafd9 100644\n--- a/DECISIONS.md\n+++ b/DECISIONS.md\n@@ -3741,3 +3741,39 @@ Rejected alternatives:\n - Pure content-addressed bundles provide integrity and deduplication but do not, by themselves, encode happened-before ordering.\n \n This decision is design-compatible with direct peer, local LAN, removable-file, and encrypted indirect transports because the causality evidence lives in the signed statement payload and its content address rather than in any canonical server.\n+\n+---\n+\n+## UBU-D0248: Sync conflict auto-resolution is limited to deterministic non-authority cases\n+\n+**Status:** Accepted \u2192 DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md \u00a716, \u00a717. Resolves `UBU-Q0143`.\n+\n+Phase 1b and Phase 2 distinguish three conflict-handling classes:\n+\n+1. **Automatically resolvable.** A Device may resolve the condition without prompting the user when the result is deterministic, idempotent, and does not choose between incompatible user intent, visibility authority, policy authority, Device trust, protected Calendar ownership, or third-party truth.\n+2. **Automatically containable or recalculable.** A Device may quarantine, retry, resume, discard an incomplete import, or trigger recalculation without treating the conflicting mutation as admitted.\n+3. **Human-review-required.** A Device must surface a blocking diagnostic with an immediate `manual_decision` safe-alternative; only the resulting `conflict_resolution` sync statement can enter admitted state.\n+\n+Automatically resolvable classes:\n+\n+- `duplicate_statement`: collapse duplicate idempotency keys or duplicate content to the already-admitted statement result.\n+- Non-overlapping `stale_prior_version`: admit only when deterministic field-level merge proves the stale statement does not affect a field, invariant, policy input, schedule region, or causal precondition changed by the newer version.\n+\n+Automatically containable or recalculable classes:\n+\n+- `derived_state_stale`: reject or defer the derived result and recompute from current Plan, Calendar, risk, and policy state.\n+- `incomplete_sync_session`: do not mark the session complete; resume, retry, or discard while preserving idempotency and dependency metadata.\n+- Low-risk `projection_conflict`: perform deterministic projection repair only when the canonical-vs-projection rule for that integration explicitly says the external delta can be imported, ignored, or logged without changing protected canonical intent.\n+\n+Human-review-required classes:\n+\n+- `concurrent_status_change` whenever the competing statuses encode incompatible user intent, including complete-vs-reject.\n+- Overlapping or invariant-affecting `stale_prior_version`.\n+- `compartment_policy_conflict`.\n+- `policy_version_conflict`.\n+- `device_revoked_conflict`, except for deterministic rejection of still-pending statements from the revoked Device before any user recovery flow.\n+- `calendar_region_conflict` whenever the mutation would alter or override a protected Calendar region; deterministic rejection is allowed only when the contract for that region leaves no admissible override path.\n+- `payload_visibility_conflict`.\n+- `projection_conflict` whenever projection repair would choose between canonical user intent and independently changed third-party state.\n+\n+For auditability, automatic handling must still emit enough local diagnostic and log metadata to explain what was collapsed, recomputed, quarantined, rejected, or admitted. Review-required conflicts are surfaced through the diagnostic/prompt path, not as synchronized Tasks.\ndiff --git a/OPEN_QUESTIONS.md b/OPEN_QUESTIONS.md\nindex b8ad55e..1b17e35 100644\n--- a/OPEN_QUESTIONS.md\n+++ b/OPEN_QUESTIONS.md\n@@ -2545,7 +2545,7 @@ Open.\n \n ## UBU-Q0143: Auto-resolvable versus review-required conflict classes\n \n-Status: Open Priority: MVP important Phase: Phase 1b Decision type: Process Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 100 Depends on: None Blocks: UBU-Q0134, Phase 2 conflict resolution Resolved by: None Last scored: 2026-09-16 Scored from commit: None\n+Status: Solved Priority: MVP important Phase: Phase 1b Decision type: Process Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 100 Depends on: None Blocks: UBU-Q0134, Phase 2 conflict resolution Resolved by: UBU-D0248 Last scored: 2026-09-16 Scored from commit: None\n \n Formerly UBU-QSYNC-005 (retired from DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md section 28). Defining context: DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md \u00a716, \u00a717.\n \n@@ -2555,7 +2555,11 @@ Which conflict classes can be auto-resolved safely, and which must always requir\n \n ### Resolution\n \n-Open.\n+Resolved by `UBU-D0248`: automatic handling is permitted only for deterministic, idempotent, non-authority-changing cases. `duplicate_statement` is auto-collapsed; non-overlapping `stale_prior_version` may be field-merged; `derived_state_stale`, `incomplete_sync_session`, and low-risk `projection_conflict` may be contained, retried, discarded, or recalculated without admitting an unsafe mutation.\n+\n+Human review is required for conflicts that choose between incompatible user intent, visibility authority, policy authority, Device trust, protected Calendar ownership, or third-party truth. That includes incompatible `concurrent_status_change`, overlapping `stale_prior_version`, `compartment_policy_conflict`, `policy_version_conflict`, `payload_visibility_conflict`, review-worthy `calendar_region_conflict`, review-worthy `projection_conflict`, and any `device_revoked_conflict` that is not merely deterministic rejection of still-pending statements.\n+\n+Review-required cases surface as blocking diagnostics with `manual_decision` safe-alternatives; the user's decision is admitted only through a `conflict_resolution` sync statement.\n \n ---\n \n",
+    "warnings": [
+      "Patch required --recount normalization."
+    ],
+    "ordinary_error": "error: corrupt patch at line 44",
+    "recount_error": null,
+    "normalization_error": null
+  }
+]
+```
+
+## Provider weights
+
+Provider weights are historical diagnostic context only in v0.2. Do not use
+self-trust or author identity as score evidence.
+
+```json
+{}
+```
+
+## JSON Schema
+
+Your output must satisfy this schema:
+
+```json
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "scores",
+    "selected_proposal_id",
+    "selection_rationale"
+  ],
+  "properties": {
+    "scores": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "proposal_id",
+          "score",
+          "patch_applies",
+          "implements_selected_work",
+          "preserves_question_schema",
+          "avoids_unnecessary_scope",
+          "decomposition_quality",
+          "risks",
+          "required_fixes",
+          "rationale"
+        ],
+        "properties": {
+          "proposal_id": {
+            "type": "string"
+          },
+          "score": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "patch_applies": {
+            "type": "boolean"
+          },
+          "implements_selected_work": {
+            "type": "boolean"
+          },
+          "preserves_question_schema": {
+            "type": "boolean"
+          },
+          "avoids_unnecessary_scope": {
+            "type": "boolean"
+          },
+          "decomposition_quality": {
+            "type": "string",
+            "enum": [
+              "none",
+              "good",
+              "bad",
+              "not_applicable"
+            ]
+          },
+          "risks": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "required_fixes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "rationale": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "selected_proposal_id": {
+      "type": "string"
+    },
+    "selection_rationale": {
+      "type": "string"
+    }
+  }
+}
+```
+
+## Scoring requirements
+
+Score each proposal from 0 to 100.
+
+Consider:
+
+- whether the patch applies cleanly;
+- whether it implements the selected work;
+- whether it preserves the question schema;
+- whether it avoids unnecessary scope;
+- whether it modifies only allowed files;
+- whether it creates useful decomposition if decomposition occurs;
+- whether it introduces new risks;
+- whether required fixes remain.
+
+Rules:
+
+- Score every proposal in this prompt.
+- `selected_proposal_id` must refer to one scored proposal from this prompt.
+- Manual override is not allowed in v0.2.
+- Prefer a patch that is valid, minimal, auditable, and directly responsive.
+- Do not select a proposal whose patch failed mechanical validation.
+- Do not score your own provider's proposal unless explicitly asked for diagnostic self-score.
+
+Return only JSON.

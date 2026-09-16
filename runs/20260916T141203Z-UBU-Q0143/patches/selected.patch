@@ -1,0 +1,70 @@
+diff --git a/DECISIONS.md b/DECISIONS.md
+index 68a3ec7..82fafd9 100644
+--- a/DECISIONS.md
++++ b/DECISIONS.md
+@@ -3741,3 +3741,39 @@ Rejected alternatives:
+ - Pure content-addressed bundles provide integrity and deduplication but do not, by themselves, encode happened-before ordering.
+ 
+ This decision is design-compatible with direct peer, local LAN, removable-file, and encrypted indirect transports because the causality evidence lives in the signed statement payload and its content address rather than in any canonical server.
++
++---
++
++## UBU-D0248: Sync conflict auto-resolution is limited to deterministic non-authority cases
++
++**Status:** Accepted → DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md §16, §17. Resolves `UBU-Q0143`.
++
++Phase 1b and Phase 2 distinguish three conflict-handling classes:
++
++1. **Automatically resolvable.** A Device may resolve the condition without prompting the user when the result is deterministic, idempotent, and does not choose between incompatible user intent, visibility authority, policy authority, Device trust, protected Calendar ownership, or third-party truth.
++2. **Automatically containable or recalculable.** A Device may quarantine, retry, resume, discard an incomplete import, or trigger recalculation without treating the conflicting mutation as admitted.
++3. **Human-review-required.** A Device must surface a blocking diagnostic with an immediate `manual_decision` safe-alternative; only the resulting `conflict_resolution` sync statement can enter admitted state.
++
++Automatically resolvable classes:
++
++- `duplicate_statement`: collapse duplicate idempotency keys or duplicate content to the already-admitted statement result.
++- Non-overlapping `stale_prior_version`: admit only when deterministic field-level merge proves the stale statement does not affect a field, invariant, policy input, schedule region, or causal precondition changed by the newer version.
++
++Automatically containable or recalculable classes:
++
++- `derived_state_stale`: reject or defer the derived result and recompute from current Plan, Calendar, risk, and policy state.
++- `incomplete_sync_session`: do not mark the session complete; resume, retry, or discard while preserving idempotency and dependency metadata.
++- Low-risk `projection_conflict`: perform deterministic projection repair only when the canonical-vs-projection rule for that integration explicitly says the external delta can be imported, ignored, or logged without changing protected canonical intent.
++
++Human-review-required classes:
++
++- `concurrent_status_change` whenever the competing statuses encode incompatible user intent, including complete-vs-reject.
++- Overlapping or invariant-affecting `stale_prior_version`.
++- `compartment_policy_conflict`.
++- `policy_version_conflict`.
++- `device_revoked_conflict`, except for deterministic rejection of still-pending statements from the revoked Device before any user recovery flow.
++- `calendar_region_conflict` whenever the mutation would alter or override a protected Calendar region; deterministic rejection is allowed only when the contract for that region leaves no admissible override path.
++- `payload_visibility_conflict`.
++- `projection_conflict` whenever projection repair would choose between canonical user intent and independently changed third-party state.
++
++For auditability, automatic handling must still emit enough local diagnostic and log metadata to explain what was collapsed, recomputed, quarantined, rejected, or admitted. Review-required conflicts are surfaced through the diagnostic/prompt path, not as synchronized Tasks.
+diff --git a/OPEN_QUESTIONS.md b/OPEN_QUESTIONS.md
+index b8ad55e..1b17e35 100644
+--- a/OPEN_QUESTIONS.md
++++ b/OPEN_QUESTIONS.md
+@@ -2545,7 +2545,7 @@ Open.
+ 
+ ## UBU-Q0143: Auto-resolvable versus review-required conflict classes
+ 
+-Status: Open Priority: MVP important Phase: Phase 1b Decision type: Process Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 100 Depends on: None Blocks: UBU-Q0134, Phase 2 conflict resolution Resolved by: None Last scored: 2026-09-16 Scored from commit: None
++Status: Solved Priority: MVP important Phase: Phase 1b Decision type: Process Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 100 Depends on: None Blocks: UBU-Q0134, Phase 2 conflict resolution Resolved by: UBU-D0248 Last scored: 2026-09-16 Scored from commit: None
+ 
+ Formerly UBU-QSYNC-005 (retired from DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md section 28). Defining context: DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md §16, §17.
+ 
+@@ -2555,7 +2555,11 @@ Which conflict classes can be auto-resolved safely, and which must always requir
+ 
+ ### Resolution
+ 
+-Open.
++Resolved by `UBU-D0248`: automatic handling is permitted only for deterministic, idempotent, non-authority-changing cases. `duplicate_statement` is auto-collapsed; non-overlapping `stale_prior_version` may be field-merged; `derived_state_stale`, `incomplete_sync_session`, and low-risk `projection_conflict` may be contained, retried, discarded, or recalculated without admitting an unsafe mutation.
++
++Human review is required for conflicts that choose between incompatible user intent, visibility authority, policy authority, Device trust, protected Calendar ownership, or third-party truth. That includes incompatible `concurrent_status_change`, overlapping `stale_prior_version`, `compartment_policy_conflict`, `policy_version_conflict`, `payload_visibility_conflict`, review-worthy `calendar_region_conflict`, review-worthy `projection_conflict`, and any `device_revoked_conflict` that is not merely deterministic rejection of still-pending statements.
++
++Review-required cases surface as blocking diagnostics with `manual_decision` safe-alternatives; the user's decision is admitted only through a `conflict_resolution` sync statement.
+ 
+ ---
+ 

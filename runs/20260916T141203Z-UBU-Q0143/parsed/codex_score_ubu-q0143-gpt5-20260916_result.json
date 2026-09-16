@@ -1,0 +1,21 @@
+{
+  "scores": [
+    {
+      "proposal_id": "ubu-q0143-gpt5-20260916",
+      "score": 90,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "good",
+      "risks": [
+        "The automatic field-level merge allowance for non-overlapping stale_prior_version depends on strong proof of non-interference; implementations may need precise invariant and causal-precondition checks to avoid over-admitting stale writes.",
+        "The device_revoked_conflict exception for deterministic rejection is reasonable but should be kept narrowly interpreted so it does not bypass review during recovery flows."
+      ],
+      "required_fixes": [],
+      "rationale": "The patch applies after normalization, stays within the allowed files, preserves the question block format, and directly resolves UBU-Q0143 by drawing a conservative boundary between deterministic auto-resolution, containment/recalculation, and human-review-required cases. The decision is auditable, scoped to the process question, and aligns with the referenced sync-conflict context without modifying the contract itself. The main residual risk is that some conditional auto-resolution classes require careful implementation discipline, but the proposal states those conditions clearly enough for a design decision."
+    }
+  ],
+  "selected_proposal_id": "ubu-q0143-gpt5-20260916",
+  "selection_rationale": "This is the only candidate proposal. It is valid, minimal, mechanically applicable, and directly answers which conflict classes may be handled automatically versus which require review."
+}
