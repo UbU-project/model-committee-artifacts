@@ -1,0 +1,24 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-gpt-5-codex-UBU-Q0059-001",
+      "score": 90,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": false,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "It gives brief directional answers for appliances, encrypted compute, and idle-compute monetization even though those remain future directions; this seems appropriate but should not be mistaken for a full product decision.",
+        "Raising Answerability score from 90 to 100 alongside marking Status Solved is a judgment call not explicitly justified in the diff; reviewers may want to confirm this matches project convention for resolved questions.",
+        "Subquestions 6, 7, 8 (appliances, FHE, monetization) are addressed only at a high policy level, which is correct per the question's own Phase 1b re-scope but leaves concrete design genuinely open for later work.",
+        "The decision is broad and policy-heavy, so later implementation questions may need sharper protocol details for WorkerAuthority fields, payload-safety proof format, and sync-carried worker behavior.",
+        "The new UBU-D0254 decision text is long and touches many subsystems (WorkerAuthority, admission, routing, payload minimization, certification); future decisions must stay consistent with all of these simultaneously or amend this one explicitly."
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "openai-gpt-5-codex-UBU-Q0059-001",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}

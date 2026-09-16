@@ -1,0 +1,78 @@
+diff --git a/OPEN_QUESTIONS.md b/OPEN_QUESTIONS.md
+index 1d6d4d2..e7bdb23 100644
+--- a/OPEN_QUESTIONS.md
++++ b/OPEN_QUESTIONS.md
+@@ -532,7 +532,7 @@ Open.
+ 
+ ## UBU-Q0059: Execution-provider trust, worker backends, and privacy-preserving compute roadmap
+ 
+-Status: Open Priority: MVP important Phase: Phase 1b Decision type: Security Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 90 Depends on: UBU-Q0016 Blocks: Phase 2 personal worker devices, hosted compute policy, third-party provider compatibility, Phase 1b advisory worker boundary Resolved by: None Last scored: 2026-09-16 Scored from commit: None
++Status: Solved Priority: MVP important Phase: Phase 1b Decision type: Security Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 100 Depends on: UBU-Q0016 Blocks: Phase 2 personal worker devices, hosted compute policy, third-party provider compatibility, Phase 1b advisory worker boundary Resolved by: UBU-D0254 Last scored: 2026-09-16 Scored from commit: None
+ 
+ ### Question
+ 
+@@ -557,7 +557,7 @@ Phase 1b re-scope: this question is pulled forward from Phase 2 under the Phase
+ 
+ ### Resolution
+ 
+-Open.
++Resolved by `UBU-D0254`: every non-local execution backend is an explicitly authorized, interchangeable advisory worker behind `WorkerAuthority`, Compartment/export admission, payload minimization, provenance, user-visible routing, and CPU certification on return. The open-core planner must remain self-hostable through the FOSS schemas, Compact Calendar representation, planning loop, and CPU admission/certification path; corporate hosted compute, third-party providers, appliances, FHE-like encrypted compute, and idle-compute monetization are optional future backends or packaging choices, not privileged dependencies.
+ 
+ ---
+ 
+diff --git a/DECISIONS.md b/DECISIONS.md
+index 783fb7f..64e6365 100644
+--- a/DECISIONS.md
++++ b/DECISIONS.md
+@@ -3886,3 +3886,21 @@ For `compartment_ref`, the default is omission. If policy explicitly permits res
+ All redacted handles must be generated as high-entropy random aliases or keyed aliases whose key is unavailable to the restricted Device. Handles must carry no semantic prefix, reason code, sequence, compartment vocabulary, or stable global identifier.
+ 
+ The acceptable correlation risk is limited to local correlation needed for one authorized restricted Device to maintain UI continuity and de-duplication inside one projection window. Durable cross-Device, cross-window, cross-version, or Compartment-pattern correlation is not acceptable for redacted replicas.
++
++---
++
++## UBU-D0254: Execution backends are interchangeable advisory workers behind authority, minimization, and certification
++
++**Status:** Accepted → DESIGN.md §16.8. Resolves `UBU-Q0059`.
++
++UbU execution providers beyond the currently controlling local instance are advisory workers, not privileged planning authorities. A backend may propose candidate Plans, simulations, summaries, extraction results, projection previews, candidate mutations, diagnostics, or repair suggestions only within an explicit `WorkerAuthority`. It cannot directly mutate canonical state, broaden its own scope, fetch additional protected context, decide Compartment export policy, or bypass admission. Returned artifacts become usable only after the controlling CPU kernel validates schema, policy provenance, hard constraints, skeleton validity, affect or legitimacy claims, and any candidate mutations through the ordinary admission path.
++
++The open-core planning loop must remain self-hostable without a hidden service. The FOSS boundary includes the canonical planning schemas, Compact Calendar representation, deterministic skeletonization and precondition/effect evaluation, conservative CPU hard-constraint validation, admission and provenance checks, payload-safety validation, and enough local execution profile support to produce a legitimate default Plan or a blocking diagnostic. Hosted, rented, GPU, learned-model, or third-party compute may improve speed, branch coverage, candidate diversity, or analysis depth, but they are substitutions behind the same request/result boundary, not requirements for correctness or access to the user's state.
++
++Every worker invocation carries a scoped authority envelope with the backend kind, provider or Device identity, requested capability, purpose, allowed `zone_id` and `compartment_ids`, redaction level, policy-version references, retention deadline, export/network/tool permissions, compute budget, model or solver identity when applicable, request ID, causal parents, and expected response schema. Worker capabilities are additive and narrow: candidate planning, simulation, local extraction, summarization, projection-preview preparation, and candidate-mutation generation are separate grants. Absence of a grant means denial.
++
++Routing chooses the least-disclosing backend that satisfies the requested capability, policy, freshness, latency, energy, and compute-budget requirements. Mobile local execution is the stewardship fallback for current/next Task clarity and cached repair. Local desktop/laptop execution is the default high-fidelity self-hosted path when available. Phase 2 user-owned workers may receive work through the sync-carried worker protocol. Corporate hosted compute and third-party UbU-compatible providers require explicit policy allowance and user-visible routing disclosure. Third-party providers use the same APIs, safety proof, provenance, and return validation as UbU-hosted providers and receive no privileged access over local execution.
++
++Before any external backend receives work, the controller must evaluate Compartment policy, export limits, Device or provider trust, `no_cloud_llm`-style constraints, retention rules, and purpose compatibility. The transmitted payload is a minimized `PlanningRequest`, `worker_request`, or derived context bundle over a redacted Replica: direct PII, stable object IDs, Compartment labels, secrets, integration credentials, and unrelated UniverseState are omitted, generalized, or replaced with redacted handles unless policy explicitly authorizes disclosure. Transport must be encrypted; retained payloads must obey the request retention deadline; diagnostics and logs must avoid reintroducing stripped identifiers. The request records a payload-safety proof or equivalent provenance summary, and the result echoes the policy versions, input digests or structural references, provider/model identity, telemetry safe for the authority level, and deletion confirmation when transient payload deletion was required.
++
++Dedicated personal worker appliances are future packaging or reference-hardware work, not a special trust class. They must register and operate as ordinary user-owned worker Devices. Future practical FHE-backed or comparable encrypted compute is a strategic research backend class: it is worth tracking and may reduce disclosure when viable, but it must still use the same authority, capability, provenance, routing, and CPU-certification boundary unless a later accepted design proves stronger semantics. Idle-compute monetization, if ever supported, should be an external API-enabled user choice with explicit opt-in, revocation, policy limits, and auditability rather than an UbU corporate marketplace or a default use of personal compute.
+diff --git a/DESIGN.md b/DESIGN.md
+index 78d53f3..d1aee1f 100644
+--- a/DESIGN.md
++++ b/DESIGN.md
+@@ -2297,6 +2297,16 @@ Possible execution backends include:
+ 
+ The FOSS planner and Compact Calendar representation should be backend-agnostic. Execution providers are interchangeable through explicit APIs, capability grants, Compartment policy, provenance, and user-visible routing decisions. GPU search may propose candidate Plans, but hard constraints and final Plan validity must be certified by exact or conservative validation. Cloud planning payloads should minimize PII and transmit only the structured timing, dependency, value, constraint, criticality, and legitimacy information needed for the selected provider.
+ 
++**Backend trust boundary (`UBU-D0254`).** Backends beyond the controlling local instance are advisory workers behind an explicit `WorkerAuthority`; they may propose candidates, simulations, extraction or summary artifacts, projection previews, diagnostics, repair suggestions, and candidate mutations, but they do not mutate canonical state or decide their own scope. Returned artifacts are usable only after schema validation, Compartment/export admission, provenance validation, hard-constraint certification, and ordinary CPU commit or review paths.
++
++The open-core boundary includes the canonical planning schemas, Compact Calendar representation, deterministic skeletonization and precondition/effect evaluation, conservative CPU hard-constraint validation, admission and provenance checks, payload-safety validation, and enough local execution-profile support to produce a legitimate default Plan or blocking diagnostic without a hidden service. Hosted, rented, GPU, learned-model, or third-party compute may improve speed and depth, but they are replaceable request/result providers.
++
++Routing selects the least-disclosing capable backend under policy, freshness, latency, energy, and compute-budget constraints. Mobile local execution remains the stewardship fallback for current/next Task clarity and cached repair; local desktop/laptop execution is the default high-fidelity self-hosted path when available; Phase 2 user-owned workers use the sync-carried worker protocol; corporate hosted compute and third-party UbU-compatible providers require explicit policy allowance and user-visible routing disclosure. Third-party providers receive no privileged access over local execution and must use the same authority, payload-safety proof, provenance, response validation, and CPU certification boundary as UbU-hosted providers.
++
++Before external egress, the controller evaluates Compartment policy, export limits, Device or provider trust, `no_cloud_llm`-style constraints, retention rules, and purpose compatibility. Payloads are minimized `PlanningRequest`, `worker_request`, or derived context bundles over redacted Replicas; direct PII, stable object IDs, Compartment labels, secrets, integration credentials, and unrelated UniverseState are omitted, generalized, or replaced with redacted handles unless policy explicitly authorizes disclosure. Transport is encrypted, retention is bounded, diagnostics must not reintroduce stripped identifiers, and results echo policy versions, input digests or structural references, provider/model identity, safe telemetry, and required deletion confirmation.
++
++Dedicated personal worker appliances are future packaging or reference hardware for ordinary user-owned worker Devices, not a separate trust class. Practical FHE-backed or comparable encrypted compute remains strategic research until it can preserve the same authority, provenance, routing, and certification boundary with stronger disclosure properties. Idle-compute monetization, if ever supported, is an external API-enabled user opt-in with revocation, policy limits, and auditability rather than an UbU corporate marketplace or default use of personal compute.
++
+ ### 16.9 MVP Compact Calendar implementation
+ 
+ The minimum Phase 1 Compact Calendar implementation stores the legitimized skeleton baseline, the default Plan, the active execution profile, coverage estimate, uncovered-mass estimate, effective coverage threshold, decision envelopes, Task criticality, cached explanation fragments, probability provenance, and last-legitimate-Plan reference. It stores user-previewed, risk-report, and debug/reproducibility Plans only when those artifacts are actually generated or needed for audit.
+@@ -2390,7 +2400,7 @@ Solver and library candidates are evaluation targets:
+ 
+ Phase 1 has no mobile GPU target. The required mobile fallback is CPU stewardship for current or next Task hard checks, cached last-legitimate Plan repair, decision envelopes, and simple repair recipes; exact mobile metadata remains in `UBU-Q0073`.
+ 
+-Premium or cloud GPU planning is deferred to `UBU-Q0059` and later provider work. Any future cloud backend must preserve the same typed `PlanningRequest`/`PlanningResponse` boundary, Compartment and export gating, payload minimization, provenance, and CPU certification on return.
++Premium or cloud GPU planning is governed by the execution-provider boundary in `UBU-D0254`, with concrete products deferred to later provider work. Any future cloud backend must preserve the same typed `PlanningRequest`/`PlanningResponse` boundary, Compartment and export gating, payload minimization, provenance, and CPU certification on return.
+ 
+ See also: `UBU-D0166`, `UBU-D0167`, `UBU-D0168`, `UBU-D0169`, `UBU-D0170`, `UBU-D0171`, `UBU-D0172`, `UBU-D0173`, `UBU-D0174`, `UBU-D0212`, and `PLANNING_KERNEL_CONTRACT.md`.
+ 

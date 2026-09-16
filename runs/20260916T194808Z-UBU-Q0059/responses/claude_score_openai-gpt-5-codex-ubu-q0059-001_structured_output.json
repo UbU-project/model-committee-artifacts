@@ -1,0 +1,22 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-gpt-5-codex-UBU-Q0059-001",
+      "score": 86,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "The new UBU-D0254 decision text is long and touches many subsystems (WorkerAuthority, admission, routing, payload minimization, certification); future decisions must stay consistent with all of these simultaneously or amend this one explicitly.",
+        "Raising Answerability score from 90 to 100 alongside marking Status Solved is a judgment call not explicitly justified in the diff; reviewers may want to confirm this matches project convention for resolved questions.",
+        "Subquestions 6, 7, 8 (appliances, FHE, monetization) are addressed only at a high policy level, which is correct per the question's own Phase 1b re-scope but leaves concrete design genuinely open for later work."
+      ],
+      "required_fixes": [],
+      "rationale": "The proposal directly resolves UBU-Q0059 within its Phase 1b re-scope: it answers subquestions 1, 2, 3, and 5 (worker protocol posture, routing, Compartment/export gating, third-party interop) at the architecture level appropriate to Phase 1b, while correctly deferring subquestions 6, 7, and 8 as future/non-privileged, consistent with the question's stated current direction and re-scope note. It defines a WorkerAuthority envelope, an admission-before-mutation boundary, least-disclosing routing, payload minimization/provenance requirements, and an open-core self-host boundary, giving UBU-Q0135 and later remote-backend work a stable interface without duplicating that decomposed question's scope. The patch touches only OPEN_QUESTIONS.md, DECISIONS.md, and DESIGN.md, matches the existing status-line and decision-entry schema, and passed mechanical validation (patch_applies and allowlist_passed both true). It avoids scope creep by not committing to concrete appliance, FHE, or monetization designs. Minor concerns are the breadth of the new decision text and the unexplained answerability-score bump, but neither undermines correctness or auditability."
+    }
+  ],
+  "selected_proposal_id": "openai-gpt-5-codex-UBU-Q0059-001",
+  "selection_rationale": "Only one proposal was submitted and it passed mechanical validation (patch applies cleanly, only touches allowlisted files). It substantively resolves the Phase 1b-relevant subquestions with a coherent trust/authority model (WorkerAuthority, admission, minimization, provenance, routing) while correctly deferring the explicitly out-of-scope future-commercial subquestions (appliances, FHE, monetization), matching the question's own re-scope instructions. No competing proposal exists to compare against."
+}
