@@ -1,0 +1,44 @@
+[
+  {
+    "proposal_id": "openai-gpt-5-codex-UBU-Q0144",
+    "author_provider": "openai",
+    "scorer_provider": "codex",
+    "score": 93,
+    "valid": true,
+    "rationale": "The patch is valid, minimal, and directly answers the selected data-model question by representing offline deletion/redaction as auditable per-Device enforcement records with explicit pending, attempted, confirmed, failed, and unknown-accepted states. It preserves the open-question schema, marks only UBU-Q0144 as resolved, adds a single decision, and confines changes to allowed files. The proposal correctly avoids claiming enforcement success for offline Devices and includes non-leaking diagnostics, idempotent retry, confirmation evidence, and exposure-state semantics. Remaining issues are mostly future integration details rather than blockers.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [
+      "The decision introduces a fairly concrete field set and enum vocabulary that may later need alignment with existing event or statement schema names.",
+      "The wording allows user_accepted_unknown to close the immediate obligation for planning and audit, which is useful but may need downstream policy constraints to avoid overuse."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20260916T175321Z-UBU-Q0144/responses/codex_score_openai-gpt-5-codex-ubu-q0144_response.json",
+      "stderr_path": null
+    }
+  },
+  {
+    "proposal_id": "openai-gpt-5-codex-UBU-Q0144",
+    "author_provider": "openai",
+    "scorer_provider": "claude",
+    "score": 85,
+    "valid": true,
+    "rationale": "Patch applies cleanly per mechanical validation and touches only the two allowed files (OPEN_QUESTIONS.md, DECISIONS.md), leaving the read-only contract file untouched. It directly answers UBU-Q0144 by introducing a per-Device enforcement record (UBU-D0249) that distinguishes attempt from confirmation, correctly refuses to claim success on offline/unreachable Devices until confirmation or explicit user acceptance of unknown exposure, and adds a non-leaking diagnostic constraint consistent with the contract's stated requirements in \u00a712/\u00a718. The question metadata line is preserved in the expected single-line format with Status/Resolved-by fields updated appropriately, and the resolution section clearly states the outcome without rewriting unrelated content. Scope is appropriately bounded to Phase 1b representation, explicitly deferring transport-specific retry and Phase 2 propagation policy rather than overreaching into those areas.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [
+      "Enforcement record schema (attempt_state, exposure_state enums) is fairly elaborate for a single decision and may need refinement as Phase 2 propagation work lands",
+      "Leaves transport-specific retry and Device recovery flows unspecified, which is acknowledged but could invite scope creep in follow-on questions"
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20260916T175321Z-UBU-Q0144/responses/claude_score_openai-gpt-5-codex-ubu-q0144_stdout.json",
+      "stderr_path": null
+    }
+  }
+]

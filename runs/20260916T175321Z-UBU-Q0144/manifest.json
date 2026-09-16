@@ -1,0 +1,173 @@
+{
+  "schema_version": "0.4",
+  "run_id": "20260916T175321Z-UBU-Q0144",
+  "created_at_utc": "2026-09-16T17:53:21Z",
+  "repo_path": "../ubu-design",
+  "base_commit": "8515062888a6d0cadb7c7005e9b86f012b9d22d5",
+  "selected_question_id": "UBU-Q0144",
+  "phase": "work-select",
+  "config_path": "config/models.json",
+  "status": "selected",
+  "commands": [
+    "model-committee run-loop"
+  ],
+  "providers_attempted": [
+    "codex",
+    "claude"
+  ],
+  "providers_succeeded": [
+    "codex",
+    "claude"
+  ],
+  "providers_failed": [],
+  "provider_attempts": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-score",
+      "target_proposal_id": "openai-gpt-5-codex-UBU-Q0144",
+      "response_path": "runs/20260916T175321Z-UBU-Q0144/responses/codex_score_openai-gpt-5-codex-ubu-q0144_response.json",
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "sonnet",
+      "phase": "work-score",
+      "target_proposal_id": "openai-gpt-5-codex-UBU-Q0144",
+      "response_path": "runs/20260916T175321Z-UBU-Q0144/responses/claude_score_openai-gpt-5-codex-ubu-q0144_stdout.json",
+      "stderr_path": null
+    }
+  ],
+  "provider_successes": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20260916T175321Z-UBU-Q0144/parsed/codex_work_proposal.json"
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-score",
+      "target_proposal_id": "openai-gpt-5-codex-UBU-Q0144",
+      "response_path": "runs/20260916T175321Z-UBU-Q0144/responses/codex_score_openai-gpt-5-codex-ubu-q0144_response.json",
+      "parsed_path": "runs/20260916T175321Z-UBU-Q0144/parsed/codex_score_openai-gpt-5-codex-ubu-q0144_result.json"
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "sonnet",
+      "phase": "work-score",
+      "target_proposal_id": "openai-gpt-5-codex-UBU-Q0144",
+      "response_path": "runs/20260916T175321Z-UBU-Q0144/responses/claude_score_openai-gpt-5-codex-ubu-q0144_stdout.json",
+      "parsed_path": "runs/20260916T175321Z-UBU-Q0144/parsed/claude_score_openai-gpt-5-codex-ubu-q0144_result.json"
+    }
+  ],
+  "provider_failures": [],
+  "score_matrix": [
+    {
+      "proposal_id": "openai-gpt-5-codex-UBU-Q0144",
+      "author_provider": "openai",
+      "scorer_provider": "codex",
+      "score": 93,
+      "valid": true,
+      "rationale": "The patch is valid, minimal, and directly answers the selected data-model question by representing offline deletion/redaction as auditable per-Device enforcement records with explicit pending, attempted, confirmed, failed, and unknown-accepted states. It preserves the open-question schema, marks only UBU-Q0144 as resolved, adds a single decision, and confines changes to allowed files. The proposal correctly avoids claiming enforcement success for offline Devices and includes non-leaking diagnostics, idempotent retry, confirmation evidence, and exposure-state semantics. Remaining issues are mostly future integration details rather than blockers.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "The decision introduces a fairly concrete field set and enum vocabulary that may later need alignment with existing event or statement schema names.",
+        "The wording allows user_accepted_unknown to close the immediate obligation for planning and audit, which is useful but may need downstream policy constraints to avoid overuse."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20260916T175321Z-UBU-Q0144/responses/codex_score_openai-gpt-5-codex-ubu-q0144_response.json",
+        "stderr_path": null
+      }
+    },
+    {
+      "proposal_id": "openai-gpt-5-codex-UBU-Q0144",
+      "author_provider": "openai",
+      "scorer_provider": "claude",
+      "score": 85,
+      "valid": true,
+      "rationale": "Patch applies cleanly per mechanical validation and touches only the two allowed files (OPEN_QUESTIONS.md, DECISIONS.md), leaving the read-only contract file untouched. It directly answers UBU-Q0144 by introducing a per-Device enforcement record (UBU-D0249) that distinguishes attempt from confirmation, correctly refuses to claim success on offline/unreachable Devices until confirmation or explicit user acceptance of unknown exposure, and adds a non-leaking diagnostic constraint consistent with the contract's stated requirements in \u00a712/\u00a718. The question metadata line is preserved in the expected single-line format with Status/Resolved-by fields updated appropriately, and the resolution section clearly states the outcome without rewriting unrelated content. Scope is appropriately bounded to Phase 1b representation, explicitly deferring transport-specific retry and Phase 2 propagation policy rather than overreaching into those areas.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "Enforcement record schema (attempt_state, exposure_state enums) is fairly elaborate for a single decision and may need refinement as Phase 2 propagation work lands",
+        "Leaves transport-specific retry and Device recovery flows unspecified, which is acknowledged but could invite scope creep in follow-on questions"
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20260916T175321Z-UBU-Q0144/responses/claude_score_openai-gpt-5-codex-ubu-q0144_stdout.json",
+        "stderr_path": null
+      }
+    }
+  ],
+  "score_aggregates": [
+    {
+      "proposal_id": "openai-gpt-5-codex-UBU-Q0144",
+      "author_provider": "openai",
+      "cross_score_count": 2,
+      "score_mean": 89.0,
+      "score_spread": 8,
+      "frontier_score_gap": 8,
+      "disagreement_flags": []
+    }
+  ],
+  "cross_score_count": 2,
+  "score_mean": 89.0,
+  "score_spread": 8,
+  "frontier_score_gap": 8,
+  "disagreement_flags": [],
+  "quorum_result": {
+    "valid": true,
+    "human_review_required": false,
+    "selected_proposal_id": "openai-gpt-5-codex-UBU-Q0144",
+    "selected_score": 89.0,
+    "selected_cross_score_count": 2,
+    "blocked_reasons": [],
+    "manual_override": false
+  },
+  "selected_proposal_id": "openai-gpt-5-codex-UBU-Q0144",
+  "automated_selection_valid": true,
+  "human_review_required": false,
+  "artifact_publication_status": "operator_pending",
+  "prompt_size_warning": false,
+  "prompt_context": {
+    "question_ids": [
+      "UBU-Q0144"
+    ],
+    "decision_ids": [],
+    "sections": {
+      "DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md": [
+        "12",
+        "18"
+      ]
+    },
+    "core_sections": {
+      "DESIGN.md": [
+        "1"
+      ],
+      "DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md": [
+        "4"
+      ]
+    },
+    "missing_refs": {},
+    "context_chars": 8040,
+    "prompt_chars": 13806
+  }
+}

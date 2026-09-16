@@ -1,0 +1,64 @@
+diff --git a/OPEN_QUESTIONS.md b/OPEN_QUESTIONS.md
+--- a/OPEN_QUESTIONS.md
++++ b/OPEN_QUESTIONS.md
+@@ -2566,18 +2566,22 @@ Review-required cases surface as blocking diagnostics with `manual_decision` safe
+ ## UBU-Q0144: Best-effort deletion and redaction on offline Devices
+ 
+-Status: Open Priority: MVP important Phase: Phase 1b Decision type: Data model Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 100 Depends on: None Blocks: UBU-Q0132, Phase 2 deletion propagation Resolved by: None Last scored: 2026-09-16 Scored from commit: None
++Status: Solved Priority: MVP important Phase: Phase 1b Decision type: Data model Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 100 Depends on: None Blocks: UBU-Q0132, Phase 2 deletion propagation Resolved by: UBU-D0249 Last scored: 2026-09-16 Scored from commit: None
+ 
+ Formerly UBU-QSYNC-006 (retired from DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md section 28). Defining context: DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md §12, §18.
+ 
+ ### Question
+ 
+ How should UbU represent best-effort deletion/redaction on Devices that were offline when
+ Compartment policy changed?
+ 
+ ### Resolution
+ 
+-Open.
++Resolved by `UBU-D0249`: represent enforcement against offline Devices as a per-Device deletion/redaction enforcement record linked to the policy update and affected objects.
++
++Devices that have not confirmed remain `potentially_exposed`; UbU may record attempts and retries, but may not claim purge or redaction success until confirmation or explicit user acceptance of an unknown exposure state.
++
++Diagnostics and user-facing review may disclose only structural status, not restricted payload or Compartment identity.
+ 
+ ---
+ 
+ ## UBU-Q0145: Minimum useful worker Device protocol for Phase 2
+diff --git a/DECISIONS.md b/DECISIONS.md
+--- a/DECISIONS.md
++++ b/DECISIONS.md
+@@ -3777,3 +3777,32 @@ Human-review-required classes:
+ - `projection_conflict` whenever projection repair would choose between canonical user intent and independently changed third-party state.
+ 
+ For auditability, automatic handling must still emit enough local diagnostic and log metadata to explain what was collapsed, recomputed, quarantined, rejected, or admitted. Review-required conflicts are surfaced through the diagnostic/prompt path, not as synchronized Tasks.
++
++---
++
++## UBU-D0249: Offline deletion and redaction use explicit enforcement records
++
++**Status:** Accepted → DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md §12, §18. Resolves `UBU-Q0144`.
++
++When a Compartment policy change requires deletion, purge, or redaction on a Device that may be offline, stale, revoked, or unreachable, UbU represents the obligation as a per-target enforcement record rather than as completed deletion.
++
++The record contains:
++
++- `target_device_id`, or an equivalent opaque Device reference allowed at the current visibility level;
++- `policy_update_statement_id` and causal references to the tombstone, redaction, or purge request;
++- `affected_object_ids` or redacted structural object references sufficient for idempotent retry and audit;
++- `requested_action`: one of `redact_replica`, `purge_replica`, `apply_tombstone`, or `recalculate_derived_state`;
++- `requested_representation`, when redaction rather than purge is allowed;
++- `attempt_state`: one of `pending_delivery`, `delivered_unconfirmed`, `attempted_unconfirmed`, `confirmed`, `failed_retryable`, `failed_terminal`, or `user_accepted_unknown`;
++- `confirmed_at` and confirmation statement reference when the target Device proves enforcement occurred;
++- `exposure_state`: one of `not_exposed`, `potentially_exposed`, `confirmed_removed`, or `unknown_accepted`.
++
++`pending_delivery`, `delivered_unconfirmed`, and `attempted_unconfirmed` all mean UbU must treat the target replica as potentially stale and potentially exposed. They may satisfy audit that UbU attempted enforcement, but they do not satisfy enforcement success.
++
++A Device that later reconnects applies the latest admissible policy before exposing affected content, executes the requested redaction or purge idempotently, emits confirmation or failure, and recalculates derived state whose visibility changed.
++
++Until confirmation, diagnostics and user-facing review may state only structural status such as "A protected object may still exist on an offline Device." They must not include the protected payload, the Compartment id or label, or reason strings that reveal the Compartment subject.
++
++User-facing review may offer an explicit `user_accepted_unknown` outcome only after presenting the exposure as unknown rather than successful. This closes the immediate obligation for planning and audit purposes, but does not rewrite history as confirmed deletion.
++
++This resolves Phase 1b representation. Transport-specific retries, Device recovery flows, and full Phase 2 deletion propagation policy remain later implementation work.
