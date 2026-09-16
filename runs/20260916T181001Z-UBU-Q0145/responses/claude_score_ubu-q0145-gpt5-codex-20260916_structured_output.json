@@ -1,0 +1,21 @@
+{
+  "scores": [
+    {
+      "proposal_id": "ubu-q0145-gpt5-codex-20260916",
+      "score": 86,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Introduces a new decision (UBU-D0250) whose interaction with existing admission/conflict/policy decisions is asserted but not cross-checked against those decisions' exact text in this patch",
+        "Retention/deletion-confirmation requirements for worker_result are asserted but not tied to a specific existing deletion-propagation decision, so downstream Phase 2 work must still verify consistency"
+      ],
+      "required_fixes": [],
+      "rationale": "Mechanical validation confirms the patch applies cleanly and only touches the allowed files (OPEN_QUESTIONS.md, DECISIONS.md). The OPEN_QUESTIONS.md edit preserves the single-line metadata schema, correctly flips Status to Solved, and adds a Resolved by reference to the new decision, matching the existing convention. The new DECISIONS.md entry (UBU-D0250) is scoped tightly to the \u00a720 boundary referenced in the question: workers get a policy-checked scoped request/result exchange over ordinary sync statements, produce only candidate artifacts, and can never bypass normal admission. This avoids introducing a second authority/mutation path, which is the key architectural risk for worker protocols. The proposal is a single coherent resolution rather than a decomposition, so decomposition quality is not applicable. Scope is appropriately narrow \u2014 no unrelated files or speculative future-Device features are touched, and requires_human_review is honestly flagged given the architectural nature of the decision."
+    }
+  ],
+  "selected_proposal_id": "ubu-q0145-gpt5-codex-20260916",
+  "selection_rationale": "Only one proposal was submitted and it passed mechanical validation (patch applies, correct allowlist). It directly resolves UBU-Q0145 with a minimal, well-scoped protocol definition that respects the referenced \u00a720 boundary, preserves the OPEN_QUESTIONS.md schema, and avoids expanding scope beyond the two necessary files."
+}

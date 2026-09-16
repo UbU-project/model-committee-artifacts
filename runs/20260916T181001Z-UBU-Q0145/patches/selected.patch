@@ -1,0 +1,52 @@
+diff --git a/OPEN_QUESTIONS.md b/OPEN_QUESTIONS.md
+--- a/OPEN_QUESTIONS.md
++++ b/OPEN_QUESTIONS.md
+@@ -2586,7 +2586,7 @@
+ 
+ ## UBU-Q0145: Minimum useful worker Device protocol for Phase 2
+ 
+-Status: Open Priority: MVP important Phase: Phase 1b Decision type: Architecture Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 100 Depends on: None Blocks: UBU-Q0135, Phase 2 worker Device protocol Resolved by: None Last scored: 2026-09-16 Scored from commit: None
++Status: Solved Priority: MVP important Phase: Phase 1b Decision type: Architecture Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 100 Depends on: None Blocks: UBU-Q0135, Phase 2 worker Device protocol Resolved by: UBU-D0250 Last scored: 2026-09-16 Scored from commit: None
+ 
+ Formerly UBU-QSYNC-007 (retired from DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md section 28). Defining context: DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md §20.
+ 
+@@ -2596,7 +2596,7 @@
+ 
+ ### Resolution
+ 
+-Open.
++Resolved by `UBU-D0250`: Phase 2 worker Devices use a scoped request/response protocol over normal sync statements. A controller sends a policy-checked `worker_request` with scope, purpose, allowed operations, input references or redacted context bundle, policy versions, retention deadline, and result schema. The worker may compute only within that scope and returns `worker_result` statements containing derived artifacts, candidate mutations, diagnostics, provenance, and deletion confirmation for transient payloads. Candidate mutations are never admitted state until normal sync-statement admission accepts them.
+ 
+ ---
+ 
+diff --git a/DECISIONS.md b/DECISIONS.md
+--- a/DECISIONS.md
++++ b/DECISIONS.md
+@@ -3806,3 +3806,27 @@
+ User-facing review may offer an explicit `user_accepted_unknown` outcome only after presenting the exposure as unknown rather than successful. This closes the immediate obligation for planning and audit purposes, but does not rewrite history as confirmed deletion.
+ 
+ This resolves Phase 1b representation. Transport-specific retries, Device recovery flows, and full Phase 2 deletion propagation policy remain later implementation work.
++
++---
++
++## UBU-D0250: Minimum useful worker Device protocol is scoped request/result over sync
++
++**Status:** Accepted → DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md §20. Resolves `UBU-Q0145`.
++
++For Phase 2, the minimum useful worker Device protocol is a policy-checked request/result exchange carried as sync statements, not an independent mutation channel. A controlling Device may issue a `worker_request` only after evaluating current Compartment policy and Device authority.
++
++A `worker_request` contains:
++
++- `request_id`, `controller_device_id`, and `target_worker_device_id` or equivalent opaque Device references;
++- `zone_id`, allowed `compartment_ids`, redaction level, purpose, and policy-version references used to authorize the work;
++- `allowed_operations`, limited in Phase 2 to candidate planning, simulation, local extraction, summarization, projection preview preparation, and candidate-mutation generation;
++- input object references and optional scoped context-bundle digests, with payloads redacted or omitted when policy requires;
++- retention deadline and required transient-payload deletion confirmation;
++- expected `worker_result` schema, result size limits, and whether partial results are allowed;
++- causal parents and observed versions needed for deterministic admission and stale-result detection.
++
++A worker Device must reject the request if its current policy view is missing, stale in a way that could expand access, revoked, or incompatible with the requested Compartment, export, retention, or `no_cloud_llm` constraints. The worker may not broaden the scope, fetch extra protected context on its own authority, retain transient payloads beyond the request, or directly mutate admitted state.
++
++A `worker_result` contains `request_id`, worker identity, the policy versions used, input digests or structural references, operation status, diagnostics safe at the request's visibility level, derived artifacts, projection previews, `worker_result` statements, candidate mutations, and transient-payload deletion confirmation. Candidate mutations are proposals only: they become admitted state solely through the normal sync-statement admission path, including conflict detection, policy checks, provenance, and user-review requirements.
++
++This is intentionally narrower than a general distributed worker marketplace protocol. It is sufficient to let user-owned Devices contribute compute while preserving the §20 boundary that workers can prepare and propose but cannot expand authority or bypass admission.

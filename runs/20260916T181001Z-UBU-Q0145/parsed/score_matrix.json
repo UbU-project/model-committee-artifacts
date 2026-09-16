@@ -1,0 +1,44 @@
+[
+  {
+    "proposal_id": "ubu-q0145-gpt5-codex-20260916",
+    "author_provider": "openai",
+    "scorer_provider": "codex",
+    "score": 92,
+    "valid": true,
+    "rationale": "The proposal is clean, minimal, and directly resolves UBU-Q0145 with a scoped worker_request/worker_result protocol over existing sync statements. It preserves the OPEN_QUESTIONS metadata format, modifies only the expected decision/question files, and keeps workers from becoming an independent authority or admitted-state mutation path. The scope is appropriately narrow for Phase 2 while still useful for planning, simulation, summarization, previews, and candidate mutations.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [
+      "The decision defines protocol fields at an architectural level but leaves exact wire/schema validation details for later implementation.",
+      "The phrase \"worker_result statements\" inside the worker_result contents is slightly recursive/ambiguous and may want tightening in a later schema pass."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20260916T181001Z-UBU-Q0145/responses/codex_score_ubu-q0145-gpt5-codex-20260916_response.json",
+      "stderr_path": null
+    }
+  },
+  {
+    "proposal_id": "ubu-q0145-gpt5-codex-20260916",
+    "author_provider": "openai",
+    "scorer_provider": "claude",
+    "score": 86,
+    "valid": true,
+    "rationale": "Mechanical validation confirms the patch applies cleanly and only touches the allowed files (OPEN_QUESTIONS.md, DECISIONS.md). The OPEN_QUESTIONS.md edit preserves the single-line metadata schema, correctly flips Status to Solved, and adds a Resolved by reference to the new decision, matching the existing convention. The new DECISIONS.md entry (UBU-D0250) is scoped tightly to the \u00a720 boundary referenced in the question: workers get a policy-checked scoped request/result exchange over ordinary sync statements, produce only candidate artifacts, and can never bypass normal admission. This avoids introducing a second authority/mutation path, which is the key architectural risk for worker protocols. The proposal is a single coherent resolution rather than a decomposition, so decomposition quality is not applicable. Scope is appropriately narrow \u2014 no unrelated files or speculative future-Device features are touched, and requires_human_review is honestly flagged given the architectural nature of the decision.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [
+      "Introduces a new decision (UBU-D0250) whose interaction with existing admission/conflict/policy decisions is asserted but not cross-checked against those decisions' exact text in this patch",
+      "Retention/deletion-confirmation requirements for worker_result are asserted but not tied to a specific existing deletion-propagation decision, so downstream Phase 2 work must still verify consistency"
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20260916T181001Z-UBU-Q0145/responses/claude_score_ubu-q0145-gpt5-codex-20260916_stdout.json",
+      "stderr_path": null
+    }
+  }
+]
