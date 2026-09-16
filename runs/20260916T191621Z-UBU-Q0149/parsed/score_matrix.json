@@ -1,0 +1,44 @@
+[
+  {
+    "proposal_id": "codex-ubu-q0149-20260916-001",
+    "author_provider": "openai",
+    "scorer_provider": "codex",
+    "score": 92,
+    "valid": true,
+    "rationale": "The proposal cleanly resolves UBU-Q0149 with a focused decision that directly answers storage, rotation, revocation, replication, offline-device, recovery, and Compartment-policy constraints. It preserves the OPEN_QUESTIONS metadata shape, marks the question solved, modifies only DECISIONS.md and OPEN_QUESTIONS.md, and avoids unnecessary implementation detail or broad refactoring. The custody model is auditable and conservative, especially around offline revocation and plaintext sync prohibition.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [
+      "Decision text references DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md \u00a721 as the target design location but does not update that file, so downstream readers must rely on DECISIONS.md and OPEN_QUESTIONS.md until design integration occurs.",
+      "The decision intentionally defers concrete cryptographic and platform mechanisms, which is appropriate for semantics but leaves implementation-specific security choices unresolved."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20260916T191621Z-UBU-Q0149/responses/codex_score_codex-ubu-q0149-20260916-001_response.json",
+      "stderr_path": null
+    }
+  },
+  {
+    "proposal_id": "codex-ubu-q0149-20260916-001",
+    "author_provider": "openai",
+    "scorer_provider": "claude",
+    "score": 88,
+    "valid": true,
+    "rationale": "The patch applies cleanly per mechanical validation and touches only DECISIONS.md and OPEN_QUESTIONS.md, respecting the read-only constraint on DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md. It directly answers the question's three named custody problems (external tokens, local encryption keys, worker credentials) with concrete, falsifiable custody semantics: Compartment-scoped secret capabilities, explicit per-Device authorization, envelope-encrypted replication only to authorized recipients, versioned rotation with per-Device rewrap obligations, and revocation that honestly distinguishes 'denied for admitted Devices' from 'unconfirmed for offline Devices' rather than claiming guaranteed deletion. This avoids overclaiming security guarantees UbU cannot enforce (e.g., it explicitly refuses to claim an offline Device has destroyed a key). OPEN_QUESTIONS.md update preserves the existing status-line schema and cross-references UBU-D0252 correctly. Scope is appropriately narrow: it doesn't touch the sync contract file, doesn't invent unrelated new questions, and stays within the security/custody topic asked. Minor concern is the density of sub-rules bundled into a single decision, but this is proportionate to the compound nature of the original question.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [
+      "Introduces a fairly dense new normative decision (UBU-D0252) with many sub-rules (rotation, revocation, recovery, envelope encryption) in one shot, which raises the surface area for future inconsistency or reinterpretation, though this matches the breadth of the original question.",
+      "Leaves cryptographic algorithm choices and OS keychain integration to future implementation design, which is reasonable but means some residual ambiguity remains for later questions."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20260916T191621Z-UBU-Q0149/responses/claude_score_codex-ubu-q0149-20260916-001_stdout.json",
+      "stderr_path": null
+    }
+  }
+]

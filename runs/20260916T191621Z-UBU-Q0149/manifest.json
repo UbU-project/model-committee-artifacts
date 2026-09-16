@@ -1,0 +1,172 @@
+{
+  "schema_version": "0.4",
+  "run_id": "20260916T191621Z-UBU-Q0149",
+  "created_at_utc": "2026-09-16T19:16:21Z",
+  "repo_path": "../ubu-design",
+  "base_commit": "af7efa568ad04b2f5b3139fdf98dc97bbc64d36d",
+  "selected_question_id": "UBU-Q0149",
+  "phase": "work-select",
+  "config_path": "config/models.json",
+  "status": "selected",
+  "commands": [
+    "model-committee run-loop"
+  ],
+  "providers_attempted": [
+    "codex",
+    "claude"
+  ],
+  "providers_succeeded": [
+    "codex",
+    "claude"
+  ],
+  "providers_failed": [],
+  "provider_attempts": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-score",
+      "target_proposal_id": "codex-ubu-q0149-20260916-001",
+      "response_path": "runs/20260916T191621Z-UBU-Q0149/responses/codex_score_codex-ubu-q0149-20260916-001_response.json",
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "sonnet",
+      "phase": "work-score",
+      "target_proposal_id": "codex-ubu-q0149-20260916-001",
+      "response_path": "runs/20260916T191621Z-UBU-Q0149/responses/claude_score_codex-ubu-q0149-20260916-001_stdout.json",
+      "stderr_path": null
+    }
+  ],
+  "provider_successes": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20260916T191621Z-UBU-Q0149/parsed/codex_work_proposal.json"
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-score",
+      "target_proposal_id": "codex-ubu-q0149-20260916-001",
+      "response_path": "runs/20260916T191621Z-UBU-Q0149/responses/codex_score_codex-ubu-q0149-20260916-001_response.json",
+      "parsed_path": "runs/20260916T191621Z-UBU-Q0149/parsed/codex_score_codex-ubu-q0149-20260916-001_result.json"
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "sonnet",
+      "phase": "work-score",
+      "target_proposal_id": "codex-ubu-q0149-20260916-001",
+      "response_path": "runs/20260916T191621Z-UBU-Q0149/responses/claude_score_codex-ubu-q0149-20260916-001_stdout.json",
+      "parsed_path": "runs/20260916T191621Z-UBU-Q0149/parsed/claude_score_codex-ubu-q0149-20260916-001_result.json"
+    }
+  ],
+  "provider_failures": [],
+  "score_matrix": [
+    {
+      "proposal_id": "codex-ubu-q0149-20260916-001",
+      "author_provider": "openai",
+      "scorer_provider": "codex",
+      "score": 92,
+      "valid": true,
+      "rationale": "The proposal cleanly resolves UBU-Q0149 with a focused decision that directly answers storage, rotation, revocation, replication, offline-device, recovery, and Compartment-policy constraints. It preserves the OPEN_QUESTIONS metadata shape, marks the question solved, modifies only DECISIONS.md and OPEN_QUESTIONS.md, and avoids unnecessary implementation detail or broad refactoring. The custody model is auditable and conservative, especially around offline revocation and plaintext sync prohibition.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "Decision text references DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md \u00a721 as the target design location but does not update that file, so downstream readers must rely on DECISIONS.md and OPEN_QUESTIONS.md until design integration occurs.",
+        "The decision intentionally defers concrete cryptographic and platform mechanisms, which is appropriate for semantics but leaves implementation-specific security choices unresolved."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20260916T191621Z-UBU-Q0149/responses/codex_score_codex-ubu-q0149-20260916-001_response.json",
+        "stderr_path": null
+      }
+    },
+    {
+      "proposal_id": "codex-ubu-q0149-20260916-001",
+      "author_provider": "openai",
+      "scorer_provider": "claude",
+      "score": 88,
+      "valid": true,
+      "rationale": "The patch applies cleanly per mechanical validation and touches only DECISIONS.md and OPEN_QUESTIONS.md, respecting the read-only constraint on DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md. It directly answers the question's three named custody problems (external tokens, local encryption keys, worker credentials) with concrete, falsifiable custody semantics: Compartment-scoped secret capabilities, explicit per-Device authorization, envelope-encrypted replication only to authorized recipients, versioned rotation with per-Device rewrap obligations, and revocation that honestly distinguishes 'denied for admitted Devices' from 'unconfirmed for offline Devices' rather than claiming guaranteed deletion. This avoids overclaiming security guarantees UbU cannot enforce (e.g., it explicitly refuses to claim an offline Device has destroyed a key). OPEN_QUESTIONS.md update preserves the existing status-line schema and cross-references UBU-D0252 correctly. Scope is appropriately narrow: it doesn't touch the sync contract file, doesn't invent unrelated new questions, and stays within the security/custody topic asked. Minor concern is the density of sub-rules bundled into a single decision, but this is proportionate to the compound nature of the original question.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "Introduces a fairly dense new normative decision (UBU-D0252) with many sub-rules (rotation, revocation, recovery, envelope encryption) in one shot, which raises the surface area for future inconsistency or reinterpretation, though this matches the breadth of the original question.",
+        "Leaves cryptographic algorithm choices and OS keychain integration to future implementation design, which is reasonable but means some residual ambiguity remains for later questions."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20260916T191621Z-UBU-Q0149/responses/claude_score_codex-ubu-q0149-20260916-001_stdout.json",
+        "stderr_path": null
+      }
+    }
+  ],
+  "score_aggregates": [
+    {
+      "proposal_id": "codex-ubu-q0149-20260916-001",
+      "author_provider": "openai",
+      "cross_score_count": 2,
+      "score_mean": 90.0,
+      "score_spread": 4,
+      "frontier_score_gap": 4,
+      "disagreement_flags": []
+    }
+  ],
+  "cross_score_count": 2,
+  "score_mean": 90.0,
+  "score_spread": 4,
+  "frontier_score_gap": 4,
+  "disagreement_flags": [],
+  "quorum_result": {
+    "valid": true,
+    "human_review_required": false,
+    "selected_proposal_id": "codex-ubu-q0149-20260916-001",
+    "selected_score": 90.0,
+    "selected_cross_score_count": 2,
+    "blocked_reasons": [],
+    "manual_override": false
+  },
+  "selected_proposal_id": "codex-ubu-q0149-20260916-001",
+  "automated_selection_valid": true,
+  "human_review_required": false,
+  "artifact_publication_status": "operator_pending",
+  "prompt_size_warning": false,
+  "prompt_context": {
+    "question_ids": [
+      "UBU-Q0149"
+    ],
+    "decision_ids": [],
+    "sections": {
+      "DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md": [
+        "21"
+      ]
+    },
+    "core_sections": {
+      "DESIGN.md": [
+        "1"
+      ],
+      "DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md": [
+        "4"
+      ]
+    },
+    "missing_refs": {},
+    "context_chars": 6964,
+    "prompt_chars": 12630
+  }
+}

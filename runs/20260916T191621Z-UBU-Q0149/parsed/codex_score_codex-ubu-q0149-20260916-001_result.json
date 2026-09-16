@@ -1,0 +1,21 @@
+{
+  "scores": [
+    {
+      "proposal_id": "codex-ubu-q0149-20260916-001",
+      "score": 92,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Decision text references DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md \u00a721 as the target design location but does not update that file, so downstream readers must rely on DECISIONS.md and OPEN_QUESTIONS.md until design integration occurs.",
+        "The decision intentionally defers concrete cryptographic and platform mechanisms, which is appropriate for semantics but leaves implementation-specific security choices unresolved."
+      ],
+      "required_fixes": [],
+      "rationale": "The proposal cleanly resolves UBU-Q0149 with a focused decision that directly answers storage, rotation, revocation, replication, offline-device, recovery, and Compartment-policy constraints. It preserves the OPEN_QUESTIONS metadata shape, marks the question solved, modifies only DECISIONS.md and OPEN_QUESTIONS.md, and avoids unnecessary implementation detail or broad refactoring. The custody model is auditable and conservative, especially around offline revocation and plaintext sync prohibition."
+    }
+  ],
+  "selected_proposal_id": "codex-ubu-q0149-20260916-001",
+  "selection_rationale": "This is the only candidate, it passes mechanical validation, stays narrowly scoped, and provides a clear security decision that answers the selected question without expanding the patch beyond the allowed documentation files."
+}

@@ -1,0 +1,21 @@
+{
+  "scores": [
+    {
+      "proposal_id": "codex-ubu-q0149-20260916-001",
+      "score": 88,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Introduces a fairly dense new normative decision (UBU-D0252) with many sub-rules (rotation, revocation, recovery, envelope encryption) in one shot, which raises the surface area for future inconsistency or reinterpretation, though this matches the breadth of the original question.",
+        "Leaves cryptographic algorithm choices and OS keychain integration to future implementation design, which is reasonable but means some residual ambiguity remains for later questions."
+      ],
+      "required_fixes": [],
+      "rationale": "The patch applies cleanly per mechanical validation and touches only DECISIONS.md and OPEN_QUESTIONS.md, respecting the read-only constraint on DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md. It directly answers the question's three named custody problems (external tokens, local encryption keys, worker credentials) with concrete, falsifiable custody semantics: Compartment-scoped secret capabilities, explicit per-Device authorization, envelope-encrypted replication only to authorized recipients, versioned rotation with per-Device rewrap obligations, and revocation that honestly distinguishes 'denied for admitted Devices' from 'unconfirmed for offline Devices' rather than claiming guaranteed deletion. This avoids overclaiming security guarantees UbU cannot enforce (e.g., it explicitly refuses to claim an offline Device has destroyed a key). OPEN_QUESTIONS.md update preserves the existing status-line schema and cross-references UBU-D0252 correctly. Scope is appropriately narrow: it doesn't touch the sync contract file, doesn't invent unrelated new questions, and stays within the security/custody topic asked. Minor concern is the density of sub-rules bundled into a single decision, but this is proportionate to the compound nature of the original question."
+    }
+  ],
+  "selected_proposal_id": "codex-ubu-q0149-20260916-001",
+  "selection_rationale": "This is the only proposal submitted for cross-scoring. It passed mechanical validation (patch applies, allowlist passed), directly resolves UBU-Q0149 with a coherent new decision (UBU-D0252) covering token, key, and credential custody, preserves the OPEN_QUESTIONS.md schema, and stays within the allowed file scope without touching the read-only device sync contract."
+}
