@@ -1,0 +1,21 @@
+{
+  "scores": [
+    {
+      "proposal_id": "ubu-q0148-gpt5-codex-20260916",
+      "score": 88,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Introduces a new normative decision (UBU-D0251) that downstream questions (e.g. UBU-Q0131, Phase 2 Device registry) will need to be checked against for consistency",
+        "The 'app installs/browser sessions are projection surfaces unless independently registered' distinction is a substantive policy call that may need cross-checking against DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md \u00a74/\u00a75, which is the defining context but not shown as modified"
+      ],
+      "required_fixes": [],
+      "rationale": "Patch applies cleanly and touches only DESIGN.md, DECISIONS.md, and OPEN_QUESTIONS.md, consistent with the mechanical validation. It directly answers the question by defining Device as a registered execution enclave distinct from physical machine/install/browser session/worker, and specifies concrete conditions under which one machine can host multiple Devices, which is exactly what the question asks. It preserves the OPEN_QUESTIONS.md single-line metadata format, correctly flips Status to Solved and sets Resolved by, and appends a properly formatted new decision entry to DECISIONS.md consistent with existing numbering. Scope is proportionate to the question (a data-model clarification), not overreaching into implementation. Minor risk is that it doesn't explicitly cross-reference or update DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md \u00a74/\u00a75, the cited defining context, though this may be acceptable since DESIGN.md \u00a723.1 is the canonical location."
+    }
+  ],
+  "selected_proposal_id": "ubu-q0148-gpt5-codex-20260916",
+  "selection_rationale": "Only one proposal was submitted for this question. It passed mechanical validation (patch applies, allowlist passed), directly and substantively resolves UBU-Q0148 by defining Device identity as a registered execution enclave separate from physical machines, installs, browser sessions, and worker processes, and specifies clear conditions for multi-Device hosting. It preserves the OPEN_QUESTIONS.md schema, stays within reasonable scope for a data-model decision question, and adds a properly cross-referenced decision entry. No competing proposal exists to compare against."
+}

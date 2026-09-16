@@ -1,0 +1,44 @@
+[
+  {
+    "proposal_id": "ubu-q0148-gpt5-codex-20260916",
+    "author_provider": "openai",
+    "scorer_provider": "codex",
+    "score": 92,
+    "valid": true,
+    "rationale": "The proposal directly resolves UBU-Q0148 with a clear data-model distinction between physical machines, registered UbU Devices/execution enclaves, installs, sessions, and worker processes. It applies cleanly, modifies only the expected design, decisions, and question-tracking files, preserves the OPEN_QUESTIONS metadata shape, and adds a concise accepted decision linked back to the design. The scope is appropriately narrow and the answer is auditable. Minor ambiguity remains around listing browser sessions and worker runtimes as examples, but the surrounding constraints substantially mitigate that risk.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [
+      "The DESIGN examples add browser profile/session and worker runtime as possible Device examples, which could be read too broadly despite later qualifying text that projection-only sessions and child workers are not Devices.",
+      "The decision defines operational criteria but leaves some future registry details, such as exact isolation thresholds and Identity authorization mechanics, to later implementation."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20260916T183343Z-UBU-Q0148/responses/codex_score_ubu-q0148-gpt5-codex-20260916_response.json",
+      "stderr_path": null
+    }
+  },
+  {
+    "proposal_id": "ubu-q0148-gpt5-codex-20260916",
+    "author_provider": "openai",
+    "scorer_provider": "claude",
+    "score": 88,
+    "valid": true,
+    "rationale": "Patch applies cleanly and touches only DESIGN.md, DECISIONS.md, and OPEN_QUESTIONS.md, consistent with the mechanical validation. It directly answers the question by defining Device as a registered execution enclave distinct from physical machine/install/browser session/worker, and specifies concrete conditions under which one machine can host multiple Devices, which is exactly what the question asks. It preserves the OPEN_QUESTIONS.md single-line metadata format, correctly flips Status to Solved and sets Resolved by, and appends a properly formatted new decision entry to DECISIONS.md consistent with existing numbering. Scope is proportionate to the question (a data-model clarification), not overreaching into implementation. Minor risk is that it doesn't explicitly cross-reference or update DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md \u00a74/\u00a75, the cited defining context, though this may be acceptable since DESIGN.md \u00a723.1 is the canonical location.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [
+      "Introduces a new normative decision (UBU-D0251) that downstream questions (e.g. UBU-Q0131, Phase 2 Device registry) will need to be checked against for consistency",
+      "The 'app installs/browser sessions are projection surfaces unless independently registered' distinction is a substantive policy call that may need cross-checking against DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md \u00a74/\u00a75, which is the defining context but not shown as modified"
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20260916T183343Z-UBU-Q0148/responses/claude_score_ubu-q0148-gpt5-codex-20260916_stdout.json",
+      "stderr_path": null
+    }
+  }
+]

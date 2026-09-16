@@ -1,0 +1,23 @@
+{
+  "scores": [
+    {
+      "proposal_id": "ubu-q0148-gpt5-codex-20260916",
+      "score": 90,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": false,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Introduces a new normative decision (UBU-D0251) that downstream questions (e.g. UBU-Q0131, Phase 2 Device registry) will need to be checked against for consistency",
+        "The 'app installs/browser sessions are projection surfaces unless independently registered' distinction is a substantive policy call that may need cross-checking against DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md \u00a74/\u00a75, which is the defining context but not shown as modified",
+        "The DESIGN examples add browser profile/session and worker runtime as possible Device examples, which could be read too broadly despite later qualifying text that projection-only sessions and child workers are not Devices.",
+        "The decision defines operational criteria but leaves some future registry details, such as exact isolation thresholds and Identity authorization mechanics, to later implementation."
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "ubu-q0148-gpt5-codex-20260916",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}

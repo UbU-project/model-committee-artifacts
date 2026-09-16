@@ -1,0 +1,28 @@
+{
+  "provider_name": "claude",
+  "model_name": "sonnet",
+  "argv": [
+    "claude",
+    "--print",
+    "-",
+    "--output-format",
+    "json",
+    "--json-schema",
+    "<json-schema>",
+    "--tools",
+    "",
+    "--model",
+    "sonnet",
+    "--max-turns",
+    "5"
+  ],
+  "stdout_path": "runs/20260916T183343Z-UBU-Q0148/responses/claude_score_ubu-q0148-gpt5-codex-20260916_stdout.json",
+  "stderr_path": "runs/20260916T183343Z-UBU-Q0148/responses/claude_score_ubu-q0148-gpt5-codex-20260916_stderr.txt",
+  "exit_status": 0,
+  "timeout_seconds": 3600,
+  "schema_validation": {
+    "valid": true,
+    "message": null
+  },
+  "parsed_structured_output_path": "runs/20260916T183343Z-UBU-Q0148/responses/claude_score_ubu-q0148-gpt5-codex-20260916_structured_output.json"
+}

@@ -1,0 +1,21 @@
+{
+  "scores": [
+    {
+      "proposal_id": "ubu-q0148-gpt5-codex-20260916",
+      "score": 92,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "The DESIGN examples add browser profile/session and worker runtime as possible Device examples, which could be read too broadly despite later qualifying text that projection-only sessions and child workers are not Devices.",
+        "The decision defines operational criteria but leaves some future registry details, such as exact isolation thresholds and Identity authorization mechanics, to later implementation."
+      ],
+      "required_fixes": [],
+      "rationale": "The proposal directly resolves UBU-Q0148 with a clear data-model distinction between physical machines, registered UbU Devices/execution enclaves, installs, sessions, and worker processes. It applies cleanly, modifies only the expected design, decisions, and question-tracking files, preserves the OPEN_QUESTIONS metadata shape, and adds a concise accepted decision linked back to the design. The scope is appropriately narrow and the answer is auditable. Minor ambiguity remains around listing browser sessions and worker runtimes as examples, but the surrounding constraints substantially mitigate that risk."
+    }
+  ],
+  "selected_proposal_id": "ubu-q0148-gpt5-codex-20260916",
+  "selection_rationale": "This is the only candidate and it is valid, minimal, mechanically clean, and directly responsive to the selected question, with no required fixes remaining."
+}
