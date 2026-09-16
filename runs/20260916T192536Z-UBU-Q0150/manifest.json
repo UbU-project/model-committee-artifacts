@@ -1,0 +1,174 @@
+{
+  "schema_version": "0.4",
+  "run_id": "20260916T192536Z-UBU-Q0150",
+  "created_at_utc": "2026-09-16T19:25:36Z",
+  "repo_path": "../ubu-design",
+  "base_commit": "cc9181c72201abb1e0e28c0086bd3f8529975f80",
+  "selected_question_id": "UBU-Q0150",
+  "phase": "work-select",
+  "config_path": "config/models.json",
+  "status": "selected",
+  "commands": [
+    "model-committee run-loop"
+  ],
+  "providers_attempted": [
+    "codex",
+    "claude"
+  ],
+  "providers_succeeded": [
+    "codex",
+    "claude"
+  ],
+  "providers_failed": [],
+  "provider_attempts": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-score",
+      "target_proposal_id": "ubu-q0150-openai-gpt5-codex-20260916-001",
+      "response_path": "runs/20260916T192536Z-UBU-Q0150/responses/codex_score_ubu-q0150-openai-gpt5-codex-20260916-001_response.json",
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "sonnet",
+      "phase": "work-score",
+      "target_proposal_id": "ubu-q0150-openai-gpt5-codex-20260916-001",
+      "response_path": "runs/20260916T192536Z-UBU-Q0150/responses/claude_score_ubu-q0150-openai-gpt5-codex-20260916-001_stdout.json",
+      "stderr_path": null
+    }
+  ],
+  "provider_successes": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20260916T192536Z-UBU-Q0150/parsed/codex_work_proposal.json"
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-score",
+      "target_proposal_id": "ubu-q0150-openai-gpt5-codex-20260916-001",
+      "response_path": "runs/20260916T192536Z-UBU-Q0150/responses/codex_score_ubu-q0150-openai-gpt5-codex-20260916-001_response.json",
+      "parsed_path": "runs/20260916T192536Z-UBU-Q0150/parsed/codex_score_ubu-q0150-openai-gpt5-codex-20260916-001_result.json"
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "sonnet",
+      "phase": "work-score",
+      "target_proposal_id": "ubu-q0150-openai-gpt5-codex-20260916-001",
+      "response_path": "runs/20260916T192536Z-UBU-Q0150/responses/claude_score_ubu-q0150-openai-gpt5-codex-20260916-001_stdout.json",
+      "parsed_path": "runs/20260916T192536Z-UBU-Q0150/parsed/claude_score_ubu-q0150-openai-gpt5-codex-20260916-001_result.json"
+    }
+  ],
+  "provider_failures": [],
+  "score_matrix": [
+    {
+      "proposal_id": "ubu-q0150-openai-gpt5-codex-20260916-001",
+      "author_provider": "openai",
+      "scorer_provider": "codex",
+      "score": 94,
+      "valid": true,
+      "rationale": "The patch is valid, minimal, and directly answers UBU-Q0150 by defining stability scopes for redacted object refs and compartment grouping refs while stating the acceptable correlation boundary. It preserves the open-question schema, resolves the question with a linked decision, and modifies only the expected documentation files. The added decision is auditable and aligned with the privacy constraints implied by the question.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "The decision is intentionally strict: rotating object handles on every source-object version change may reduce continuity for restricted-device UI flows that want stable identity across edited versions.",
+        "The optional compartment_ref rule depends on future policy language to define when grouping leakage is acceptable."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20260916T192536Z-UBU-Q0150/responses/codex_score_ubu-q0150-openai-gpt5-codex-20260916-001_response.json",
+        "stderr_path": null
+      }
+    },
+    {
+      "proposal_id": "ubu-q0150-openai-gpt5-codex-20260916-001",
+      "author_provider": "openai",
+      "scorer_provider": "claude",
+      "score": 88,
+      "valid": true,
+      "rationale": "Mechanical validation confirms the patch applies cleanly and touches only DECISIONS.md and OPEN_QUESTIONS.md, both plausible allowlisted files for a decision-resolving change. The new UBU-D0253 decision directly answers the question's two sub-parts (handle stability scope and acceptable correlation risk) with a specific, falsifiable policy: object handles stable per Device+version+window with enumerated rotation triggers, Compartment handles omitted by default and stable only per Device+window+policy-epoch when explicitly permitted. The OPEN_QUESTIONS.md edit follows the existing single-line metadata convention and updates Status/Resolved by/Resolution fields consistently, preserving the question schema. Scope is appropriately narrow \u2014 no unrelated files touched, no extraneous decisions added. The only proposal in this set, and it is well-formed and directly responsive to the question.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "The rule that handles rotate on 'target Device authority' change but are otherwise stable within one projection window could still allow moderate correlation if projection windows are long-lived; the decision doesn't bound window length.",
+        "Omission-by-default for compartment_ref could break existing UI grouping features that assumed some compartment_ref was always present, requiring downstream implementation changes not covered here.",
+        "New decision UBU-D0253 doesn't cross-reference or reconcile with any existing decisions about redaction/projection windows in DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md, so consistency with \u00a710/\u00a712 wording is asserted but not verified against file content."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20260916T192536Z-UBU-Q0150/responses/claude_score_ubu-q0150-openai-gpt5-codex-20260916-001_stdout.json",
+        "stderr_path": null
+      }
+    }
+  ],
+  "score_aggregates": [
+    {
+      "proposal_id": "ubu-q0150-openai-gpt5-codex-20260916-001",
+      "author_provider": "openai",
+      "cross_score_count": 2,
+      "score_mean": 91.0,
+      "score_spread": 6,
+      "frontier_score_gap": 6,
+      "disagreement_flags": []
+    }
+  ],
+  "cross_score_count": 2,
+  "score_mean": 91.0,
+  "score_spread": 6,
+  "frontier_score_gap": 6,
+  "disagreement_flags": [],
+  "quorum_result": {
+    "valid": true,
+    "human_review_required": false,
+    "selected_proposal_id": "ubu-q0150-openai-gpt5-codex-20260916-001",
+    "selected_score": 91.0,
+    "selected_cross_score_count": 2,
+    "blocked_reasons": [],
+    "manual_override": false
+  },
+  "selected_proposal_id": "ubu-q0150-openai-gpt5-codex-20260916-001",
+  "automated_selection_valid": true,
+  "human_review_required": false,
+  "artifact_publication_status": "operator_pending",
+  "prompt_size_warning": false,
+  "prompt_context": {
+    "question_ids": [
+      "UBU-Q0150"
+    ],
+    "decision_ids": [],
+    "sections": {
+      "DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md": [
+        "10",
+        "12"
+      ]
+    },
+    "core_sections": {
+      "DESIGN.md": [
+        "1"
+      ],
+      "DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md": [
+        "4"
+      ]
+    },
+    "missing_refs": {},
+    "context_chars": 9556,
+    "prompt_chars": 15331
+  }
+}

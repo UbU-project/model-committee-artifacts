@@ -1,0 +1,45 @@
+[
+  {
+    "proposal_id": "ubu-q0150-openai-gpt5-codex-20260916-001",
+    "author_provider": "openai",
+    "scorer_provider": "codex",
+    "score": 94,
+    "valid": true,
+    "rationale": "The patch is valid, minimal, and directly answers UBU-Q0150 by defining stability scopes for redacted object refs and compartment grouping refs while stating the acceptable correlation boundary. It preserves the open-question schema, resolves the question with a linked decision, and modifies only the expected documentation files. The added decision is auditable and aligned with the privacy constraints implied by the question.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [
+      "The decision is intentionally strict: rotating object handles on every source-object version change may reduce continuity for restricted-device UI flows that want stable identity across edited versions.",
+      "The optional compartment_ref rule depends on future policy language to define when grouping leakage is acceptable."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20260916T192536Z-UBU-Q0150/responses/codex_score_ubu-q0150-openai-gpt5-codex-20260916-001_response.json",
+      "stderr_path": null
+    }
+  },
+  {
+    "proposal_id": "ubu-q0150-openai-gpt5-codex-20260916-001",
+    "author_provider": "openai",
+    "scorer_provider": "claude",
+    "score": 88,
+    "valid": true,
+    "rationale": "Mechanical validation confirms the patch applies cleanly and touches only DECISIONS.md and OPEN_QUESTIONS.md, both plausible allowlisted files for a decision-resolving change. The new UBU-D0253 decision directly answers the question's two sub-parts (handle stability scope and acceptable correlation risk) with a specific, falsifiable policy: object handles stable per Device+version+window with enumerated rotation triggers, Compartment handles omitted by default and stable only per Device+window+policy-epoch when explicitly permitted. The OPEN_QUESTIONS.md edit follows the existing single-line metadata convention and updates Status/Resolved by/Resolution fields consistently, preserving the question schema. Scope is appropriately narrow \u2014 no unrelated files touched, no extraneous decisions added. The only proposal in this set, and it is well-formed and directly responsive to the question.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [
+      "The rule that handles rotate on 'target Device authority' change but are otherwise stable within one projection window could still allow moderate correlation if projection windows are long-lived; the decision doesn't bound window length.",
+      "Omission-by-default for compartment_ref could break existing UI grouping features that assumed some compartment_ref was always present, requiring downstream implementation changes not covered here.",
+      "New decision UBU-D0253 doesn't cross-reference or reconcile with any existing decisions about redaction/projection windows in DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md, so consistency with \u00a710/\u00a712 wording is asserted but not verified against file content."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20260916T192536Z-UBU-Q0150/responses/claude_score_ubu-q0150-openai-gpt5-codex-20260916-001_stdout.json",
+      "stderr_path": null
+    }
+  }
+]

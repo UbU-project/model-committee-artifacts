@@ -1,0 +1,24 @@
+{
+  "scores": [
+    {
+      "proposal_id": "ubu-q0150-openai-gpt5-codex-20260916-001",
+      "score": 91,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": false,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "New decision UBU-D0253 doesn't cross-reference or reconcile with any existing decisions about redaction/projection windows in DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md, so consistency with \u00a710/\u00a712 wording is asserted but not verified against file content.",
+        "Omission-by-default for compartment_ref could break existing UI grouping features that assumed some compartment_ref was always present, requiring downstream implementation changes not covered here.",
+        "The decision is intentionally strict: rotating object handles on every source-object version change may reduce continuity for restricted-device UI flows that want stable identity across edited versions.",
+        "The optional compartment_ref rule depends on future policy language to define when grouping leakage is acceptable.",
+        "The rule that handles rotate on 'target Device authority' change but are otherwise stable within one projection window could still allow moderate correlation if projection windows are long-lived; the decision doesn't bound window length."
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "ubu-q0150-openai-gpt5-codex-20260916-001",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}

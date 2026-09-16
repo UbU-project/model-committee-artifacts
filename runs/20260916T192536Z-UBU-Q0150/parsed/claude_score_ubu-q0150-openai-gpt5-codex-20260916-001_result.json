@@ -1,0 +1,22 @@
+{
+  "scores": [
+    {
+      "proposal_id": "ubu-q0150-openai-gpt5-codex-20260916-001",
+      "score": 88,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "The rule that handles rotate on 'target Device authority' change but are otherwise stable within one projection window could still allow moderate correlation if projection windows are long-lived; the decision doesn't bound window length.",
+        "Omission-by-default for compartment_ref could break existing UI grouping features that assumed some compartment_ref was always present, requiring downstream implementation changes not covered here.",
+        "New decision UBU-D0253 doesn't cross-reference or reconcile with any existing decisions about redaction/projection windows in DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md, so consistency with \u00a710/\u00a712 wording is asserted but not verified against file content."
+      ],
+      "required_fixes": [],
+      "rationale": "Mechanical validation confirms the patch applies cleanly and touches only DECISIONS.md and OPEN_QUESTIONS.md, both plausible allowlisted files for a decision-resolving change. The new UBU-D0253 decision directly answers the question's two sub-parts (handle stability scope and acceptable correlation risk) with a specific, falsifiable policy: object handles stable per Device+version+window with enumerated rotation triggers, Compartment handles omitted by default and stable only per Device+window+policy-epoch when explicitly permitted. The OPEN_QUESTIONS.md edit follows the existing single-line metadata convention and updates Status/Resolved by/Resolution fields consistently, preserving the question schema. Scope is appropriately narrow \u2014 no unrelated files touched, no extraneous decisions added. The only proposal in this set, and it is well-formed and directly responsive to the question."
+    }
+  ],
+  "selected_proposal_id": "ubu-q0150-openai-gpt5-codex-20260916-001",
+  "selection_rationale": "This is the only proposal in the set, and it passes mechanical validation (patch applies, allowlist passed), directly resolves UBU-Q0150 with a specific and auditable policy for both object and Compartment handle stability, and preserves the OPEN_QUESTIONS.md schema conventions while touching only the two expected files."
+}
