@@ -1,0 +1,24 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0136-20260917-openai-gpt5-codex-01",
+      "score": 91,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": false,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Defines 'unauthenticated loopback endpoint' as non-credential provenance, which is a judgment call that could be contested depending on local threat model (e.g., loopback endpoints are not always safe from other local processes)",
+        "Enforcement described as 'egress and serialization' clearance filters is architecturally sound but is a design commitment (typed secret reference, clearance filter) that later implementation could find hard to retrofit uniformly across all listed egress points",
+        "Relies on UBU-D0252 secret-capability semantics existing and being consistent with this extension; if UBU-D0252's definitions diverge, this decision could create subtle conflicts",
+        "The decision relies on future implementation of typed secret references, central serializers, and clearance filters; without follow-up implementation tickets/tests, enforcement could remain aspirational.",
+        "The phrase \"local secret store or equivalent operator-controlled local custody\" is intentionally broad and may need tightening during implementation to avoid inconsistent single-Device storage choices."
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0136-20260917-openai-gpt5-codex-01",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}

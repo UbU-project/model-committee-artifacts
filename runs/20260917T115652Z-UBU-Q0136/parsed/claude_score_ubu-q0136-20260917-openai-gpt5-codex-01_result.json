@@ -1,0 +1,22 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0136-20260917-openai-gpt5-codex-01",
+      "score": 89,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Relies on UBU-D0252 secret-capability semantics existing and being consistent with this extension; if UBU-D0252's definitions diverge, this decision could create subtle conflicts",
+        "Defines 'unauthenticated loopback endpoint' as non-credential provenance, which is a judgment call that could be contested depending on local threat model (e.g., loopback endpoints are not always safe from other local processes)",
+        "Enforcement described as 'egress and serialization' clearance filters is architecturally sound but is a design commitment (typed secret reference, clearance filter) that later implementation could find hard to retrofit uniformly across all listed egress points"
+      ],
+      "required_fixes": [],
+      "rationale": "The proposal directly and comprehensively answers all six subquestions: token location relative to canonical store (Device-local secret capability, not canonical), Compartment labeling and cross-Compartment worker access (broadest-label rule, brokered use only), revocation/rotation semantics and effect on queued work (version recheck, cancel/block/retry), what counts as a credential (bright-line test distinguishing secrets from provenance metadata), enforcement of non-replication/non-logging at egress (typed secret references, clearance filters), and exclusion from exports/backups/diagnostics (redacted metadata only, reauthorization flag on restore). It correctly scopes itself to a single Device and explicitly defers cross-Device replication, encryption-at-rest, and rotation propagation to UBU-Q0149, matching the question's stated boundaries. The patch touches only OPEN_QUESTIONS.md, DESIGN.md, and DECISIONS.md, consistent with the project's established pattern for resolving open questions, and mechanical validation confirms it applies cleanly. The status-line and decision-block formatting mirrors existing conventions in the surrounding diff context. Minor risk is dependency on the correctness/consistency of the referenced prior decision UBU-D0252, which could not be independently verified from the provided diff alone, and a debatable classification of unauthenticated loopback endpoints as non-credential."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0136-20260917-openai-gpt5-codex-01",
+  "selection_rationale": "Only one proposal was submitted; it passed mechanical validation and comprehensively, correctly resolves the question within its stated scope, so it is selected by default with no disqualifying issues found."
+}
