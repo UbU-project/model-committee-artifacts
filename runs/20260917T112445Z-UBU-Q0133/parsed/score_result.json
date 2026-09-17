@@ -1,0 +1,23 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0133-P-gpt5-codex-20260917",
+      "score": 90,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": false,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Omitting compartment_ref by default is strong and appropriate, but policies permitting restricted grouping will need careful tests to avoid pattern leakage.",
+        "Relies on UBU-D0253 and terms like projection window/policy epoch being sufficiently defined elsewhere; if they are not, implementation may still need precision.",
+        "Relies on prior decisions UBU-D0253 and UBU-Q0150 existing and being consistent with the described rotating-alias policy; if those artifacts diverge from this proposal's characterization, the new decision could misrepresent settled precedent.",
+        "Sets Answerability score to 100 and Status to Solved without an independent second-pass review step, which may be aggressive given 'Human approval required' auto-choice eligibility \u2014 though this is flagged via requires_human_review."
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0133-P-gpt5-codex-20260917",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}

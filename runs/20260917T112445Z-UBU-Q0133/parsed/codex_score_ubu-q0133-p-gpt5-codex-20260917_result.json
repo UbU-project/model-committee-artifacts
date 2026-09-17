@@ -1,0 +1,21 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0133-P-gpt5-codex-20260917",
+      "score": 92,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Relies on UBU-D0253 and terms like projection window/policy epoch being sufficiently defined elsewhere; if they are not, implementation may still need precision.",
+        "Omitting compartment_ref by default is strong and appropriate, but policies permitting restricted grouping will need careful tests to avoid pattern leakage."
+      ],
+      "required_fixes": [],
+      "rationale": "The patch is valid, narrow, and directly resolves UBU-Q0133 in the expected files. It answers all subquestions: bounded Handle stability, allowed disclosures and withheld fields, enforcement at the clearance egress filter, acceptable local-only correlation, and mapping from real CompartmentLabel values to opaque restricted outputs. It preserves the question schema and avoids unrelated scope. Remaining concerns are mostly implementation precision around referenced concepts rather than defects in the decision text."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0133-P-gpt5-codex-20260917",
+  "selection_rationale": "Only one valid proposal was provided, and it cleanly applies while giving a concrete, auditable decision that is aligned with the selected question and its dependency on UBU-Q0150/UBU-D0253."
+}

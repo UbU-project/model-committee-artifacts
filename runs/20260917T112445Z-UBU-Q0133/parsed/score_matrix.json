@@ -1,0 +1,44 @@
+[
+  {
+    "proposal_id": "UBU-Q0133-P-gpt5-codex-20260917",
+    "author_provider": "openai",
+    "scorer_provider": "codex",
+    "score": 92,
+    "valid": true,
+    "rationale": "The patch is valid, narrow, and directly resolves UBU-Q0133 in the expected files. It answers all subquestions: bounded Handle stability, allowed disclosures and withheld fields, enforcement at the clearance egress filter, acceptable local-only correlation, and mapping from real CompartmentLabel values to opaque restricted outputs. It preserves the question schema and avoids unrelated scope. Remaining concerns are mostly implementation precision around referenced concepts rather than defects in the decision text.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [
+      "Relies on UBU-D0253 and terms like projection window/policy epoch being sufficiently defined elsewhere; if they are not, implementation may still need precision.",
+      "Omitting compartment_ref by default is strong and appropriate, but policies permitting restricted grouping will need careful tests to avoid pattern leakage."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20260917T112445Z-UBU-Q0133/responses/codex_score_ubu-q0133-p-gpt5-codex-20260917_response.json",
+      "stderr_path": null
+    }
+  },
+  {
+    "proposal_id": "UBU-Q0133-P-gpt5-codex-20260917",
+    "author_provider": "openai",
+    "scorer_provider": "claude",
+    "score": 87,
+    "valid": true,
+    "rationale": "The patch applies cleanly and touches only the allowlisted files OPEN_QUESTIONS.md and DECISIONS.md, per mechanical validation. It directly resolves UBU-Q0133 by adding a new decision (UBU-D0260) that answers all five subquestions: stability granularity (Device + source-object version + projection window), what a Handle may disclose (opaque placeholder only, with surrounding metadata limited to existence/time/duration/status), how redaction-identity is enforced (trusted clearance egress filter evaluates real CompartmentLabel/policy before choosing replication level and emitting only opaque aliases), correlation acceptability (accepts only local UI continuity within one window, rejects durable cross-window/cross-Device/Compartment-pattern correlation), and the mapping of the old three-tier simplification onto real CompartmentLabel values (labels become enforcement-only inputs, never egress vocabulary). It preserves the existing single-line metadata format in OPEN_QUESTIONS.md and appends a properly formatted new decision block to DECISIONS.md consistent with neighboring entries (e.g. UBU-D0259). Scope is appropriately limited to the one question in the prompt, with no unrelated edits or new open questions introduced. The chief risk is unverifiable reliance on cited prior decisions (UBU-D0253, UBU-Q0150) actually existing with the stated content, but that dependency is declared upfront in the question metadata itself, so it is not scope creep.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [
+      "Relies on prior decisions UBU-D0253 and UBU-Q0150 existing and being consistent with the described rotating-alias policy; if those artifacts diverge from this proposal's characterization, the new decision could misrepresent settled precedent.",
+      "Sets Answerability score to 100 and Status to Solved without an independent second-pass review step, which may be aggressive given 'Human approval required' auto-choice eligibility \u2014 though this is flagged via requires_human_review."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20260917T112445Z-UBU-Q0133/responses/claude_score_ubu-q0133-p-gpt5-codex-20260917_stdout.json",
+      "stderr_path": null
+    }
+  }
+]
