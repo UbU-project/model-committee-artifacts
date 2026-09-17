@@ -1,0 +1,24 @@
+{
+  "scores": [
+    {
+      "proposal_id": "ubu-q0130-gpt5-codex-d0258",
+      "score": 88,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": false,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "References UBU-D0247 ('hybrid stack') as an existing accepted decision that Phase 2 will implement the same seam with; this proposal's correctness partly depends on that decision already existing and matching the described HLC/causal-parent shape, which cannot be verified from this prompt alone.",
+        "Sets Answerability score from 90 to 100 and Status to Solved despite the ticket still formally depending on UBU-Q0140 and UBU-Q0131 (both still open per the header); the proposal argues the causality mechanism itself is correctly deferred to UBU-Q0140, but marking the ticket fully 'Solved' rather than 'Solved pending dependency confirmation' is a modest overreach.",
+        "The added observed_policy_versions requirement is plausible from the surrounding contract but slightly expands the field set beyond the question's enumerated mandatory fields.",
+        "The idempotency_key_conflict handling is asserted but no reference is made to how or where such conflicts are surfaced/logged, leaving an implicit gap for implementers.",
+        "The text references a Phase 2 hybrid-logical-clock/hybrid stack implementation, which could be read as leaning into the UBU-Q0140 ordering decision rather than leaving it fully deferred, although the main seam still keeps that choice out of Phase 1b call sites."
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "ubu-q0130-gpt5-codex-d0258",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}

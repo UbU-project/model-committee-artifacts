@@ -1,0 +1,184 @@
+{
+  "schema_version": "0.4",
+  "run_id": "20260917T032109Z-UBU-Q0130",
+  "created_at_utc": "2026-09-17T03:21:09Z",
+  "repo_path": "../ubu-design",
+  "base_commit": "52539e0d38ef969bc76b00c2b7f11f4cb4c95e32",
+  "selected_question_id": "UBU-Q0130",
+  "phase": "work-select",
+  "config_path": "config/models.json",
+  "status": "selected",
+  "commands": [
+    "model-committee run-loop"
+  ],
+  "providers_attempted": [
+    "codex",
+    "claude"
+  ],
+  "providers_succeeded": [
+    "codex",
+    "claude"
+  ],
+  "providers_failed": [],
+  "provider_attempts": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-score",
+      "target_proposal_id": "ubu-q0130-gpt5-codex-d0258",
+      "response_path": "runs/20260917T032109Z-UBU-Q0130/responses/codex_score_ubu-q0130-gpt5-codex-d0258_response.json",
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "sonnet",
+      "phase": "work-score",
+      "target_proposal_id": "ubu-q0130-gpt5-codex-d0258",
+      "response_path": "runs/20260917T032109Z-UBU-Q0130/responses/claude_score_ubu-q0130-gpt5-codex-d0258_stdout.json",
+      "stderr_path": null
+    }
+  ],
+  "provider_successes": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20260917T032109Z-UBU-Q0130/parsed/codex_work_proposal.json"
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-score",
+      "target_proposal_id": "ubu-q0130-gpt5-codex-d0258",
+      "response_path": "runs/20260917T032109Z-UBU-Q0130/responses/codex_score_ubu-q0130-gpt5-codex-d0258_response.json",
+      "parsed_path": "runs/20260917T032109Z-UBU-Q0130/parsed/codex_score_ubu-q0130-gpt5-codex-d0258_result.json"
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "sonnet",
+      "phase": "work-score",
+      "target_proposal_id": "ubu-q0130-gpt5-codex-d0258",
+      "response_path": "runs/20260917T032109Z-UBU-Q0130/responses/claude_score_ubu-q0130-gpt5-codex-d0258_stdout.json",
+      "parsed_path": "runs/20260917T032109Z-UBU-Q0130/parsed/claude_score_ubu-q0130-gpt5-codex-d0258_result.json"
+    }
+  ],
+  "provider_failures": [],
+  "score_matrix": [
+    {
+      "proposal_id": "ubu-q0130-gpt5-codex-d0258",
+      "author_provider": "openai",
+      "scorer_provider": "codex",
+      "score": 88,
+      "valid": true,
+      "rationale": "The proposal directly answers all six subquestions: it fixes the required envelope fields, represents observed_versions as per-object version references derived from existing integer counters including absence preconditions, defines an admission-owned causality/idempotency issuer seam, distinguishes created/effective/recorded time for delayed advisory admission, specifies deterministic replay behavior, and excludes derived artifacts unless admitted as canonical state. The patch applies, is limited to allowed documentation files, preserves the open-question metadata structure, and adds a focused decision record. The main residual concern is wording that may appear to assume a Phase 2 hybrid causality stack despite the selected question's warning not to settle UBU-Q0140 here.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "The text references a Phase 2 hybrid-logical-clock/hybrid stack implementation, which could be read as leaning into the UBU-Q0140 ordering decision rather than leaving it fully deferred, although the main seam still keeps that choice out of Phase 1b call sites.",
+        "The added observed_policy_versions requirement is plausible from the surrounding contract but slightly expands the field set beyond the question's enumerated mandatory fields."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20260917T032109Z-UBU-Q0130/responses/codex_score_ubu-q0130-gpt5-codex-d0258_response.json",
+        "stderr_path": null
+      }
+    },
+    {
+      "proposal_id": "ubu-q0130-gpt5-codex-d0258",
+      "author_provider": "openai",
+      "scorer_provider": "claude",
+      "score": 89,
+      "valid": true,
+      "rationale": "The proposal directly and completely answers all six subquestions: it freezes the exact mandated field set (idempotency_key, observed_versions, origin_device_id, actor_identity_id, authority_source, created/effective/recorded timestamps, plus observed_policy_versions when policy is relied on), represents observed_versions as a map of object-id to version-ref derived from the existing integer counter (v<N>, with explicit absence preconditions for creates), defines an admission-owned causality/idempotency issuer seam that explicitly excludes naming HLC/Lamport/vector clocks/logs/bundles at call sites, gives a concrete bitemporal example distinguishing effective_time and recorded_time for an overnight batch admitted the next morning, defines a deterministic duplicate rule keyed by (origin_device_id, idempotency_key) with same-payload replay vs. different-payload conflict, and correctly classifies derived artifacts as derived_state excluded from the envelope unless separately admitted as canonical. The patch is minimal, touching only documentation files consistent with a Data-model decision question, passes mechanical validation, and preserves the OPEN_QUESTIONS.md single-line metadata schema while adding a properly formatted DECISIONS.md entry (UBU-D0258) and DESIGN.md section. No decomposition into multiple questions/decisions was needed and none was introduced unnecessarily.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "References UBU-D0247 ('hybrid stack') as an existing accepted decision that Phase 2 will implement the same seam with; this proposal's correctness partly depends on that decision already existing and matching the described HLC/causal-parent shape, which cannot be verified from this prompt alone.",
+        "Sets Answerability score from 90 to 100 and Status to Solved despite the ticket still formally depending on UBU-Q0140 and UBU-Q0131 (both still open per the header); the proposal argues the causality mechanism itself is correctly deferred to UBU-Q0140, but marking the ticket fully 'Solved' rather than 'Solved pending dependency confirmation' is a modest overreach.",
+        "The idempotency_key_conflict handling is asserted but no reference is made to how or where such conflicts are surfaced/logged, leaving an implicit gap for implementers."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20260917T032109Z-UBU-Q0130/responses/claude_score_ubu-q0130-gpt5-codex-d0258_stdout.json",
+        "stderr_path": null
+      }
+    }
+  ],
+  "score_aggregates": [
+    {
+      "proposal_id": "ubu-q0130-gpt5-codex-d0258",
+      "author_provider": "openai",
+      "cross_score_count": 2,
+      "score_mean": 88.5,
+      "score_spread": 1,
+      "frontier_score_gap": 1,
+      "disagreement_flags": []
+    }
+  ],
+  "cross_score_count": 2,
+  "score_mean": 88.5,
+  "score_spread": 1,
+  "frontier_score_gap": 1,
+  "disagreement_flags": [],
+  "quorum_result": {
+    "valid": true,
+    "human_review_required": false,
+    "selected_proposal_id": "ubu-q0130-gpt5-codex-d0258",
+    "selected_score": 88.5,
+    "selected_cross_score_count": 2,
+    "blocked_reasons": [],
+    "manual_override": false
+  },
+  "selected_proposal_id": "ubu-q0130-gpt5-codex-d0258",
+  "automated_selection_valid": true,
+  "human_review_required": false,
+  "artifact_publication_status": "operator_pending",
+  "prompt_size_warning": false,
+  "prompt_context": {
+    "question_ids": [
+      "UBU-Q0130",
+      "UBU-Q0131",
+      "UBU-Q0140",
+      "UBU-Q0148"
+    ],
+    "decision_ids": [
+      "UBU-D0247",
+      "UBU-D0251",
+      "UBU-D0257"
+    ],
+    "sections": {
+      "DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md": [
+        "4",
+        "5",
+        "8",
+        "9",
+        "15"
+      ],
+      "DESIGN.md": [
+        "23.1"
+      ]
+    },
+    "core_sections": {
+      "DESIGN.md": [
+        "1"
+      ]
+    },
+    "missing_refs": {},
+    "context_chars": 30146,
+    "prompt_chars": 36462
+  }
+}

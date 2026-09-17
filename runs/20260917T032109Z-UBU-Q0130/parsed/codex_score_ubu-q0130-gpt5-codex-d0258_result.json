@@ -1,0 +1,21 @@
+{
+  "scores": [
+    {
+      "proposal_id": "ubu-q0130-gpt5-codex-d0258",
+      "score": 88,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "The text references a Phase 2 hybrid-logical-clock/hybrid stack implementation, which could be read as leaning into the UBU-Q0140 ordering decision rather than leaving it fully deferred, although the main seam still keeps that choice out of Phase 1b call sites.",
+        "The added observed_policy_versions requirement is plausible from the surrounding contract but slightly expands the field set beyond the question's enumerated mandatory fields."
+      ],
+      "required_fixes": [],
+      "rationale": "The proposal directly answers all six subquestions: it fixes the required envelope fields, represents observed_versions as per-object version references derived from existing integer counters including absence preconditions, defines an admission-owned causality/idempotency issuer seam, distinguishes created/effective/recorded time for delayed advisory admission, specifies deterministic replay behavior, and excludes derived artifacts unless admitted as canonical state. The patch applies, is limited to allowed documentation files, preserves the open-question metadata structure, and adds a focused decision record. The main residual concern is wording that may appear to assume a Phase 2 hybrid causality stack despite the selected question's warning not to settle UBU-Q0140 here."
+    }
+  ],
+  "selected_proposal_id": "ubu-q0130-gpt5-codex-d0258",
+  "selection_rationale": "Only one valid proposal was provided. It is clean, scoped, auditable, and substantively resolves UBU-Q0130, with only minor wording risk around prematurely implying the Phase 2 ordering mechanism."
+}
