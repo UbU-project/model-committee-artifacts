@@ -1,0 +1,22 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-gpt-5-codex-UBU-Q0132-001",
+      "score": 85,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "References UBU-D0258 mutation-envelope path and DESIGN.md \u00a723.1 numbering without this context confirming those exist and are numbered consistently in the live repo; if stale, the decision text could misalign with actual document structure.",
+        "The tombstone record shape is fairly detailed (many named fields) which increases the surface area that later decisions must stay consistent with; if UBU-Q0144 (purge propagation across offline Devices) resolves differently, some retained-field choices here may need revision.",
+        "Undo-refusal-on-purge behavior ('create a repair or clarification path') is stated as an option rather than a firm requirement, leaving a soft edge that a later decision could tighten or contradict."
+      ],
+      "required_fixes": [],
+      "rationale": "The patch applies cleanly per mechanical validation and touches only OPEN_QUESTIONS.md, DECISIONS.md, and DESIGN.md, all appropriate for resolving an open question with a new decision. It substantively answers all six subquestions: tombstone record shape (subquestion 1), decomposition parent retirement as tombstone+snapshot (2), undo semantics that refuse to resurrect purged payload (3), explicit retain-vs-purge field list (4), projection-deletion as separate idempotent projection_state obligations (5), and envelope metadata via the UBU-D0258 mutation path (6). It preserves the question metadata schema (Status, Priority, Answerability, Resolved by, etc.) and correctly marks the question Solved while leaving UBU-Q0144 (purge propagation) explicitly still open, matching the 'Current direction' note in the source question. The new UBU-D0259 decision is well-integrated with DECISIONS.md and DESIGN.md, and the scope is minimal and auditable \u2014 no unrelated files or speculative additions. The main uncertainty is whether cross-references to UBU-D0258 and other decisions are numbered consistently with the actual current repo state, which I cannot fully verify from the diff alone, but the structural content and reasoning are sound and directly responsive."
+    }
+  ],
+  "selected_proposal_id": "openai-gpt-5-codex-UBU-Q0132-001",
+  "selection_rationale": "Only one proposal was submitted for this question. It passed mechanical validation (patch applies, allowlist passed), directly and comprehensively answers all six subquestions posed in UBU-Q0132, stays within an appropriate file scope (OPEN_QUESTIONS.md, DECISIONS.md, DESIGN.md), and preserves the existing question/decision schema conventions. No competing proposal exists to prefer instead."
+}

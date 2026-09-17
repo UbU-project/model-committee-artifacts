@@ -1,0 +1,60 @@
+diff --git a/OPEN_QUESTIONS.md b/OPEN_QUESTIONS.md
+--- a/OPEN_QUESTIONS.md
++++ b/OPEN_QUESTIONS.md
+@@ -2286,7 +2286,7 @@
+ 
+ ## UBU-Q0132: Phase 1b tombstone and best-effort purge semantics
+ 
+-Status: Open Priority: MVP important Phase: Phase 1b Decision type: Data model Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 90 Depends on: UBU-Q0144, UBU-Q0130 Blocks: Phase 1b deletion paths, decomposition undo, projection deletion Resolved by: None Last scored: 2026-09-17 Scored from commit: None
++Status: Solved Priority: MVP important Phase: Phase 1b Decision type: Data model Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 100 Depends on: UBU-Q0144, UBU-Q0130 Blocks: Phase 1b deletion paths, decomposition undo, projection deletion Resolved by: UBU-D0259 Last scored: 2026-09-17 Scored from commit: None
+ 
+ ### Question
+ 
+@@ -2307,7 +2307,7 @@
+ 
+ ### Resolution
+ 
+-Open.
++Resolved by `UBU-D0259`: Phase 1b canonical deletion is represented as a sync-ready tombstone mutation plus a retained minimal tombstone record, not a hard row deletion. The tombstone keeps stable structural identity, version/provenance, policy-safe Compartment refs, lifecycle timestamps, and projection-deletion/audit refs while purging payload, human labels, sensitive reasons, private evidence, derived explanation content, and Compartment labels when purge or redaction applies. Decomposition retires the parent by tombstoning it and linking to the existing decomposition parent snapshot; undo may un-tombstone only while an authorized restorable snapshot still exists, and otherwise must not recreate purged payload. External projection deletion remains a separate idempotent projection obligation queued from the tombstone and never becomes the canonical delete.
+ 
+ ---
+ 
+diff --git a/DECISIONS.md b/DECISIONS.md
+--- a/DECISIONS.md
++++ b/DECISIONS.md
+@@ -3976,3 +3976,21 @@
+ Within one origin Device, `(origin_device_id, idempotency_key)` is the duplicate-detection key. Replaying it with the same canonical payload returns the previously recorded result and performs no new write, version increment, side-effect emission, projection push, or derived-state invalidation. Replaying it with a different canonical payload is an `idempotency_key_conflict`; the new payload is not admitted except through an explicit conflict-resolution mutation.
+ 
+ Derived artifacts such as Plans, Calendars, reports, risk summaries, and projection previews are `derived_state`. They carry lineage, provenance, input digests, freshness, and invalidation metadata, but not the canonical mutation envelope unless UbU admits the artifact itself as canonical state. The mutation that records, invalidates, or publishes such an artifact carries the envelope.
++
++---
++
++## UBU-D0259: Phase 1b tombstones retain structural identity and admit best-effort purge
++
++**Status:** Accepted → DESIGN.md §23.1. Resolves `UBU-Q0132`.
++
++Phase 1b canonical deletion, retirement, removal, and admitted candidate discard are represented by a tombstone mutation and retained tombstone record, not by hard deletion of the canonical object row. A tombstone is canonical lifecycle state: it says the object id is no longer active or admissible while preserving enough structure for causality, idempotency, undo eligibility, conflict detection, audit, and projection cleanup.
++
++The Phase 1b tombstone record retains only policy-safe structure: `object_id`, `object_kind`, the latest object version reference, tombstone lifecycle state and reason code, created/effective/recorded lifecycle timestamps, origin/provenance or mutation-envelope reference, observed-version and observed-policy-version refs needed to validate the tombstone, policy-safe Compartment refs required for local enforcement, optional superseding/decomposition refs, and projection-deletion obligation refs. It does not retain active payload fields such as titles, notes, private evidence, source snippets, human-readable Compartment labels, sensitive reason strings, cached explanations, or derived summaries when those fields are subject to purge or redaction.
++
++Every tombstone is admitted through the `UBU-D0258` mutation-envelope path. The envelope belongs to the tombstone mutation; the durable tombstone stores or references the envelope fields needed for replay and audit rather than existing as an unenveloped side table update. Replaying the same tombstone idempotency key with the same canonical tombstone payload returns the existing result and must not emit duplicate projection deletion attempts.
++
++Decomposition parent retirement becomes a tombstone of the parent Task plus the existing decomposition record's parent snapshot. Undo is an admitted mutation that observes the tombstone and the decomposition record, clears the tombstone only if policy still permits restoration and an authorized restorable snapshot payload is still present, and increments the parent object's version. If the parent payload or snapshot has been physically purged or redacted beyond restoration, undo must not synthesize the old payload from the tombstone; it may instead create a repair or clarification path requiring new user input.
++
++A best-effort physical purge may remove payload blobs, snapshots, derived caches, local projection payload, and external-handle material after or alongside tombstoning, but it does not erase the minimal tombstone while that record is needed for causality, idempotency, audit, or retry. If policy later requires the tombstone itself to be redacted for a Device, the Device receives only an allowed structural representation or an opaque redacted handle; it must not receive forbidden Compartment ids or labels.
++
++External projections are separate `projection_state`. Tombstoning a canonical object may enqueue idempotent projection-deletion obligations keyed by projection surface, external object reference, canonical object id, and tombstone mutation, but success or failure of those queued deletions does not determine whether the canonical object is tombstoned. Projection deletion retries may keep only the minimum external handle allowed by policy, and projection diagnostics must remain structural if payload or Compartment identity is restricted.
+diff --git a/DESIGN.md b/DESIGN.md
+--- a/DESIGN.md
++++ b/DESIGN.md
+@@ -3197,6 +3197,10 @@
+ 
+ Derived artifacts such as Plans, Calendars, reports, risk summaries, and projection previews are `derived_state`: they carry lineage, provenance, input digests, and freshness data, but not the canonical mutation envelope unless a later operation admits a derived artifact itself as canonical state. The mutation that records or invalidates derived state carries the envelope.
+ 
++Phase 1b deletion of canonical objects is lifecycle mutation, not row removal. Retired Tasks, removed Tasks, decomposition-retired parents, and admitted discarded candidates become tombstones with stable object id, object kind, current version reference, lifecycle state/reason code, envelope/provenance reference, created/effective/recorded lifecycle timestamps, policy-safe Compartment refs needed for local enforcement, and any decomposition, supersession, audit, or projection-deletion refs needed for replay. Tombstones do not retain active payload fields, private evidence, cached explanations, human-readable Compartment labels, or sensitive reason text after those fields are redacted or purged.
++
++A decomposition that retires a parent Task records the parent as tombstoned and relies on the decomposition record's parent snapshot as the restore source. Undo is a new admitted mutation that observes the tombstone and snapshot, un-tombstones the parent only when policy permits and the snapshot payload still exists, and refuses to resurrect content that was physically purged or redacted beyond restoration. Projection deletions caused by tombstones are queued idempotent obligations in `projection_state`; their retry or confirmation status never replaces the canonical tombstone.
++
+ ### 23.2 Zone
+ 
+ A **Zone** is a workspace-like UbU instance context.
