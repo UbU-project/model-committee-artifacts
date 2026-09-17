@@ -1,0 +1,27 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-gpt-5-codex-UBU-Q0135-20260917-01",
+      "score": 88,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": false,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Introduces several new named types (LocalAdvisorySubmission, LocalAdvisoryResult) without corresponding schema/interface changes elsewhere in the repo, so the decision is more prose-specification than enforceable artifact until a schema file exists",
+        "It marks UBU-Q0135 solved while dependent broader worker-device questions remain open, though the proposal appropriately scopes those dependencies to later transport work.",
+        "Patch only applied cleanly after --recount normalization, indicating a hunk-context/line-count mismatch in the raw diff that should be fixed at the source to avoid relying on lenient patch application",
+        "Status set directly to 'Solved' with Answerability 100 while Importance/Automation-likelihood/Risk scores remain 'TBD', which is a slightly inconsistent metadata state for a fully resolved question",
+        "The protocol is specified as normative documentation rather than exact serialized schema definitions, so implementation still has some field-shape discretion."
+      ],
+      "required_fixes": [
+        "Consider whether Importance/Automation-likelihood/Risk scores should be filled in or left as TBD is acceptable practice",
+        "Regenerate the patch with correct hunk line counts so it applies without --recount normalization"
+      ],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "openai-gpt-5-codex-UBU-Q0135-20260917-01",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}
