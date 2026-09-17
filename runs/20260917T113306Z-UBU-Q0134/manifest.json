@@ -1,0 +1,193 @@
+{
+  "schema_version": "0.4",
+  "run_id": "20260917T113306Z-UBU-Q0134",
+  "created_at_utc": "2026-09-17T11:33:06Z",
+  "repo_path": "../ubu-design",
+  "base_commit": "904b4c563317ce591c718c80ed14c6aa417d9d4a",
+  "selected_question_id": "UBU-Q0134",
+  "phase": "work-select",
+  "config_path": "config/models.json",
+  "status": "selected",
+  "commands": [
+    "model-committee run-loop"
+  ],
+  "providers_attempted": [
+    "codex",
+    "claude"
+  ],
+  "providers_succeeded": [
+    "codex",
+    "claude"
+  ],
+  "providers_failed": [],
+  "provider_attempts": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-score",
+      "target_proposal_id": "openai-gpt-5-codex-UBU-Q0134-001",
+      "response_path": "runs/20260917T113306Z-UBU-Q0134/responses/codex_score_openai-gpt-5-codex-ubu-q0134-001_response.json",
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "sonnet",
+      "phase": "work-score",
+      "target_proposal_id": "openai-gpt-5-codex-UBU-Q0134-001",
+      "response_path": "runs/20260917T113306Z-UBU-Q0134/responses/claude_score_openai-gpt-5-codex-ubu-q0134-001_stdout.json",
+      "stderr_path": null
+    }
+  ],
+  "provider_successes": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20260917T113306Z-UBU-Q0134/parsed/codex_work_proposal.json"
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-score",
+      "target_proposal_id": "openai-gpt-5-codex-UBU-Q0134-001",
+      "response_path": "runs/20260917T113306Z-UBU-Q0134/responses/codex_score_openai-gpt-5-codex-ubu-q0134-001_response.json",
+      "parsed_path": "runs/20260917T113306Z-UBU-Q0134/parsed/codex_score_openai-gpt-5-codex-ubu-q0134-001_result.json"
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "sonnet",
+      "phase": "work-score",
+      "target_proposal_id": "openai-gpt-5-codex-UBU-Q0134-001",
+      "response_path": "runs/20260917T113306Z-UBU-Q0134/responses/claude_score_openai-gpt-5-codex-ubu-q0134-001_stdout.json",
+      "parsed_path": "runs/20260917T113306Z-UBU-Q0134/parsed/claude_score_openai-gpt-5-codex-ubu-q0134-001_result.json"
+    }
+  ],
+  "provider_failures": [],
+  "score_matrix": [
+    {
+      "proposal_id": "openai-gpt-5-codex-UBU-Q0134-001",
+      "author_provider": "openai",
+      "scorer_provider": "codex",
+      "score": 93,
+      "valid": true,
+      "rationale": "The patch cleanly resolves UBU-Q0134 in the expected files, keeps the open-question schema intact, and directly answers all six subquestions. It formalizes the four projection quadrants, distinguishes duration edits from time-pinning, requires review for active external deletions, reuses the UBU-Q0073 severity vocabulary, requires first-class audit events for automatic repairs, and handles pending candidates conservatively. Scope is appropriately limited to the selected question and corresponding design/decision text.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "The decision is necessarily policy-heavy and may require later implementation work to map `projection_conflict_event` fields to concrete storage/schema names.",
+        "Some quadrant outcomes are conditional rather than table-like, so implementers must preserve the stated review gates carefully to avoid over-broad auto-resolution."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20260917T113306Z-UBU-Q0134/responses/codex_score_openai-gpt-5-codex-ubu-q0134-001_response.json",
+        "stderr_path": null
+      }
+    },
+    {
+      "proposal_id": "openai-gpt-5-codex-UBU-Q0134-001",
+      "author_provider": "openai",
+      "scorer_provider": "claude",
+      "score": 88,
+      "valid": true,
+      "rationale": "The proposal directly answers all six subquestions: it classifies the four quadrants, distinguishes duration edits from wall-clock time-pinning edits, treats confirmed deletion as review-required (not auto-resolvable) except for already-tombstoned/idempotent cases, adopts the shared advisory/minor/major/blocking severity vocabulary explicitly tied to UBU-D0256, defines an auditable projection_conflict_event record so automatic repairs are never silent, and specifies pending-candidate collision handling (collapse on exact duplicate, quarantine/review on overlap). It correctly respects the 'Current direction' scope note by explicitly excluding Device-to-Device sync conflicts and deferring them to UBU-Q0143. Only allowed files are touched, the OPEN_QUESTIONS.md single-line metadata format is preserved, and mechanical validation confirms the patch applies cleanly and only modifies the allowlisted files. This is a single well-formed proposal rather than a decomposition, so decomposition quality is not applicable.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "References prior decisions UBU-D0248 and UBU-D0256 as established precedent; if those decisions do not exist or differ from the assumed content, the severity-vocabulary reuse and non-authority boundary claims would be inconsistent with the actual decision history",
+        "Bumps Answerability score from 90 to 100 and Status to Solved without an independent scoring pass, which is a self-assessed closure rather than an externally verified one",
+        "The projection_conflict_event schema and quadrant defaults introduce moderately detailed new data-model surface in a single decision; future work must not silently diverge from this vocabulary"
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20260917T113306Z-UBU-Q0134/responses/claude_score_openai-gpt-5-codex-ubu-q0134-001_stdout.json",
+        "stderr_path": null
+      }
+    }
+  ],
+  "score_aggregates": [
+    {
+      "proposal_id": "openai-gpt-5-codex-UBU-Q0134-001",
+      "author_provider": "openai",
+      "cross_score_count": 2,
+      "score_mean": 90.5,
+      "score_spread": 5,
+      "frontier_score_gap": 5,
+      "disagreement_flags": []
+    }
+  ],
+  "cross_score_count": 2,
+  "score_mean": 90.5,
+  "score_spread": 5,
+  "frontier_score_gap": 5,
+  "disagreement_flags": [],
+  "quorum_result": {
+    "valid": true,
+    "human_review_required": false,
+    "selected_proposal_id": "openai-gpt-5-codex-UBU-Q0134-001",
+    "selected_score": 90.5,
+    "selected_cross_score_count": 2,
+    "blocked_reasons": [],
+    "manual_override": false
+  },
+  "selected_proposal_id": "openai-gpt-5-codex-UBU-Q0134-001",
+  "automated_selection_valid": true,
+  "human_review_required": false,
+  "artifact_publication_status": "operator_pending",
+  "prompt_size_warning": true,
+  "prompt_context": {
+    "question_ids": [
+      "UBU-Q0014",
+      "UBU-Q0015",
+      "UBU-Q0016",
+      "UBU-Q0058",
+      "UBU-Q0073",
+      "UBU-Q0134",
+      "UBU-Q0143"
+    ],
+    "decision_ids": [
+      "UBU-D0130",
+      "UBU-D0131",
+      "UBU-D0151",
+      "UBU-D0203",
+      "UBU-D0248",
+      "UBU-D0256"
+    ],
+    "sections": {
+      "DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md": [
+        "16",
+        "17"
+      ],
+      "DESIGN.md": [
+        "10.1",
+        "11.3",
+        "15.2.2",
+        "16"
+      ]
+    },
+    "core_sections": {
+      "DESIGN.md": [
+        "1"
+      ],
+      "DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md": [
+        "4"
+      ]
+    },
+    "missing_refs": {},
+    "context_chars": 86763,
+    "prompt_chars": 93265
+  }
+}

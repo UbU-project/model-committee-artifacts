@@ -1,0 +1,21 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-gpt-5-codex-UBU-Q0134-001",
+      "score": 93,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "The decision is necessarily policy-heavy and may require later implementation work to map `projection_conflict_event` fields to concrete storage/schema names.",
+        "Some quadrant outcomes are conditional rather than table-like, so implementers must preserve the stated review gates carefully to avoid over-broad auto-resolution."
+      ],
+      "required_fixes": [],
+      "rationale": "The patch cleanly resolves UBU-Q0134 in the expected files, keeps the open-question schema intact, and directly answers all six subquestions. It formalizes the four projection quadrants, distinguishes duration edits from time-pinning, requires review for active external deletions, reuses the UBU-Q0073 severity vocabulary, requires first-class audit events for automatic repairs, and handles pending candidates conservatively. Scope is appropriately limited to the selected question and corresponding design/decision text."
+    }
+  ],
+  "selected_proposal_id": "openai-gpt-5-codex-UBU-Q0134-001",
+  "selection_rationale": "This is the only valid proposal, it passes mechanical validation, and it is directly responsive, auditable, and scoped to Phase 1b projection conflicts without claiming to solve the broader device-sync work."
+}

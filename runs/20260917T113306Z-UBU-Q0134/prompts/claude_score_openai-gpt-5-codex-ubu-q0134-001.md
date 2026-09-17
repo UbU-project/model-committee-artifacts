@@ -1,0 +1,230 @@
+# Model-Committee Cross-Scoring Request
+
+You are scoring candidate work proposals for the UbU `model-committee` process.
+
+Return exactly one JSON object. Do not return prose outside the JSON object.
+
+This is a v0.2 cross-score. You are not making the final selection; model-committee
+will aggregate valid cross-scores locally.
+
+Scoring provider: `claude`
+Authoring provider for the candidate proposal(s): `openai`
+
+## Selected question
+
+Question ID: `UBU-Q0134`  
+Question title: `Phase 1b projection conflict classes: auto-resolve versus required review`  
+Base commit: `904b4c563317ce591c718c80ed14c6aa417d9d4a`
+
+```markdown
+## UBU-Q0134: Phase 1b projection conflict classes: auto-resolve versus required review
+
+Status: Open Priority: MVP important Phase: Phase 1b Decision type: Data model Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 90 Depends on: UBU-Q0143, UBU-Q0073 Blocks: Phase 1b projection reconciliation, conflict severity vocabulary Resolved by: None Last scored: 2026-09-17 Scored from commit: None
+
+### Question
+
+Which conflict classes arising between canonical state and an external projection may be auto-resolved in Phase 1b, and which must always require operator review?
+
+### Subquestions
+
+1. How is each external-edit quadrant (known object edited, known object deleted, unknown object appeared, expected object absent) classified as auto-resolvable or review-required?
+2. Is an external duration edit auto-admissible, and is an external time edit that pins a dynamic object different in kind?
+3. Is a confirmed external deletion auto-resolvable as an object removal, or must it always be reviewed?
+4. What conflict severity levels does Phase 1b need, and do they share one vocabulary with the mobile-stewardship severities of UBU-Q0073?
+5. How is an auto-resolved projection conflict recorded so that it remains auditable as a first-class event rather than a silent mutation?
+6. What happens when an external edit conflicts with a still-pending candidate for the same object?
+
+### Current direction
+
+Phase 1b resolves projection conflicts only, and the existing four-quadrant calendar import classification is the behavior to formalize rather than invent. Device-to-Device sync conflict classes — concurrent edits on two replicas, policy change while offline — remain open under UBU-Q0143 and must not be treated as answered by this entry, which is scoped to the canonical-versus-projection family.
+
+### Resolution
+
+Open.
+
+---
+
+```
+
+## Candidate proposals
+
+```json
+[
+  {
+    "proposal_id": "openai-gpt-5-codex-UBU-Q0134-001",
+    "provider_id": "openai",
+    "model_name": "GPT-5 Codex",
+    "question_id": "UBU-Q0134",
+    "base_commit": "904b4c563317ce591c718c80ed14c6aa417d9d4a",
+    "summary": "Resolve UBU-Q0134 by formalizing Phase 1b projection conflict quadrants, their auto-repair versus review gates, shared severities, audit events, and pending-candidate behavior.",
+    "rationale": "The proposal preserves UBU-D0248's deterministic non-authority automatic-resolution boundary while applying UBU-D0256's shared severity vocabulary to the canonical-versus-projection family. It makes duration-only edits conditionally minor, treats time-pinning and active deletion as review-worthy authority choices, records every automatic repair as an auditable event, and keeps pending candidates outside admitted state until normal admission or review resolves overlap.",
+    "changed_files": [
+      "OPEN_QUESTIONS.md",
+      "DESIGN.md",
+      "DECISIONS.md"
+    ],
+    "patch": "diff --git a/OPEN_QUESTIONS.md b/OPEN_QUESTIONS.md\nindex 92ec86e..92ec86e 100644\n--- a/OPEN_QUESTIONS.md\n+++ b/OPEN_QUESTIONS.md\n@@ -2340,26 +2340,26 @@ Resolved by `UBU-D0260`: Phase 1b uses the local rotating-alias policy from `UBU\n ## UBU-Q0134: Phase 1b projection conflict classes: auto-resolve versus required review\n \n-Status: Open Priority: MVP important Phase: Phase 1b Decision type: Data model Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 90 Depends on: UBU-Q0143, UBU-Q0073 Blocks: Phase 1b projection reconciliation, conflict severity vocabulary Resolved by: None Last scored: 2026-09-17 Scored from commit: None\n+Status: Solved Priority: MVP important Phase: Phase 1b Decision type: Data model Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 100 Depends on: UBU-Q0143, UBU-Q0073 Blocks: Phase 1b projection reconciliation, conflict severity vocabulary Resolved by: UBU-D0261 Last scored: 2026-09-17 Scored from commit: None\n \n ### Question\n \n Which conflict classes arising between canonical state and an external projection may be auto-resolved in Phase 1b, and which must always require operator review?\n \n ### Subquestions\n \n 1. How is each external-edit quadrant (known object edited, known object deleted, unknown object appeared, expected object absent) classified as auto-resolvable or review-required?\n 2. Is an external duration edit auto-admissible, and is an external time edit that pins a dynamic object different in kind?\n 3. Is a confirmed external deletion auto-resolvable as an object removal, or must it always be reviewed?\n 4. What conflict severity levels does Phase 1b need, and do they share one vocabulary with the mobile-stewardship severities of UBU-Q0073?\n 5. How is an auto-resolved projection conflict recorded so that it remains auditable as a first-class event rather than a silent mutation?\n 6. What happens when an external edit conflicts with a still-pending candidate for the same object?\n \n ### Current direction\n \n Phase 1b resolves projection conflicts only, and the existing four-quadrant calendar import classification is the behavior to formalize rather than invent. Device-to-Device sync conflict classes \u2014 concurrent edits on two replicas, policy change while offline \u2014 remain open under UBU-Q0143 and must not be treated as answered by this entry, which is scoped to the canonical-versus-projection family.\n \n ### Resolution\n \n-Open.\n+Resolved by `UBU-D0261`: Phase 1b projection reconciliation uses the shared `advisory`/`minor`/`major`/`blocking` severity vocabulary and classifies the four projection quadrants explicitly. Deterministic non-authority projection repairs may be auto-recorded as first-class `projection_conflict_event` records, but external edits that choose user intent, protected Calendar ownership, third-party truth, or canonical deletion require operator review; pending candidates may be collapsed or annotated only when the external delta is deterministic and non-overlapping, otherwise they are quarantined or routed to review before admission.\n \n ---\ndiff --git a/DESIGN.md b/DESIGN.md\nindex a90e667..a90e667 100644\n--- a/DESIGN.md\n+++ b/DESIGN.md\n@@ -2268,6 +2268,19 @@ The shared conflict severity vocabulary is:\n \n This severity vocabulary is also the Phase 1b projection-conflict vocabulary: projection-specific classes may map into these severities, but must not invent a parallel severity ladder without a later decision.\n \n+**Phase 1b projection conflict policy (`UBU-D0261`).** Projection reconciliation uses the sync conflict class `projection_conflict` with projection-specific quadrants: `known_object_edited`, `known_object_deleted`, `unknown_object_appeared`, and `expected_object_absent`. Automatic handling is allowed only when the result is deterministic, idempotent, within projection policy and decision envelopes, and does not choose between canonical user intent, protected Calendar ownership, or independently changed third-party truth.\n+\n+The quadrant defaults are:\n+\n+- `known_object_edited`: auto-resolvable only for non-authority metadata repair or for a permitted edit inside the object's explicit decision envelope. A duration edit to a flexible or disposable Dynamic Task may be `minor` when minimum duration, dependencies, affect assumptions, and Static Tasks remain valid; an edit that pins or moves a Dynamic Task to an external wall-clock time is `major` unless the projection policy already granted that editable window. Protected, Static, dependency-bearing, or precondition-affecting edits are `major` or `blocking`.\n+- `known_object_deleted`: never silently tombstones or removes the canonical object. If the object is already tombstoned, withdrawn from the projection window, or awaiting idempotent projection deletion, the absence may be `advisory`; otherwise deletion of an active canonical object is `major`, or `blocking` when current/next legitimacy depends on it.\n+- `unknown_object_appeared`: is contained as external evidence, import candidate, or projection diagnostic rather than admitted canonical state. It remains `advisory` or `minor` when it does not claim a user commitment or protected slot; it becomes `major` when accepting it would create or override a commitment, dependency, Static Task, or third-party-truth assertion.\n+- `expected_object_absent`: is `advisory` when explained by tombstone, policy/window rotation, or completed projection deletion; it may be `minor` when UbU can retry or recreate the projection idempotently without overriding external truth. It is `major` or `blocking` when the missing external object affects a protected commitment, a current/next recommendation, a required precondition, or Calendar validity.\n+\n+Every automatic projection repair emits an auditable `projection_conflict_event` record with the conflict id, projection surface, quadrant, severity, canonical object ref when any, external object ref or redacted handle when allowed, observed object and policy versions, external delta digest, action taken, candidate refs when relevant, resulting mutation or projection-operation refs, and recorded time. If the action admits canonical state, it uses the ordinary mutation-envelope or tombstone path; otherwise it remains projection state, diagnostic state, or candidate metadata and is not a silent canonical mutation.\n+\n+When an external delta touches the same object as a still-pending candidate, admission compares both against the candidate's observed versions before either is accepted. Exact duplicates collapse; deterministic non-overlapping deltas may update the pending candidate's provenance or candidate mutation proposal. Overlapping deltas quarantine or supersede the candidate and surface a `major` review diagnostic, escalating to `blocking` when current/next legitimacy depends on resolving it. External projection evidence cannot force a pending candidate into admitted state.\n+\n Cached explanation fragments are short, non-blaming strings with lineage refs. MVP fragments are `why_now`, `matters_because`, `depends_on`, `supports`, `legitimacy_reason`, `if_skipped`, `repair_summary`, and `staleness_summary`. Each fragment may reference Task ids, Objective refs, dependency/precondition refs, Static Task refs, risk finding refs, and compact Calendar provenance, but should avoid copying private details into more-disclosive replicas.\n \n A repair recipe record is `repair_recipe: { trigger, applies_to_refs, eligible_when, steps, ask_policy, fallback, explanation_fragment_ref }`. MVP triggers are:\ndiff --git a/DECISIONS.md b/DECISIONS.md\nindex 8077aab..8077aab 100644\n--- a/DECISIONS.md\n+++ b/DECISIONS.md\n@@ -4009,4 +4009,24 @@ A Handle itself may reveal no semantic fact beyond being an opaque local placehol\n \n The clearance egress filter enforces the redaction-identity invariant before serialization. It evaluates the real object `compartment_ids` and effective `CompartmentLabel`/policy set inside the trusted boundary, chooses the permitted replication level, then emits only allowed metadata plus opaque aliases whose generation key or lookup table is unavailable to the restricted Device. The old three-tier simplification is not an egress vocabulary: real Compartment labels are enforcement inputs, while restricted outputs carry no Compartment label unless the target authority permits the payload boundary itself.\n \n This accepts only the correlation needed for local UI continuity, retry de-duplication, and consistent rendering inside one authorized projection window. Per-operation instability is reserved for policies that forbid even that local continuity; durable cross-Device, cross-window, cross-version, or Compartment-pattern correlation remains unacceptable.\n+\n+---\n+\n+## UBU-D0261: Phase 1b projection conflicts use bounded automatic repair and review gates\n+\n+**Status:** Accepted \u2192 DESIGN.md \u00a716.5. Resolves `UBU-Q0134`.\n+\n+Phase 1b projection conflicts are only canonical-versus-external-projection conflicts. Device-to-Device conflicts, offline policy changes, and replica concurrency remain governed by `UBU-D0248` and later sync work. Projection conflicts use the shared Phase 1b severity vocabulary from `UBU-D0256`: `advisory`, `minor`, `major`, and `blocking`.\n+\n+The Phase 1b projection conflict quadrants are `known_object_edited`, `known_object_deleted`, `unknown_object_appeared`, and `expected_object_absent`. Automatic handling is allowed only for deterministic, idempotent, non-authority-changing outcomes that stay inside projection policy, observed object versions, decision envelopes, and hard Calendar validity. Anything that chooses between canonical user intent, protected Calendar ownership, independently changed third-party truth, policy authority, or object lifecycle authority requires operator review.\n+\n+For `known_object_edited`, representation-only or non-authority metadata repair may be `advisory`. A duration edit to a flexible or disposable Dynamic Task may be auto-admitted as `minor` only when it remains inside the Task's decision envelope, respects minimum duration, dependencies, preconditions, affect assumptions, Static Tasks, and hard constraints, and does not alter a protected commitment. An external time edit that pins or moves a Dynamic Task to a wall-clock slot is different in kind: it asserts scheduling authority and is `major` unless the projection policy explicitly made that window externally editable; it is `blocking` if current/next legitimacy cannot be preserved without deciding it.\n+\n+For `known_object_deleted`, external deletion of an active canonical object is not auto-resolvable as canonical object removal. If canonical state already tombstoned the object, withdrew it from the projection window, or queued an idempotent projection-deletion obligation, the external absence may close projection state as `advisory`. Otherwise deletion is `major`, or `blocking` when it affects the current/next recommendation, a protected Task, a Static Task, a dependency, a precondition, or Calendar validity. Canonical removal still requires an admitted tombstone or explicit conflict-resolution path.\n+\n+For `unknown_object_appeared`, UbU may contain the object as external evidence, an import candidate, or a projection diagnostic without admitting canonical state. It is `advisory` or `minor` when it has no protected ownership claim and no immediate legitimacy impact; accepting it as a Task, Static Task, commitment, external fact, dependency, or third-party-truth assertion requires review. For `expected_object_absent`, absence is `advisory` when explained by tombstone, projection-window rotation, policy change, or completed deletion; it may be `minor` when UbU can retry or recreate the projection idempotently. It is `major` or `blocking` when the absence changes a protected commitment, hard constraint, required precondition, or current/next recommendation.\n+\n+Automatic projection reconciliation is never silent. Each automatic action records a first-class `projection_conflict_event` carrying `conflict_id`, projection surface, quadrant, severity, canonical object ref when any, external object ref or redacted handle when policy allows it, observed canonical and policy versions, external delta digest, action taken, resulting mutation or projection-operation refs, candidate refs when relevant, and recorded time. If the action admits canonical state, it uses the ordinary mutation envelope and tombstone rules; if it only retries, ignores, quarantines, recalculates, or repairs projection state, the event still remains auditable as diagnostic/projection state.\n+\n+When an external edit conflicts with a still-pending candidate for the same object, neither side is admitted by default. Exact duplicate content or idempotency evidence collapses to the pending candidate result. Deterministic non-overlapping edits may annotate or revise the pending candidate proposal while preserving observed-version checks. Overlapping edits quarantine or supersede the candidate and surface a `major` review diagnostic, escalating to `blocking` when no legitimate current or next Task can be identified without resolving the conflict. The operator's decision, when required, enters state only through the normal conflict-resolution or candidate-admission path.\n",
+    "commit_message": "Resolve Phase 1b projection conflict classes",
+    "validation_notes": [
+      "Patch was checked with git apply --check against the provided workspace at base commit 904b4c563317ce591c718c80ed14c6aa417d9d4a.",
+      "Only allowed files are modified; DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md remains read-only context.",
+      "OPEN_QUESTIONS.md keeps the selected question's single-line metadata format and updates only the UBU-Q0134 block."
+    ],
+    "new_questions_added": [],
+    "questions_resolved": [
+      "UBU-Q0134"
+    ],
+    "decisions_added": [
+      "UBU-D0261"
+    ],
+    "requires_human_review": true
+  }
+]
+```
+
+## Mechanical validation results
+
+```json
+[
+  {
+    "proposal_id": "openai-gpt-5-codex-UBU-Q0134-001",
+    "patch_applies": true,
+    "allowlist_passed": true,
+    "changed_files": [
+      "DECISIONS.md",
+      "DESIGN.md",
+      "OPEN_QUESTIONS.md"
+    ],
+    "error": null,
+    "normalized_patch": null,
+    "warnings": [],
+    "ordinary_error": null,
+    "recount_error": null,
+    "normalization_error": null
+  }
+]
+```
+
+## Provider weights
+
+Provider weights are historical diagnostic context only in v0.2. Do not use
+self-trust or author identity as score evidence.
+
+```json
+{}
+```
+
+## JSON Schema
+
+Your output must satisfy this schema:
+
+```json
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "scores",
+    "selected_proposal_id",
+    "selection_rationale"
+  ],
+  "properties": {
+    "scores": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "proposal_id",
+          "score",
+          "patch_applies",
+          "implements_selected_work",
+          "preserves_question_schema",
+          "avoids_unnecessary_scope",
+          "decomposition_quality",
+          "risks",
+          "required_fixes",
+          "rationale"
+        ],
+        "properties": {
+          "proposal_id": {
+            "type": "string"
+          },
+          "score": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "patch_applies": {
+            "type": "boolean"
+          },
+          "implements_selected_work": {
+            "type": "boolean"
+          },
+          "preserves_question_schema": {
+            "type": "boolean"
+          },
+          "avoids_unnecessary_scope": {
+            "type": "boolean"
+          },
+          "decomposition_quality": {
+            "type": "string",
+            "enum": [
+              "none",
+              "good",
+              "bad",
+              "not_applicable"
+            ]
+          },
+          "risks": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "required_fixes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "rationale": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "selected_proposal_id": {
+      "type": "string"
+    },
+    "selection_rationale": {
+      "type": "string"
+    }
+  }
+}
+```
+
+## Scoring requirements
+
+Score each proposal from 0 to 100.
+
+Consider:
+
+- whether the patch applies cleanly;
+- whether it implements the selected work;
+- whether it preserves the question schema;
+- whether it avoids unnecessary scope;
+- whether it modifies only allowed files;
+- whether it creates useful decomposition if decomposition occurs;
+- whether it introduces new risks;
+- whether required fixes remain.
+
+Rules:
+
+- Score every proposal in this prompt.
+- `selected_proposal_id` must refer to one scored proposal from this prompt.
+- Manual override is not allowed in v0.2.
+- Prefer a patch that is valid, minimal, auditable, and directly responsive.
+- Do not select a proposal whose patch failed mechanical validation.
+- Do not score your own provider's proposal unless explicitly asked for diagnostic self-score.
+
+Return only JSON.

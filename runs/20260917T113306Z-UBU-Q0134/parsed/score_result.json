@@ -1,0 +1,24 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-gpt-5-codex-UBU-Q0134-001",
+      "score": 90,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": false,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Bumps Answerability score from 90 to 100 and Status to Solved without an independent scoring pass, which is a self-assessed closure rather than an externally verified one",
+        "References prior decisions UBU-D0248 and UBU-D0256 as established precedent; if those decisions do not exist or differ from the assumed content, the severity-vocabulary reuse and non-authority boundary claims would be inconsistent with the actual decision history",
+        "Some quadrant outcomes are conditional rather than table-like, so implementers must preserve the stated review gates carefully to avoid over-broad auto-resolution.",
+        "The decision is necessarily policy-heavy and may require later implementation work to map `projection_conflict_event` fields to concrete storage/schema names.",
+        "The projection_conflict_event schema and quadrant defaults introduce moderately detailed new data-model surface in a single decision; future work must not silently diverge from this vocabulary"
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "openai-gpt-5-codex-UBU-Q0134-001",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}
