@@ -1,0 +1,25 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0073-P-gpt5-codex-001",
+      "score": 89,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": false,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Conflict severity vocabulary unification with UBU-Q0134 projection conflicts is asserted but UBU-Q0134 itself is not shown as updated/cross-checked in this diff",
+        "Introduces many new nested field names across DECISIONS.md and DESIGN.md that future questions/answers must stay consistent with",
+        "Some schema fields remain semi-open, especially disposal_effect as enum-or-string and repair_recipe.eligible_when/steps/ask_policy/fallback, which may need later tightening before implementation.",
+        "The conflict severity reconciliation with UBU-Q0134 is stated as a mapping requirement rather than enumerating projection conflict classes, so follow-up may be needed when Q0134 is resolved or edited.",
+        "The decision envelope wording for movable_windows says begin or occupy time depending on duration fields, which is compact but could produce inconsistent implementer interpretations.",
+        "Very dense, large schema addition in a single decision (UBU-D0256) increases review burden and risk of internal inconsistency slipping through"
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0073-P-gpt5-codex-001",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}

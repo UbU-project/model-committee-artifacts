@@ -1,0 +1,22 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0073-P-gpt5-codex-001",
+      "score": 86,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "good",
+      "risks": [
+        "Very dense, large schema addition in a single decision (UBU-D0256) increases review burden and risk of internal inconsistency slipping through",
+        "Introduces many new nested field names across DECISIONS.md and DESIGN.md that future questions/answers must stay consistent with",
+        "Conflict severity vocabulary unification with UBU-Q0134 projection conflicts is asserted but UBU-Q0134 itself is not shown as updated/cross-checked in this diff"
+      ],
+      "required_fixes": [],
+      "rationale": "Mechanical validation confirms the patch applies cleanly and touches only OPEN_QUESTIONS.md, DECISIONS.md, and DESIGN.md, all plausible targets for resolving a data-model question. The proposal answers all seven subquestions concretely: three-level criticality, decision envelope fields, four-level conflict severity shared with projection conflicts, cached explanation fragment set, five MVP repair recipes, last-legitimate-Plan storage/comparison, and ask/silent/wait rules. It updates the OPEN_QUESTIONS.md entry status, resolved_by, and answerability score consistently with the new decision, and DESIGN.md \u00a716.5/16.9 references are updated to match. Scope stays bounded to what Phase 1b requires (mobile stewardship metadata) without drifting into unrelated global-optimization or learned-policy work, which it explicitly defers post-MVP. The main soft risk is schema density making future audit harder, but that is proportionate to the question's genuine scope."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0073-P-gpt5-codex-001",
+  "selection_rationale": "Only one candidate proposal was provided and it passed mechanical validation (clean patch application, allowlisted files only). It substantively resolves all seven subquestions of UBU-Q0073 with a coherent, bounded MVP schema, correctly updates the question's status/resolution metadata, and keeps scope limited to Phase 1b requirements without introducing unrelated changes."
+}
