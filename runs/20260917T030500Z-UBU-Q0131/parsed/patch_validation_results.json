@@ -1,0 +1,17 @@
+[
+  {
+    "proposal_id": "ubu-q0131-gpt5-codex-20260917-a",
+    "patch_applies": false,
+    "allowlist_passed": true,
+    "changed_files": [
+      "DESIGN.md",
+      "OPEN_QUESTIONS.md"
+    ],
+    "error": "ordinary git apply --check failed: error: corrupt patch at line 21\ngit apply --check --recount failed: error: patch failed: DESIGN.md:3177\nerror: DESIGN.md: patch does not apply",
+    "normalized_patch": null,
+    "warnings": [],
+    "ordinary_error": "error: corrupt patch at line 21",
+    "recount_error": "error: patch failed: DESIGN.md:3177\nerror: DESIGN.md: patch does not apply",
+    "normalization_error": null
+  }
+]
