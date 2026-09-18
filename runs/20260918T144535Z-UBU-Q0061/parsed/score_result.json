@@ -1,0 +1,24 @@
+{
+  "scores": [
+    {
+      "proposal_id": "ubu-q0061-gpt5-codex-association-model-v1",
+      "score": 87,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": false,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Adds Association alongside existing Group, GroupMembership, and RoleAssignment language, creating a small risk of terminology overlap unless later docs clarify whether Group is superseded, aliased, or lower-level.",
+        "Broad set of minimum fields for the Association record may be over-specified for a 'Post-MVP' data model decision, slightly increasing future migration risk if fields need revision.",
+        "DESIGN.md addition assumes an existing \u00a71 numbering context (1.2) that isn't shown in the diff; if the surrounding section doesn't match the intended narrative flow, it could read as a non sequitur.",
+        "Introduces AssociationAttestation and lifecycle event terminology without defining a concrete event schema, which may need a follow-up data-model decision before implementation.",
+        "Introduces references to GroupMembership, RoleAssignment, and AssociationAttestation record types without fully defining their schemas, creating potential dangling concepts for future questions to reconcile."
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "ubu-q0061-gpt5-codex-association-model-v1",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}

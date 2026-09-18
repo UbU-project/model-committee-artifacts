@@ -1,0 +1,185 @@
+{
+  "schema_version": "0.4",
+  "run_id": "20260918T144535Z-UBU-Q0061",
+  "created_at_utc": "2026-09-18T14:45:35Z",
+  "repo_path": "../ubu-design",
+  "base_commit": "112238fb10a75ba0c9d568c59bda163dd736bf2e",
+  "selected_question_id": "UBU-Q0061",
+  "phase": "work-select",
+  "config_path": "config/models.json",
+  "status": "selected",
+  "commands": [
+    "model-committee run-loop"
+  ],
+  "providers_attempted": [
+    "codex",
+    "claude"
+  ],
+  "providers_succeeded": [
+    "codex",
+    "claude"
+  ],
+  "providers_failed": [],
+  "provider_attempts": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-score",
+      "target_proposal_id": "ubu-q0061-gpt5-codex-association-model-v1",
+      "response_path": "runs/20260918T144535Z-UBU-Q0061/responses/codex_score_ubu-q0061-gpt5-codex-association-model-v1_response.json",
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "sonnet",
+      "phase": "work-score",
+      "target_proposal_id": "ubu-q0061-gpt5-codex-association-model-v1",
+      "response_path": "runs/20260918T144535Z-UBU-Q0061/responses/claude_score_ubu-q0061-gpt5-codex-association-model-v1_stdout.json",
+      "stderr_path": null
+    }
+  ],
+  "provider_successes": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20260918T144535Z-UBU-Q0061/parsed/codex_work_proposal.json"
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-score",
+      "target_proposal_id": "ubu-q0061-gpt5-codex-association-model-v1",
+      "response_path": "runs/20260918T144535Z-UBU-Q0061/responses/codex_score_ubu-q0061-gpt5-codex-association-model-v1_response.json",
+      "parsed_path": "runs/20260918T144535Z-UBU-Q0061/parsed/codex_score_ubu-q0061-gpt5-codex-association-model-v1_result.json"
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "sonnet",
+      "phase": "work-score",
+      "target_proposal_id": "ubu-q0061-gpt5-codex-association-model-v1",
+      "response_path": "runs/20260918T144535Z-UBU-Q0061/responses/claude_score_ubu-q0061-gpt5-codex-association-model-v1_stdout.json",
+      "parsed_path": "runs/20260918T144535Z-UBU-Q0061/parsed/claude_score_ubu-q0061-gpt5-codex-association-model-v1_result.json"
+    }
+  ],
+  "provider_failures": [],
+  "score_matrix": [
+    {
+      "proposal_id": "ubu-q0061-gpt5-codex-association-model-v1",
+      "author_provider": "openai",
+      "scorer_provider": "codex",
+      "score": 91,
+      "valid": true,
+      "rationale": "The patch is valid, narrow, and directly resolves UBU-Q0061. It clearly establishes Association as first-class, Identity-scoped, perspective-bound, and capable of existing privately in user_mode; distinguishes it from Organization Identity, Relationship, and External Reference; covers informal groups, lifecycle events, organization_mode promotion criteria, disclosure policy, provenance, confidence, and Phase 3 versus later-research boundaries. It modifies only the expected design/question/decision files and preserves the open-question structure while marking the question resolved. Remaining concerns are mostly follow-up precision around event objects and existing Group terminology, not blockers.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "Introduces AssociationAttestation and lifecycle event terminology without defining a concrete event schema, which may need a follow-up data-model decision before implementation.",
+        "Adds Association alongside existing Group, GroupMembership, and RoleAssignment language, creating a small risk of terminology overlap unless later docs clarify whether Group is superseded, aliased, or lower-level."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20260918T144535Z-UBU-Q0061/responses/codex_score_ubu-q0061-gpt5-codex-association-model-v1_response.json",
+        "stderr_path": null
+      }
+    },
+    {
+      "proposal_id": "ubu-q0061-gpt5-codex-association-model-v1",
+      "author_provider": "openai",
+      "scorer_provider": "claude",
+      "score": 83,
+      "valid": true,
+      "rationale": "The proposal directly resolves UBU-Q0061 by defining a first-class Association object, addressing all seven subquestions: it distinguishes Association from Organization Identity/Relationship/External Reference, confirms it can live entirely in user_mode, lists minimum fields, covers informal groups, sets a clear organization_mode promotion threshold, defines lifecycle events as append-only records, and scopes Phase 3 requirements versus deferred research. It correctly flips OPEN_QUESTIONS.md status to Solved/Resolved with a new UBU-D0268 decision entry, consistent with the existing schema and cross-references to UBU-D0265/0266/0267. Changes are confined to the three expected files, mechanical validation confirms the patch applies cleanly and only touches the allowlisted files, and it explicitly defers cross-user reconciliation, dispute semantics, and Skill Barter governance to later questions, avoiding scope creep. As a single proposal (not a decomposition), decomposition_quality is not_applicable.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "Introduces references to GroupMembership, RoleAssignment, and AssociationAttestation record types without fully defining their schemas, creating potential dangling concepts for future questions to reconcile.",
+        "DESIGN.md addition assumes an existing \u00a71 numbering context (1.2) that isn't shown in the diff; if the surrounding section doesn't match the intended narrative flow, it could read as a non sequitur.",
+        "Broad set of minimum fields for the Association record may be over-specified for a 'Post-MVP' data model decision, slightly increasing future migration risk if fields need revision."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20260918T144535Z-UBU-Q0061/responses/claude_score_ubu-q0061-gpt5-codex-association-model-v1_stdout.json",
+        "stderr_path": null
+      }
+    }
+  ],
+  "score_aggregates": [
+    {
+      "proposal_id": "ubu-q0061-gpt5-codex-association-model-v1",
+      "author_provider": "openai",
+      "cross_score_count": 2,
+      "score_mean": 87.0,
+      "score_spread": 8,
+      "frontier_score_gap": 8,
+      "disagreement_flags": []
+    }
+  ],
+  "cross_score_count": 2,
+  "score_mean": 87.0,
+  "score_spread": 8,
+  "frontier_score_gap": 8,
+  "disagreement_flags": [],
+  "quorum_result": {
+    "valid": true,
+    "human_review_required": false,
+    "selected_proposal_id": "ubu-q0061-gpt5-codex-association-model-v1",
+    "selected_score": 87.0,
+    "selected_cross_score_count": 2,
+    "blocked_reasons": [],
+    "manual_override": false
+  },
+  "selected_proposal_id": "ubu-q0061-gpt5-codex-association-model-v1",
+  "automated_selection_valid": true,
+  "human_review_required": false,
+  "artifact_publication_status": "operator_pending",
+  "prompt_size_warning": false,
+  "prompt_context": {
+    "question_ids": [
+      "UBU-Q0025",
+      "UBU-Q0054",
+      "UBU-Q0055",
+      "UBU-Q0056",
+      "UBU-Q0061"
+    ],
+    "decision_ids": [
+      "UBU-D0100",
+      "UBU-D0265",
+      "UBU-D0266",
+      "UBU-D0267"
+    ],
+    "sections": {
+      "DESIGN.md": [
+        "1.1",
+        "12",
+        "26.3",
+        "26.4"
+      ]
+    },
+    "core_sections": {
+      "DESIGN.md": [
+        "1"
+      ],
+      "DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md": [
+        "4"
+      ]
+    },
+    "missing_refs": {},
+    "context_chars": 38155,
+    "prompt_chars": 44287
+  }
+}

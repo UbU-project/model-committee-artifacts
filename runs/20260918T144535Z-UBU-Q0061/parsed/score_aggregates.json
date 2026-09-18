@@ -1,0 +1,11 @@
+[
+  {
+    "proposal_id": "ubu-q0061-gpt5-codex-association-model-v1",
+    "author_provider": "openai",
+    "cross_score_count": 2,
+    "score_mean": 87.0,
+    "score_spread": 8,
+    "frontier_score_gap": 8,
+    "disagreement_flags": []
+  }
+]
