@@ -1,0 +1,22 @@
+{
+  "scores": [
+    {
+      "proposal_id": "codex-ubu-q0084-d0263",
+      "score": 87,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": false,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Calendar-projection boundary ('reserve or require the user's attention... materially unavailable') is a judgment call that may need refinement once concrete background processes (e.g. UBU-Q0137's batch runner) are checked against it",
+        "Introduces a large number of new fields on AgentAction/BackgroundProcess without defining their types elsewhere in DESIGN.md, which could create drift if not cross-referenced by later schema work",
+        "Status change from Open to Solved and Answerability 90->100 assumes 'Solved' is the correct terminal status token used elsewhere in OPEN_QUESTIONS.md; not independently verified here"
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 1 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "codex-ubu-q0084-d0263",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}

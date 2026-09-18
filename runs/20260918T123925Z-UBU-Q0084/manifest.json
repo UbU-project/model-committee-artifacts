@@ -1,0 +1,156 @@
+{
+  "schema_version": "0.4",
+  "run_id": "20260918T123925Z-UBU-Q0084",
+  "created_at_utc": "2026-09-18T12:39:25Z",
+  "repo_path": "../ubu-design",
+  "base_commit": "b9ea1362d86344b7cb6476c888dbe72171f75f8c",
+  "selected_question_id": "UBU-Q0084",
+  "phase": "work-select",
+  "config_path": "config/models.json",
+  "status": "selected",
+  "commands": [
+    "model-committee run-loop"
+  ],
+  "providers_attempted": [
+    "codex",
+    "claude"
+  ],
+  "providers_succeeded": [
+    "codex",
+    "claude"
+  ],
+  "providers_failed": [],
+  "provider_attempts": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "sonnet",
+      "phase": "work-score",
+      "target_proposal_id": "codex-ubu-q0084-d0263",
+      "response_path": "runs/20260918T123925Z-UBU-Q0084/responses/claude_score_codex-ubu-q0084-d0263_stdout.json",
+      "stderr_path": null
+    }
+  ],
+  "provider_successes": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20260918T123925Z-UBU-Q0084/parsed/codex_work_proposal.json"
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "sonnet",
+      "phase": "work-score",
+      "target_proposal_id": "codex-ubu-q0084-d0263",
+      "response_path": "runs/20260918T123925Z-UBU-Q0084/responses/claude_score_codex-ubu-q0084-d0263_stdout.json",
+      "parsed_path": "runs/20260918T123925Z-UBU-Q0084/parsed/claude_score_codex-ubu-q0084-d0263_result.json"
+    }
+  ],
+  "provider_failures": [],
+  "score_matrix": [
+    {
+      "proposal_id": "codex-ubu-q0084-d0263",
+      "author_provider": "codex",
+      "scorer_provider": "claude",
+      "score": 87,
+      "valid": true,
+      "rationale": "The patch applies cleanly per mechanical validation and touches only DECISIONS.md, DESIGN.md, and OPEN_QUESTIONS.md, matching the allowlist. It directly answers all five subquestions: field split between AgentAction (per-dispatch) and BackgroundProcess (standing policy), trigger/recurrence/budget/notification/escalation representation, a concrete prompt-injection scoring rubric, rollback/mitigation metadata keyed to a side-effect taxonomy, and explicit Calendar-inclusion criteria. It correctly respects the existing Phase 1b split by leaving UBU-Q0137's advisory background-process subset untouched and only resolving the computer-use AgentAction/irreversible-effect/prompt-injection scope described as still open. OPEN_QUESTIONS.md's single-line metadata format is preserved and updated consistently (Status, Answerability, Resolved by, Resolution). No unnecessary files or scope creep. The main soft risk is that many new fields are introduced as prose lists without formal typing, which is consistent with the surrounding DESIGN.md style but adds surface area for future consistency checks.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "Introduces a large number of new fields on AgentAction/BackgroundProcess without defining their types elsewhere in DESIGN.md, which could create drift if not cross-referenced by later schema work",
+        "Calendar-projection boundary ('reserve or require the user's attention... materially unavailable') is a judgment call that may need refinement once concrete background processes (e.g. UBU-Q0137's batch runner) are checked against it",
+        "Status change from Open to Solved and Answerability 90->100 assumes 'Solved' is the correct terminal status token used elsewhere in OPEN_QUESTIONS.md; not independently verified here"
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20260918T123925Z-UBU-Q0084/responses/claude_score_codex-ubu-q0084-d0263_stdout.json",
+        "stderr_path": null
+      }
+    }
+  ],
+  "score_aggregates": [
+    {
+      "proposal_id": "codex-ubu-q0084-d0263",
+      "author_provider": "codex",
+      "cross_score_count": 1,
+      "score_mean": 87.0,
+      "score_spread": 0,
+      "frontier_score_gap": 0,
+      "disagreement_flags": []
+    }
+  ],
+  "cross_score_count": 1,
+  "score_mean": 87.0,
+  "score_spread": 0,
+  "frontier_score_gap": 0,
+  "disagreement_flags": [],
+  "quorum_result": {
+    "valid": true,
+    "human_review_required": false,
+    "selected_proposal_id": "codex-ubu-q0084-d0263",
+    "selected_score": 87.0,
+    "selected_cross_score_count": 1,
+    "blocked_reasons": [],
+    "manual_override": false
+  },
+  "selected_proposal_id": "codex-ubu-q0084-d0263",
+  "automated_selection_valid": true,
+  "human_review_required": false,
+  "artifact_publication_status": "operator_pending",
+  "prompt_size_warning": false,
+  "prompt_context": {
+    "question_ids": [
+      "UBU-Q0028",
+      "UBU-Q0031",
+      "UBU-Q0032",
+      "UBU-Q0060",
+      "UBU-Q0079",
+      "UBU-Q0084"
+    ],
+    "decision_ids": [
+      "UBU-D0057",
+      "UBU-D0058",
+      "UBU-D0059",
+      "UBU-D0060",
+      "UBU-D0065",
+      "UBU-D0069",
+      "UBU-D0070",
+      "UBU-D0071",
+      "UBU-D0074",
+      "UBU-D0150",
+      "UBU-D0157",
+      "UBU-D0177"
+    ],
+    "sections": {
+      "DESIGN.md": [
+        "2.11",
+        "3",
+        "21.4"
+      ]
+    },
+    "core_sections": {
+      "DESIGN.md": [
+        "1"
+      ],
+      "DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md": [
+        "4"
+      ]
+    },
+    "missing_refs": {},
+    "context_chars": 63295,
+    "prompt_chars": 69706
+  }
+}
