@@ -1,0 +1,45 @@
+[
+  {
+    "proposal_id": "UBU-Q0062-openai-gpt-5-codex-20260918",
+    "author_provider": "openai",
+    "scorer_provider": "codex",
+    "score": 92,
+    "valid": true,
+    "rationale": "The patch cleanly resolves UBU-Q0062 with an auditable decision, updates the design text in the relevant Association section, and preserves the open-question schema while changing only allowed files. It directly covers required claim types, source-kind distinctions, generated-attestation provenance, review and dispute states, supersession semantics, source-specific trust guidance, and privacy-preserving disclosure policy. The scope is appropriately narrow and consistent with the existing Q0061 Association framing. Remaining concerns are refinements rather than blockers.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [
+      "Trust/confidence guidance remains qualitative rather than defining a concrete weighting model or per-source scoring rubric.",
+      "DECISIONS.md disclosure paragraph omits reputation from the explicit non-leak list even though DESIGN.md and the resolution include it.",
+      "Dispute actions by an affected Association may need later clarification around who has standing or authority to act for a non-organization Association."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20260918T150602Z-UBU-Q0062/responses/codex_score_ubu-q0062-openai-gpt-5-codex-20260918_response.json",
+      "stderr_path": null
+    }
+  },
+  {
+    "proposal_id": "UBU-Q0062-openai-gpt-5-codex-20260918",
+    "author_provider": "openai",
+    "scorer_provider": "claude",
+    "score": 88,
+    "valid": true,
+    "rationale": "The patch applies cleanly and touches only the allowlisted files (DESIGN.md, DECISIONS.md, OPEN_QUESTIONS.md). It directly answers all six subquestions: claim type taxonomy, source-kind distinctions (user_authored/imported/worker_generated_candidate/llm_generated_candidate), required provenance fields for generated attestations, dispute/annotate/accept/reject/supersede semantics via review_status, trust/confidence separation across source types, and disclosure policy requirements to prevent leakage. It follows the established pattern from UBU-D0268 (Associations), keeps attestations as append-only/immutable with supersession rather than mutation, and explicitly avoids granting authority or organization-mode legitimacy from attestations alone, respecting prior boundaries in the codebase. OPEN_QUESTIONS.md preserves the single-line metadata format and updates status/resolution correctly. Scope is proportionate to the question; no unrelated files or speculative features are introduced.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [
+      "Introduces many new enumerated fields and states (claim types, source kinds, review statuses) in a single decision, which increases the surface area a future decision must stay consistent with",
+      "Confidence/trust distinction is asserted but not tied to any concrete scoring mechanism, leaving implementation details for a later question"
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20260918T150602Z-UBU-Q0062/responses/claude_score_ubu-q0062-openai-gpt-5-codex-20260918_stdout.json",
+      "stderr_path": null
+    }
+  }
+]

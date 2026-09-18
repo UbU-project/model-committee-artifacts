@@ -1,0 +1,24 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0062-openai-gpt-5-codex-20260918",
+      "score": 90,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": false,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Confidence/trust distinction is asserted but not tied to any concrete scoring mechanism, leaving implementation details for a later question",
+        "DECISIONS.md disclosure paragraph omits reputation from the explicit non-leak list even though DESIGN.md and the resolution include it.",
+        "Dispute actions by an affected Association may need later clarification around who has standing or authority to act for a non-organization Association.",
+        "Introduces many new enumerated fields and states (claim types, source kinds, review statuses) in a single decision, which increases the surface area a future decision must stay consistent with",
+        "Trust/confidence guidance remains qualitative rather than defining a concrete weighting model or per-source scoring rubric."
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0062-openai-gpt-5-codex-20260918",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}

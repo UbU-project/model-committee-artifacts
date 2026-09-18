@@ -1,0 +1,21 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0062-openai-gpt-5-codex-20260918",
+      "score": 88,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Introduces many new enumerated fields and states (claim types, source kinds, review statuses) in a single decision, which increases the surface area a future decision must stay consistent with",
+        "Confidence/trust distinction is asserted but not tied to any concrete scoring mechanism, leaving implementation details for a later question"
+      ],
+      "required_fixes": [],
+      "rationale": "The patch applies cleanly and touches only the allowlisted files (DESIGN.md, DECISIONS.md, OPEN_QUESTIONS.md). It directly answers all six subquestions: claim type taxonomy, source-kind distinctions (user_authored/imported/worker_generated_candidate/llm_generated_candidate), required provenance fields for generated attestations, dispute/annotate/accept/reject/supersede semantics via review_status, trust/confidence separation across source types, and disclosure policy requirements to prevent leakage. It follows the established pattern from UBU-D0268 (Associations), keeps attestations as append-only/immutable with supersession rather than mutation, and explicitly avoids granting authority or organization-mode legitimacy from attestations alone, respecting prior boundaries in the codebase. OPEN_QUESTIONS.md preserves the single-line metadata format and updates status/resolution correctly. Scope is proportionate to the question; no unrelated files or speculative features are introduced."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0062-openai-gpt-5-codex-20260918",
+  "selection_rationale": "This is the only candidate proposal provided, its patch passes mechanical validation (applies cleanly, touches only allowlisted files), and it substantively and coherently resolves all subquestions of UBU-Q0062 while preserving the OPEN_QUESTIONS.md schema and staying consistent with the prior Association decision (UBU-D0268)."
+}
