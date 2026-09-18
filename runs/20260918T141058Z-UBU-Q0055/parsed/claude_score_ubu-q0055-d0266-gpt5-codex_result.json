@@ -1,0 +1,22 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0055-D0266-gpt5-codex",
+      "score": 85,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Status field is set to 'Solved' rather than a possibly more standard 'Resolved' \u2014 should verify this matches the project's canonical status vocabulary used elsewhere in OPEN_QUESTIONS.md",
+        "Introduces a fairly large amount of new governance vocabulary (authority_source, quorum/threshold rule fields, diagnostics list) that Phase 3 implementers will need to treat as non-binding guidance rather than a locked schema, since none of it is implemented or tested",
+        "DESIGN.md \u00a726.3 prescribes fairly specific future record fields (decision id, Association/Group scope, etc.) which risks over-specifying a Phase 3 design prematurely, though it is appropriately hedged as future work"
+      ],
+      "required_fixes": [],
+      "rationale": "The patch applies cleanly per mechanical validation and touches only DECISIONS.md, DESIGN.md, and OPEN_QUESTIONS.md, consistent with prior resolution patterns (e.g., UBU-D0265). It directly answers all six subquestions: it distinguishes authority/consent/vote/delegation/consensus/veto/exit, treats aggregated outputs as governance artifacts with provenance rather than synthetic personal Preferences, keeps dissent/minority reports as durable queryable records, specifies minimal Phase 3 record fields, and explicitly calls out social-choice impossibility/legitimacy problems (cyclic majorities, agenda dependence, strategic voting, quorum defects) as diagnostics to surface. It correctly keeps Phase 1/1b single-user and admin-equivalent, avoiding scope creep into actual multi-user implementation. The OPEN_QUESTIONS.md edit follows the existing single-line metadata convention and links Resolved by/UBU-D0266 correctly. Overall this is a well-scoped, design-level resolution appropriate for a Post-MVP governance question with high answerability score (90)."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0055-D0266-gpt5-codex",
+  "selection_rationale": "Only one proposal was submitted and it passed mechanical validation (patch applies, correct file allowlist). It directly and thoroughly resolves all six subquestions of UBU-Q0055 while preserving the existing OPEN_QUESTIONS.md/DECISIONS.md/DESIGN.md schema conventions, avoids implementing out-of-scope Phase 3 mechanics, and correctly maintains the single-user Phase 1/1b boundary. No competing candidate exists to compare against."
+}

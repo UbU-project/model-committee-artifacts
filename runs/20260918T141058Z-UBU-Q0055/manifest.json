@@ -1,0 +1,176 @@
+{
+  "schema_version": "0.4",
+  "run_id": "20260918T141058Z-UBU-Q0055",
+  "created_at_utc": "2026-09-18T14:10:58Z",
+  "repo_path": "../ubu-design",
+  "base_commit": "07cdc76172e0f68f41c8c31c182f341e5d7fe29a",
+  "selected_question_id": "UBU-Q0055",
+  "phase": "work-select",
+  "config_path": "config/models.json",
+  "status": "selected",
+  "commands": [
+    "model-committee run-loop"
+  ],
+  "providers_attempted": [
+    "codex",
+    "claude"
+  ],
+  "providers_succeeded": [
+    "codex",
+    "claude"
+  ],
+  "providers_failed": [],
+  "provider_attempts": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0055-D0266-gpt5-codex",
+      "response_path": "runs/20260918T141058Z-UBU-Q0055/responses/codex_score_ubu-q0055-d0266-gpt5-codex_response.json",
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "sonnet",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0055-D0266-gpt5-codex",
+      "response_path": "runs/20260918T141058Z-UBU-Q0055/responses/claude_score_ubu-q0055-d0266-gpt5-codex_stdout.json",
+      "stderr_path": null
+    }
+  ],
+  "provider_successes": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20260918T141058Z-UBU-Q0055/parsed/codex_work_proposal.json"
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0055-D0266-gpt5-codex",
+      "response_path": "runs/20260918T141058Z-UBU-Q0055/responses/codex_score_ubu-q0055-d0266-gpt5-codex_response.json",
+      "parsed_path": "runs/20260918T141058Z-UBU-Q0055/parsed/codex_score_ubu-q0055-d0266-gpt5-codex_result.json"
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "sonnet",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0055-D0266-gpt5-codex",
+      "response_path": "runs/20260918T141058Z-UBU-Q0055/responses/claude_score_ubu-q0055-d0266-gpt5-codex_stdout.json",
+      "parsed_path": "runs/20260918T141058Z-UBU-Q0055/parsed/claude_score_ubu-q0055-d0266-gpt5-codex_result.json"
+    }
+  ],
+  "provider_failures": [],
+  "score_matrix": [
+    {
+      "proposal_id": "UBU-Q0055-D0266-gpt5-codex",
+      "author_provider": "openai",
+      "scorer_provider": "codex",
+      "score": 94,
+      "valid": true,
+      "rationale": "The proposal is valid, focused, and directly answers UBU-Q0055. It cleanly resolves the open question, adds an auditable decision record, preserves the open-question metadata structure, modifies only the expected governance/design files, and keeps Phase 1/1b explicitly single-user/admin-equivalent. Its core semantics are strong: collective outcomes are treated as governance artifacts with provenance and legitimacy diagnostics rather than synthetic personal Preferences, and dissent/exit/minority records remain durable.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "The DESIGN.md section names a fairly detailed future field set, which is useful but could be read as premature schema commitment before Phase 3 design work.",
+        "The legitimacy diagnostics list is illustrative and good, but future implementers may need stronger guidance on severity levels or review workflow."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20260918T141058Z-UBU-Q0055/responses/codex_score_ubu-q0055-d0266-gpt5-codex_response.json",
+        "stderr_path": null
+      }
+    },
+    {
+      "proposal_id": "UBU-Q0055-D0266-gpt5-codex",
+      "author_provider": "openai",
+      "scorer_provider": "claude",
+      "score": 85,
+      "valid": true,
+      "rationale": "The patch applies cleanly per mechanical validation and touches only DECISIONS.md, DESIGN.md, and OPEN_QUESTIONS.md, consistent with prior resolution patterns (e.g., UBU-D0265). It directly answers all six subquestions: it distinguishes authority/consent/vote/delegation/consensus/veto/exit, treats aggregated outputs as governance artifacts with provenance rather than synthetic personal Preferences, keeps dissent/minority reports as durable queryable records, specifies minimal Phase 3 record fields, and explicitly calls out social-choice impossibility/legitimacy problems (cyclic majorities, agenda dependence, strategic voting, quorum defects) as diagnostics to surface. It correctly keeps Phase 1/1b single-user and admin-equivalent, avoiding scope creep into actual multi-user implementation. The OPEN_QUESTIONS.md edit follows the existing single-line metadata convention and links Resolved by/UBU-D0266 correctly. Overall this is a well-scoped, design-level resolution appropriate for a Post-MVP governance question with high answerability score (90).",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "Status field is set to 'Solved' rather than a possibly more standard 'Resolved' \u2014 should verify this matches the project's canonical status vocabulary used elsewhere in OPEN_QUESTIONS.md",
+        "Introduces a fairly large amount of new governance vocabulary (authority_source, quorum/threshold rule fields, diagnostics list) that Phase 3 implementers will need to treat as non-binding guidance rather than a locked schema, since none of it is implemented or tested",
+        "DESIGN.md \u00a726.3 prescribes fairly specific future record fields (decision id, Association/Group scope, etc.) which risks over-specifying a Phase 3 design prematurely, though it is appropriately hedged as future work"
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20260918T141058Z-UBU-Q0055/responses/claude_score_ubu-q0055-d0266-gpt5-codex_stdout.json",
+        "stderr_path": null
+      }
+    }
+  ],
+  "score_aggregates": [
+    {
+      "proposal_id": "UBU-Q0055-D0266-gpt5-codex",
+      "author_provider": "openai",
+      "cross_score_count": 2,
+      "score_mean": 89.5,
+      "score_spread": 9,
+      "frontier_score_gap": 9,
+      "disagreement_flags": []
+    }
+  ],
+  "cross_score_count": 2,
+  "score_mean": 89.5,
+  "score_spread": 9,
+  "frontier_score_gap": 9,
+  "disagreement_flags": [],
+  "quorum_result": {
+    "valid": true,
+    "human_review_required": false,
+    "selected_proposal_id": "UBU-Q0055-D0266-gpt5-codex",
+    "selected_score": 89.5,
+    "selected_cross_score_count": 2,
+    "blocked_reasons": [],
+    "manual_override": false
+  },
+  "selected_proposal_id": "UBU-Q0055-D0266-gpt5-codex",
+  "automated_selection_valid": true,
+  "human_review_required": false,
+  "artifact_publication_status": "operator_pending",
+  "prompt_size_warning": false,
+  "prompt_context": {
+    "question_ids": [
+      "UBU-Q0025",
+      "UBU-Q0055"
+    ],
+    "decision_ids": [
+      "UBU-D0100"
+    ],
+    "sections": {
+      "DESIGN.md": [
+        "12"
+      ]
+    },
+    "core_sections": {
+      "DESIGN.md": [
+        "1"
+      ],
+      "DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md": [
+        "4"
+      ]
+    },
+    "missing_refs": {},
+    "context_chars": 16474,
+    "prompt_chars": 22233
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0055-D0266-gpt5-codex",
+      "score": 90,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": false,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "DESIGN.md \u00a726.3 prescribes fairly specific future record fields (decision id, Association/Group scope, etc.) which risks over-specifying a Phase 3 design prematurely, though it is appropriately hedged as future work",
+        "Introduces a fairly large amount of new governance vocabulary (authority_source, quorum/threshold rule fields, diagnostics list) that Phase 3 implementers will need to treat as non-binding guidance rather than a locked schema, since none of it is implemented or tested",
+        "Status field is set to 'Solved' rather than a possibly more standard 'Resolved' \u2014 should verify this matches the project's canonical status vocabulary used elsewhere in OPEN_QUESTIONS.md",
+        "The DESIGN.md section names a fairly detailed future field set, which is useful but could be read as premature schema commitment before Phase 3 design work.",
+        "The legitimacy diagnostics list is illustrative and good, but future implementers may need stronger guidance on severity levels or review workflow."
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0055-D0266-gpt5-codex",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}
