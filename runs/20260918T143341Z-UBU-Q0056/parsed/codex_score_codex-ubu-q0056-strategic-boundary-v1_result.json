@@ -1,0 +1,21 @@
+{
+  "scores": [
+    {
+      "proposal_id": "codex-ubu-q0056-strategic-boundary-v1",
+      "score": 94,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "The deferred Phase 3+ strategic-interaction record shape is intentionally high level, so later work will still need a more precise schema decision before implementation.",
+        "The strong prohibition on counterparty scoring and automated bargaining authority is appropriate for Phase 1/1b but may need careful re-evaluation for future marketplace or Skill Barter designs."
+      ],
+      "required_fixes": [],
+      "rationale": "The proposal is valid, minimal, and directly resolves UBU-Q0056. It cleanly records a decision, adds a focused DESIGN section, and updates the selected question without touching unrelated areas. The substance matches the current direction: most near-term strategic patterns use existing objects, explicit counterparty modeling is deferred, and speculative game-theoretic reasoning is constrained by provenance, confidence, review, Identity, capability, Compartment, and projection boundaries. It also answers the subquestions with useful examples for commitments, signaling, free-riding controls, FOSS coordination, grants, bounties, and future Skill Barter work. Remaining risks are future-specification rather than required fixes."
+    }
+  ],
+  "selected_proposal_id": "codex-ubu-q0056-strategic-boundary-v1",
+  "selection_rationale": "It is the only candidate, passes mechanical validation, preserves the question schema, stays within allowed files, and provides a clear auditable resolution aligned with the selected question and current direction."
+}

@@ -1,0 +1,24 @@
+{
+  "scores": [
+    {
+      "proposal_id": "codex-ubu-q0056-strategic-boundary-v1",
+      "score": 88,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": false,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Author notes the workspace was read-only during generation so the patch itself was never applied/tested locally by the author, relying entirely on downstream mechanical validation",
+        "New DESIGN.md \u00a726.4 and DECISIONS.md UBU-D0267 introduce substantial prescriptive policy language (e.g., 'no automatic counterparty scoring') that later work must stay consistent with",
+        "Patch required --recount normalization, indicating some line-offset drift from the stated base commit that could compound with other concurrent edits to the same files",
+        "The deferred Phase 3+ strategic-interaction record shape is intentionally high level, so later work will still need a more precise schema decision before implementation.",
+        "The strong prohibition on counterparty scoring and automated bargaining authority is appropriate for Phase 1/1b but may need careful re-evaluation for future marketplace or Skill Barter designs."
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "codex-ubu-q0056-strategic-boundary-v1",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}

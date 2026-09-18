@@ -1,0 +1,11 @@
+[
+  {
+    "proposal_id": "codex-ubu-q0056-strategic-boundary-v1",
+    "author_provider": "openai",
+    "cross_score_count": 2,
+    "score_mean": 88.5,
+    "score_spread": 11,
+    "frontier_score_gap": 11,
+    "disagreement_flags": []
+  }
+]

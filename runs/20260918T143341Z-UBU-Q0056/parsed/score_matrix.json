@@ -1,0 +1,45 @@
+[
+  {
+    "proposal_id": "codex-ubu-q0056-strategic-boundary-v1",
+    "author_provider": "openai",
+    "scorer_provider": "codex",
+    "score": 94,
+    "valid": true,
+    "rationale": "The proposal is valid, minimal, and directly resolves UBU-Q0056. It cleanly records a decision, adds a focused DESIGN section, and updates the selected question without touching unrelated areas. The substance matches the current direction: most near-term strategic patterns use existing objects, explicit counterparty modeling is deferred, and speculative game-theoretic reasoning is constrained by provenance, confidence, review, Identity, capability, Compartment, and projection boundaries. It also answers the subquestions with useful examples for commitments, signaling, free-riding controls, FOSS coordination, grants, bounties, and future Skill Barter work. Remaining risks are future-specification rather than required fixes.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [
+      "The deferred Phase 3+ strategic-interaction record shape is intentionally high level, so later work will still need a more precise schema decision before implementation.",
+      "The strong prohibition on counterparty scoring and automated bargaining authority is appropriate for Phase 1/1b but may need careful re-evaluation for future marketplace or Skill Barter designs."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20260918T143341Z-UBU-Q0056/responses/codex_score_codex-ubu-q0056-strategic-boundary-v1_response.json",
+      "stderr_path": null
+    }
+  },
+  {
+    "proposal_id": "codex-ubu-q0056-strategic-boundary-v1",
+    "author_provider": "openai",
+    "scorer_provider": "claude",
+    "score": 83,
+    "valid": true,
+    "rationale": "Patch applies cleanly per mechanical validation and touches only the three allowlisted docs (OPEN_QUESTIONS.md, DESIGN.md, DECISIONS.md). It directly resolves UBU-Q0056 with a coherent decision (UBU-D0267) that answers all six subquestions: it assigns ordinary strategic patterns to existing objects (External Events, Techniques, Tasks/Logs, External References, Relationships), defers explicit counterparty-model objects to Phase 3+/Skill Barter with a concrete future schema, ties strategic reasoning to Identity/capability grants/Compartments/projection, adds guardrails against overconfident recommendations (hypothesis-only, confidence-scoped, cannot authorize commitments/disclosure), and gives a practical Phase 1b surface for FOSS coordination/bounties/grants. OPEN_QUESTIONS.md is updated consistently (Status, Resolved by, Resolution) without disturbing unrelated fields, preserving the question schema. Scope is proportionate to the question's Post-MVP/Phase 1b nature and does not implement actual counterparty-model code, staying within the 'boundary discipline' framing. The only real concerns are the recount normalization needed to apply the patch and the fact the author could not verify application locally, both mitigated by successful mechanical validation.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [
+      "Patch required --recount normalization, indicating some line-offset drift from the stated base commit that could compound with other concurrent edits to the same files",
+      "New DESIGN.md \u00a726.4 and DECISIONS.md UBU-D0267 introduce substantial prescriptive policy language (e.g., 'no automatic counterparty scoring') that later work must stay consistent with",
+      "Author notes the workspace was read-only during generation so the patch itself was never applied/tested locally by the author, relying entirely on downstream mechanical validation"
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20260918T143341Z-UBU-Q0056/responses/claude_score_codex-ubu-q0056-strategic-boundary-v1_stdout.json",
+      "stderr_path": null
+    }
+  }
+]
