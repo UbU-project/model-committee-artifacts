@@ -1,0 +1,21 @@
+{
+  "scores": [
+    {
+      "proposal_id": "codex-ubu-q0137-d0264",
+      "score": 90,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": false,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Introduces a new decision UBU-D0264 and cross-references several prior decisions (D0263, D0255, D0258, D0262) whose exact current wording could not be independently verified in this review, so there is some risk of subtle inconsistency with those sections as they exist on the base commit.",
+        "Sets Answerability score to 100 and Status to Solved in OPEN_QUESTIONS.md, which is a reasonable but somewhat confident self-assessment that a human reviewer should confirm covers all edge cases (e.g., concurrency limit >1 catch-up behavior) before treating the question as fully closed."
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 1 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "codex-ubu-q0137-d0264",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}

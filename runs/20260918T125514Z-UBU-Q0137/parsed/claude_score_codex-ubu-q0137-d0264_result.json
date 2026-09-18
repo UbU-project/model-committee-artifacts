@@ -1,0 +1,21 @@
+{
+  "scores": [
+    {
+      "proposal_id": "codex-ubu-q0137-d0264",
+      "score": 90,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Introduces a new decision UBU-D0264 and cross-references several prior decisions (D0263, D0255, D0258, D0262) whose exact current wording could not be independently verified in this review, so there is some risk of subtle inconsistency with those sections as they exist on the base commit.",
+        "Sets Answerability score to 100 and Status to Solved in OPEN_QUESTIONS.md, which is a reasonable but somewhat confident self-assessment that a human reviewer should confirm covers all edge cases (e.g., concurrency limit >1 catch-up behavior) before treating the question as fully closed."
+      ],
+      "required_fixes": [],
+      "rationale": "The patch applies cleanly per mechanical validation and touches only the three allowed files (DESIGN.md, DECISIONS.md, OPEN_QUESTIONS.md). It directly answers all seven subquestions: BackgroundProcess fields (operation kind, eligibility filter, pass caps, interval, interrupt state), per-object state via BackgroundProcessObjectState keyed by process/object/version, event-sourced interruption/resumption (run_interrupted, run_resumed, checkpoint cursors), a clear notification/escalation policy tied to failure/no-output thresholds, an explicit no-Calendar-time policy paired with operator-visible telemetry, a graded prompt-injection exposure model with concrete containment measures, and a precise no-successful-work exit contract distinguishing clean no-op from escalation-required failure. The OPEN_QUESTIONS.md edit correctly preserves the question block structure (title, metadata line updated in place, subquestions untouched, Resolution section filled in) rather than restructuring the schema. Scope is appropriately narrow: it explicitly declines to resolve AgentAction/rollback semantics (UBU-Q0084), staying within Phase 1b. The new decision reuses named concepts from prior decisions (WorkerAuthority, LocalAdvisorySubmission/Result, mutation-envelope/idempotency rules) suggesting internal consistency, though this could not be fully cross-checked against the live repo state in this review."
+    }
+  ],
+  "selected_proposal_id": "codex-ubu-q0137-d0264",
+  "selection_rationale": "This is the only candidate proposal provided for UBU-Q0137, it passed mechanical validation (patch applies, allowlist respected), and on review it substantively and directly answers all seven subquestions without expanding scope beyond Phase 1b or restructuring the question schema. No competing proposal exists to compare against, and no disqualifying issues (failed validation, out-of-scope edits, missing coverage) were found."
+}
