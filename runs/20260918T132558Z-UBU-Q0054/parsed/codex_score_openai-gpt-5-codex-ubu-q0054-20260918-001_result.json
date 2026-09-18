@@ -1,0 +1,21 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-gpt-5-codex-UBU-Q0054-20260918-001",
+      "score": 92,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "good",
+      "risks": [
+        "Resolution is mostly conceptual and does not define concrete field schemas for Group, GroupMembership, RoleAssignment, or ModeContext, so later implementation work will still need detailed modeling.",
+        "The added DESIGN section is broad front-matter guidance rather than being placed entirely in the relevant identity/data-model area, though it remains clear and auditable."
+      ],
+      "required_fixes": [],
+      "rationale": "The patch applies, stays within the allowed canonical files, and directly resolves UBU-Q0054 with a conservative model boundary that distinguishes Identity, Role, GroupMembership, SelfConcept, Compartment, and ModeContext. It answers the subquestions, avoids stereotype inference, ties social identity claims to accepted records and Snapshot-style correction semantics, and clearly separates Phase 3 minimum needs from later research. Scope is appropriately limited and the question metadata format is preserved."
+    }
+  ],
+  "selected_proposal_id": "openai-gpt-5-codex-UBU-Q0054-20260918-001",
+  "selection_rationale": "This is the only validated proposal and it is a strong, minimal, auditable resolution of the selected question with no required fixes."
+}

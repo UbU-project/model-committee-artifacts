@@ -1,0 +1,22 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-gpt-5-codex-UBU-Q0054-20260918-001",
+      "score": 85,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Introduces several new conceptual entities (Role, GroupMembership, SelfConcept, ModeContext) as DESIGN.md prose without full data-model field specs, which could require follow-up decisions to make implementable",
+        "Text is fairly dense/abstract and may need refinement for engineering clarity before Phase 3 implementation begins",
+        "Relies on judgment calls (e.g., what counts as 'accepted record' vs. inferred) that could need later clarification decisions"
+      ],
+      "required_fixes": [],
+      "rationale": "Mechanical validation confirms the patch applies cleanly and touches only allowlisted files (DESIGN.md, DECISIONS.md, OPEN_QUESTIONS.md). The OPEN_QUESTIONS.md edit preserves the existing single-line metadata schema format and correctly updates Status/Answerability/Resolved-by fields alongside a substantive Resolution paragraph. The new DECISIONS.md entry (UBU-D0265) is scoped, cites the resolved question, and explicitly reuses existing Snapshot partial-assertion/correction semantics (UBU-D0100) rather than reinventing them, which is good architectural discipline. The proposal addresses all five subquestions: it distinguishes Identity/Role/GroupMembership/SelfConcept/Compartment/ModeContext as non-overlapping dimensions, restricts group-membership influence on Objectives/Preferences/trust/disclosure to explicit accepted records (avoiding paternalistic inference), frames in-group/out-group effects as inspectable hypotheses rather than hard-coded judgments, ties into Compartment/Relationship semantics, and separates minimal Phase 3 needs from deferred research (learned salience, norm conflict modeling). It correctly flags requires_human_review given the question's 'Human approval required' auto-choice eligibility. Scope is appropriately limited to design/decision text rather than premature code or schema implementation, consistent with 'Post-MVP' status and the instruction not to block Phase 1."
+    }
+  ],
+  "selected_proposal_id": "openai-gpt-5-codex-UBU-Q0054-20260918-001",
+  "selection_rationale": "This is the only candidate proposal submitted for UBU-Q0054. It passed mechanical validation (patch applies, allowlist respected), preserves the OPEN_QUESTIONS.md schema, directly resolves all five subquestions with a coherent conceptual boundary (Identity/Role/GroupMembership/SelfConcept/Compartment/ModeContext as distinct, cross-referenced but non-collapsing records), reuses existing Snapshot semantics rather than introducing new mechanisms, and stays within Post-MVP/Phase 1b scope without blocking Phase 1. No competing proposal exists to compare against, and this one meets the bar for selection."
+}

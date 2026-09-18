@@ -1,0 +1,24 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-gpt-5-codex-UBU-Q0054-20260918-001",
+      "score": 88,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": false,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Introduces several new conceptual entities (Role, GroupMembership, SelfConcept, ModeContext) as DESIGN.md prose without full data-model field specs, which could require follow-up decisions to make implementable",
+        "Relies on judgment calls (e.g., what counts as 'accepted record' vs. inferred) that could need later clarification decisions",
+        "Resolution is mostly conceptual and does not define concrete field schemas for Group, GroupMembership, RoleAssignment, or ModeContext, so later implementation work will still need detailed modeling.",
+        "Text is fairly dense/abstract and may need refinement for engineering clarity before Phase 3 implementation begins",
+        "The added DESIGN section is broad front-matter guidance rather than being placed entirely in the relevant identity/data-model area, though it remains clear and auditable."
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "openai-gpt-5-codex-UBU-Q0054-20260918-001",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}

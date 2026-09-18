@@ -1,0 +1,230 @@
+# Model-Committee Cross-Scoring Request
+
+You are scoring candidate work proposals for the UbU `model-committee` process.
+
+Return exactly one JSON object. Do not return prose outside the JSON object.
+
+This is a v0.2 cross-score. You are not making the final selection; model-committee
+will aggregate valid cross-scores locally.
+
+Scoring provider: `codex`
+Authoring provider for the candidate proposal(s): `openai`
+
+## Selected question
+
+Question ID: `UBU-Q0054`  
+Question title: `Social identity theory impact on Identity, role, group membership, and mode switching`  
+Base commit: `45f58a77bfc303b17d2cf95b933d557f6500adf9`
+
+```markdown
+## UBU-Q0054: Social identity theory impact on Identity, role, group membership, and mode switching
+
+Status: Open Priority: Post-MVP Phase: Phase 1b Decision type: Data model Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 90 Depends on: UBU-Q0025 Blocks: Post-MVP multi-user Identity modeling, group-membership modeling, mode-switching policy Resolved by: None Last scored: 2026-09-18 Scored from commit: None
+
+### Question
+
+How should social identity theory affect UbU's Identity model, role model, group-membership model, and mode-switching semantics?
+
+### Subquestions
+
+1. How should UbU distinguish Identity as external presentation, permission boundary, social role, self-concept, group membership, and mode-switching context?
+2. How should group membership affect Objectives, Preferences, disclosure, trust, and coordination behavior?
+3. How should UbU represent in-group and out-group effects without hard-coding stereotypes or paternalistic judgments?
+4. How should social identity interact with Compartments, Relationships, and organization-mode planning?
+5. Which parts are needed for Phase 3 multi-user coordination and which remain later research?
+
+### Current direction
+
+Identity is already central to UbU. Social identity theory may require richer group-membership, salience, and role-switching semantics, but its impact is post-MVP and must not block Phase 1 implementation.
+
+### Resolution
+
+Open.
+
+---
+
+```
+
+## Candidate proposals
+
+```json
+[
+  {
+    "proposal_id": "openai-gpt-5-codex-UBU-Q0054-20260918-001",
+    "provider_id": "openai",
+    "model_name": "gpt-5-codex",
+    "question_id": "UBU-Q0054",
+    "base_commit": "45f58a77bfc303b17d2cf95b933d557f6500adf9",
+    "summary": "Resolve UBU-Q0054 by treating social identity theory as a modeling boundary: Identity, Role, GroupMembership, SelfConcept, Compartment, and ModeContext remain distinct; group membership influences planning only through accepted records or policy; Phase 3 gets minimal group/membership/role/mode structures while learned salience and deeper social-psychology modeling remain later research.",
+    "rationale": "The selected question is answerable without blocking Phase 1. The proposal adds one decision and small design text that preserve user sovereignty, avoid stereotype inference, reuse Snapshot partial-assertion/correction semantics from UBU-D0100, and clearly separates the Phase 3 data-model needs from later research.",
+    "changed_files": [
+      "DESIGN.md",
+      "DECISIONS.md",
+      "OPEN_QUESTIONS.md"
+    ],
+    "patch": "diff --git a/DESIGN.md b/DESIGN.md\n--- a/DESIGN.md\n+++ b/DESIGN.md\n@@ -23,9 +23,21 @@\n The deeper purpose is to help people build the capabilities, resources, routines, and relationships needed to actually live the life they choose \u2014 not just to schedule it.\n \n The first MVP is designed around **dogfooding**: using UbU to coordinate the design, development, release, and maintenance of UbU itself.\n \n Recent LLM and agentic-AI changes reinforce UbU's core boundary: realtime, multimodal, tool-using, memory-bearing models are valuable interaction and extraction backends, but UbU remains the user-sovereign state-transition, planning, logging, privacy, and review layer.\n \n For Phase 1, UbU must also be understandable as a first-person user experience. The minimal user-facing loop is: answer a small number of bootstrapping questions, allow UbU to construct an initial context model, receive one recommended next Task, inspect why that Task matters now, act or override, then let UbU learn from the result through Logs, Snapshots, and recalculation.\n+\n+### 1.1 Social identity boundary\n+\n+Social identity theory affects UbU as a boundary discipline: an Identity may present externally, hold permissions, and own accountability, but it is not the same object as a social role, self-concept statement, group membership, Compartment, or temporary mode-switching context.\n+\n+A `Role` records situational expectations or authority for an Identity. A `GroupMembership` records a scoped relation between an Identity and a group. A `SelfConcept` records user-declared first-person meaning. A `ModeContext` records the currently salient planning lens for recommendations or coordination. A `Compartment` remains the privacy, routing, retention, and export boundary. These dimensions may reference each other, but none of them implies another by default.\n+\n+Group membership can affect Objectives, Preferences, disclosure, trust, and coordination only through explicit accepted records: user-declared statements, Relationship records, Compartment policy, capability grants, organizational rules, or review-accepted observations. Membership may raise the salience of an existing Objective, select an appropriate presentation, attach coordination obligations, or constrain sharing when tied to policy; it must not create inferred Preferences, loyalty judgments, trust scores, risks, capabilities, or stereotypes merely from category membership.\n+\n+In-group and out-group effects are represented as inspectable contextual hypotheses or user-declared concerns, not as hard-coded judgments about people or groups. Any planner use must expose the source, scope, affected behavior, and correction path, and choices that would restrict options, disclose data, classify another person, or change coordination authority require the ordinary review and approval gates.\n+\n+For Phase 3 multi-user coordination, UbU needs minimal `Group`, `GroupMembership`, `RoleAssignment`, and `ModeContext` records with provenance, confidence, scope, optional Compartment refs, and review/correction support. Learned salience, norm conflict modeling, collective identity dynamics, and social-psychology interpretation remain later research.\n \n ---\n@@ -1796,7 +1808,11 @@\n - Between conflicting non-user observations, source priority, effective timestamp, and confidence may be used by the Snapshot application algorithm.\n \n Snapshot records are immutable once accepted into the append-only Log. A Snapshot may be corrected or revoked only by a later Log correction entry that points to the original Snapshot observation. A correction that asserts replacement state creates a new Snapshot and links it to the corrected Snapshot or Log entry; a revocation without replacement simply removes the original Snapshot from corrected query views while preserving the historical claim.\n+\n+Social identity observations, such as group membership, role activation, self-concept statements, or mode-context salience, follow the same partial-assertion rule. A Snapshot or accepted record may assert one scoped social-identity fact without implying that omitted memberships, roles, or contexts are absent, inactive, or unknown.\n+\n+Corrections and revocations remain append-only. A later user correction can withdraw, narrow, or replace a social-identity claim without editing the original historical assertion.\n \n ### 12.2 Discovery mode\n \n **Discovery mode** is a user-selectable workflow state, not a fourth instance operating mode. It is off by default and may be started, paused, resumed, exited, or inspected by the user at any time. The UI must show active capture state, enabled sources, local/cloud routing status, retention limits, and pending-review evidence count.\ndiff --git a/DECISIONS.md b/DECISIONS.md\n--- a/DECISIONS.md\n+++ b/DECISIONS.md\n@@ -4088,5 +4088,19 @@\n A Phase 1b background advisory run does not reserve Calendar time merely because it consumes wall-clock duration, local compute, provider quota, or brokered external credentials. The operator instead sees process telemetry: elapsed time, compute/resource use, credential capability/version used, object counts, pass counts, candidate counts, failure counts, no-output counts, last status, and retained evidence refs. The process may create Calendar overlays, reminders, review deadlines, or escalation Tasks only when user attention is required.\n \n Prompt-injection exposure for batches over operator-authored lore and external message content is at least `medium`. It is `high` when untrusted message or document text is mixed with private context, can materially influence generated candidates, or could influence tool choice, credential use, routing, or arguments without containment. Required containment is source separation, instruction stripping or quoting of untrusted text, narrowed ContextBundles, allowlisted no-network local advisory calls unless separately granted, candidate-only writes, controller-brokered credentials, result schema validation, and review before admission. `Critical` exposure fails closed; Phase 1b does not permit batch content to drive external mutation, spending, credential disclosure, or authority expansion.\n \n Clean no-work is a successful terminal condition only when it is actually clean. `completed_no_eligible_work` and `completed_no_candidate_output` may exit zero when all eligibility, policy, credential, schema, budget, and prompt-injection checks passed and there is no escalation-required failure. A run that fails before a checkpoint, is denied by policy or credential state, exhausts a hard budget, receives malformed results for the batch, or attempts eligible objects and fails every one exits nonzero, records failure/escalation events, and notifies according to policy. This prevents a chained power-off from treating an all-failed unattended batch as a successful completion.\n+\n+---\n+\n+## UBU-D0265: Social identity is scoped context, not intrinsic judgment\n+\n+**Status:** Accepted \u2192 DESIGN.md \u00a71.1, \u00a712. Resolves `UBU-Q0054`.\n+\n+UbU adopts social identity theory as a modeling caution rather than as a stereotype engine. Identity, Role, GroupMembership, SelfConcept, Compartment, and ModeContext are distinct records. Identity carries presentation, accountability, and permission-bearing actor identity; Role captures situated expectations or authority; GroupMembership captures scoped membership in a group; SelfConcept captures user-declared first-person meaning; Compartment remains a privacy/routing boundary; ModeContext captures the currently salient planning or coordination lens. Cross-references are allowed, but no dimension implies another by default.\n+\n+Group membership may affect Objectives, Preferences, disclosure, trust, and coordination only through accepted user statements, Relationship records, Compartment policy, capability grants, organizational rules, or reviewed observations. It may increase the salience of an existing Objective, select an appropriate presentation, add coordination obligations, or constrain sharing when tied to policy. It must not synthesize Preferences, loyalty, risk, trustworthiness, capability, or moral meaning from demographic or category membership.\n+\n+In-group and out-group effects are represented as inspectable contextual hypotheses or user-declared concerns with source, scope, confidence, and correction path. Automated planning may use such claims only inside reviewable policy gates, and any action that would restrict options, disclose data, classify another person or group, or change coordination authority requires ordinary approval. Social-identity Snapshots and accepted records follow `UBU-D0100`: they are partial assertions, omissions carry no negative implication, and correction or revocation is append-only.\n+\n+Phase 3 multi-user coordination needs minimal `Group`, `GroupMembership`, `RoleAssignment`, and `ModeContext` records with provenance, confidence, scope, optional Compartment refs, and review/correction support. Learned salience, norm conflict modeling, collective identity dynamics, and deeper social-psychology interpretation remain later research and must not block Phase 1 or Phase 1b implementation.\ndiff --git a/OPEN_QUESTIONS.md b/OPEN_QUESTIONS.md\n--- a/OPEN_QUESTIONS.md\n+++ b/OPEN_QUESTIONS.md\n@@ -437,25 +437,25 @@\n ## UBU-Q0054: Social identity theory impact on Identity, role, group membership, and mode switching\n \n-Status: Open Priority: Post-MVP Phase: Phase 1b Decision type: Data model Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 90 Depends on: UBU-Q0025 Blocks: Post-MVP multi-user Identity modeling, group-membership modeling, mode-switching policy Resolved by: None Last scored: 2026-09-18 Scored from commit: None\n+Status: Solved Priority: Post-MVP Phase: Phase 1b Decision type: Data model Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 100 Depends on: UBU-Q0025 Blocks: Post-MVP multi-user Identity modeling, group-membership modeling, mode-switching policy Resolved by: UBU-D0265 Last scored: 2026-09-18 Scored from commit: None\n \n ### Question\n \n How should social identity theory affect UbU's Identity model, role model, group-membership model, and mode-switching semantics?\n \n ### Subquestions\n \n 1. How should UbU distinguish Identity as external presentation, permission boundary, social role, self-concept, group membership, and mode-switching context?\n 2. How should group membership affect Objectives, Preferences, disclosure, trust, and coordination behavior?\n 3. How should UbU represent in-group and out-group effects without hard-coding stereotypes or paternalistic judgments?\n 4. How should social identity interact with Compartments, Relationships, and organization-mode planning?\n 5. Which parts are needed for Phase 3 multi-user coordination and which remain later research?\n \n ### Current direction\n \n Identity is already central to UbU. Social identity theory may require richer group-membership, salience, and role-switching semantics, but its impact is post-MVP and must not block Phase 1 implementation.\n \n ### Resolution\n \n-Open.\n+Resolved by `UBU-D0265`: social identity is modeled as scoped, inspectable claims linking Identity, Role, GroupMembership, SelfConcept, Compartment, and ModeContext without collapsing one into another. Group membership affects planning only through explicit accepted records or policy, cannot synthesize Preferences or stereotypes from category membership, and uses Snapshot-style provenance, confidence, correction, and revocation. Phase 3 needs minimal group, membership, role-assignment, and mode-context records; learned salience and deeper social-psychology modeling remain later research.\n \n ---\n",
+    "commit_message": "Resolve social identity modeling boundary",
+    "validation_notes": [
+      "Verified proposed patch with git apply --check against the current workspace.",
+      "Patch is limited to allowlisted canonical files.",
+      "Uses next free decision id UBU-D0265 and does not allocate a new question id.",
+      "Preserves the single-line metadata format for UBU-Q0054."
+    ],
+    "new_questions_added": [],
+    "questions_resolved": [
+      "UBU-Q0054"
+    ],
+    "decisions_added": [
+      "UBU-D0265"
+    ],
+    "requires_human_review": true
+  }
+]
+```
+
+## Mechanical validation results
+
+```json
+[
+  {
+    "proposal_id": "openai-gpt-5-codex-UBU-Q0054-20260918-001",
+    "patch_applies": true,
+    "allowlist_passed": true,
+    "changed_files": [
+      "DECISIONS.md",
+      "DESIGN.md",
+      "OPEN_QUESTIONS.md"
+    ],
+    "error": null,
+    "normalized_patch": null,
+    "warnings": [],
+    "ordinary_error": null,
+    "recount_error": null,
+    "normalization_error": null
+  }
+]
+```
+
+## Provider weights
+
+Provider weights are historical diagnostic context only in v0.2. Do not use
+self-trust or author identity as score evidence.
+
+```json
+{}
+```
+
+## JSON Schema
+
+Your output must satisfy this schema:
+
+```json
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "scores",
+    "selected_proposal_id",
+    "selection_rationale"
+  ],
+  "properties": {
+    "scores": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "proposal_id",
+          "score",
+          "patch_applies",
+          "implements_selected_work",
+          "preserves_question_schema",
+          "avoids_unnecessary_scope",
+          "decomposition_quality",
+          "risks",
+          "required_fixes",
+          "rationale"
+        ],
+        "properties": {
+          "proposal_id": {
+            "type": "string"
+          },
+          "score": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "patch_applies": {
+            "type": "boolean"
+          },
+          "implements_selected_work": {
+            "type": "boolean"
+          },
+          "preserves_question_schema": {
+            "type": "boolean"
+          },
+          "avoids_unnecessary_scope": {
+            "type": "boolean"
+          },
+          "decomposition_quality": {
+            "type": "string",
+            "enum": [
+              "none",
+              "good",
+              "bad",
+              "not_applicable"
+            ]
+          },
+          "risks": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "required_fixes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "rationale": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "selected_proposal_id": {
+      "type": "string"
+    },
+    "selection_rationale": {
+      "type": "string"
+    }
+  }
+}
+```
+
+## Scoring requirements
+
+Score each proposal from 0 to 100.
+
+Consider:
+
+- whether the patch applies cleanly;
+- whether it implements the selected work;
+- whether it preserves the question schema;
+- whether it avoids unnecessary scope;
+- whether it modifies only allowed files;
+- whether it creates useful decomposition if decomposition occurs;
+- whether it introduces new risks;
+- whether required fixes remain.
+
+Rules:
+
+- Score every proposal in this prompt.
+- `selected_proposal_id` must refer to one scored proposal from this prompt.
+- Manual override is not allowed in v0.2.
+- Prefer a patch that is valid, minimal, auditable, and directly responsive.
+- Do not select a proposal whose patch failed mechanical validation.
+- Do not score your own provider's proposal unless explicitly asked for diagnostic self-score.
+
+Return only JSON.
