@@ -1,0 +1,21 @@
+{
+  "scores": [
+    {
+      "proposal_id": "ubu-q0088-gpt5-codex-d0273",
+      "score": 92,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": false,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Resolving the full question while the current direction notes extrospection and the association model are deferred may slightly front-load design commitments ahead of later model work.",
+        "The lifecycle is clear at the narrative level but does not enumerate every possible edge as a compact transition table, so implementers may still need to infer some terminal/archive behavior."
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 1 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "ubu-q0088-gpt5-codex-d0273",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}

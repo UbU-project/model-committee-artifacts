@@ -1,0 +1,41 @@
+[
+  {
+    "proposal_id": "ubu-q0088-gpt5-codex-d0273",
+    "author_provider": "openai",
+    "scorer_provider": "codex",
+    "score": 92,
+    "valid": true,
+    "rationale": "The proposal applies cleanly, modifies only the expected canonical files, preserves the open-question structure while marking the question resolved, and directly answers all five subquestions. It gives useful durable rejection semantics, prohibits pre-review model influence on durable or external state, defines resurfacing triggers, and constrains accepted findings to ordinary admitted records rather than in-place Relationship mutation. The scope is appropriately limited to design documentation and a decision record; remaining risks are mostly around future implementation precision rather than blocking flaws.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [
+      "The lifecycle is clear at the narrative level but does not enumerate every possible edge as a compact transition table, so implementers may still need to infer some terminal/archive behavior.",
+      "Resolving the full question while the current direction notes extrospection and the association model are deferred may slightly front-load design commitments ahead of later model work."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20260919T012231Z-UBU-Q0088/responses/codex_score_ubu-q0088-gpt5-codex-d0273_response.json",
+      "stderr_path": null
+    }
+  },
+  {
+    "proposal_id": "ubu-q0088-gpt5-codex-d0273",
+    "author_provider": "openai",
+    "scorer_provider": "claude",
+    "score": null,
+    "valid": false,
+    "rationale": "",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [],
+    "schema_validation": {
+      "valid": false,
+      "message": "claude structured_output failed schema validation: 1 validation error for ScoreResult\n  Value error, selected_proposal_id must match one scored proposal_id [type=value_error, input_value={'scores': [], 'selected_...he open Q0138 overlap.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.13/v/value_error",
+      "response_path": "runs/20260919T012231Z-UBU-Q0088/responses/claude_score_ubu-q0088-gpt5-codex-d0273_structured_output.json",
+      "stderr_path": "runs/20260919T012231Z-UBU-Q0088/responses/claude_score_ubu-q0088-gpt5-codex-d0273_stderr.txt"
+    }
+  }
+]

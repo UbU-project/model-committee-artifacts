@@ -1,0 +1,5 @@
+{
+  "scores": [],
+  "selected_proposal_id": "ubu-q0088-gpt5-codex-d0273",
+  "selection_rationale": "It is the only proposal. It passes mechanical validation, stays within the allowed files, and directly answers all five subquestions with conservative, auditable semantics. It should still go to human review, given the approval requirement and the open Q0138 overlap."
+}
