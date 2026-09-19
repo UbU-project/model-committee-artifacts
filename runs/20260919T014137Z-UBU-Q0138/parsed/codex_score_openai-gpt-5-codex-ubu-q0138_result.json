@@ -1,0 +1,21 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-gpt-5-codex-UBU-Q0138",
+      "score": 94,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "The lifecycle and record schema are intentionally broad, so later implementation work may need to refine exact field names and transition enforcement details.",
+        "Durable suppression metadata includes normalized proposal shape and fingerprints; care is still needed to ensure these cannot reconstruct sensitive rejected content."
+      ],
+      "required_fixes": [],
+      "rationale": "The proposal directly answers all seven subquestions: it defines first-class AdvisoryCandidate objects, explicit lifecycle states and transitions, durable privacy-minimized rejection suppression, pre-admission influence limits with structural enforcement, resurfacing triggers, first-class decision events with Identity and authority_source, and review ordering that preserves candidate or pending state. The patch applies cleanly, modifies only DESIGN.md, DECISIONS.md, and OPEN_QUESTIONS.md, and updates the question resolution without changing the surrounding schema. Scope is appropriate for a data-model decision and does not introduce unrelated new questions."
+    }
+  ],
+  "selected_proposal_id": "openai-gpt-5-codex-UBU-Q0138",
+  "selection_rationale": "It is the only valid proposal, applies cleanly, remains narrowly scoped to the design decision files, and provides a complete, auditable resolution for UBU-Q0138."
+}

@@ -1,0 +1,5 @@
+{
+  "scores": [],
+  "selected_proposal_id": "openai-gpt-5-codex-UBU-Q0138",
+  "selection_rationale": "It is the only proposal. It passed mechanical validation, applies cleanly, stays within the allowed files, and addresses every subquestion, so it is selected. Human review remains advisable because the question requires human approval."
+}

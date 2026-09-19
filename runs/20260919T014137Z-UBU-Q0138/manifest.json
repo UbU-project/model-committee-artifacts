@@ -1,0 +1,219 @@
+{
+  "schema_version": "0.4",
+  "run_id": "20260919T014137Z-UBU-Q0138",
+  "created_at_utc": "2026-09-19T01:41:37Z",
+  "repo_path": "../ubu-design",
+  "base_commit": "b02f24bac0575de535585432d43ef5f96b6d31c1",
+  "selected_question_id": "UBU-Q0138",
+  "phase": "work-select",
+  "config_path": "config/models.json",
+  "status": "selected",
+  "commands": [
+    "model-committee run-loop"
+  ],
+  "providers_attempted": [
+    "codex",
+    "claude"
+  ],
+  "providers_succeeded": [
+    "codex"
+  ],
+  "providers_failed": [
+    "claude: ModelOutputError: claude structured_output failed schema validation: 1 validation error for ScoreResult\n  Value error, selected_proposal_id must match one scored proposal_id [type=value_error, input_value={'scores': [], 'selected_...quires human approval.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.13/v/value_error"
+  ],
+  "provider_attempts": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-score",
+      "target_proposal_id": "openai-gpt-5-codex-UBU-Q0138",
+      "response_path": "runs/20260919T014137Z-UBU-Q0138/responses/codex_score_openai-gpt-5-codex-ubu-q0138_response.json",
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "sonnet",
+      "phase": "work-score",
+      "target_proposal_id": "openai-gpt-5-codex-UBU-Q0138",
+      "response_path": "runs/20260919T014137Z-UBU-Q0138/responses/claude_score_openai-gpt-5-codex-ubu-q0138_stdout.json",
+      "stderr_path": null
+    }
+  ],
+  "provider_successes": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20260919T014137Z-UBU-Q0138/parsed/codex_work_proposal.json"
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-score",
+      "target_proposal_id": "openai-gpt-5-codex-UBU-Q0138",
+      "response_path": "runs/20260919T014137Z-UBU-Q0138/responses/codex_score_openai-gpt-5-codex-ubu-q0138_response.json",
+      "parsed_path": "runs/20260919T014137Z-UBU-Q0138/parsed/codex_score_openai-gpt-5-codex-ubu-q0138_result.json"
+    }
+  ],
+  "provider_failures": [
+    {
+      "provider_id": "claude",
+      "model_name": "sonnet",
+      "phase": "work-score",
+      "failure_class": "ModelOutputError",
+      "message": "claude structured_output failed schema validation: 1 validation error for ScoreResult\n  Value error, selected_proposal_id must match one scored proposal_id [type=value_error, input_value={'scores': [], 'selected_...quires human approval.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.13/v/value_error",
+      "timeout_seconds": null,
+      "exit_status": null,
+      "stderr_path": "runs/20260919T014137Z-UBU-Q0138/responses/claude_score_openai-gpt-5-codex-ubu-q0138_stderr.txt",
+      "response_path": "runs/20260919T014137Z-UBU-Q0138/responses/claude_score_openai-gpt-5-codex-ubu-q0138_structured_output.json",
+      "quorum_met": false
+    }
+  ],
+  "score_matrix": [
+    {
+      "proposal_id": "openai-gpt-5-codex-UBU-Q0138",
+      "author_provider": "openai",
+      "scorer_provider": "codex",
+      "score": 94,
+      "valid": true,
+      "rationale": "The proposal directly answers all seven subquestions: it defines first-class AdvisoryCandidate objects, explicit lifecycle states and transitions, durable privacy-minimized rejection suppression, pre-admission influence limits with structural enforcement, resurfacing triggers, first-class decision events with Identity and authority_source, and review ordering that preserves candidate or pending state. The patch applies cleanly, modifies only DESIGN.md, DECISIONS.md, and OPEN_QUESTIONS.md, and updates the question resolution without changing the surrounding schema. Scope is appropriate for a data-model decision and does not introduce unrelated new questions.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "The lifecycle and record schema are intentionally broad, so later implementation work may need to refine exact field names and transition enforcement details.",
+        "Durable suppression metadata includes normalized proposal shape and fingerprints; care is still needed to ensure these cannot reconstruct sensitive rejected content."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20260919T014137Z-UBU-Q0138/responses/codex_score_openai-gpt-5-codex-ubu-q0138_response.json",
+        "stderr_path": null
+      }
+    },
+    {
+      "proposal_id": "openai-gpt-5-codex-UBU-Q0138",
+      "author_provider": "openai",
+      "scorer_provider": "claude",
+      "score": null,
+      "valid": false,
+      "rationale": "",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [],
+      "schema_validation": {
+        "valid": false,
+        "message": "claude structured_output failed schema validation: 1 validation error for ScoreResult\n  Value error, selected_proposal_id must match one scored proposal_id [type=value_error, input_value={'scores': [], 'selected_...quires human approval.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.13/v/value_error",
+        "response_path": "runs/20260919T014137Z-UBU-Q0138/responses/claude_score_openai-gpt-5-codex-ubu-q0138_structured_output.json",
+        "stderr_path": "runs/20260919T014137Z-UBU-Q0138/responses/claude_score_openai-gpt-5-codex-ubu-q0138_stderr.txt"
+      }
+    }
+  ],
+  "score_aggregates": [
+    {
+      "proposal_id": "openai-gpt-5-codex-UBU-Q0138",
+      "author_provider": "openai",
+      "cross_score_count": 1,
+      "score_mean": 94.0,
+      "score_spread": 0,
+      "frontier_score_gap": 0,
+      "disagreement_flags": []
+    }
+  ],
+  "cross_score_count": 1,
+  "score_mean": 94.0,
+  "score_spread": 0,
+  "frontier_score_gap": 0,
+  "disagreement_flags": [],
+  "quorum_result": {
+    "valid": true,
+    "human_review_required": false,
+    "selected_proposal_id": "openai-gpt-5-codex-UBU-Q0138",
+    "selected_score": 94.0,
+    "selected_cross_score_count": 1,
+    "blocked_reasons": [],
+    "manual_override": false
+  },
+  "selected_proposal_id": "openai-gpt-5-codex-UBU-Q0138",
+  "automated_selection_valid": true,
+  "human_review_required": false,
+  "artifact_publication_status": "operator_pending",
+  "prompt_size_warning": true,
+  "prompt_context": {
+    "question_ids": [
+      "UBU-Q0025",
+      "UBU-Q0031",
+      "UBU-Q0054",
+      "UBU-Q0055",
+      "UBU-Q0056",
+      "UBU-Q0061",
+      "UBU-Q0062",
+      "UBU-Q0066",
+      "UBU-Q0068",
+      "UBU-Q0077",
+      "UBU-Q0088",
+      "UBU-Q0130",
+      "UBU-Q0131",
+      "UBU-Q0138",
+      "UBU-Q0140",
+      "UBU-Q0148"
+    ],
+    "decision_ids": [
+      "UBU-D0071",
+      "UBU-D0100",
+      "UBU-D0247",
+      "UBU-D0251",
+      "UBU-D0257",
+      "UBU-D0258",
+      "UBU-D0265",
+      "UBU-D0266",
+      "UBU-D0267",
+      "UBU-D0268",
+      "UBU-D0269",
+      "UBU-D0270",
+      "UBU-D0271",
+      "UBU-D0272",
+      "UBU-D0273"
+    ],
+    "sections": {
+      "DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md": [
+        "4",
+        "5",
+        "8",
+        "9",
+        "15"
+      ],
+      "DESIGN.md": [
+        "1.1",
+        "1.2",
+        "1.3",
+        "1.4",
+        "1.5",
+        "2.10.1",
+        "12",
+        "23.1",
+        "26.3",
+        "26.4"
+      ]
+    },
+    "core_sections": {
+      "DESIGN.md": [
+        "1"
+      ]
+    },
+    "missing_refs": {},
+    "context_chars": 153673,
+    "prompt_chars": 161404
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-gpt-5-codex-UBU-Q0138",
+      "score": 94,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": false,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Durable suppression metadata includes normalized proposal shape and fingerprints; care is still needed to ensure these cannot reconstruct sensitive rejected content.",
+        "The lifecycle and record schema are intentionally broad, so later implementation work may need to refine exact field names and transition enforcement details."
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 1 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "openai-gpt-5-codex-UBU-Q0138",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}
