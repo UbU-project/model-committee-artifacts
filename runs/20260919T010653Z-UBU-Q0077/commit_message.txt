@@ -1,0 +1,1 @@
+UMC: Resolve realtime interaction candidate schema
