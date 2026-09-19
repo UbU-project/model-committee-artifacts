@@ -1,0 +1,41 @@
+[
+  {
+    "proposal_id": "openai-gpt-5-codex-UBU-Q0066-20260919",
+    "author_provider": "openai",
+    "scorer_provider": "codex",
+    "score": 92,
+    "valid": true,
+    "rationale": "The proposal is valid, minimal, and directly answers all six subquestions. It adds a focused accepted decision, a concise DESIGN.md section, and updates the open question without touching unrelated files. It handles sender/receiver identities, source metadata, message kind, topic, priority, interruption, response expectations, deadlines, treatment hints, assumptions, ambiguities, provenance, confidence, disclosure policy, and Compartment handling. It also clearly constrains local-only references, receiver-side mutation, inferred metadata provenance, and disclosure controls. The remaining concerns are minor wording risks rather than blockers.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [
+      "The schema says `body` or `body_ref`, which is privacy-preserving but slightly loosens the question's explicit `raw body` wording and may need implementation-time clarification.",
+      "The required `compartment_ids` field could be misread as exporting stable Compartment identifiers unless implementers follow the later opaque-handle/redaction constraints carefully."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20260919T003113Z-UBU-Q0066/responses/codex_score_openai-gpt-5-codex-ubu-q0066-20260919_response.json",
+      "stderr_path": null
+    }
+  },
+  {
+    "proposal_id": "openai-gpt-5-codex-UBU-Q0066-20260919",
+    "author_provider": "openai",
+    "scorer_provider": "claude",
+    "score": null,
+    "valid": false,
+    "rationale": "",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [],
+    "schema_validation": {
+      "valid": false,
+      "message": "claude structured_output failed schema validation: 1 validation error for ScoreResult\n  Value error, selected_proposal_id must match one scored proposal_id [type=value_error, input_value={'scores': [], 'selected_...es, so it is selected.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.13/v/value_error",
+      "response_path": "runs/20260919T003113Z-UBU-Q0066/responses/claude_score_openai-gpt-5-codex-ubu-q0066-20260919_structured_output.json",
+      "stderr_path": "runs/20260919T003113Z-UBU-Q0066/responses/claude_score_openai-gpt-5-codex-ubu-q0066-20260919_stderr.txt"
+    }
+  }
+]

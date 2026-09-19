@@ -1,0 +1,5 @@
+{
+  "scores": [],
+  "selected_proposal_id": "openai-gpt-5-codex-UBU-Q0066-20260919",
+  "selection_rationale": "This is the only candidate. It passed mechanical validation after normalization and is directly responsive to UBU-Q0066. It also stays within the allowed files, so it is selected."
+}

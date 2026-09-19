@@ -1,0 +1,1 @@
+UMC: Resolve UBU-Q0066 message context envelope schema

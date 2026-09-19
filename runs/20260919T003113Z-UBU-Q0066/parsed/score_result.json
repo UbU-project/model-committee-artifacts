@@ -1,0 +1,21 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-gpt-5-codex-UBU-Q0066-20260919",
+      "score": 92,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": false,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "The required `compartment_ids` field could be misread as exporting stable Compartment identifiers unless implementers follow the later opaque-handle/redaction constraints carefully.",
+        "The schema says `body` or `body_ref`, which is privacy-preserving but slightly loosens the question's explicit `raw body` wording and may need implementation-time clarification."
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 1 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "openai-gpt-5-codex-UBU-Q0066-20260919",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}
