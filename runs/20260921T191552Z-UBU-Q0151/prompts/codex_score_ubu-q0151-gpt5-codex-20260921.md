@@ -1,0 +1,234 @@
+# Model-Committee Cross-Scoring Request
+
+You are scoring candidate work proposals for the UbU `model-committee` process.
+
+Return exactly one JSON object. Do not return prose outside the JSON object.
+
+This is a v0.2 cross-score. You are not making the final selection; model-committee
+will aggregate valid cross-scores locally.
+
+Scoring provider: `codex`
+Authoring provider for the candidate proposal(s): `openai`
+
+## Selected question
+
+Question ID: `UBU-Q0151`  
+Question title: `Phase 1b decomposition Containers and segments that stay together`  
+Base commit: `6c83eb248dab3d1ec8aad93a7d8dec2147d5122f`
+
+```markdown
+## UBU-Q0151: Phase 1b decomposition Containers and segments that stay together
+
+Status: Open Priority: MVP blocker Phase: Phase 1b Decision type: Data model Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 100 Depends on: None Blocks: Phase 1b decomposition port, reactivation of clarify and decompose Resolved by: None Last scored: 2026-09-21 Scored from commit: None
+
+Defining context: DESIGN.md §9.4, DESIGN.md §4.2, `UBU-D0274`, `UBU-D0275`.
+
+### Question
+
+How does Phase 1b represent a decomposed Task as a Container whose ordered child Tasks are grouped into segments that stay together, and how do those segments reach the planner?
+
+### Subquestions
+
+1. **Container record.** `ubu-core` currently holds a stub `Container { name, items }` with embedded WorkItems. Which §9.4 fields are required in Phase 1b: `container_id`, `origin_task_ref`, `mutation_reason`, `mutation_log_ref`, ordered child Task refs, lineage and provenance?
+2. **Segment representation.** Are segments recorded as split points over the ordered child list, or as an explicit list of child groups? With no split points, the whole list is one segment.
+3. **Gap semantics.** Quick UbU chains decomposed children with `offset_minutes`, which is only a minimum gap, so other Tasks can slide between them and scatter the checklist. Within a segment, are children strictly back-to-back, or bounded by a maximum gap?
+4. **Planner handoff.** Either the orchestrator sends each segment to the kernel as one placement unit and splits it back into child steps afterwards, or the kernel contract gains a native no-gap edge. The first keeps the contract unchanged. Its duration is exact for fixed durations and a conservative sum for stochastic ones (minimum, mode, and p95 each summed), with one rollout sample per segment. The second samples each child. Which applies in Phase 1b?
+5. **Constraints inside a segment.** How are children with their own static window, allowed time range, preconditions, or dependencies outside the segment handled: split the segment there, reject the decomposition, or constrain the whole unit?
+6. **Proposal shape.** What is the normalized proposal of a `Decomposition` advisory candidate: ordered children with titles, durations, and split markers? How does the decomposition advisor propose natural split points, and how does review edit them?
+7. **Progress and repair.** When a child finishes early or late, how does repair treat the rest of its segment?
+8. **Undo.** Under §9.4 structural replacement the original Task becomes moot with `replaced_by_new_plan_structure`. What does undoing a decomposition restore, and what history is retained?
+
+### Current direction
+
+Segments live on the Container. The decomposition advisor proposes split points, review can edit them, and a decomposition with no split points is one segment, which reproduces the original Task's timing. The orchestrator sends each segment to the kernel as one placement unit and splits the placed unit back into child steps, so the planning kernel contract is unchanged and the CPU planner keeps checklists together before the GPU engine exists. A native no-gap edge is deferred until measurement shows that the conservative-sum approximation distorts rollout results.
+
+### Resolution
+
+Open.
+
+---
+
+```
+
+## Candidate proposals
+
+```json
+[
+  {
+    "proposal_id": "UBU-Q0151-gpt5-codex-20260921",
+    "provider_id": "openai",
+    "model_name": "gpt-5-codex",
+    "question_id": "UBU-Q0151",
+    "base_commit": "6c83eb248dab3d1ec8aad93a7d8dec2147d5122f",
+    "summary": "Resolve Phase 1b decomposition by storing segments as Container split points and compiling each segment to an existing-kernel placement unit.",
+    "rationale": "This preserves the accepted structural-replacement Container model, keeps child Tasks executable and auditable, prevents Quick UbU checklist scattering through strict segment adjacency, and avoids a planning-kernel contract change until measurement proves native no-gap edges are needed.",
+    "changed_files": [
+      "OPEN_QUESTIONS.md",
+      "DESIGN.md",
+      "DECISIONS.md"
+    ],
+    "patch": "diff --git a/OPEN_QUESTIONS.md b/OPEN_QUESTIONS.md\n--- a/OPEN_QUESTIONS.md\n+++ b/OPEN_QUESTIONS.md\n@@ -2691,30 +2691,30 @@ Open.\n ## UBU-Q0151: Phase 1b decomposition Containers and segments that stay together\n \n-Status: Open Priority: MVP blocker Phase: Phase 1b Decision type: Data model Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 100 Depends on: None Blocks: Phase 1b decomposition port, reactivation of clarify and decompose Resolved by: None Last scored: 2026-09-21 Scored from commit: None\n+Status: Solved Priority: MVP blocker Phase: Phase 1b Decision type: Data model Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 100 Depends on: None Blocks: Phase 1b decomposition port, reactivation of clarify and decompose Resolved by: UBU-D0278 Last scored: 2026-09-21 Scored from commit: None\n \n Defining context: DESIGN.md \u00a79.4, DESIGN.md \u00a74.2, `UBU-D0274`, `UBU-D0275`.\n \n ### Question\n \n How does Phase 1b represent a decomposed Task as a Container whose ordered child Tasks are grouped into segments that stay together, and how do those segments reach the planner?\n \n ### Subquestions\n \n 1. **Container record.** `ubu-core` currently holds a stub `Container { name, items }` with embedded WorkItems. Which \u00a79.4 fields are required in Phase 1b: `container_id`, `origin_task_ref`, `mutation_reason`, `mutation_log_ref`, ordered child Task refs, lineage and provenance?\n 2. **Segment representation.** Are segments recorded as split points over the ordered child list, or as an explicit list of child groups? With no split points, the whole list is one segment.\n 3. **Gap semantics.** Quick UbU chains decomposed children with `offset_minutes`, which is only a minimum gap, so other Tasks can slide between them and scatter the checklist. Within a segment, are children strictly back-to-back, or bounded by a maximum gap?\n 4. **Planner handoff.** Either the orchestrator sends each segment to the kernel as one placement unit and splits it back into child steps afterwards, or the kernel contract gains a native no-gap edge. The first keeps the contract unchanged. Its duration is exact for fixed durations and a conservative sum for stochastic ones (minimum, mode, and p95 each summed), with one rollout sample per segment. The second samples each child. Which applies in Phase 1b?\n 5. **Constraints inside a segment.** How are children with their own static window, allowed time range, preconditions, or dependencies outside the segment handled: split the segment there, reject the decomposition, or constrain the whole unit?\n 6. **Proposal shape.** What is the normalized proposal of a `Decomposition` advisory candidate: ordered children with titles, durations, and split markers? How does the decomposition advisor propose natural split points, and how does review edit them?\n 7. **Progress and repair.** When a child finishes early or late, how does repair treat the rest of its segment?\n 8. **Undo.** Under \u00a79.4 structural replacement the original Task becomes moot with `replaced_by_new_plan_structure`. What does undoing a decomposition restore, and what history is retained?\n \n ### Current direction\n \n Segments live on the Container. The decomposition advisor proposes split points, review can edit them, and a decomposition with no split points is one segment, which reproduces the original Task's timing. The orchestrator sends each segment to the kernel as one placement unit and splits the placed unit back into child steps, so the planning kernel contract is unchanged and the CPU planner keeps checklists together before the GPU engine exists. A native no-gap edge is deferred until measurement shows that the conservative-sum approximation distorts rollout results.\n \n ### Resolution\n \n-Open.\n+Resolved by `UBU-D0278`: Phase 1b decomposition creates a new Container with `container_id`, `origin_task_ref`, `mutation_reason`, `mutation_log_ref`, ordered child Task refs, segment split points, lineage, and provenance. Segments are contiguous ranges derived from split points over the ordered child list; no split points means the whole list is one segment. Children inside a segment are strictly back-to-back. The orchestrator, not the planning kernel, compiles each segment into one temporary placement unit, sums fixed durations exactly and stochastic duration summaries conservatively, asks the kernel to place that unit under the existing contract, then expands the placed unit back into child Plan entries. Child-specific hard constraints either constrain the whole segment when safe, force a segment boundary, or require rejection/review edits. Decomposition advisory candidates normalize to ordered proposed children plus split markers; review may edit child specs and split markers before admission. Repair treats the unstarted suffix of a segment as the contiguous unit. Undo is an admitted structural replacement that creates a restored Task with a new handle while retaining Container, child, Plan, Log, External Reference, and review history.\n \n ---\ndiff --git a/DESIGN.md b/DESIGN.md\n--- a/DESIGN.md\n+++ b/DESIGN.md\n@@ -1560,17 +1560,31 @@ A Container is complete when all child Tasks are either:\n Task-to-Container mutation is a structural replacement, not an in-place type change. The original Task handle remains a historical Task handle and is not reused as the Container handle.\n \n Mutation creates a new Container with a new `container_id`. The Container records `origin_task_ref`, `mutation_reason`, `mutation_log_ref`, child WorkItem refs, and lineage/provenance sufficient to trace the restructuring.\n \n+For Phase 1b decompositions, the Container record is the admitted structure that keeps an ordered checklist together. It must include `container_id`, `origin_task_ref`, `mutation_reason`, `mutation_log_ref`, ordered child Task refs, segment split points, lineage, and provenance. The ordered child refs are Task refs, not embedded WorkItems, for every schedulable child created or linked by the decomposition.\n+\n+Segments are represented as split points over the ordered child Task list: each split point means the current segment ends after that child and the next child starts a new segment. No split points means the whole ordered list is one segment. Segment ids, when materialized, are derived from the Container version and contiguous child-index ranges; they are not independent canonical WorkItems.\n+\n All child Tasks created by decomposition, preemption, retry, or worker expansion receive new Task handles. Existing child or continuation Tasks may be linked into the Container, but the mutation operation does not reassign the original Task handle to a child.\n \n The original Task transitions to `moot` with reason code `replaced_by_new_plan_structure` when decomposition or regrouping preserves the underlying intent. If responsibility moves to another executor without decomposition, `delegated` may be more accurate; if a newer source artifact replaces the Task, `superseded` may be more accurate.\n \n Fields that describe the original intent stay on the Container or its lineage metadata: title or summary, served Objective refs, parent/dependency context, external-reference lineage, Compartment/security labels, authority/provenance, and notes needed to explain why the work was split.\n \n Fields that make a schedulable action executable belong on child Tasks: duration or duration PDF, preconditions, effects, executor/delegation fields, worker assignment/status, expected output, evidence requirements, and any child-specific dependencies or deadlines. Child Tasks may inherit or narrow Objective refs, Compartment refs, authority source, and External Reference context when valid, but they do not silently inherit stale status, completion evidence, or modeled effects that no longer apply.\n \n+Within a segment, children are planned and repaired as strictly back-to-back work. Phase 1b does not model a maximum-gap edge between children; any admitted gap, wait, recovery, handoff, or pause is represented by a separate Task or by a segment boundary.\n+\n+Phase 1b keeps the planning kernel contract unchanged. Before kernel dispatch, the orchestrator compiles each admitted segment into one temporary placement unit whose duration is the exact sum of fixed child durations, or for stochastic durations the conservative component-wise sum of minimum, mode, and p95 with one rollout sample for the segment. After the kernel places the unit, the orchestrator expands it back into child Plan entries in Container order with contiguous offsets. A native no-gap kernel edge is deferred until measurement shows the conservative segment approximation distorts rollout results.\n+\n+Children with hard static timing, allowed time ranges, preconditions, dependencies, or effects that cannot safely apply to the whole segment force a segment boundary before that child, or after it when the constraint belongs only to prior work. Shared hard constraints may constrain the compiled segment as a whole. If no sequence of boundaries can preserve the child constraint without creating an internal gap or making the proposal unschedulable, admission rejects the decomposition or requires review edits before admission.\n+\n+When execution finishes a child early or late, completed children stay fixed as history. The unstarted suffix of its segment remains a contiguous placement unit for local repair, starting no earlier than the actual completion time of the prior child. If the suffix no longer satisfies admitted hard constraints, repair replans from the next segment boundary or surfaces a reviewable repair candidate; it does not scatter remaining siblings as independent filler.\n+\n+Undoing a decomposition is another admitted structural replacement, not deletion. It creates a restored Task with a new Task handle carrying the original intent and prior schedulable fields when still valid, marks the Container and child Tasks as superseded or moot by that restoration, and retains the original moot event, mutation log, child Task history, Plan history, External Reference lineage, and review/admission events for audit.\n+\n External References are preserved by linking the external object to the new Container when it represents the larger work and to child Tasks only when the external object supports, evidences, or projects that specific child. The original Task's historical External References are not rewritten; new `supersedes`, `projection_of`, `supports`, or `evidence_for` references may be added according to the accepted External Reference model.\n \n GitHub-linked Task decomposition should keep the GitHub Issue or PR traceable to the Container and add child-level External References only for actionable subwork that needs projection or reconciliation.\n \n Automation/Super Automation expansion uses the same structural-replacement rule; worker-specific child Task details are in \u00a725.1.2.\n@@ -3010,9 +3024,11 @@ This applies to structured message extraction, realtime observations, Association\n #### 21.2.1 Phase 1b advisory candidate lifecycle\n \n An `AdvisoryCandidate` is the first-class object form for Phase 1b review-queue proposals, including tag, dependency, preference, decomposition, clarification-question, and other advisory outputs before admission. It is `candidate_state`, not admitted state, until an admission decision creates the ordinary canonical mutation or review event.\n \n The minimum record contains `advisory_candidate_id`, `schema_version`, `candidate_kind`, lifecycle state, object version, target or scope refs, normalized proposal shape, payload ref or redacted payload summary, source evidence refs or hashes, confidence, per-field provenance, proposed/effective time or interval, proposing actor or model/tool metadata, origin Device and execution-context provenance, idempotency key, optional suppression key, `compartment_ids`, a review-visible Compartment label or redacted label, disclosure and retention policy, review order metadata, and correction, rejection, deferral, resurfacing, supersession, admission, or archive links. Candidates are per-object records rather than aggregate queue blobs so each candidate can be versioned, replicated, redacted, and reviewed under its own Compartment policy.\n \n+The normalized proposal shape for a `Decomposition` candidate contains the target Task ref, proposed Container summary or inherited original-intent fields, ordered proposed child Tasks with stable proposed-child keys, titles, duration models, child-specific constraints and provenance, and split markers after child positions. The advisor proposes split markers only at natural pause points or where child-specific hard constraints require a boundary; review may edit child text, durations, constraints, order, and split markers before admission. Until admitted, these proposed segments remain candidate-state preview material and never become hidden planner constraints.\n+\n Lifecycle states are `proposed`, `deferred`, `resurfaced`, `admitted`, `rejected`, `superseded`, and `archived`. New candidates start as `proposed`; `proposed` candidates may be admitted, rejected, deferred, superseded, or archived. Deferred candidates may become `resurfaced`, rejected, superseded, or archived. Resurfaced candidates may be admitted, rejected, deferred again, superseded, or archived. Admitted, rejected, and superseded candidates remain historical records and may later be archived according to retention policy; archiving is not erasure unless a separate redaction or deletion policy permits it.\n \n Unadmitted candidates may influence only review surfaces: ordering, grouping, explanations, deduplication diagnostics, clarification prompts, local suggestions, and explicitly labeled preview diffs. They must not mutate Tasks, tags, dependencies, decompositions, clarification answers, Preferences, Logs, Snapshots, Plans, Calendars, Relationships, Associations, projection state, capability grants, disclosure policy, external messages, or external actions. They must not become hidden planner constraints. Enforcement is by requiring admitted-state reducers, planners, projection writers, and mutation call sites to consume only admitted canonical objects or explicit preview inputs, while candidate reads remain scoped to review APIs that preserve candidate-state labels and Compartment policy.\ndiff --git a/DECISIONS.md b/DECISIONS.md\n--- a/DECISIONS.md\n+++ b/DECISIONS.md\n@@ -4345,5 +4345,33 @@ Consequences:\n - `DESIGN.md` \u00a716.10 records that Stage 3 consumes CPU-computed transient value/priority metadata from admitted prioritization records.\n - `PLANNING_KERNEL_CONTRACT.md` \u00a75 fixes the Phase 1b normalization and non-persistence rule for `TaskSpec.value` and `TaskSpec.priority`.\n - `OPEN_QUESTIONS.md` marks `UBU-Q0153` solved.\n \n ---\n+\n+## UBU-D0278: Phase 1b decomposition segments are Container split points compiled as placement units\n+\n+**Status:** Accepted \u2192 DESIGN.md \u00a79.4, \u00a721.2.1. Resolves `UBU-Q0151`.\n+\n+Phase 1b represents an admitted decomposition as a structural Task-to-Container replacement. The Container carries `container_id`, `origin_task_ref`, `mutation_reason`, `mutation_log_ref`, ordered child Task refs, segment split points, lineage, and provenance. Children are ordinary Task records with their own executable fields; the original Task becomes historical and moot with `replaced_by_new_plan_structure` when the decomposition preserves the underlying intent.\n+\n+Segments are stored as split points over the ordered child list, not as a separate list of child groups. A split point ends the current contiguous segment after a child; no split points means the entire ordered child list is one segment. Materialized segment ids may be derived from the Container version and child-index range but are not separate WorkItems.\n+\n+Within a segment, children stay strictly back-to-back. Phase 1b does not add a maximum-gap edge: if there should be a pause, handoff, recovery interval, wait, or independent scheduling opportunity, the decomposition uses a segment boundary or an explicit child Task.\n+\n+The planner handoff is orchestrator-side compilation. Each admitted segment becomes one temporary placement unit sent through the existing planning kernel contract. Fixed child durations sum exactly; stochastic child durations use a conservative component-wise sum of minimum, mode, and p95 with one rollout sample for the whole segment. After placement, the orchestrator expands the unit into child Plan entries with contiguous offsets. Native no-gap kernel edges are deferred until measurement shows that the conservative segment approximation materially distorts rollout results.\n+\n+Child-specific hard constraints are preserved by segmentation. Static timing, allowed time ranges, preconditions, dependencies, or effects that safely apply to the whole segment constrain the compiled placement unit. Constraints that apply only at an interior child force a boundary before or after that child as appropriate. If review cannot express the decomposition as valid contiguous segments without violating a child constraint, admission rejects the candidate or requires edits.\n+\n+`Decomposition` advisory candidates normalize to the target Task ref, proposed Container summary or inherited original-intent fields, ordered child specs with stable proposed-child keys, titles, duration models, child-specific constraints and provenance, and split markers after child positions. The advisor proposes split markers at natural pause points and before constraint boundaries; review can edit child specs, order, and split markers before admission. Unadmitted proposed segments stay candidate-state preview material.\n+\n+Progress and repair operate on the unstarted suffix of the current segment. Completed children remain historical facts. If a child finishes early or late, local repair keeps the remaining siblings contiguous from the actual completion boundary; if the suffix can no longer satisfy admitted hard constraints, repair replans from the next segment boundary or surfaces a reviewable repair candidate rather than scattering siblings independently.\n+\n+Undo is another admitted structural replacement, not erasure. Undo creates a restored Task with a new Task handle carrying the original intent and prior schedulable fields when still valid, marks the decomposition Container and children as superseded or moot by the restoration, and retains the original Task's moot event, mutation logs, child Task history, Plan history, External Reference lineage, and review/admission records.\n+\n+Consequences:\n+\n+- `DESIGN.md` \u00a79.4 records Phase 1b Container fields, split-point segment representation, strict adjacency, orchestrator-side segment compilation, repair, and undo behavior.\n+- `DESIGN.md` \u00a721.2.1 records the normalized `Decomposition` advisory candidate shape.\n+- `OPEN_QUESTIONS.md` marks `UBU-Q0151` solved.\n+\n+---\n",
+    "commit_message": "Resolve Phase 1b decomposition segments",
+    "validation_notes": [
+      "Ran git apply --check against the current workspace; the patch applies cleanly.",
+      "Patch modifies only OPEN_QUESTIONS.md, DESIGN.md, and DECISIONS.md.",
+      "PLANNING_KERNEL_CONTRACT.md is intentionally unchanged because Phase 1b compiles segments orchestrator-side through the existing kernel contract."
+    ],
+    "new_questions_added": [],
+    "questions_resolved": [
+      "UBU-Q0151"
+    ],
+    "decisions_added": [
+      "UBU-D0278"
+    ],
+    "requires_human_review": true
+  }
+]
+```
+
+## Mechanical validation results
+
+```json
+[
+  {
+    "proposal_id": "UBU-Q0151-gpt5-codex-20260921",
+    "patch_applies": true,
+    "allowlist_passed": true,
+    "changed_files": [
+      "DECISIONS.md",
+      "DESIGN.md",
+      "OPEN_QUESTIONS.md"
+    ],
+    "error": null,
+    "normalized_patch": null,
+    "warnings": [],
+    "ordinary_error": null,
+    "recount_error": null,
+    "normalization_error": null
+  }
+]
+```
+
+## Provider weights
+
+Provider weights are historical diagnostic context only in v0.2. Do not use
+self-trust or author identity as score evidence.
+
+```json
+{}
+```
+
+## JSON Schema
+
+Your output must satisfy this schema:
+
+```json
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "scores",
+    "selected_proposal_id",
+    "selection_rationale"
+  ],
+  "properties": {
+    "scores": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "proposal_id",
+          "score",
+          "patch_applies",
+          "implements_selected_work",
+          "preserves_question_schema",
+          "avoids_unnecessary_scope",
+          "decomposition_quality",
+          "risks",
+          "required_fixes",
+          "rationale"
+        ],
+        "properties": {
+          "proposal_id": {
+            "type": "string"
+          },
+          "score": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "patch_applies": {
+            "type": "boolean"
+          },
+          "implements_selected_work": {
+            "type": "boolean"
+          },
+          "preserves_question_schema": {
+            "type": "boolean"
+          },
+          "avoids_unnecessary_scope": {
+            "type": "boolean"
+          },
+          "decomposition_quality": {
+            "type": "string",
+            "enum": [
+              "none",
+              "good",
+              "bad",
+              "not_applicable"
+            ]
+          },
+          "risks": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "required_fixes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "rationale": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "selected_proposal_id": {
+      "type": "string"
+    },
+    "selection_rationale": {
+      "type": "string"
+    }
+  }
+}
+```
+
+## Scoring requirements
+
+Score each proposal from 0 to 100.
+
+Consider:
+
+- whether the patch applies cleanly;
+- whether it implements the selected work;
+- whether it preserves the question schema;
+- whether it avoids unnecessary scope;
+- whether it modifies only allowed files;
+- whether it creates useful decomposition if decomposition occurs;
+- whether it introduces new risks;
+- whether required fixes remain.
+
+Rules:
+
+- Score every proposal in this prompt.
+- `selected_proposal_id` must refer to one scored proposal from this prompt.
+- Manual override is not allowed in v0.2.
+- Prefer a patch that is valid, minimal, auditable, and directly responsive.
+- Do not select a proposal whose patch failed mechanical validation.
+- Do not score your own provider's proposal unless explicitly asked for diagnostic self-score.
+
+Return only JSON.

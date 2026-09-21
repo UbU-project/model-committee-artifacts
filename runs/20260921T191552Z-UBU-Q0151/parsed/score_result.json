@@ -1,0 +1,31 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0151-gpt5-codex-20260921",
+      "score": 89,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": false,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Constraint handling in subquestion 5 is loose: 'constrain whole segment when safe' is not defined precisely, so implementers may read it differently.",
+        "Constraint handling remains partly policy-level: the patch states constrain whole segment, force boundary, or reject, but implementation-facing admission rules may still need later precision.",
+        "Other docs that mention Container { name, items } or offset_minutes may also need updates. The patch does not check for these.",
+        "The patch sets Status to Solved and the Resolution to UBU-D0278. It assumes D0278 is the next free decision ID, which should be checked.",
+        "The question is marked 'Human approval required', so the proposal resolves it without human sign-off. It is flagged requires_human_review, which mitigates this.",
+        "The stochastic conservative sum is adopted without a quantified error bound, and the deferral trigger 'measurement shows distortion' has no threshold.",
+        "The stochastic duration treatment intentionally uses conservative component-wise sums and one segment rollout sample, which preserves the current direction but may need empirical validation as noted.",
+        "The undo semantics are vague about which of superseded and moot applies to the Container and to the children."
+      ],
+      "required_fixes": [
+        "Confirm that UBU-D0278 is the next available decision ID and that the DECISIONS.md hunk placement is correct.",
+        "Get human approval before merging, since the question requires it.",
+        "Optionally, state the criteria for the deferred native no-gap edge and specify the exact undo state codes."
+      ],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0151-gpt5-codex-20260921",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}

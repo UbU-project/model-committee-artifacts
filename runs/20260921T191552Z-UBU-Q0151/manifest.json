@@ -1,0 +1,185 @@
+{
+  "schema_version": "0.4",
+  "run_id": "20260921T191552Z-UBU-Q0151",
+  "created_at_utc": "2026-09-21T19:15:52Z",
+  "repo_path": "../ubu-design",
+  "base_commit": "6c83eb248dab3d1ec8aad93a7d8dec2147d5122f",
+  "selected_question_id": "UBU-Q0151",
+  "phase": "work-select",
+  "config_path": "config/models.json",
+  "status": "selected",
+  "commands": [
+    "model-committee run-loop"
+  ],
+  "providers_attempted": [
+    "codex",
+    "claude"
+  ],
+  "providers_succeeded": [
+    "codex",
+    "claude"
+  ],
+  "providers_failed": [],
+  "provider_attempts": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0151-gpt5-codex-20260921",
+      "response_path": "runs/20260921T191552Z-UBU-Q0151/responses/codex_score_ubu-q0151-gpt5-codex-20260921_response.json",
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "sonnet",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0151-gpt5-codex-20260921",
+      "response_path": "runs/20260921T191552Z-UBU-Q0151/responses/claude_score_ubu-q0151-gpt5-codex-20260921_stdout.json",
+      "stderr_path": null
+    }
+  ],
+  "provider_successes": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20260921T191552Z-UBU-Q0151/parsed/codex_work_proposal.json"
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0151-gpt5-codex-20260921",
+      "response_path": "runs/20260921T191552Z-UBU-Q0151/responses/codex_score_ubu-q0151-gpt5-codex-20260921_response.json",
+      "parsed_path": "runs/20260921T191552Z-UBU-Q0151/parsed/codex_score_ubu-q0151-gpt5-codex-20260921_result.json"
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "sonnet",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0151-gpt5-codex-20260921",
+      "response_path": "runs/20260921T191552Z-UBU-Q0151/responses/claude_score_ubu-q0151-gpt5-codex-20260921_stdout.json",
+      "parsed_path": "runs/20260921T191552Z-UBU-Q0151/parsed/claude_score_ubu-q0151-gpt5-codex-20260921_result.json"
+    }
+  ],
+  "provider_failures": [],
+  "score_matrix": [
+    {
+      "proposal_id": "UBU-Q0151-gpt5-codex-20260921",
+      "author_provider": "openai",
+      "scorer_provider": "codex",
+      "score": 94,
+      "valid": true,
+      "rationale": "The patch is valid, tightly scoped to the design/question/decision documents, and directly resolves all eight subquestions. It records the required Container fields, split-point segment model, strict back-to-back semantics, orchestrator-side planner handoff without changing the kernel contract, candidate proposal shape, repair behavior, and undo/audit semantics. It preserves the question schema by marking UBU-Q0151 solved and adding a clear decision record. Remaining risks are mostly future implementation precision rather than blockers for this design resolution.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "Constraint handling remains partly policy-level: the patch states constrain whole segment, force boundary, or reject, but implementation-facing admission rules may still need later precision.",
+        "The stochastic duration treatment intentionally uses conservative component-wise sums and one segment rollout sample, which preserves the current direction but may need empirical validation as noted."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20260921T191552Z-UBU-Q0151/responses/codex_score_ubu-q0151-gpt5-codex-20260921_response.json",
+        "stderr_path": null
+      }
+    },
+    {
+      "proposal_id": "UBU-Q0151-gpt5-codex-20260921",
+      "author_provider": "openai",
+      "scorer_provider": "claude",
+      "score": 84,
+      "valid": true,
+      "rationale": "The patch applies cleanly, passes the allowlist, and edits only OPEN_QUESTIONS.md, DESIGN.md, and DECISIONS.md. It answers all eight subquestions and follows the question's stated current direction: segments as split points on the Container, strict adjacency, orchestrator-side compilation with the kernel contract unchanged, and a native no-gap edge deferred. It also covers the normalized Decomposition candidate shape, repair on the unstarted suffix, and undo as a structural replacement with history retained. The question schema is preserved, since only Status and Resolution change. The design text and the decision record are consistent with each other. The main gaps are vague wording on constraints and undo, and the missing human approval.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [
+        "Confirm that UBU-D0278 is the next available decision ID and that the DECISIONS.md hunk placement is correct.",
+        "Get human approval before merging, since the question requires it.",
+        "Optionally, state the criteria for the deferred native no-gap edge and specify the exact undo state codes."
+      ],
+      "risks": [
+        "The question is marked 'Human approval required', so the proposal resolves it without human sign-off. It is flagged requires_human_review, which mitigates this.",
+        "The patch sets Status to Solved and the Resolution to UBU-D0278. It assumes D0278 is the next free decision ID, which should be checked.",
+        "Constraint handling in subquestion 5 is loose: 'constrain whole segment when safe' is not defined precisely, so implementers may read it differently.",
+        "The stochastic conservative sum is adopted without a quantified error bound, and the deferral trigger 'measurement shows distortion' has no threshold.",
+        "Other docs that mention Container { name, items } or offset_minutes may also need updates. The patch does not check for these.",
+        "The undo semantics are vague about which of superseded and moot applies to the Container and to the children."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20260921T191552Z-UBU-Q0151/responses/claude_score_ubu-q0151-gpt5-codex-20260921_stdout.json",
+        "stderr_path": null
+      }
+    }
+  ],
+  "score_aggregates": [
+    {
+      "proposal_id": "UBU-Q0151-gpt5-codex-20260921",
+      "author_provider": "openai",
+      "cross_score_count": 2,
+      "score_mean": 89.0,
+      "score_spread": 10,
+      "frontier_score_gap": 10,
+      "disagreement_flags": []
+    }
+  ],
+  "cross_score_count": 2,
+  "score_mean": 89.0,
+  "score_spread": 10,
+  "frontier_score_gap": 10,
+  "disagreement_flags": [],
+  "quorum_result": {
+    "valid": true,
+    "human_review_required": false,
+    "selected_proposal_id": "UBU-Q0151-gpt5-codex-20260921",
+    "selected_score": 89.0,
+    "selected_cross_score_count": 2,
+    "blocked_reasons": [],
+    "manual_override": false
+  },
+  "selected_proposal_id": "UBU-Q0151-gpt5-codex-20260921",
+  "automated_selection_valid": true,
+  "human_review_required": false,
+  "artifact_publication_status": "operator_pending",
+  "prompt_size_warning": false,
+  "prompt_context": {
+    "question_ids": [
+      "UBU-Q0151"
+    ],
+    "decision_ids": [
+      "UBU-D0274",
+      "UBU-D0275"
+    ],
+    "sections": {
+      "DESIGN.md": [
+        "4",
+        "9.4",
+        "21.2.1"
+      ]
+    },
+    "core_sections": {
+      "DESIGN.md": [
+        "1"
+      ],
+      "DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md": [
+        "4"
+      ]
+    },
+    "missing_refs": {},
+    "context_chars": 53016,
+    "prompt_chars": 58887
+  }
+}
