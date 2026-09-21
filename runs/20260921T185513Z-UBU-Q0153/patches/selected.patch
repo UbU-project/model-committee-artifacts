@@ -1,0 +1,93 @@
+diff --git a/DECISIONS.md b/DECISIONS.md
+--- a/DECISIONS.md
++++ b/DECISIONS.md
+@@ -4321,7 +4321,29 @@
+ Consequences:
+ 
+ - `DESIGN.md` §9.2 records `allowed_time_range` as the Phase 1b Dynamic Task input and distinguishes it from Static Task timing.
+ - `PLANNING_KERNEL_CONTRACT.md` §3 records the one-window `TaskSpec.window` mapping and hard infeasibility rule.
+ - `OPEN_QUESTIONS.md` marks `UBU-Q0152` solved.
+ 
+ ---
++
++## UBU-D0277: Phase 1b Task value is explicit priority normalized per planning request
++
++**Status:** Accepted → DESIGN.md §16.10; PLANNING_KERNEL_CONTRACT.md §5. Resolves `UBU-Q0153`.
++
++Phase 1b Task value for Plan scoring comes from admitted explicit operator prioritization, including the Quick UbU review-and-prioritize flow once it is ported as admitted records. The canonical persisted input is an ordinal Task priority declaration, not a persisted utility number. Objective labels, deadlines, due dates, routine cadence, and imported source urgency may affect eligibility, risk reporting, explanation, or future policy work, but they do not become canonical Task value in Phase 1b unless the operator admits them as explicit prioritization.
++
++When the CPU kernel builds a `PlanningRequest`, it maps admitted ordinal priority among the request's eligible schedulable Tasks onto bounded transient metadata. `TaskSpec.value` is a float in `[0.1, 1.0]`: the highest priority bucket maps to `1.0`, the lowest ranked bucket maps to `0.1`, ties share a bucket, a single ranked bucket maps to `1.0`, and unranked eligible Tasks use `0.1`. `TaskSpec.priority` carries the corresponding normalized priority rank for tie-breaks, diagnostics, and explanation. These computed numbers are request-local and are never persisted as utility.
++
++Routine instances are scored as ordinary Task instances after recurrence instantiation. They inherit explicit occurrence priority when present; otherwise they inherit the priority declared on the routine template or evergreen Objective that produced them. Missed occurrences, approaching local windows, or due dates may create review prompts, risk findings, or deadline/urgency diagnostics, but they do not automatically rewrite base value in Phase 1b.
++
++In Stage 3, utility is the value-weighted scheduled work signal for a candidate. It combines with approximate robustness, affect-margin, and schedule-diversity only through the request's `scoring_policy` weights. The Stage 2 affect filter and CPU hard-constraint certification remain gates: high value cannot legitimize affect-infeasible or hard-invalid Plans, and low value does not make a Task ineligible unless partial-placement selection later omits it.
++
++Phase 1b records review decisions, overrides, snoozes, rejections, and operator reprioritization as evidence for later learning, but it does not learn trade-off weights or automatically mutate priority from revealed preference. Adaptive weighting and preference learning remain with `UBU-Q0125`.
++
++Consequences:
++
++- `DESIGN.md` §16.10 records that Stage 3 consumes CPU-computed transient value/priority metadata from admitted prioritization records.
++- `PLANNING_KERNEL_CONTRACT.md` §5 fixes the Phase 1b normalization and non-persistence rule for `TaskSpec.value` and `TaskSpec.priority`.
++- `OPEN_QUESTIONS.md` marks `UBU-Q0153` solved.
++
++---
+diff --git a/DESIGN.md b/DESIGN.md
+--- a/DESIGN.md
++++ b/DESIGN.md
+@@ -2480,9 +2480,11 @@
+ 1. **Skeleton sampling** — parallel shifted-log-normal or fixed duration sampling across candidates with vectorized propagation over the CPU-provided topological order.
+ 
+ 2. **`affect_legitimacy_filter`** — batch sigmoid affect-constraint evaluation across surviving candidates. This stage implements only the sigmoid affect-constraint portion of legitimization. Full legitimization in UbU design is broader: it makes a skeleton Plan human-viable by respecting affect, recovery, transition, rest, sustainability, and support constraints. The `affect_legitimacy_filter` GPU stage does not replace or subsume full legitimization.
+ 
+ 3. **Value scoring** — parallel utility, approximate robustness, affect-margin, and schedule-diversity scoring across surviving candidates.
++
++Phase 1b value scoring uses CPU-computed, request-local Task value/priority metadata derived from admitted explicit prioritization records (`UBU-D0277`). Objective labels, deadlines, routine cadence, and revealed-preference evidence may inform review, risk, urgency, or later policy work, but the GPU stage receives only the bounded transient values supplied in the `PlanningRequest`.
+ 
+ 4. **Monte Carlo rollout** — joint scenario simulation for finalists using correlation-group Gaussian copula sampling with deterministic rollout seed derivation.
+ 
+ GPU search proposes candidates. Hard constraint certification and final Plan validity are performed by the CPU kernel using exact or conservative validation.
+diff --git a/OPEN_QUESTIONS.md b/OPEN_QUESTIONS.md
+--- a/OPEN_QUESTIONS.md
++++ b/OPEN_QUESTIONS.md
+@@ -2752,6 +2752,6 @@
+ ## UBU-Q0153: Task value and priority for Plan scoring
+ 
+-Status: Open Priority: MVP blocker Phase: Phase 1b Decision type: Data model Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 100 Depends on: None Blocks: UBU-Q0155, Phase 1b planner quality Resolved by: None Last scored: 2026-09-21 Scored from commit: None
++Status: Solved Priority: MVP blocker Phase: Phase 1b Decision type: Data model Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 100 Depends on: None Blocks: UBU-Q0155, Phase 1b planner quality Resolved by: UBU-D0277 Last scored: 2026-09-21 Scored from commit: None
+ 
+ Defining context: PLANNING_KERNEL_CONTRACT.md §5, DESIGN.md §16.10, `UBU-D0275`.
+ 
+@@ -2770,9 +2770,9 @@
+ ### Current direction
+ 
+ Phase 1b takes Task value from explicit operator prioritization: Quick UbU's prioritize flow is ported as admitted records, and the orchestrator maps them onto a bounded numeric scale when it builds each request. The computed values are never persisted as utility. Learning weights from revealed preference stays with `UBU-Q0125`.
+ 
+ ### Resolution
+ 
+-Open.
++Resolved by `UBU-D0277`: Phase 1b uses admitted explicit operator prioritization as the canonical source of Task priority, including the ported Quick UbU review-and-prioritize flow. The CPU kernel converts ordinal priority buckets among the request's eligible schedulable Tasks into transient `TaskSpec.value` and `TaskSpec.priority` values in `[0.1, 1.0]`; ties share values, a single ranked bucket maps to `1.0`, and unranked eligible Tasks use `0.1`. Objective labels, deadlines, routine cadence, and missed occurrences may affect eligibility, risk, urgency diagnostics, review prompts, or later policy work, but they do not automatically become persisted utility. Routine instances inherit explicit occurrence priority when present, then routine-template or evergreen-Objective priority. Stage 3 combines value-weighted utility with robustness, affect-margin, and schedule-diversity only through `scoring_policy`; affect filtering and CPU hard-constraint certification remain gates. Phase 1b records review decisions as evidence but leaves revealed-preference learning and adaptive weights to `UBU-Q0125`.
+ 
+ ---
+diff --git a/PLANNING_KERNEL_CONTRACT.md b/PLANNING_KERNEL_CONTRACT.md
+--- a/PLANNING_KERNEL_CONTRACT.md
++++ b/PLANNING_KERNEL_CONTRACT.md
+@@ -337,15 +337,19 @@
+ Consumes:
+ 
+ - surviving candidate schedules;
+ - Task value/priority metadata;
+ - scoring policy weights;
+ - affect-margin outputs;
+ - schedule-diversity policy.
++
++Phase 1b `TaskSpec.value` is a CPU-computed float in `[0.1, 1.0]` derived from admitted explicit Task prioritization for the request. Given dense priority buckets ordered best to worst, bucket position `p`, and bucket count `m`, value is `1.0` when `m = 1` and otherwise `1.0 - 0.9 * p / (m - 1)`. Tied Tasks share `p`; unranked eligible Tasks use `0.1`. `TaskSpec.priority` carries the corresponding normalized priority rank for tie-breaking, diagnostics, and explanation.
++
++The canonical persisted input is the admitted ordinal priority declaration. The bounded value and normalized priority are transient request metadata and must not be persisted as utility. Routine instances enter Stage 3 as ordinary TaskSpecs after recurrence instantiation: explicit occurrence priority wins, then routine-template or evergreen-Objective priority. Objective labels, deadlines, missed occurrences, and cadence do not rewrite value/priority unless admitted prioritization changes the underlying rank.
+ 
+ Produces:
+ 
+ - utility score;
+ - approximate robustness score before finalist rollout;
+ - affect-margin score;
+ - schedule-diversity score;
+ - `composite_scores`;

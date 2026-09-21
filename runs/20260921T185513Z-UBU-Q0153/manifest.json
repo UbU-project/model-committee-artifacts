@@ -1,0 +1,188 @@
+{
+  "schema_version": "0.4",
+  "run_id": "20260921T185513Z-UBU-Q0153",
+  "created_at_utc": "2026-09-21T18:55:13Z",
+  "repo_path": "../ubu-design",
+  "base_commit": "6db0bed1e0d46f1b148c10c1e2d17592bff39212",
+  "selected_question_id": "UBU-Q0153",
+  "phase": "work-select",
+  "config_path": "config/models.json",
+  "status": "selected",
+  "commands": [
+    "model-committee run-loop"
+  ],
+  "providers_attempted": [
+    "codex",
+    "claude"
+  ],
+  "providers_succeeded": [
+    "codex",
+    "claude"
+  ],
+  "providers_failed": [],
+  "provider_attempts": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-score",
+      "target_proposal_id": "openai-gpt5-codex-UBU-Q0153-20260921",
+      "response_path": "runs/20260921T185513Z-UBU-Q0153/responses/codex_score_openai-gpt5-codex-ubu-q0153-20260921_response.json",
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "sonnet",
+      "phase": "work-score",
+      "target_proposal_id": "openai-gpt5-codex-UBU-Q0153-20260921",
+      "response_path": "runs/20260921T185513Z-UBU-Q0153/responses/claude_score_openai-gpt5-codex-ubu-q0153-20260921_stdout.json",
+      "stderr_path": null
+    }
+  ],
+  "provider_successes": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20260921T185513Z-UBU-Q0153/parsed/codex_work_proposal.json"
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-score",
+      "target_proposal_id": "openai-gpt5-codex-UBU-Q0153-20260921",
+      "response_path": "runs/20260921T185513Z-UBU-Q0153/responses/codex_score_openai-gpt5-codex-ubu-q0153-20260921_response.json",
+      "parsed_path": "runs/20260921T185513Z-UBU-Q0153/parsed/codex_score_openai-gpt5-codex-ubu-q0153-20260921_result.json"
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "sonnet",
+      "phase": "work-score",
+      "target_proposal_id": "openai-gpt5-codex-UBU-Q0153-20260921",
+      "response_path": "runs/20260921T185513Z-UBU-Q0153/responses/claude_score_openai-gpt5-codex-ubu-q0153-20260921_stdout.json",
+      "parsed_path": "runs/20260921T185513Z-UBU-Q0153/parsed/claude_score_openai-gpt5-codex-ubu-q0153-20260921_result.json"
+    }
+  ],
+  "provider_failures": [],
+  "score_matrix": [
+    {
+      "proposal_id": "openai-gpt5-codex-UBU-Q0153-20260921",
+      "author_provider": "openai",
+      "scorer_provider": "codex",
+      "score": 92,
+      "valid": true,
+      "rationale": "The proposal directly resolves UBU-Q0153, applies cleanly, stays within the expected design-document scope, preserves the open-question format, and answers all subquestions: canonical explicit operator prioritization, transient per-request bounded numeric values, routine-instance inheritance, scoring_policy interaction, and deferral of revealed-preference learning to UBU-Q0125. The remaining issues are wording clarifications rather than blockers.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "The normalization formula introduces an indexing ambiguity: bucket position p must be zero-based for the stated highest-bucket value of 1.0 to hold.",
+        "The routine inheritance wording references evergreen-Objective priority, which is acceptable if that priority is an admitted explicit prioritization record, but could be misread as letting Objective metadata directly define value."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20260921T185513Z-UBU-Q0153/responses/codex_score_openai-gpt5-codex-ubu-q0153-20260921_response.json",
+        "stderr_path": null
+      }
+    },
+    {
+      "proposal_id": "openai-gpt5-codex-UBU-Q0153-20260921",
+      "author_provider": "openai",
+      "scorer_provider": "claude",
+      "score": 72,
+      "valid": true,
+      "rationale": "The patch applies and passes the allowlist. It touches only the four appropriate design files. It stays close to the stated current direction: explicit operator prioritization is the canonical source, values are normalized per request, utility is never persisted, and revealed-preference learning stays with UBU-Q0125. It addresses all five subquestions, including routine inheritance, the interaction with scoring_policy, and the affect and hard-constraint gates. The OPEN_QUESTIONS.md metadata stays on a single line and the Resolved by field is filled in. The main weaknesses are the fairly specific numeric choices, the deferral of deadline and routine urgency handling, and the possibility that the question should stay open pending human approval.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [
+        "Confirm UBU-D0277 is the next free decision ID and that the patch context lines match the repo.",
+        "Clarify how TaskSpec.priority differs from value, or justify carrying both.",
+        "Consider distinguishing unranked Tasks from the lowest ranked bucket, or state explicitly that they are treated identically.",
+        "Have a human approve the Solved status before it is committed."
+      ],
+      "risks": [
+        "The question's Human approval required flag means the decision needs human sign-off, so marking it Solved may be premature. The proposal sets requires_human_review: true, which partly covers this.",
+        "The decision fixes specific numbers: a 0.1 floor, linear bucket spacing, and unranked Tasks at 0.1. These are arbitrary and may be too rigid for Phase 1b. Unranked Tasks tie with the lowest ranked bucket, so unranking is indistinguishable from the worst rank.",
+        "Ignoring deadlines and routine urgency entirely may weaken planner quality. Subquestion 3, on rising value near a deadline or missed occurrence, is answered only by deferral.",
+        "The proposal assumes a persisted ordinal priority declaration and a routine-template priority field. Neither may exist in the data model yet.",
+        "The decision ID UBU-D0277 and the DECISIONS.md insertion point were not verified against the repo. A collision with an existing decision ID is possible.",
+        "TaskSpec.priority is defined vaguely as a normalized priority rank, so its relationship to value is unclear.",
+        "The Solved status change may affect the Blocks relationship with UBU-Q0155. No dependent question was updated."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20260921T185513Z-UBU-Q0153/responses/claude_score_openai-gpt5-codex-ubu-q0153-20260921_stdout.json",
+        "stderr_path": null
+      }
+    }
+  ],
+  "score_aggregates": [
+    {
+      "proposal_id": "openai-gpt5-codex-UBU-Q0153-20260921",
+      "author_provider": "openai",
+      "cross_score_count": 2,
+      "score_mean": 82.0,
+      "score_spread": 20,
+      "frontier_score_gap": 20,
+      "disagreement_flags": []
+    }
+  ],
+  "cross_score_count": 2,
+  "score_mean": 82.0,
+  "score_spread": 20,
+  "frontier_score_gap": 20,
+  "disagreement_flags": [],
+  "quorum_result": {
+    "valid": true,
+    "human_review_required": false,
+    "selected_proposal_id": "openai-gpt5-codex-UBU-Q0153-20260921",
+    "selected_score": 82.0,
+    "selected_cross_score_count": 2,
+    "blocked_reasons": [],
+    "manual_override": false
+  },
+  "selected_proposal_id": "openai-gpt5-codex-UBU-Q0153-20260921",
+  "automated_selection_valid": true,
+  "human_review_required": false,
+  "artifact_publication_status": "operator_pending",
+  "prompt_size_warning": false,
+  "prompt_context": {
+    "question_ids": [
+      "UBU-Q0153"
+    ],
+    "decision_ids": [
+      "UBU-D0275"
+    ],
+    "sections": {
+      "PLANNING_KERNEL_CONTRACT.md": [
+        "5"
+      ],
+      "DESIGN.md": [
+        "4",
+        "16.10"
+      ]
+    },
+    "core_sections": {
+      "DESIGN.md": [
+        "1"
+      ],
+      "DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md": [
+        "4"
+      ]
+    },
+    "missing_refs": {},
+    "context_chars": 50849,
+    "prompt_chars": 56719
+  }
+}

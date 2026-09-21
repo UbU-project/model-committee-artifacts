@@ -1,0 +1,33 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-gpt5-codex-UBU-Q0153-20260921",
+      "score": 82,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": false,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Ignoring deadlines and routine urgency entirely may weaken planner quality. Subquestion 3, on rising value near a deadline or missed occurrence, is answered only by deferral.",
+        "TaskSpec.priority is defined vaguely as a normalized priority rank, so its relationship to value is unclear.",
+        "The Solved status change may affect the Blocks relationship with UBU-Q0155. No dependent question was updated.",
+        "The decision ID UBU-D0277 and the DECISIONS.md insertion point were not verified against the repo. A collision with an existing decision ID is possible.",
+        "The decision fixes specific numbers: a 0.1 floor, linear bucket spacing, and unranked Tasks at 0.1. These are arbitrary and may be too rigid for Phase 1b. Unranked Tasks tie with the lowest ranked bucket, so unranking is indistinguishable from the worst rank.",
+        "The normalization formula introduces an indexing ambiguity: bucket position p must be zero-based for the stated highest-bucket value of 1.0 to hold.",
+        "The proposal assumes a persisted ordinal priority declaration and a routine-template priority field. Neither may exist in the data model yet.",
+        "The question's Human approval required flag means the decision needs human sign-off, so marking it Solved may be premature. The proposal sets requires_human_review: true, which partly covers this.",
+        "The routine inheritance wording references evergreen-Objective priority, which is acceptable if that priority is an admitted explicit prioritization record, but could be misread as letting Objective metadata directly define value."
+      ],
+      "required_fixes": [
+        "Clarify how TaskSpec.priority differs from value, or justify carrying both.",
+        "Confirm UBU-D0277 is the next free decision ID and that the patch context lines match the repo.",
+        "Consider distinguishing unranked Tasks from the lowest ranked bucket, or state explicitly that they are treated identically.",
+        "Have a human approve the Solved status before it is committed."
+      ],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "openai-gpt5-codex-UBU-Q0153-20260921",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}
