@@ -1,0 +1,21 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0152-P-gpt5-codex-001",
+      "score": 94,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "The decision states that ambiguous or nonexistent local endpoints require recorded disambiguation or review, but does not define the exact disambiguation policy; this is acceptable because recurring local windows are deferred to UBU-Q0154.",
+        "The PLANNING_KERNEL_CONTRACT wording says each Dynamic TaskSpec carries a window, which is aligned with the resolution but may need later harmonization if the contract also represents non-dynamic or already-fixed work in the same structure."
+      ],
+      "required_fixes": [],
+      "rationale": "The proposal cleanly follows the current direction: a single hard absolute UTC allowed_time_range for one-off Dynamic Tasks, CPU mapping to TaskSpec.window by intersection with the planning horizon, routine/local time handling deferred to instantiation, decision envelopes kept derived, Static Tasks kept distinct, and occupies_capacity retirement made evidence-gated. The patch is minimal, applies cleanly, touches appropriate documentation files, and resolves the open question without forcing a kernel multi-window contract change."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0152-P-gpt5-codex-001",
+  "selection_rationale": "This is the only valid proposal and it directly answers all subquestions with a narrow, auditable design decision consistent with the stated current direction."
+}

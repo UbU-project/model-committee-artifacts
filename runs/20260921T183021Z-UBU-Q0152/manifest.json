@@ -1,0 +1,189 @@
+{
+  "schema_version": "0.4",
+  "run_id": "20260921T183021Z-UBU-Q0152",
+  "created_at_utc": "2026-09-21T18:30:21Z",
+  "repo_path": "../ubu-design",
+  "base_commit": "6cccfc13603d3dd7ec5ae0218cbdfa5a74623082",
+  "selected_question_id": "UBU-Q0152",
+  "phase": "work-select",
+  "config_path": "config/models.json",
+  "status": "selected",
+  "commands": [
+    "model-committee run-loop"
+  ],
+  "providers_attempted": [
+    "codex",
+    "claude"
+  ],
+  "providers_succeeded": [
+    "codex",
+    "claude"
+  ],
+  "providers_failed": [],
+  "provider_attempts": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0152-P-gpt5-codex-001",
+      "response_path": "runs/20260921T183021Z-UBU-Q0152/responses/codex_score_ubu-q0152-p-gpt5-codex-001_response.json",
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "sonnet",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0152-P-gpt5-codex-001",
+      "response_path": "runs/20260921T183021Z-UBU-Q0152/responses/claude_score_ubu-q0152-p-gpt5-codex-001_stdout.json",
+      "stderr_path": null
+    }
+  ],
+  "provider_successes": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20260921T183021Z-UBU-Q0152/parsed/codex_work_proposal.json"
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0152-P-gpt5-codex-001",
+      "response_path": "runs/20260921T183021Z-UBU-Q0152/responses/codex_score_ubu-q0152-p-gpt5-codex-001_response.json",
+      "parsed_path": "runs/20260921T183021Z-UBU-Q0152/parsed/codex_score_ubu-q0152-p-gpt5-codex-001_result.json"
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "sonnet",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0152-P-gpt5-codex-001",
+      "response_path": "runs/20260921T183021Z-UBU-Q0152/responses/claude_score_ubu-q0152-p-gpt5-codex-001_stdout.json",
+      "parsed_path": "runs/20260921T183021Z-UBU-Q0152/parsed/claude_score_ubu-q0152-p-gpt5-codex-001_result.json"
+    }
+  ],
+  "provider_failures": [],
+  "score_matrix": [
+    {
+      "proposal_id": "UBU-Q0152-P-gpt5-codex-001",
+      "author_provider": "openai",
+      "scorer_provider": "codex",
+      "score": 94,
+      "valid": true,
+      "rationale": "The proposal cleanly follows the current direction: a single hard absolute UTC allowed_time_range for one-off Dynamic Tasks, CPU mapping to TaskSpec.window by intersection with the planning horizon, routine/local time handling deferred to instantiation, decision envelopes kept derived, Static Tasks kept distinct, and occupies_capacity retirement made evidence-gated. The patch is minimal, applies cleanly, touches appropriate documentation files, and resolves the open question without forcing a kernel multi-window contract change.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "The decision states that ambiguous or nonexistent local endpoints require recorded disambiguation or review, but does not define the exact disambiguation policy; this is acceptable because recurring local windows are deferred to UBU-Q0154.",
+        "The PLANNING_KERNEL_CONTRACT wording says each Dynamic TaskSpec carries a window, which is aligned with the resolution but may need later harmonization if the contract also represents non-dynamic or already-fixed work in the same structure."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20260921T183021Z-UBU-Q0152/responses/codex_score_ubu-q0152-p-gpt5-codex-001_response.json",
+        "stderr_path": null
+      }
+    },
+    {
+      "proposal_id": "UBU-Q0152-P-gpt5-codex-001",
+      "author_provider": "openai",
+      "scorer_provider": "claude",
+      "score": 82,
+      "valid": true,
+      "rationale": "The patch applies cleanly, touches only allowed docs, and follows the question's current direction: single hard absolute UTC range, mapped to TaskSpec.window by intersection, distinct from the decision envelope and due dates, with multi-window deferred. It answers all seven subquestions concisely and adds no unnecessary scope. Weaknesses are the vague occupies_capacity retirement evidence, limited DST detail, and the Solved status for a human-approval question.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [
+        "Confirm DECISIONS.md numbering UBU-D0276 is the next free ID and that the placement of the new entry matches file ordering.",
+        "Consider leaving Status Open pending human approval, or confirm the Solved transition is intended for this workflow.",
+        "Clarify the specific evidence criteria for retiring occupies_capacity, or track it as a follow-up question."
+      ],
+      "risks": [
+        "Marks Q0152 Solved although the question requires human approval; Resolved by/status change is aggressive though requires_human_review is set.",
+        "occupies_capacity retirement is left as an evidence-gated, loosely defined condition; the 'canonical rule' sentence may conflict with the current orchestrator gate.",
+        "Static Task vs zero-slack range is stated as mutually exclusive, which slightly hardens a subquestion beyond the current direction.",
+        "Time zone and DST handling is deferred to UBU-Q0154 with limited specifics (no explicit DST disambiguation policy).",
+        "Adds text in DESIGN.md \u00a716.5 area (criticality paragraph) that partially duplicates \u00a79.2 content.",
+        "Decision text says PLANNING_KERNEL_CONTRACT \u00a73 while question context cites \u00a72; minor reference inconsistency."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20260921T183021Z-UBU-Q0152/responses/claude_score_ubu-q0152-p-gpt5-codex-001_stdout.json",
+        "stderr_path": null
+      }
+    }
+  ],
+  "score_aggregates": [
+    {
+      "proposal_id": "UBU-Q0152-P-gpt5-codex-001",
+      "author_provider": "openai",
+      "cross_score_count": 2,
+      "score_mean": 88.0,
+      "score_spread": 12,
+      "frontier_score_gap": 12,
+      "disagreement_flags": []
+    }
+  ],
+  "cross_score_count": 2,
+  "score_mean": 88.0,
+  "score_spread": 12,
+  "frontier_score_gap": 12,
+  "disagreement_flags": [],
+  "quorum_result": {
+    "valid": true,
+    "human_review_required": false,
+    "selected_proposal_id": "UBU-Q0152-P-gpt5-codex-001",
+    "selected_score": 88.0,
+    "selected_cross_score_count": 2,
+    "blocked_reasons": [],
+    "manual_override": false
+  },
+  "selected_proposal_id": "UBU-Q0152-P-gpt5-codex-001",
+  "automated_selection_valid": true,
+  "human_review_required": false,
+  "artifact_publication_status": "operator_pending",
+  "prompt_size_warning": false,
+  "prompt_context": {
+    "question_ids": [
+      "UBU-Q0152"
+    ],
+    "decision_ids": [
+      "UBU-D0256",
+      "UBU-D0275"
+    ],
+    "sections": {
+      "DESIGN.md": [
+        "4",
+        "9.2",
+        "16.5",
+        "16.9"
+      ],
+      "PLANNING_KERNEL_CONTRACT.md": [
+        "2"
+      ]
+    },
+    "core_sections": {
+      "DESIGN.md": [
+        "1"
+      ],
+      "DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md": [
+        "4"
+      ]
+    },
+    "missing_refs": {},
+    "context_chars": 62273,
+    "prompt_chars": 68257
+  }
+}
