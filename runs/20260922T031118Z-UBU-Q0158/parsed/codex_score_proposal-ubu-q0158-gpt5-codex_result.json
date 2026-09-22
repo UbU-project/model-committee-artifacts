@@ -1,0 +1,21 @@
+{
+  "scores": [
+    {
+      "proposal_id": "proposal-ubu-q0158-gpt5-codex",
+      "score": 94,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "The added contract diagnostics are intentionally optional but still underspecified as object shapes, so later implementers may need a follow-up schema tightening pass.",
+        "The budget rule protects requested K decision alternatives before outcome continuations, which is reasonable for interactivity but could make coverage targets harder to satisfy under tight budgets."
+      ],
+      "required_fixes": [],
+      "rationale": "The proposal directly resolves UBU-Q0158 and cleanly distinguishes decision alternatives from stochastic outcome continuations. It answers all subquestions: outcome-state grouping, rollout frequency probabilities and confidence, coverage mapping to branch_coverage_target/reactive_horizon_seconds, shared budget allocation, compact/mobile packaging depth, intra-chunk repair handling, and streaming behavior. It modifies only the expected design and contract files, preserves the open-question metadata shape, and adds a single auditable decision without unnecessary expansion. Mechanical validation reports the patch applies after recount normalization, with no allowlist issue."
+    }
+  ],
+  "selected_proposal_id": "proposal-ubu-q0158-gpt5-codex",
+  "selection_rationale": "This is the only scored proposal, it passes mechanical validation, and it is a strong, targeted architecture resolution for the selected question with only minor follow-up risks around optional diagnostic schema precision."
+}

@@ -1,0 +1,24 @@
+{
+  "scores": [
+    {
+      "proposal_id": "proposal-ubu-q0158-gpt5-codex",
+      "score": 90,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": false,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Introduces several new optional contract fields (coverage_confidence, outcome_continuation_summary, outcome_continuation_refs) that expand the wire schema; reasonable but adds surface area an implementer must eventually build.",
+        "Merging of near-identical outcome states via 'deterministic digest or quantization rule' is left underspecified beyond 'recorded in diagnostics', leaving some implementation latitude.",
+        "Patch required --recount normalization to apply (ordinary apply failed with 'corrupt patch at line 57'), indicating the raw diff as submitted is not directly git-apply-able and depends on the harness's normalization step.",
+        "The added contract diagnostics are intentionally optional but still underspecified as object shapes, so later implementers may need a follow-up schema tightening pass.",
+        "The budget rule protects requested K decision alternatives before outcome continuations, which is reasonable for interactivity but could make coverage targets harder to satisfy under tight budgets."
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "proposal-ubu-q0158-gpt5-codex",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}
