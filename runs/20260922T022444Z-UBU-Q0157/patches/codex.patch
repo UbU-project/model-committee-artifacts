@@ -1,0 +1,164 @@
+diff --git a/DECISIONS.md b/DECISIONS.md
+--- a/DECISIONS.md
++++ b/DECISIONS.md
+@@ -4490,5 +4490,33 @@ Consequences:
+ - `DESIGN.md` §16.10 replaces the in-process typed-call requirement with a persistent local Python worker boundary and records fallback, provenance, reproducibility, chunking, and streaming consequences.
+ - `PLANNING_KERNEL_CONTRACT.md` records delivery mode, engine provenance, worker frame semantics, and parity expectations.
+ - `OPEN_QUESTIONS.md` marks `UBU-Q0156` solved.
+ 
+ ---
++
++## UBU-D0284: Phase 1b splittable Tasks are per-Task chunk pieces with constant resume overhead
++
++**Status:** Accepted -> DESIGN.md §9.2, §9.4, §16.3; PLANNING_KERNEL_CONTRACT.md §3, §4, §5. Resolves `UBU-Q0157`.
++
++Every schedulable Task has a split policy. The default is `atomic`, which preserves the existing rule that the Task must be planned as one placement unit inside one chunk. A Task may instead declare `splittable` with all three fields required: `min_piece_seconds`, `resume_overhead_seconds`, and `max_pieces`. The minimum piece and resume overhead are non-negative integer seconds, with `min_piece_seconds` positive; `max_pieces` is an integer of at least 2. The store does not silently infer these fields. Advisors may propose category-based defaults as reviewable advisory candidates, but admission records the explicit policy on the Task.
++
++For Phase 1b, resume overhead is constant. The first piece consumes only work duration; every later planned or rollout continuation consumes one `resume_overhead_seconds` interval before doing additional work. There is no separate Phase 1b affect cost for resumption. Later interruption modeling may add affect consequences, but the split policy is the only interruption-facing Task input needed now.
++
++Pieces are a placement shape for one Task, not new WorkItems and not a Container replacement. A splittable Task may contribute at most one piece to any chunk, and every piece must lie inside the Task's hard `allowed_time_range`/`TaskSpec.window`. Splitting inside a chunk is invalid because it only adds overhead without expanding feasibility. The chunk-assignment level decides how many seconds of a splittable Task are assigned to each eligible chunk, then the ordinary within-chunk ordering places that chunk's piece. Atomic Tasks and compiled decomposition segments remain single placement units.
++
++The split policy applies to individual Tasks, including decomposition child Tasks. A compiled decomposition segment remains atomic: if a child inside an admitted multi-child segment needs to be split independently, admission must put segment boundaries around that child or reject/ask for edits. The kernel never splits the interior of a compiled segment.
++
++Plan steps may contain several non-overlapping placements for the same Task. Each piece records `piece_index` and `piece_count`; atomic placements use `1/1`. Dependencies, preconditions, and effects attach to the Task as a whole: incoming dependencies and preconditions gate the first piece, and outgoing dependencies and effects become satisfied only after the last piece completes. Projection surfaces may show pieces as separate external objects with stable piece ids and titles such as `(2/3)`, but all pieces point back to the same canonical Task and projection edits reconcile by piece.
++
++Rollouts draw one total work duration per Task and spend that sampled work across the Task's pieces. Resume overhead is deterministic occupied time added before each resumed piece. If a piece overruns its planned work budget, a splittable Task may continue in a later eligible chunk when remaining `max_pieces`, window, dependencies, and carried state permit; otherwise the rollout is infeasible in the same way an atomic overrun that collides with a fixed placement is infeasible. This improves Plan probability only through the measured frequency of feasible continuations under the same rollout draws.
++
++Progress on a stopped splittable Task is recorded as execution evidence and a remaining-work estimate on the same Task. It is not a §9.4 structural replacement and does not create a Container merely because work paused. For scoring, Phase 1b gives splittable work proportional scheduled-work value for the fraction of sampled total work completed inside the horizon, while dependency satisfaction, effects, completion state, and completion-dependent value still require the last piece. Atomic Tasks earn value only when their one placement is completed or scheduled according to the ordinary candidate semantics.
++
++The kernel contract changes share the same Phase 1b minor contract version reserved for partial placement (`UBU-Q0155`): `TaskSpec` gains the split policy, PlanCandidate schedules gain piece metadata, validation accepts multiple ordered non-overlapping pieces for one Task, and rollout consumes one sampled Task duration across those pieces. Splitting is not required for the switch itself and may land after chunked search, provided unsupported splittable Tasks are rejected or treated as unplaceable with an explicit diagnostic rather than silently made atomic.
++
++Consequences:
++
++- `DESIGN.md` §9.2 records the Task split policy; §9.4 records the relation to decomposition segments; §16.3 records chunk placement and rollout semantics.
++- `PLANNING_KERNEL_CONTRACT.md` §3 records `TaskSpec.split_policy`; §4 records PlanCandidate piece metadata; §5 records split-aware tensor and rollout semantics.
++- `OPEN_QUESTIONS.md` marks `UBU-Q0157` solved.
++
++---
+diff --git a/DESIGN.md b/DESIGN.md
+--- a/DESIGN.md
++++ b/DESIGN.md
+@@ -1493,6 +1493,8 @@ Dynamic Tasks may have:
+ 
+ **Phase 1b allowed range (`UBU-D0276`).** A one-off Dynamic Task may carry `allowed_time_range: { earliest_start, latest_finish }`, expressed as absolute UTC instants. The planner must place the Task's entire occupied interval inside that hard range by mapping it to the kernel `TaskSpec.window`. The range is a declared Task input, not a derived decision envelope, due date, deadline, or recurring local time-of-day rule. Routine instances receive their concrete range when recurrence instantiates them. Static Tasks continue to use fixed start and end times rather than representing a fixed commitment as a zero-slack Dynamic range.
+ 
++**Phase 1b split policy (`UBU-D0284`).** A schedulable Task has `split_policy`, defaulting to `atomic`. A splittable Task declares `splittable { min_piece_seconds, resume_overhead_seconds, max_pieces }`; all three fields are admitted Task inputs rather than silent category defaults. Advisors may propose defaults for review, but admission records the explicit policy. Pieces are Plan placements of the same Task, not child WorkItems, and actual partial execution is recorded as Log evidence plus a remaining-work estimate on that Task rather than a Container replacement.
++
+ ### 9.3 MVP Task schedulability invariant
+ 
+ A Task is schedulable in MVP if it has:
+@@ -1578,6 +1580,8 @@ Fields that make a schedulable action executable belong on child Tasks: duration
+ 
+ Within a segment, children are planned and repaired as strictly back-to-back work. Phase 1b does not model a maximum-gap edge between children; any admitted gap, wait, recovery, handoff, or pause is represented by a separate Task or by a segment boundary.
+ 
++Task split policy applies to individual Tasks, including decomposition child Tasks, but an admitted compiled segment remains an atomic placement unit. If a child in a multi-child segment needs independent splitting, review must create segment boundaries around that child or reject the decomposition until edited; the planner does not split the interior of a compiled segment.
++
+ Phase 1b keeps the planning kernel contract unchanged. Before kernel dispatch, the orchestrator compiles each admitted segment into one temporary placement unit whose duration is the exact sum of fixed child durations, or for stochastic durations the conservative component-wise sum of minimum, mode, and p95 with one rollout sample for the segment. After the kernel places the unit, the orchestrator expands it back into child Plan entries in Container order with contiguous offsets. A native no-gap kernel edge is deferred until measurement shows the conservative segment approximation distorts rollout results.
+ 
+ Children with hard static timing, allowed time ranges, preconditions, dependencies, or effects that cannot safely apply to the whole segment force a segment boundary before that child, or after it when the constraint belongs only to prior work. Shared hard constraints may constrain the compiled segment as a whole. If no sequence of boundaries can preserve the child constraint without creating an internal gap or making the proposal unschedulable, admission rejects the decomposition or requires review edits before admission.
+@@ -2282,6 +2286,8 @@ Execution profiles are additive rather than mutually exclusive. The greedy mean-
+ 
+ **Chunked search (`UBU-D0279`).** Phase 1b candidate construction partitions the horizon into chunks at capacity-occupying Static Tasks and other fixed placements. The search first assigns placement units to chunks. That is the coupled step, constrained by allowed ranges, dependencies, and state carried between chunks. It then orders each chunk's units independently and in parallel, sweeping chunks in time order and pruning at chunk boundaries. Rollouts evaluate chunks separately, sharing latent draws across chunks. The CPU reference path and the GPU engine share these semantics, and the current chunk is the unit of local repair.
+ 
++**Splittable Tasks (`UBU-D0284`).** Atomic Tasks and compiled decomposition segments occupy one chunk. A splittable Task may assign at most one piece to each eligible chunk, and every piece must remain inside the Task's allowed range. The chunk-assignment level chooses how much work from the Task enters each chunk; ordinary within-chunk ordering then places that piece. The first piece has no resume overhead, while each later piece reserves the Task's constant `resume_overhead_seconds` before doing more work. Rollouts draw one total work duration for the Task, spend it across pieces, and count a continuation into a later eligible chunk as feasible only when `max_pieces`, window, dependencies, and carried state still permit it. Splittable work earns proportional scheduled-work value for completed sampled work inside the horizon, but completion, effects, and outgoing dependencies still wait for the last piece. Phase 1b needs no additional interruption input beyond the split policy; later stochastic interruption modeling can use the same policy to distinguish continuation from restart.
++
+ **Sweep mechanics and streaming (`UBU-D0280`, `UBU-D0281`).** The sweep expands each branch into up to K alternatives per chunk and keeps the best B partial plans after each chunk depth. It merges branches that reach the same state, and assigns the most constrained units first. Interactive requests stream certified chunk results, so the user can act on the first chunk while later chunks are still being searched; a streamed chunk stays provisional until the user starts it. Batch requests return only the final response.
+ 
+ Plan probability is represented internally as probability metadata rather than only as a display scalar. The minimum record contains a display scalar, a log probability for stable computation, an optional probability interval, provenance over the modeled probabilistic inputs, and correlation-group or scenario references when inputs are not independent. Implementations may multiply probabilities only for inputs declared independent. Correlated or unknown relationships must use joint scenarios, shared random variables, correlation groups, or conservative intervals rather than pretending independence.
+diff --git a/OPEN_QUESTIONS.md b/OPEN_QUESTIONS.md
+--- a/OPEN_QUESTIONS.md
++++ b/OPEN_QUESTIONS.md
+@@ -2871,7 +2871,7 @@ The `PlanningRequest`/`PlanningResponse` boundary, CPU certification of every se
+ 
+ ## UBU-Q0157: Splittable Tasks and resume overhead
+ 
+-Status: Open Priority: MVP important Phase: Phase 1b Decision type: Data model Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 100 Depends on: None Blocks: save-and-continue planning, interruption-aware rollouts Resolved by: None Last scored: 2026-09-21 Scored from commit: None
++Status: Solved Priority: MVP important Phase: Phase 1b Decision type: Data model Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 100 Depends on: None Blocks: save-and-continue planning, interruption-aware rollouts Resolved by: UBU-D0284 Last scored: 2026-09-21 Scored from commit: None
+ 
+ Defining context: DESIGN.md §9.4, DESIGN.md §16.3, PLANNING_KERNEL_CONTRACT.md §3, `UBU-D0276`, `UBU-D0277`, `UBU-D0278`, `UBU-D0279`.
+ 
+@@ -2905,6 +2905,6 @@ A Task's split policy is `atomic` by default. A splittable Task declares a minim
+ 
+ ### Resolution
+ 
+-Open.
++Resolved by `UBU-D0284`: every schedulable Task has a split policy, defaulting to `atomic`; a splittable Task explicitly declares required `min_piece_seconds`, `resume_overhead_seconds`, and `max_pieces` fields. Resume overhead is constant and applies before each piece after the first, with no separate Phase 1b affect cost or interruption input. Pieces are same-Task Plan placements, at most one per chunk, all inside the Task's allowed range, and never splits inside a chunk. Decomposition segments remain atomic; a decomposition child may be splittable only as an independently segmented placement unit. The kernel contract gains `TaskSpec.split_policy`, PlanCandidate piece metadata, validation for multiple ordered non-overlapping pieces, and rollout semantics that draw one total Task duration and spend it across pieces. Dependencies and effects attach to the Task's first and last pieces. Progress stops are recorded as Log evidence and a remaining-work estimate on the same Task, not a Container replacement. Splittable work earns proportional scheduled-work value for completed sampled work inside the horizon, while completion, effects, and outgoing dependencies require the final piece. Projection surfaces may show separate piece events such as `(2/3)` while preserving one canonical Task. The contract change shares the Phase 1b minor version reserved with partial placement.
+ 
+ ---
+diff --git a/PLANNING_KERNEL_CONTRACT.md b/PLANNING_KERNEL_CONTRACT.md
+--- a/PLANNING_KERNEL_CONTRACT.md
++++ b/PLANNING_KERNEL_CONTRACT.md
+@@ -116,6 +116,27 @@ Each `TaskSpec` used by the planning kernel must include either a fixed duration
+ 
+ Each Dynamic `TaskSpec` also carries a single hard `window: { earliest_start, latest_finish }` with RFC 3339 / ISO 8601 UTC timestamps. The CPU side builds it by intersecting the admitted Task's one-off `allowed_time_range`, or the concrete range on an instantiated routine Task, with `PlanningRequest.time_window`. If the intersection is empty or shorter than the Task's minimum possible duration, the Task is unplaceable for that request rather than soft-scored outside the window. Multiple allowed windows are not represented in Phase 1b `TaskSpec`; any future support requires a contract change or CPU-side occurrence/window selection before dispatch.
+ 
++Each `TaskSpec` also carries a split policy:
++
++```text
++{ type: "atomic" }
++```
++
++or:
++
++```text
++{
++  type: "splittable",
++  min_piece_seconds: positive_integer,
++  resume_overhead_seconds: non_negative_integer,
++  max_pieces: integer >= 2
++}
++```
++
++`atomic` is the default admitted Task policy and requires one placement. A splittable Task may produce multiple Plan placements for the same Task, but no more than one piece per chunk, no more than `max_pieces` total pieces, and no piece outside the Task's `window`. Splitting within one chunk is invalid.
++
++For a splittable Task, the kernel samples one total work duration from the Task's duration model and spends that work across pieces. The first piece has no resume overhead. Each later piece consumes `resume_overhead_seconds` of occupied time before additional sampled work is performed. Incoming dependencies and preconditions gate the first piece; outgoing dependencies and effects are satisfied only by the final piece. Unsupported execution profiles must reject splittable TaskSpecs or mark them unplaceable with an explicit diagnostic rather than silently treating them as atomic.
++
+ ### Fixed duration
+ 
+ ```text
+@@ -249,7 +270,11 @@ Each `PlanCandidate` must carry:
+ - `candidate_id`
+ - `rank`
+ - `candidate_role`: enum, one of `highest_utility`, `most_robust`, `most_schedule_diverse`, `other`.
+-- `schedule`: ordered list of planned Task placements.
++- `schedule`: ordered list of planned Task placements. Each placement carries:
++  - `task_id`
++  - `piece_index`: 1-based integer; atomic placements use `1`.
++  - `piece_count`: positive integer; atomic placements use `1`.
++  - start/end or equivalent occupied interval fields required by the implementation profile.
+ - `score_summary`:
+   - `utility_score`
+   - `robustness_score`
+@@ -318,6 +343,8 @@ Common names:
+ - `task_index`: padded task-slot index within `MAX_PLANNING_TASKS`.
+ - `validity_mask`: boolean mask for occupied task slots or valid candidates.
+ - `start_time_offsets`: planned start offsets from `time_window.start_time`, in planning ticks or seconds as declared by the implementation profile.
++- `piece_index`: 1-based planned piece index per placement, with `1` for atomic placements.
++- `piece_count`: total planned piece count for that Task in the candidate, with `1` for atomic placements.
+ - `duration_samples`: sampled duration tensor.
+ - `feasible_mask`: boolean candidate feasibility mask after stage-local checks.
+ - `surviving_indices`: compacted indices of candidates that survive a filter stage.
+@@ -333,6 +360,7 @@ Consumes:
+ - CPU-provided `topological_order` and validity masks;
+ - dependency edge data or adjacency tensors;
+ - duration-model parameters;
++- split-policy parameters;
+ - time-window and planning-delta parameters;
+ - candidate seeds derived from `rng_seed`.
+ 
+@@ -341,6 +369,7 @@ Produces:
+ - candidate schedule tensor or equivalent structured schedule batch;
+ - `start_time_offsets`;
+ - `duration_samples`;
+ - candidate `validity_mask`;
++- per-placement `piece_index` and `piece_count` metadata;
+ - dependency-slack summary;
+ - rejection/failure code per invalid candidate.
+@@ -407,5 +436,7 @@ Produces:
+ - rollout diagnostics and degradation warnings.
+ 
+ Stage 4 uses deterministic rollout seed derivation from the request seed. Phase 1 may use `rng_seed + 3` as the stage-4 rollout seed stream convention until named substreams are introduced. GPU floating-point rollout summaries are reproducible within the recorded tolerance profile, not bitwise across hardware, drivers, PyTorch versions, or reduction orders.
++
++For splittable Tasks, Stage 4 reuses the single sampled total work duration for every piece of that Task in a rollout and accounts for deterministic resume overhead before each resumed piece. A rollout remains feasible when unfinished sampled work can continue in a later planned or repair-eligible piece inside the Task window and `max_pieces`; it is infeasible when remaining work, overhead, fixed placements, dependency state, or the allowed range prevent completion under the candidate's policy. Partial scheduled-work value is proportional to completed sampled work for splittable Tasks, while effects and outgoing dependencies require completion of the last piece.
+ 
+ ### CPU/GPU parity expectations

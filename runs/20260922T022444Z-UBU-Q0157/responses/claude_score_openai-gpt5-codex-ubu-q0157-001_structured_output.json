@@ -1,0 +1,22 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-gpt5-codex-UBU-Q0157-001",
+      "score": 88,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Constant resume overhead is a simplifying assumption; later phases may need time-dependent overhead, requiring another contract revision",
+        "Proportional value for incomplete splittable Tasks could create scoring incentives that favor starting many splittable Tasks over completing atomic ones, though this is flagged as Phase 1b scope",
+        "Sharing the minor contract version with UBU-Q0155 partial placement couples two independent decisions; if UBU-Q0155 resolves differently the two decision records will need reconciliation"
+      ],
+      "required_fixes": [],
+      "rationale": "The patch applies cleanly and touches only the allowlisted files (DECISIONS.md, DESIGN.md, OPEN_QUESTIONS.md, PLANNING_KERNEL_CONTRACT.md) per mechanical validation. It answers all ten subquestions: policy shape with atomic default and required splittable fields (no hidden category defaults, advisors may propose but admission is explicit), constant resume overhead with no Phase 1b affect cost, at-most-one-piece-per-chunk placement inside the Task's allowed range, segments staying atomic with child Tasks independently splittable only via segment boundaries, a shared minor contract version with UBU-Q0155, rollout semantics for one sampled total duration spent across pieces with continuation-as-feasibility, explicit statement that Phase 1b needs only the split policy as interruption-facing input, Log-evidence-based progress recording without Container replacement, proportional value for completed sampled work while completion/effects wait for the last piece, and piece-based projection titles like '(2/3)' anchored to one canonical Task. OPEN_QUESTIONS.md preserves the single-line metadata format and updates status/Resolution appropriately. The contract additions to PLANNING_KERNEL_CONTRACT.md are proportionate to the decision and don't reach into unrelated sections. No unnecessary scope expansion is evident."
+    }
+  ],
+  "selected_proposal_id": "openai-gpt5-codex-UBU-Q0157-001",
+  "selection_rationale": "Only one candidate proposal was provided for this question. It passes mechanical validation (patch applies, allowlist respected), directly and comprehensively resolves all ten subquestions posed in UBU-Q0157, preserves the OPEN_QUESTIONS.md schema, and stays within the scope of the decision (split-policy data model, contract changes shared with UBU-Q0155) without drifting into unrelated areas. It is selected by default as the sole valid, responsive candidate.</selection_rationale>\n</invoke>\n"
+}

@@ -1,0 +1,11 @@
+[
+  {
+    "proposal_id": "openai-gpt5-codex-UBU-Q0157-001",
+    "author_provider": "openai",
+    "cross_score_count": 2,
+    "score_mean": 89.5,
+    "score_spread": 3,
+    "frontier_score_gap": 3,
+    "disagreement_flags": []
+  }
+]

@@ -1,0 +1,26 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-gpt5-codex-UBU-Q0157-001",
+      "score": 90,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": false,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Constant resume overhead is a simplifying assumption; later phases may need time-dependent overhead, requiring another contract revision",
+        "DESIGN.md retains the sentence 'Phase 1b keeps the planning kernel contract unchanged' in the decomposition section, which now conflicts with the accepted split-policy contract changes unless narrowed to decomposition-segment handling.",
+        "Proportional value for incomplete splittable Tasks could create scoring incentives that favor starting many splittable Tasks over completing atomic ones, though this is flagged as Phase 1b scope",
+        "Sharing the minor contract version with UBU-Q0155 partial placement couples two independent decisions; if UBU-Q0155 resolves differently the two decision records will need reconciliation",
+        "The decision text has a minor wording inconsistency by first calling min_piece_seconds non-negative and then immediately requiring it to be positive."
+      ],
+      "required_fixes": [
+        "Clarify the remaining DESIGN.md sentence about the kernel contract so it applies only to decomposition segment compilation or otherwise acknowledges the split-policy contract change."
+      ],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "openai-gpt5-codex-UBU-Q0157-001",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}
