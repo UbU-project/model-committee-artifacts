@@ -1,0 +1,22 @@
+{
+  "scores": [
+    {
+      "proposal_id": "codex-ubu-q0154-d0286",
+      "score": 88,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Introduces a fairly large new decision (UBU-D0286) that bundles many sub-decisions (schedule subset, occurrence identity, relative routines, streaks) into one artifact, which could make future amendment harder if any single sub-part needs revision",
+        "Deterministic occurrence key formula (Objective id, schedule version, local occurrence anchor, placement mode, template version) is asserted but not cross-referenced against any existing dedup/idempotency decision, so consistency with prior determinism decisions (e.g. UBU-D0213) should be verified by a human reviewer",
+        "The 'review candidate' surfacing behavior for conflicting rule edits vs logged history is new terminology not obviously defined elsewhere in DESIGN.md, risking inconsistent usage"
+      ],
+      "required_fixes": [],
+      "rationale": "The patch applies cleanly per mechanical validation and stays within the allowed-file surface (DECISIONS.md, DESIGN.md, OPEN_QUESTIONS.md, PLANNING_KERNEL_CONTRACT.md). It directly answers all eight subquestions in UBU-Q0154: schedule subset (daily/weekly/day-of-month/first-workday-of-month/first-workday-of-quarter, explicitly deferring holiday calendars), routine-to-Objective mapping with clear field placement, direct instantiation without Technique expansion (deferred to Phase 3 as the question anticipated), instantiation window and deterministic occurrence identity with a defined edit-propagation policy, relative 'after' routines lowered to nominal start/range plus optional dependency edge, static/planned placement with chunk-merge consequences per UBU-D0279, and completion/streak rollup per UBU-D0214. It follows the existing OPEN_QUESTIONS.md status-line schema (Status/Priority/... fields) correctly, updating Status to Solved, Resolved by to UBU-D0286, and Answerability to 100, consistent with the file's conventions. Scope is appropriately bounded to Phase 1b as the question specifies, with explicit non-goals (holiday calendars, minimum-lag kernel edges) called out rather than silently expanded. The PLANNING_KERNEL_CONTRACT.md addition is a small, well-scoped clarification that routine instantiation is pre-kernel, consistent with the existing Phase 3 pre-kernel pattern already documented there. Overall this is a thorough, self-consistent, minimally-scoped resolution."
+    }
+  ],
+  "selected_proposal_id": "codex-ubu-q0154-d0286",
+  "selection_rationale": "This is the only proposal submitted for UBU-Q0154 and it passed mechanical validation (patch applies, only touches allowlisted files). It substantively answers all eight subquestions, correctly defers Technique expansion to Phase 3 as the question anticipated, explicitly scopes out non-Phase-1b concerns (holiday calendars, minimum-lag kernel edges) rather than silently expanding scope, and follows the existing OPEN_QUESTIONS.md/DECISIONS.md schema conventions for marking a question solved and cross-linking the new decision."
+}

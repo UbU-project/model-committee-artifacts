@@ -1,0 +1,25 @@
+{
+  "scores": [
+    {
+      "proposal_id": "codex-ubu-q0154-d0286",
+      "score": 90,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": false,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Deterministic occurrence key formula (Objective id, schedule version, local occurrence anchor, placement mode, template version) is asserted but not cross-referenced against any existing dedup/idempotency decision, so consistency with prior determinism decisions (e.g. UBU-D0213) should be verified by a human reviewer",
+        "Introduces a fairly large new decision (UBU-D0286) that bundles many sub-decisions (schedule subset, occurrence identity, relative routines, streaks) into one artifact, which could make future amendment harder if any single sub-part needs revision",
+        "The 'review candidate' surfacing behavior for conflicting rule edits vs logged history is new terminology not obviously defined elsewhere in DESIGN.md, risking inconsistent usage",
+        "The PLANNING_KERNEL_CONTRACT addition refers to a concrete UTC `window`, while the design language elsewhere uses `allowed_time_range`; if `window` is not the established kernel field name, this should be aligned before implementation.",
+        "The deterministic occurrence key includes schedule/template/placement versions, so implementations must reliably supersede unstarted cached occurrences on edits to avoid duplicate future instances for the same local anchor.",
+        "The semantics for reviewed excusals, started-but-not-completed future evidence, and relative occurrence matching are intentionally high level and may need follow-up schema detail during implementation."
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "codex-ubu-q0154-d0286",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}
