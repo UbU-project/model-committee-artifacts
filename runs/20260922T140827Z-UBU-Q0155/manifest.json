@@ -1,0 +1,186 @@
+{
+  "schema_version": "0.4",
+  "run_id": "20260922T140827Z-UBU-Q0155",
+  "created_at_utc": "2026-09-22T14:08:27Z",
+  "repo_path": "../ubu-design",
+  "base_commit": "e4aceaf28ce6f8f59e8ff1ae6faa5a8418b32d0b",
+  "selected_question_id": "UBU-Q0155",
+  "phase": "work-select",
+  "config_path": "config/models.json",
+  "status": "selected",
+  "commands": [
+    "model-committee run-loop"
+  ],
+  "providers_attempted": [
+    "codex",
+    "claude"
+  ],
+  "providers_succeeded": [
+    "codex",
+    "claude"
+  ],
+  "providers_failed": [],
+  "provider_attempts": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-score",
+      "target_proposal_id": "openai-gpt5-codex-UBU-Q0155-D0289",
+      "response_path": "runs/20260922T140827Z-UBU-Q0155/responses/codex_score_openai-gpt5-codex-ubu-q0155-d0289_response.json",
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "sonnet",
+      "phase": "work-score",
+      "target_proposal_id": "openai-gpt5-codex-UBU-Q0155-D0289",
+      "response_path": "runs/20260922T140827Z-UBU-Q0155/responses/claude_score_openai-gpt5-codex-ubu-q0155-d0289_stdout.json",
+      "stderr_path": null
+    }
+  ],
+  "provider_successes": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20260922T140827Z-UBU-Q0155/parsed/codex_work_proposal.json"
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-score",
+      "target_proposal_id": "openai-gpt5-codex-UBU-Q0155-D0289",
+      "response_path": "runs/20260922T140827Z-UBU-Q0155/responses/codex_score_openai-gpt5-codex-ubu-q0155-d0289_response.json",
+      "parsed_path": "runs/20260922T140827Z-UBU-Q0155/parsed/codex_score_openai-gpt5-codex-ubu-q0155-d0289_result.json"
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "sonnet",
+      "phase": "work-score",
+      "target_proposal_id": "openai-gpt5-codex-UBU-Q0155-D0289",
+      "response_path": "runs/20260922T140827Z-UBU-Q0155/responses/claude_score_openai-gpt5-codex-ubu-q0155-d0289_stdout.json",
+      "parsed_path": "runs/20260922T140827Z-UBU-Q0155/parsed/claude_score_openai-gpt5-codex-ubu-q0155-d0289_result.json"
+    }
+  ],
+  "provider_failures": [],
+  "score_matrix": [
+    {
+      "proposal_id": "openai-gpt5-codex-UBU-Q0155-D0289",
+      "author_provider": "openai",
+      "scorer_provider": "codex",
+      "score": 93,
+      "valid": true,
+      "rationale": "The proposal cleanly applies, touches only the expected design/decision/contract/question documents, and directly answers all UBU-Q0155 subquestions. It establishes the local-vs-blocking boundary, deterministic omission order, dependency deferral, additive `PlanningResponse.diagnostics.unplaced_tasks`, shared minor contract version, bounded horizon extension, risk/next-action surfacing, chunk-specific reasons, and splittable carry-forward semantics. Scope is appropriately limited to documentation and contract semantics, with only minor future-integration risks around enum/schema precision.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "The contract text narrows `status = partial` around unplaced optional Dynamic work even though the enum may eventually need to cover other partial-response modes.",
+        "The unplaced diagnostic enum and safe-alternative action list are useful but may need later schema alignment if generated schemas enforce the existing `safe_alternatives.action` vocabulary globally.",
+        "The horizon-extension behavior says the CPU kernel may attempt one retry, which preserves policy discretion but leaves implementation thresholds mostly implicit."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20260922T140827Z-UBU-Q0155/responses/codex_score_openai-gpt5-codex-ubu-q0155-d0289_response.json",
+        "stderr_path": null
+      }
+    },
+    {
+      "proposal_id": "openai-gpt5-codex-UBU-Q0155-D0289",
+      "author_provider": "openai",
+      "scorer_provider": "claude",
+      "score": 90,
+      "valid": true,
+      "rationale": "The patch applies cleanly per mechanical validation and touches only the expected canonical decision/design/contract documentation files. It substantively answers all seven subquestions: it draws a clear local/blocking boundary, defines deferral semantics (deferred_dependency, affected_dependent_task_refs), gives a deterministic selection order (value, then deadline/latest_finish, then id) with mandatory work protected, adds an additive PlanningResponse.diagnostics.unplaced_tasks field sharing the Phase 1b minor contract version with the split-policy change, adds a bounded horizon-extension retry step before deferral, specifies risk-report/next-action surfacing, and distinguishes chunk-size vs aggregate-capacity unplaced reasons while supporting splittable carry-forward. The OPEN_QUESTIONS.md resolution text is consistent with the new decision, and status/answerability fields are updated appropriately. It stays within the current question's scope without introducing implementation code, which is proper for a decision-record-only change of this kind.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "Introduces a new contract minor version (0.2) shared with the UBU-Q0157 split-policy change; if that change lands differently or is rejected, this proposal's contract claim could become inconsistent and need reconciliation.",
+        "The horizon_extension enum and selection_rank fields add moderate new surface area to UnplacedTaskDiagnostic that downstream implementers must build against before any reference implementation exists.",
+        "Blocking/local boundary relies on judgment calls (e.g., 'required support Tasks' always blocking) that could be contested by future decisions without an explicit test or example to anchor them."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20260922T140827Z-UBU-Q0155/responses/claude_score_openai-gpt5-codex-ubu-q0155-d0289_stdout.json",
+        "stderr_path": null
+      }
+    }
+  ],
+  "score_aggregates": [
+    {
+      "proposal_id": "openai-gpt5-codex-UBU-Q0155-D0289",
+      "author_provider": "openai",
+      "cross_score_count": 2,
+      "score_mean": 91.5,
+      "score_spread": 3,
+      "frontier_score_gap": 3,
+      "disagreement_flags": []
+    }
+  ],
+  "cross_score_count": 2,
+  "score_mean": 91.5,
+  "score_spread": 3,
+  "frontier_score_gap": 3,
+  "disagreement_flags": [],
+  "quorum_result": {
+    "valid": true,
+    "human_review_required": false,
+    "selected_proposal_id": "openai-gpt5-codex-UBU-Q0155-D0289",
+    "selected_score": 91.5,
+    "selected_cross_score_count": 2,
+    "blocked_reasons": [],
+    "manual_override": false
+  },
+  "selected_proposal_id": "openai-gpt5-codex-UBU-Q0155-D0289",
+  "automated_selection_valid": true,
+  "human_review_required": false,
+  "artifact_publication_status": "operator_pending",
+  "prompt_size_warning": true,
+  "prompt_context": {
+    "question_ids": [
+      "UBU-Q0153",
+      "UBU-Q0155"
+    ],
+    "decision_ids": [
+      "UBU-D0275",
+      "UBU-D0277",
+      "UBU-D0279"
+    ],
+    "sections": {
+      "PLANNING_KERNEL_CONTRACT.md": [
+        "4",
+        "5"
+      ],
+      "DESIGN.md": [
+        "4",
+        "15.2.2",
+        "16.3",
+        "16.10"
+      ]
+    },
+    "core_sections": {
+      "DESIGN.md": [
+        "1"
+      ],
+      "DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md": [
+        "4"
+      ]
+    },
+    "missing_refs": {},
+    "context_chars": 87008,
+    "prompt_chars": 93289
+  }
+}

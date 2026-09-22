@@ -1,0 +1,46 @@
+[
+  {
+    "proposal_id": "openai-gpt5-codex-UBU-Q0155-D0289",
+    "author_provider": "openai",
+    "scorer_provider": "codex",
+    "score": 93,
+    "valid": true,
+    "rationale": "The proposal cleanly applies, touches only the expected design/decision/contract/question documents, and directly answers all UBU-Q0155 subquestions. It establishes the local-vs-blocking boundary, deterministic omission order, dependency deferral, additive `PlanningResponse.diagnostics.unplaced_tasks`, shared minor contract version, bounded horizon extension, risk/next-action surfacing, chunk-specific reasons, and splittable carry-forward semantics. Scope is appropriately limited to documentation and contract semantics, with only minor future-integration risks around enum/schema precision.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [
+      "The contract text narrows `status = partial` around unplaced optional Dynamic work even though the enum may eventually need to cover other partial-response modes.",
+      "The unplaced diagnostic enum and safe-alternative action list are useful but may need later schema alignment if generated schemas enforce the existing `safe_alternatives.action` vocabulary globally.",
+      "The horizon-extension behavior says the CPU kernel may attempt one retry, which preserves policy discretion but leaves implementation thresholds mostly implicit."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20260922T140827Z-UBU-Q0155/responses/codex_score_openai-gpt5-codex-ubu-q0155-d0289_response.json",
+      "stderr_path": null
+    }
+  },
+  {
+    "proposal_id": "openai-gpt5-codex-UBU-Q0155-D0289",
+    "author_provider": "openai",
+    "scorer_provider": "claude",
+    "score": 90,
+    "valid": true,
+    "rationale": "The patch applies cleanly per mechanical validation and touches only the expected canonical decision/design/contract documentation files. It substantively answers all seven subquestions: it draws a clear local/blocking boundary, defines deferral semantics (deferred_dependency, affected_dependent_task_refs), gives a deterministic selection order (value, then deadline/latest_finish, then id) with mandatory work protected, adds an additive PlanningResponse.diagnostics.unplaced_tasks field sharing the Phase 1b minor contract version with the split-policy change, adds a bounded horizon-extension retry step before deferral, specifies risk-report/next-action surfacing, and distinguishes chunk-size vs aggregate-capacity unplaced reasons while supporting splittable carry-forward. The OPEN_QUESTIONS.md resolution text is consistent with the new decision, and status/answerability fields are updated appropriately. It stays within the current question's scope without introducing implementation code, which is proper for a decision-record-only change of this kind.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [
+      "Introduces a new contract minor version (0.2) shared with the UBU-Q0157 split-policy change; if that change lands differently or is rejected, this proposal's contract claim could become inconsistent and need reconciliation.",
+      "The horizon_extension enum and selection_rank fields add moderate new surface area to UnplacedTaskDiagnostic that downstream implementers must build against before any reference implementation exists.",
+      "Blocking/local boundary relies on judgment calls (e.g., 'required support Tasks' always blocking) that could be contested by future decisions without an explicit test or example to anchor them."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20260922T140827Z-UBU-Q0155/responses/claude_score_openai-gpt5-codex-ubu-q0155-d0289_stdout.json",
+      "stderr_path": null
+    }
+  }
+]

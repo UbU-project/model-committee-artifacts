@@ -1,0 +1,22 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-gpt5-codex-UBU-Q0155-D0289",
+      "score": 90,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "good",
+      "risks": [
+        "Introduces a new contract minor version (0.2) shared with the UBU-Q0157 split-policy change; if that change lands differently or is rejected, this proposal's contract claim could become inconsistent and need reconciliation.",
+        "The horizon_extension enum and selection_rank fields add moderate new surface area to UnplacedTaskDiagnostic that downstream implementers must build against before any reference implementation exists.",
+        "Blocking/local boundary relies on judgment calls (e.g., 'required support Tasks' always blocking) that could be contested by future decisions without an explicit test or example to anchor them."
+      ],
+      "required_fixes": [],
+      "rationale": "The patch applies cleanly per mechanical validation and touches only the expected canonical decision/design/contract documentation files. It substantively answers all seven subquestions: it draws a clear local/blocking boundary, defines deferral semantics (deferred_dependency, affected_dependent_task_refs), gives a deterministic selection order (value, then deadline/latest_finish, then id) with mandatory work protected, adds an additive PlanningResponse.diagnostics.unplaced_tasks field sharing the Phase 1b minor contract version with the split-policy change, adds a bounded horizon-extension retry step before deferral, specifies risk-report/next-action surfacing, and distinguishes chunk-size vs aggregate-capacity unplaced reasons while supporting splittable carry-forward. The OPEN_QUESTIONS.md resolution text is consistent with the new decision, and status/answerability fields are updated appropriately. It stays within the current question's scope without introducing implementation code, which is proper for a decision-record-only change of this kind."
+    }
+  ],
+  "selected_proposal_id": "openai-gpt5-codex-UBU-Q0155-D0289",
+  "selection_rationale": "This is the only candidate proposal submitted for UBU-Q0155, and it passes mechanical validation (patch applies cleanly, touches only allowed documentation files). It directly and comprehensively answers all seven subquestions with a coherent, deterministic policy (local vs. blocking boundary, deferral semantics, selection ordering, additive contract field sharing a minor version with the related split-policy question, bounded horizon-extension retry, surfacing in risk/next-action, and chunk-specific unplaced reasons with splittable carry-forward). It stays within the scope of a decision-record change and updates OPEN_QUESTIONS.md/DECISIONS.md consistently, so it is selected by default as the sole valid, responsive proposal.</selection_rationale>\n</invoke>\n"
+}

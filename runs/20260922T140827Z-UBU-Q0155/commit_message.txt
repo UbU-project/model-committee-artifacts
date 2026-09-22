@@ -1,0 +1,1 @@
+UMC: Resolve UBU-Q0155 partial placement semantics

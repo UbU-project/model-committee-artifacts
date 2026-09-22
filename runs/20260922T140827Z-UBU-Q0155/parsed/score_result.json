@@ -1,0 +1,25 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-gpt5-codex-UBU-Q0155-D0289",
+      "score": 92,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": false,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Blocking/local boundary relies on judgment calls (e.g., 'required support Tasks' always blocking) that could be contested by future decisions without an explicit test or example to anchor them.",
+        "Introduces a new contract minor version (0.2) shared with the UBU-Q0157 split-policy change; if that change lands differently or is rejected, this proposal's contract claim could become inconsistent and need reconciliation.",
+        "The contract text narrows `status = partial` around unplaced optional Dynamic work even though the enum may eventually need to cover other partial-response modes.",
+        "The horizon-extension behavior says the CPU kernel may attempt one retry, which preserves policy discretion but leaves implementation thresholds mostly implicit.",
+        "The horizon_extension enum and selection_rank fields add moderate new surface area to UnplacedTaskDiagnostic that downstream implementers must build against before any reference implementation exists.",
+        "The unplaced diagnostic enum and safe-alternative action list are useful but may need later schema alignment if generated schemas enforce the existing `safe_alternatives.action` vocabulary globally."
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "openai-gpt5-codex-UBU-Q0155-D0289",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}
