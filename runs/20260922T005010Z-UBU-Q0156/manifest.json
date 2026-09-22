@@ -1,0 +1,185 @@
+{
+  "schema_version": "0.4",
+  "run_id": "20260922T005010Z-UBU-Q0156",
+  "created_at_utc": "2026-09-22T00:50:10Z",
+  "repo_path": "../ubu-design",
+  "base_commit": "4f4ef5f80a5900ee4bbcd967a50d94e46d8acd9e",
+  "selected_question_id": "UBU-Q0156",
+  "phase": "work-select",
+  "config_path": "config/models.json",
+  "status": "selected",
+  "commands": [
+    "model-committee run-loop"
+  ],
+  "providers_attempted": [
+    "codex",
+    "claude"
+  ],
+  "providers_succeeded": [
+    "codex",
+    "claude"
+  ],
+  "providers_failed": [],
+  "provider_attempts": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-score",
+      "target_proposal_id": "openai-gpt-5-codex-UBU-Q0156-001",
+      "response_path": "runs/20260922T005010Z-UBU-Q0156/responses/codex_score_openai-gpt-5-codex-ubu-q0156-001_response.json",
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "sonnet",
+      "phase": "work-score",
+      "target_proposal_id": "openai-gpt-5-codex-UBU-Q0156-001",
+      "response_path": "runs/20260922T005010Z-UBU-Q0156/responses/claude_score_openai-gpt-5-codex-ubu-q0156-001_stdout.json",
+      "stderr_path": null
+    }
+  ],
+  "provider_successes": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20260922T005010Z-UBU-Q0156/parsed/codex_work_proposal.json"
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-5.5",
+      "phase": "work-score",
+      "target_proposal_id": "openai-gpt-5-codex-UBU-Q0156-001",
+      "response_path": "runs/20260922T005010Z-UBU-Q0156/responses/codex_score_openai-gpt-5-codex-ubu-q0156-001_response.json",
+      "parsed_path": "runs/20260922T005010Z-UBU-Q0156/parsed/codex_score_openai-gpt-5-codex-ubu-q0156-001_result.json"
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "sonnet",
+      "phase": "work-score",
+      "target_proposal_id": "openai-gpt-5-codex-UBU-Q0156-001",
+      "response_path": "runs/20260922T005010Z-UBU-Q0156/responses/claude_score_openai-gpt-5-codex-ubu-q0156-001_stdout.json",
+      "parsed_path": "runs/20260922T005010Z-UBU-Q0156/parsed/claude_score_openai-gpt-5-codex-ubu-q0156-001_result.json"
+    }
+  ],
+  "provider_failures": [],
+  "score_matrix": [
+    {
+      "proposal_id": "openai-gpt-5-codex-UBU-Q0156-001",
+      "author_provider": "openai",
+      "scorer_provider": "codex",
+      "score": 93,
+      "valid": true,
+      "rationale": "The proposal directly resolves every subquestion: invocation model, boundary types, timestamp representation, PyTorch confirmation, reproducibility, parity testing, fallback/provenance, chunking, and streaming. It keeps PlanningRequest/PlanningResponse as the semantic boundary while allowing worker envelopes only for transport, aligns with CPU certification and fallback constraints, and modifies only the expected design/contract/question files. The normalized patch applies cleanly and the scope is appropriate for an architecture decision.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "Chooses a persistent worker process contrary to the prior DESIGN.md text, which is intentional for the decision but will require implementation follow-through in the existing scaffold.",
+        "Adds new contract fields such as delivery_mode and engine_provenance; these are relevant to the question but may require downstream schema/code updates.",
+        "Tolerance profiles and length-prefixed frame details are named but not fully specified, leaving some implementation detail for later decisions."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20260922T005010Z-UBU-Q0156/responses/codex_score_openai-gpt-5-codex-ubu-q0156-001_response.json",
+        "stderr_path": null
+      }
+    },
+    {
+      "proposal_id": "openai-gpt-5-codex-UBU-Q0156-001",
+      "author_provider": "openai",
+      "scorer_provider": "claude",
+      "score": 84,
+      "valid": true,
+      "rationale": "The proposal directly answers all eight subquestions in UBU-Q0156 with a single coherent resolution (persistent local Python worker, not in-process call or bare subprocess-as-before), and explicitly preserves the 'current direction' constraints (PlanningRequest/PlanningResponse boundary fixed, CPU certification authoritative, TaskSpec unchanged). It stays within the four allowlisted design files, adds one new decision (UBU-D0283), and correctly flips UBU-Q0156 to Solved/Resolved referencing that decision. Content addresses invocation, boundary types (including timestamp representation and envelope vs semantic types), PyTorch confirmation, reproducibility tolerance with CPU-final-authority language, parity testing (exact vs statistical), fallback/provenance recording, chunked search staying within one invocation, and streaming via PlanningStreamFrame \u2014 a genuinely complete decomposition of the question with no unrelated scope creep. The one real defect is mechanical: git apply's ordinary mode fails ('corrupt patch at line 190') and the patch only succeeds after --recount normalization, meaning the diff is not a faithful literal patch against the stated base; validation results otherwise record allowlist_passed and patch_applies as true post-normalization. This is a real but recoverable defect, not a schema or scope violation.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [
+        "Regenerate the patch as a clean diff against the exact base commit so it applies without --recount normalization."
+      ],
+      "risks": [
+        "Patch required --recount normalization to apply (ordinary git apply reported 'corrupt patch at line 190'), so it is not a byte-perfect diff against the stated base commit and may need re-generation for clean history.",
+        "Introduces a fairly large new subsystem (persistent worker, framed PlanningStreamFrame protocol, engine_provenance schema) in one decision; this is substantively justified by the question's eight subquestions but is a lot of new contract surface to review at once.",
+        "New PLANNING_KERNEL_CONTRACT.md fields (delivery_mode, engine_provenance, PlanningStreamFrame) are additive but not marked with schema-version bump guidance beyond generic versioning language already in the doc."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20260922T005010Z-UBU-Q0156/responses/claude_score_openai-gpt-5-codex-ubu-q0156-001_stdout.json",
+        "stderr_path": null
+      }
+    }
+  ],
+  "score_aggregates": [
+    {
+      "proposal_id": "openai-gpt-5-codex-UBU-Q0156-001",
+      "author_provider": "openai",
+      "cross_score_count": 2,
+      "score_mean": 88.5,
+      "score_spread": 9,
+      "frontier_score_gap": 9,
+      "disagreement_flags": []
+    }
+  ],
+  "cross_score_count": 2,
+  "score_mean": 88.5,
+  "score_spread": 9,
+  "frontier_score_gap": 9,
+  "disagreement_flags": [],
+  "quorum_result": {
+    "valid": true,
+    "human_review_required": false,
+    "selected_proposal_id": "openai-gpt-5-codex-UBU-Q0156-001",
+    "selected_score": 88.5,
+    "selected_cross_score_count": 2,
+    "blocked_reasons": [],
+    "manual_override": false
+  },
+  "selected_proposal_id": "openai-gpt-5-codex-UBU-Q0156-001",
+  "automated_selection_valid": true,
+  "human_review_required": false,
+  "artifact_publication_status": "operator_pending",
+  "prompt_size_warning": false,
+  "prompt_context": {
+    "question_ids": [
+      "UBU-Q0156"
+    ],
+    "decision_ids": [
+      "UBU-D0275",
+      "UBU-D0279",
+      "UBU-D0281"
+    ],
+    "sections": {
+      "DESIGN.md": [
+        "4",
+        "16.3",
+        "16.10"
+      ],
+      "PLANNING_KERNEL_CONTRACT.md": [
+        "5"
+      ]
+    },
+    "core_sections": {
+      "DESIGN.md": [
+        "1"
+      ],
+      "DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md": [
+        "4"
+      ]
+    },
+    "missing_refs": {},
+    "context_chars": 62191,
+    "prompt_chars": 68192
+  }
+}

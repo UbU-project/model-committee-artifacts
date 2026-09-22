@@ -1,0 +1,22 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-gpt-5-codex-UBU-Q0156-001",
+      "score": 93,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "good",
+      "risks": [
+        "Chooses a persistent worker process contrary to the prior DESIGN.md text, which is intentional for the decision but will require implementation follow-through in the existing scaffold.",
+        "Adds new contract fields such as delivery_mode and engine_provenance; these are relevant to the question but may require downstream schema/code updates.",
+        "Tolerance profiles and length-prefixed frame details are named but not fully specified, leaving some implementation detail for later decisions."
+      ],
+      "required_fixes": [],
+      "rationale": "The proposal directly resolves every subquestion: invocation model, boundary types, timestamp representation, PyTorch confirmation, reproducibility, parity testing, fallback/provenance, chunking, and streaming. It keeps PlanningRequest/PlanningResponse as the semantic boundary while allowing worker envelopes only for transport, aligns with CPU certification and fallback constraints, and modifies only the expected design/contract/question files. The normalized patch applies cleanly and the scope is appropriate for an architecture decision."
+    }
+  ],
+  "selected_proposal_id": "openai-gpt-5-codex-UBU-Q0156-001",
+  "selection_rationale": "It is the only valid candidate and provides a coherent, auditable resolution that reconciles the scaffold with the contract while preserving the fixed CPU authority and PlanningRequest/PlanningResponse boundary."
+}
