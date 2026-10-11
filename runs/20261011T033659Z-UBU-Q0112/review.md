@@ -1,0 +1,91 @@
+# Model-Committee Review
+
+Run: `20261011T033659Z-UBU-Q0112`  
+Question: `UBU-Q0112`  
+Base commit: `d1a334ef26674792d33b6cfe1be97f4e844673b5`  
+Automated selection: valid
+Human review required: no
+Selected proposal: `ubu-q0112-openai-gpt-6-20261010-v1`
+
+## Disagreement Flags
+
+None.
+
+## Quorum Result
+
+- Valid automated selection: yes
+- Selected score: 88.0
+- Selected cross-score count: 2
+- Blocked reasons: None
+
+## Provider Attempts
+
+| Phase | Provider | Model | Target proposal |
+| --- | --- | --- | --- |
+| `work-generate` | `codex` | `gpt-6.1-sol` | `n/a` |
+| `work-score` | `codex` | `gpt-6.1-sol` | `ubu-q0112-openai-gpt-6-20261010-v1` |
+| `work-score` | `claude` | `claude-fable-5-1` | `ubu-q0112-openai-gpt-6-20261010-v1` |
+
+## Provider Successes
+
+| Phase | Provider | Model | Target proposal |
+| --- | --- | --- | --- |
+| `work-generate` | `codex` | `gpt-6.1-sol` | `n/a` |
+| `work-score` | `codex` | `gpt-6.1-sol` | `ubu-q0112-openai-gpt-6-20261010-v1` |
+| `work-score` | `claude` | `claude-fable-5-1` | `ubu-q0112-openai-gpt-6-20261010-v1` |
+
+## Cross-Score Matrix
+
+| Proposal | Author | Scorer | Valid | Score | Rationale | Required fixes | Risks |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| `ubu-q0112-openai-gpt-6-20261010-v1` | `openai` | `codex` | yes | 92 | Mechanical validation passes, only allowed files change, and the question schema is preserved. The proposal directly answers all six subquestions with explicit fields, guarded transitions, independent preconditions and worker assignments, planning visibility, Calendar behavior, and atomic audit events. Scope remains focused on Phase 2 waiting-for architecture. One planning-integration clarification remains. | Clarify that filtering preserves atomic Container segments unless an admitted boundary change occurs, and that blocked mandatory routines, required support work, and Static dependency chains retain the blocking feasibility diagnostics required by DESIGN.md §§9.4 and 15.2.2. | Pre-kernel exclusion of waiting tasks and dependents leaves their interaction with atomic Container segments and mandatory baseline work implicit, risking incomplete segments or silently omitted required work. |
+| `ubu-q0112-openai-gpt-6-20261010-v1` | `openai` | `claude` | yes | 84 | Applies cleanly and passes the allowlist with no warnings. Addresses all six subquestions directly and follows the stated current direction (Task status, not Task type; optional Identity ref): the waiting record covers counterparty ref, a tagged expected-by, reminder policy, escalation trigger, evidence refs, and an episode id; the status-vs-precondition boundary and the worker-polling boundary are both stated; the horizon gets a blocked-waits view, a derived lateness/fragility finding, and elapsed_time review triggers; three new Log events are defined with terminal outcome events retained and recalculation_triggered reused; Calendar preview suppresses the execution slot while showing non-occupying markers. Uses the standard three-file resolution shape, keeps the OPEN_QUESTIONS metadata on one line, updates only the UBU-Q0112 block, appends UBU-D0307 after UBU-D0306, and marks requires_human_review consistent with the question's auto-choice eligibility. Deductions for prose density that will slow human review, for specifying auto-resume, partial-Replica, and idempotency rules beyond the subquestions' strict scope, for an unclear lightweight manual release path, and for cross-references I could not verify from the prompt. | Before acceptance, confirm against the base tree that DESIGN.md has no existing §9.6 and that every cited section and decision (§9.5, §10.1, §17, §17.3, §25.1.2, §28, §29, UBU-D0227, UBU-D0228) exists with the meaning the patch assumes., State explicitly whether the user's own recorded assertion that the response arrived qualifies as admitted release evidence, so the ordinary manual case does not require an override reason. | Cross-references (DESIGN.md §9.5 moot reasons, §10.1 predicate schema, §17/§17.3 Log envelope and correction links, §25.1.2 worker assignment, §28 risk reporting, §29 recalculation; decisions UBU-D0227/UBU-D0228) could not be verified from the prompt alone; a wrong section number would leave dangling pointers in a canonical spec., The new '### 9.6' heading is inserted immediately before the section-ending '---'. Plausibly §9.5 is the last existing subsection, but if the base DESIGN.md already has a §9.6 the numbering collides., Specification prose is very dense (e.g., the partial-Replica 'absent' match rule, the version-checked idempotency rules), which raises the cost of human review and later amendment., Waiting Tasks and all transitive dependents are excluded before kernel dispatch and expected-by can never establish future readiness, so the planner never projects downstream work past an expected reply. This is a deliberate honesty-over-prediction tradeoff; reviewers should confirm it matches the question's 'planning horizon accuracy' goal., The common manual release path is not clearly lightweight: waiting_for -> active requires admitted evidence satisfying the release criterion or an override with a reason, and it is ambiguous whether a bare user assertion that the reply arrived counts as admitted evidence., Adds auto_resume/resume_precondition, escalation review, and sync/idempotency semantics beyond what the six subquestions strictly ask; framed as reuse of existing mechanisms, but it widens the Phase 2 surface area., Default reminder 'once' at the expected-by boundary plus an optional escalation_trigger_at can produce two attention items close together; the collapse rule covers missed repeats but not this pairing. |
+
+## Selected Summary
+
+Define Phase 2 WAITING_FOR as an explicit Task status with evidence-based release, reminders, local escalation review, blocked planning visibility, and auditable transitions.
+
+## Changed Files
+
+- `DECISIONS.md`
+- `DESIGN.md`
+- `OPEN_QUESTIONS.md`
+
+## Validation
+
+- Patch applies: yes
+- Patch allowlist passed: yes
+- Question schema preserved: review required
+
+## Risks
+
+- Adds auto_resume/resume_precondition, escalation review, and sync/idempotency semantics beyond what the six subquestions strictly ask; framed as reuse of existing mechanisms, but it widens the Phase 2 surface area.
+- Cross-references (DESIGN.md §9.5 moot reasons, §10.1 predicate schema, §17/§17.3 Log envelope and correction links, §25.1.2 worker assignment, §28 risk reporting, §29 recalculation; decisions UBU-D0227/UBU-D0228) could not be verified from the prompt alone; a wrong section number would leave dangling pointers in a canonical spec.
+- Default reminder 'once' at the expected-by boundary plus an optional escalation_trigger_at can produce two attention items close together; the collapse rule covers missed repeats but not this pairing.
+- Pre-kernel exclusion of waiting tasks and dependents leaves their interaction with atomic Container segments and mandatory baseline work implicit, risking incomplete segments or silently omitted required work.
+- Specification prose is very dense (e.g., the partial-Replica 'absent' match rule, the version-checked idempotency rules), which raises the cost of human review and later amendment.
+- The common manual release path is not clearly lightweight: waiting_for -> active requires admitted evidence satisfying the release criterion or an override with a reason, and it is ambiguous whether a bare user assertion that the reply arrived counts as admitted evidence.
+- The new '### 9.6' heading is inserted immediately before the section-ending '---'. Plausibly §9.5 is the last existing subsection, but if the base DESIGN.md already has a §9.6 the numbering collides.
+- Waiting Tasks and all transitive dependents are excluded before kernel dispatch and expected-by can never establish future readiness, so the planner never projects downstream work past an expected reply. This is a deliberate honesty-over-prediction tradeoff; reviewers should confirm it matches the question's 'planning horizon accuracy' goal.
+
+## Next Manual Steps
+
+```bash
+git -C ../ubu-design apply "$(pwd)/runs/20261011T033659Z-UBU-Q0112/patches/selected.patch"
+git -C ../ubu-design commit -S -F "$(pwd)/runs/20261011T033659Z-UBU-Q0112/commit_message.txt"
+```
+
+## Artifact Publication
+
+Operator-run only. Do not execute automatically from model-committee.
+
+```bash
+RUN_ID="20261011T033659Z-UBU-Q0112"
+
+mkdir -p ../model-committee-artifacts/runs
+cp -r "$(pwd)/runs/${RUN_ID}" ../model-committee-artifacts/runs/
+
+git -C ../model-committee-artifacts add "runs/${RUN_ID}"
+git -C ../model-committee-artifacts commit -S -m "UMC artifact ${RUN_ID}"
+git -C ../model-committee-artifacts push
+```

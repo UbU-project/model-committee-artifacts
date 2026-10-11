@@ -1,0 +1,22 @@
+{
+  "scores": [
+    {
+      "proposal_id": "ubu-q0112-openai-gpt-6-20261010-v1",
+      "score": 92,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Pre-kernel exclusion of waiting tasks and dependents leaves their interaction with atomic Container segments and mandatory baseline work implicit, risking incomplete segments or silently omitted required work."
+      ],
+      "required_fixes": [
+        "Clarify that filtering preserves atomic Container segments unless an admitted boundary change occurs, and that blocked mandatory routines, required support work, and Static dependency chains retain the blocking feasibility diagnostics required by DESIGN.md §§9.4 and 15.2.2."
+      ],
+      "rationale": "Mechanical validation passes, only allowed files change, and the question schema is preserved. The proposal directly answers all six subquestions with explicit fields, guarded transitions, independent preconditions and worker assignments, planning visibility, Calendar behavior, and atomic audit events. Scope remains focused on Phase 2 waiting-for architecture. One planning-integration clarification remains."
+    }
+  ],
+  "selected_proposal_id": "ubu-q0112-openai-gpt-6-20261010-v1",
+  "selection_rationale": "The sole candidate is mechanically valid and comprehensively addresses the selected question. This nomination is for local cross-score aggregation; adoption still requires human approval and the identified clarification."
+}
