@@ -1,0 +1,24 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-gpt-6-UBU-Q0117-20261011",
+      "score": 86,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "none",
+      "risks": [
+        "\u00a79.7 cites many existing constructs that cannot be verified from the prompt alone (\u00a79.5 moot reason codes `no_longer_relevant`, `invalidated_by_universe_change`, `user_declared_moot`; \u00a77.4.1 routine occurrence controls; \u00a717.0 decision payload; \u00a717.3 correction links; `elapsed_time`/`log_review_due` paths; Setting vs Preference distinction). Any of these being absent or named differently would leave dangling references.",
+        "The proposal maps the question's 'cancel permanently' option onto the existing terminal `moot` status and explicitly forbids a `cancelled` status, while the replaced DESIGN.md paragraph previously spoke of 'cancelled (which is terminal)'. If the Task model actually has a distinct cancelled status, this introduces a contradiction rather than a clarification.",
+        "Promotion to active requires citing an enabled, user-accepted pairwise Preference. If ordinary Task admission does not require a Preference at creation, promoted Tasks are held to a stricter bar than newly created active Tasks, which is an asymmetry the text does not acknowledge.",
+        "The \u00a79.7 text is very dense (idempotency keys, sync coalescing, Compartment/Replica caveats, multi-clause `next_review_at` recomputation rule). It is hard to audit and some sentences are difficult to parse, raising the chance of later misreading or conflicting interpretation.",
+        "Several implementation-flavoured details (exact idempotency key tuples, 2592000-second default, per-episode coalescing) are specified in a design document; they are consistent with the \u00a79.6/UBU-D0307 pattern but lock in choices that may better belong to a later implementation decision."
+      ],
+      "required_fixes": [],
+      "rationale": "The patch applies cleanly, touches only the three allowlisted files, and sets `Status: Solved` with `Resolved by: UBU-D0308` while preserving all other question metadata. It answers all five subquestions directly: (1) a single `deferred_intent` record with episode id, entry time, optional reason, optional tagged defer-until boundary, interval, last/next review, and an explicit user deferral action; (2) full exclusion before kernel dispatch including gap-fill and transitive dependents, i.e. the 'invisible' option, with no TaskSpec change; (3) new `task_deferred_intent_entered/updated/exited` events plus `decision_recorded` with `decision_kind: deferred_intent_review`; (4) a 30-day default surfaced on Log review or startup, postponed by defer_until, pulled earlier by material linked-Objective changes, with manual review always available; (5) promote, keep deferred, dismiss via `moot`, or Objective review. It follows the structure of the adjacent \u00a79.6/UBU-D0307 waiting lifecycle, appends a single new decision in sequence, allocates no new questions, and updates the \u00a717.8 Log-review bullet coherently. The current direction (Preference requirement enforced at review rather than creation) is honoured. Deductions are for unverifiable cross-references, the `cancelled`-to-`moot` reinterpretation, the promotion-stricter-than-creation asymmetry, and the density of the new section, which hurts auditability."
+    }
+  ],
+  "selected_proposal_id": "openai-gpt-6-UBU-Q0117-20261011",
+  "selection_rationale": "Only one proposal was submitted and it passed mechanical validation. It is directly responsive to UBU-Q0117, answers every subquestion, preserves the question schema with `Status: Solved` and a matching `Resolved by:`, stays within the allowed files, and adds exactly one sequential decision. Remaining concerns are about unverifiable references and prose density rather than correctness of the model, so no blocking fixes are required."
+}

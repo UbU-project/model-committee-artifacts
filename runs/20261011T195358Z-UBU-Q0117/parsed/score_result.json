@@ -1,0 +1,26 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-gpt-6-UBU-Q0117-20261011",
+      "score": 91,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Local-date review boundaries leave handling of ambiguous or nonexistent local midnight implicit.",
+        "Promotion requires a comparable Task or Objective for an accepted pairwise Preference, which can delay activation of isolated ideas.",
+        "Promotion to active requires citing an enabled, user-accepted pairwise Preference. If ordinary Task admission does not require a Preference at creation, promoted Tasks are held to a stricter bar than newly created active Tasks, which is an asymmetry the text does not acknowledge.",
+        "Several implementation-flavoured details (exact idempotency key tuples, 2592000-second default, per-episode coalescing) are specified in a design document; they are consistent with the \u00a79.6/UBU-D0307 pattern but lock in choices that may better belong to a later implementation decision.",
+        "The proposal maps the question's 'cancel permanently' option onto the existing terminal `moot` status and explicitly forbids a `cancelled` status, while the replaced DESIGN.md paragraph previously spoke of 'cancelled (which is terminal)'. If the Task model actually has a distinct cancelled status, this introduces a contradiction rather than a clarification.",
+        "The \u00a79.7 text is very dense (idempotency keys, sync coalescing, Compartment/Replica caveats, multi-clause `next_review_at` recomputation rule). It is hard to audit and some sentences are difficult to parse, raising the chance of later misreading or conflicting interpretation.",
+        "\u00a79.7 cites many existing constructs that cannot be verified from the prompt alone (\u00a79.5 moot reason codes `no_longer_relevant`, `invalidated_by_universe_change`, `user_declared_moot`; \u00a77.4.1 routine occurrence controls; \u00a717.0 decision payload; \u00a717.3 correction links; `elapsed_time`/`log_review_due` paths; Setting vs Preference distinction). Any of these being absent or named differently would leave dangling references."
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "openai-gpt-6-UBU-Q0117-20261011",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}

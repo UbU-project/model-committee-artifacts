@@ -1,0 +1,21 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-gpt-6-UBU-Q0117-20261011",
+      "score": 96,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Local-date review boundaries leave handling of ambiguous or nonexistent local midnight implicit.",
+        "Promotion requires a comparable Task or Objective for an accepted pairwise Preference, which can delay activation of isolated ideas."
+      ],
+      "required_fixes": [],
+      "rationale": "Provided mechanical validation passes, and the repository matches the stated base commit. The patch answers all five subquestions, preserves question metadata with Status: Solved, and changes only allowed files. It consistently uses existing moot reasons, pairwise Preferences, CPU planning boundaries, routine controls, and append-only admission rules. Review scheduling and explicit actions are auditable; the identified edge cases do not block acceptance."
+    }
+  ],
+  "selected_proposal_id": "openai-gpt-6-UBU-Q0117-20261011",
+  "selection_rationale": "The sole candidate is mechanically eligible and provides a complete, coherent resolution within the selected scope. This identifies the candidate for cross-scoring; model-committee aggregation determines the final outcome."
+}

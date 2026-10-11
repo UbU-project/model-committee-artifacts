@@ -1,0 +1,171 @@
+{
+  "schema_version": "0.4",
+  "run_id": "20261011T195358Z-UBU-Q0117",
+  "created_at_utc": "2026-10-11T19:53:58Z",
+  "repo_path": "../ubu-design",
+  "base_commit": "f5ed2d2d0ca010e458a87dd2a395f05cc6278c50",
+  "selected_question_id": "UBU-Q0117",
+  "phase": "work-select",
+  "config_path": "config/models.json",
+  "status": "selected",
+  "commands": [
+    "model-committee run-loop"
+  ],
+  "providers_attempted": [
+    "codex",
+    "claude"
+  ],
+  "providers_succeeded": [
+    "codex",
+    "claude"
+  ],
+  "providers_failed": [],
+  "provider_attempts": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "openai-gpt-6-UBU-Q0117-20261011",
+      "response_path": "runs/20261011T195358Z-UBU-Q0117/responses/codex_score_openai-gpt-6-ubu-q0117-20261011_response.json",
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "openai-gpt-6-UBU-Q0117-20261011",
+      "response_path": "runs/20261011T195358Z-UBU-Q0117/responses/claude_score_openai-gpt-6-ubu-q0117-20261011_stdout.json",
+      "stderr_path": null
+    }
+  ],
+  "provider_successes": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20261011T195358Z-UBU-Q0117/parsed/codex_work_proposal.json"
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "openai-gpt-6-UBU-Q0117-20261011",
+      "response_path": "runs/20261011T195358Z-UBU-Q0117/responses/codex_score_openai-gpt-6-ubu-q0117-20261011_response.json",
+      "parsed_path": "runs/20261011T195358Z-UBU-Q0117/parsed/codex_score_openai-gpt-6-ubu-q0117-20261011_result.json"
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "openai-gpt-6-UBU-Q0117-20261011",
+      "response_path": "runs/20261011T195358Z-UBU-Q0117/responses/claude_score_openai-gpt-6-ubu-q0117-20261011_stdout.json",
+      "parsed_path": "runs/20261011T195358Z-UBU-Q0117/parsed/claude_score_openai-gpt-6-ubu-q0117-20261011_result.json"
+    }
+  ],
+  "provider_failures": [],
+  "score_matrix": [
+    {
+      "proposal_id": "openai-gpt-6-UBU-Q0117-20261011",
+      "author_provider": "openai",
+      "scorer_provider": "codex",
+      "score": 96,
+      "valid": true,
+      "rationale": "Provided mechanical validation passes, and the repository matches the stated base commit. The patch answers all five subquestions, preserves question metadata with Status: Solved, and changes only allowed files. It consistently uses existing moot reasons, pairwise Preferences, CPU planning boundaries, routine controls, and append-only admission rules. Review scheduling and explicit actions are auditable; the identified edge cases do not block acceptance.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "Local-date review boundaries leave handling of ambiguous or nonexistent local midnight implicit.",
+        "Promotion requires a comparable Task or Objective for an accepted pairwise Preference, which can delay activation of isolated ideas."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261011T195358Z-UBU-Q0117/responses/codex_score_openai-gpt-6-ubu-q0117-20261011_response.json",
+        "stderr_path": null
+      }
+    },
+    {
+      "proposal_id": "openai-gpt-6-UBU-Q0117-20261011",
+      "author_provider": "openai",
+      "scorer_provider": "claude",
+      "score": 86,
+      "valid": true,
+      "rationale": "The patch applies cleanly, touches only the three allowlisted files, and sets `Status: Solved` with `Resolved by: UBU-D0308` while preserving all other question metadata. It answers all five subquestions directly: (1) a single `deferred_intent` record with episode id, entry time, optional reason, optional tagged defer-until boundary, interval, last/next review, and an explicit user deferral action; (2) full exclusion before kernel dispatch including gap-fill and transitive dependents, i.e. the 'invisible' option, with no TaskSpec change; (3) new `task_deferred_intent_entered/updated/exited` events plus `decision_recorded` with `decision_kind: deferred_intent_review`; (4) a 30-day default surfaced on Log review or startup, postponed by defer_until, pulled earlier by material linked-Objective changes, with manual review always available; (5) promote, keep deferred, dismiss via `moot`, or Objective review. It follows the structure of the adjacent \u00a79.6/UBU-D0307 waiting lifecycle, appends a single new decision in sequence, allocates no new questions, and updates the \u00a717.8 Log-review bullet coherently. The current direction (Preference requirement enforced at review rather than creation) is honoured. Deductions are for unverifiable cross-references, the `cancelled`-to-`moot` reinterpretation, the promotion-stricter-than-creation asymmetry, and the density of the new section, which hurts auditability.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "\u00a79.7 cites many existing constructs that cannot be verified from the prompt alone (\u00a79.5 moot reason codes `no_longer_relevant`, `invalidated_by_universe_change`, `user_declared_moot`; \u00a77.4.1 routine occurrence controls; \u00a717.0 decision payload; \u00a717.3 correction links; `elapsed_time`/`log_review_due` paths; Setting vs Preference distinction). Any of these being absent or named differently would leave dangling references.",
+        "The proposal maps the question's 'cancel permanently' option onto the existing terminal `moot` status and explicitly forbids a `cancelled` status, while the replaced DESIGN.md paragraph previously spoke of 'cancelled (which is terminal)'. If the Task model actually has a distinct cancelled status, this introduces a contradiction rather than a clarification.",
+        "Promotion to active requires citing an enabled, user-accepted pairwise Preference. If ordinary Task admission does not require a Preference at creation, promoted Tasks are held to a stricter bar than newly created active Tasks, which is an asymmetry the text does not acknowledge.",
+        "The \u00a79.7 text is very dense (idempotency keys, sync coalescing, Compartment/Replica caveats, multi-clause `next_review_at` recomputation rule). It is hard to audit and some sentences are difficult to parse, raising the chance of later misreading or conflicting interpretation.",
+        "Several implementation-flavoured details (exact idempotency key tuples, 2592000-second default, per-episode coalescing) are specified in a design document; they are consistent with the \u00a79.6/UBU-D0307 pattern but lock in choices that may better belong to a later implementation decision."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261011T195358Z-UBU-Q0117/responses/claude_score_openai-gpt-6-ubu-q0117-20261011_stdout.json",
+        "stderr_path": null
+      }
+    }
+  ],
+  "score_aggregates": [
+    {
+      "proposal_id": "openai-gpt-6-UBU-Q0117-20261011",
+      "author_provider": "openai",
+      "cross_score_count": 2,
+      "score_mean": 91.0,
+      "score_spread": 10,
+      "frontier_score_gap": 10,
+      "disagreement_flags": []
+    }
+  ],
+  "cross_score_count": 2,
+  "score_mean": 91.0,
+  "score_spread": 10,
+  "frontier_score_gap": 10,
+  "disagreement_flags": [],
+  "quorum_result": {
+    "valid": true,
+    "human_review_required": false,
+    "selected_proposal_id": "openai-gpt-6-UBU-Q0117-20261011",
+    "selected_score": 91.0,
+    "selected_cross_score_count": 2,
+    "blocked_reasons": [],
+    "manual_override": false
+  },
+  "selected_proposal_id": "openai-gpt-6-UBU-Q0117-20261011",
+  "automated_selection_valid": true,
+  "human_review_required": false,
+  "artifact_publication_status": "operator_pending",
+  "prompt_size_warning": false,
+  "prompt_context": {
+    "question_ids": [
+      "UBU-Q0117"
+    ],
+    "decision_ids": [],
+    "sections": {},
+    "core_sections": {
+      "DESIGN.md": [
+        "1"
+      ],
+      "DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md": [
+        "4"
+      ]
+    },
+    "missing_refs": {},
+    "context_chars": 6350,
+    "prompt_chars": 13160
+  }
+}
