@@ -1,0 +1,50 @@
+[
+  {
+    "proposal_id": "UBU-Q0128-openai-gpt-6-20261011",
+    "author_provider": "openai",
+    "scorer_provider": "codex",
+    "score": 89,
+    "valid": true,
+    "rationale": "Mechanical validation confirms clean application, allowed files and preserved question schema. The patch directly addresses the initial permission envelope, controller authority, scoped context, interruption handling, audit and fresh review while preserving existing MVP commitments. It appropriately keeps UBU-Q0128 Open and distinguishes candidate capture from admitted state. Coverage is intentionally partial: detailed mode profiles, messaging behavior, schemas and confirmation grammar remain unresolved.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [
+      "Numeric limits and exact budget, output and confirmation schemas remain undefined; implementation requires further policy decisions.",
+      "Activity uncertainty, interruption and device-specific behavior require validation before enabling restricted-attention use."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20261011T200833Z-UBU-Q0128/responses/codex_score_ubu-q0128-openai-gpt-6-20261011_response.json",
+      "stderr_path": null
+    }
+  },
+  {
+    "proposal_id": "UBU-Q0128-openai-gpt-6-20261011",
+    "author_provider": "openai",
+    "scorer_provider": "claude",
+    "score": 84,
+    "valid": true,
+    "rationale": "The patch applies cleanly, touches only the three allowlisted files, and keeps UBU-Q0128 at Status: Open with its metadata line, Phase 2 tag and scoring fields unchanged. It is directly responsive: it adds one new decision (UBU-D0309), one DESIGN.md subsection, and a matching Current direction / Resolution update, covering subquestions 1\u20134, 7\u20139, 11\u201312, 16\u201319 and 20 while explicitly leaving quantitative profiles, exact budget/LLM-output schemas, confirmation grammar, richer messaging/media/coaching integrations and naming open. The content is consistent with the already-recorded constraints from UBU-D0292/UBU-D0293: models stay advisory, affect stays user-declared, no spoken confirmation authorizes consequential external actions, and UBU-Q0183 retains the delivery sequence. It is auditable and avoids granting new authority. Deductions are for unverifiable cross-references, the rewrite of an existing direction paragraph, and the density of the new design text.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [
+      "Before applying, confirm that \u00a721.1.1 exists in DESIGN.md (so \u00a721.1.2 is correctly numbered) and that \u00a721.3, \u00a712.2, UBU-Q0129 and UBU-Q0170\u2013UBU-Q0171 refer to what the new text claims; adjust references if any are wrong.",
+      "Confirm with the operator that replacing the 'affect model is central' paragraph with the user-declared framing is the intended change to recorded direction, or restore the original paragraph and add the new sentence alongside it."
+    ],
+    "risks": [
+      "Several cross-references cannot be verified from the prompt alone: UBU-Q0129 as the Original Narration question, UBU-Q0170\u2013UBU-Q0171 as raw-media retention, DESIGN.md \u00a721.3 as ContextBundle, \u00a712.2 as raw-AV locality, and the existence of a \u00a721.1.1 that makes the new \u00a721.1.2 heading number correct.",
+      "The patch rewrites the existing 'The affect model is central' paragraph in Current direction rather than only appending. The rewrite is consistent with UBU-D0292's 'affect remains user-declared', but it removes prior recorded direction text and should be reviewed as a deliberate change.",
+      "The DESIGN.md addition is dense (roughly 1,000 words in one subsection) and front-loads many normative rules; later schema and profile work will need to amend it carefully to avoid contradiction.",
+      "The decision labels itself Accepted while the question is 'Human approval required'; the proposal correctly sets requires_human_review, but the Accepted status should not be published without operator sign-off.",
+      "'Resolved by: None' is retained even though UBU-D0309 partially answers the question; this matches how UBU-D0292/UBU-D0293 were treated, but the convention should be confirmed."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20261011T200833Z-UBU-Q0128/responses/claude_score_ubu-q0128-openai-gpt-6-20261011_stdout.json",
+      "stderr_path": null
+    }
+  }
+]

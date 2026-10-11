@@ -1,0 +1,21 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0128-openai-gpt-6-20261011",
+      "score": 89,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "none",
+      "risks": [
+        "Numeric limits and exact budget, output and confirmation schemas remain undefined; implementation requires further policy decisions.",
+        "Activity uncertainty, interruption and device-specific behavior require validation before enabling restricted-attention use."
+      ],
+      "required_fixes": [],
+      "rationale": "Mechanical validation confirms clean application, allowed files and preserved question schema. The patch directly addresses the initial permission envelope, controller authority, scoped context, interruption handling, audit and fresh review while preserving existing MVP commitments. It appropriately keeps UBU-Q0128 Open and distinguishes candidate capture from admitted state. Coverage is intentionally partial: detailed mode profiles, messaging behavior, schemas and confirmation grammar remain unresolved."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0128-openai-gpt-6-20261011",
+  "selection_rationale": "The sole candidate is mechanically valid, scoped and auditable, with a useful conservative policy boundary. This cross-score leaves final selection to local aggregation."
+}
