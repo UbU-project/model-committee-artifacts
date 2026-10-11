@@ -1,0 +1,22 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-ubu-q0128-audio-interpretation-v1",
+      "score": 90,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "none",
+      "risks": [
+        "The listed grammar-instantiation steps constrain alias membership but do not explicitly correlate entity roles with their permitted aliases. Literal substitution can allow a subject alias as playback_target, which semantic validation then rejects, contrary to UBU-D0299."
+      ],
+      "required_fixes": [
+        "Explicitly require role-specific alias constraints in the instantiated entity grammar, and include a producer/validator parity fixture covering supplied aliases used with incompatible roles."
+      ],
+      "rationale": "Mechanical validation passes, changes stay within the allowed files, and Q0128 retains its Open status and metadata. The proposal directly answers the initial-envelope portion of subquestion 6 with bounded action shapes, evidence-backed capture, request freshness, idempotency and controller-owned authority. Remaining work is accurately preserved. The static role/reference constraint needs clarification."
+    }
+  ],
+  "selected_proposal_id": "openai-ubu-q0128-audio-interpretation-v1",
+  "selection_rationale": "The sole candidate is mechanically valid, focused and auditable. It receives a strong cross-score for aggregation, with the producer-grammar fix identified above."
+}

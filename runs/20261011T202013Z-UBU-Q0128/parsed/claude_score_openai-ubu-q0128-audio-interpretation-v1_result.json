@@ -1,0 +1,26 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-ubu-q0128-audio-interpretation-v1",
+      "score": 86,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "none",
+      "risks": [
+        "The DESIGN.md insert is long (~70 lines including a full JSON Schema block) and partly duplicates constraints already encoded in the schema in follow-on prose; the layered redundancy is defensible for a validation contract but increases maintenance surface in \u00a721.1.2.",
+        "The new decision cites `UBU-D0299`'s producer-grammar rule and existing quick-note/Discovery/Task-proposal routing concepts; these cross-references are not verifiable from the supplied diff and would dangle if the referenced record or concepts differ.",
+        "`UBU-D0310` is recorded as `Status: Accepted` while the question is `Human approval required`; the proposal flags requires_human_review, but the decision text itself does not mark that it is pending operator approval.",
+        "Minor semantic looseness in the schema: the `clarify` branch does not require a nonempty `ambiguity` list even though both clarification reasons imply ambiguity, and `defer` fixes `required_confirmation` to `ordinary_review` even for `user_requested` deferrals. Neither widens authority, since all fields are advisory and the controller only tightens.",
+        "Decision ID uniqueness (no prior `UBU-D0310`) is not checked by mechanical validation; the hunk appends at end of DECISIONS.md after D0309, so collision is unlikely but unverified."
+      ],
+      "required_fixes": [
+        "Before merge, confirm `UBU-D0299` exists in DECISIONS.md and concerns the producer-grammar rule; otherwise correct or drop that cross-reference in the D0310 status line."
+      ],
+      "rationale": "Patch applies cleanly, touches only the three allowlisted files, and keeps UBU-Q0128 `Status: Open` with the single-line metadata intact; no `Status: Resolved` misuse. It is directly responsive to subquestion 6 by defining `AudioInterpretationV1` as a closed, request-bound JSON contract scoped to the already-licensed D0309 envelope (candidate capture, local session control, scoped media transport). The schema is syntactically valid JSON Schema: all `$defs` refs resolve, each intent branch is mutually exclusive via `intent` const, `proposed_action` kinds are disjoint, and additionalProperties is closed everywhere. Design alignment is strong: model estimates stay advisory, capture cites existing STT evidence rather than model-authored text, references are controller-supplied aliases, late/duplicate results cannot speak or dispatch, pause/stop/silence bypass the model, and load estimates are explicitly about the interaction rather than the user, matching the question's affect/readiness constraints. The OPEN_QUESTIONS edits correctly narrow the remaining-open list and add a D0310 paragraph and Resolution sentence without overclaiming. Deductions are for verbosity/redundancy, unverifiable cross-references, the Accepted-vs-human-approval status nuance, and small semantic looseness in two branches. No blocking defects."
+    }
+  ],
+  "selected_proposal_id": "openai-ubu-q0128-audio-interpretation-v1",
+  "selection_rationale": "Only one candidate was supplied and it passed mechanical validation. It is a valid, bounded, auditable partial answer to UBU-Q0128 subquestion 6 that preserves the question schema, stays within the D0309 permission envelope, and records what remains open; the noted risks are documentation-hygiene items rather than authority or schema defects."
+}

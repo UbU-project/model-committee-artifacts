@@ -1,0 +1,28 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-ubu-q0128-audio-interpretation-v1",
+      "score": 88,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Decision ID uniqueness (no prior `UBU-D0310`) is not checked by mechanical validation; the hunk appends at end of DECISIONS.md after D0309, so collision is unlikely but unverified.",
+        "Minor semantic looseness in the schema: the `clarify` branch does not require a nonempty `ambiguity` list even though both clarification reasons imply ambiguity, and `defer` fixes `required_confirmation` to `ordinary_review` even for `user_requested` deferrals. Neither widens authority, since all fields are advisory and the controller only tightens.",
+        "The DESIGN.md insert is long (~70 lines including a full JSON Schema block) and partly duplicates constraints already encoded in the schema in follow-on prose; the layered redundancy is defensible for a validation contract but increases maintenance surface in \u00a721.1.2.",
+        "The listed grammar-instantiation steps constrain alias membership but do not explicitly correlate entity roles with their permitted aliases. Literal substitution can allow a subject alias as playback_target, which semantic validation then rejects, contrary to UBU-D0299.",
+        "The new decision cites `UBU-D0299`'s producer-grammar rule and existing quick-note/Discovery/Task-proposal routing concepts; these cross-references are not verifiable from the supplied diff and would dangle if the referenced record or concepts differ.",
+        "`UBU-D0310` is recorded as `Status: Accepted` while the question is `Human approval required`; the proposal flags requires_human_review, but the decision text itself does not mark that it is pending operator approval."
+      ],
+      "required_fixes": [
+        "Before merge, confirm `UBU-D0299` exists in DECISIONS.md and concerns the producer-grammar rule; otherwise correct or drop that cross-reference in the D0310 status line.",
+        "Explicitly require role-specific alias constraints in the instantiated entity grammar, and include a producer/validator parity fixture covering supplied aliases used with incompatible roles."
+      ],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "openai-ubu-q0128-audio-interpretation-v1",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}
