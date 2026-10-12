@@ -1,0 +1,52 @@
+[
+  {
+    "proposal_id": "UBU-Q0166-openai-gpt-6-20261012-carrier-evidence",
+    "author_provider": "openai",
+    "scorer_provider": "codex",
+    "score": 78,
+    "valid": true,
+    "rationale": "Mechanical validation passes, changes stay within allowed files, and UBU-Q0166 retains valid Open metadata. Local source inspection corroborates the pinned carrier types, payload reconstruction and review-presentation limitations. The proposal carefully distinguishes generic representation from adapter compatibility and failed field choices from schema gaps. It provides useful, conservative partial evidence, but does not complete the selected host-mapping and fidelity work.",
+    "implements_selected_work": false,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [
+      "Complete and document the revision-pinned mappings and UBU-D0321 fidelity fixtures across the required host paths, or demonstrate a governing host-contract gap and route it to separate versioned review.",
+      "Provide reproducible probe commands or a pinned harness and exact serialized outputs supporting the reported runtime comparisons."
+    ],
+    "risks": [
+      "The synthetic specimen tests candidate claim links, not preservation of the required claim content, qualifications, attribution, confidence semantics and source history.",
+      "Evidence resolution, adapter rejection, normalization, persistence/reload, review, admission and authorized exchange remain untested.",
+      "Runtime results lack exact invocation commands or a pinned probe harness and retrieved-output artifacts."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20261012T131052Z-UBU-Q0166/responses/codex_score_ubu-q0166-openai-gpt-6-20261012-carrier-evidence_response.json",
+      "stderr_path": null
+    }
+  },
+  {
+    "proposal_id": "UBU-Q0166-openai-gpt-6-20261012-carrier-evidence",
+    "author_provider": "openai",
+    "scorer_provider": "claude",
+    "score": 76,
+    "valid": true,
+    "rationale": "Patch applies cleanly, touches only DECISIONS.md, DESIGN.md and OPEN_QUESTIONS.md, and leaves the UBU-Q0166 metadata line and neighboring UBU-Q0167 block untouched with Status: Open. It is directly responsive to both halves of the question: it identifies a concrete pinned candidate mapping (inline payload.value.perceptual_qualifiers survives schema validation and serde round trip; string-valued field_provenance rejects structured content) and states a decision rule for when a failed mapping counts as a schema gap versus a field-choice or adapter defect. It is honest about scope, repeatedly disclaiming a passing adapter or schema gap, labelling source-inspection rows as such, and noting that generic layers accepted an unknown profile so adapter checks remain required. The unknown-profile acceptance finding is genuinely useful. Weaknesses are that the evidence is partial and unverifiable from the patch, the specimen is synthetic, exchange paths are untouched, and the Current direction paragraph is extended by appending rather than restructuring. No fixes are strictly required; a follow-up should commit the probe fixtures or a rerunnable script so the recorded outcomes can be independently reproduced.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [
+      "The executed-probe claims (tools/validate-fixtures runs, AdvisoryCandidate serde round trips, rustc/serde/jsonschema versions, five pinned host commits) cannot be verified from the patch; the design doc will carry them as recorded evidence on the strength of the author's validation notes alone.",
+      "Only two of the five host paths (candidate schema, candidate Rust/JSON) have actual execution results; store/reload, normalization/review and review presentation are source inspection, and authorized exchange is not probed at all, so the question's core ask remains mostly unanswered.",
+      "The carrier specimen uses an unresolved synthetic evidence_ref, so it demonstrates link-carrier shape preservation only, not UBU-D0321 claim/qualifier fidelity with resolved evidence revisions.",
+      "UBU-D0323 is written with Status: Accepted although the question is human-approval-required; this depends on repository convention that acceptance is gated at proposal application rather than in the decision text.",
+      "The DESIGN.md \u00a721.1.1 insert embeds implementation-specific commit hashes, toolchain versions and Rust type names into the design contract; this is what revision pinning requires, but it will go stale and must not be read as a dependency pin.",
+      "The decision number UBU-D0323 assumes the prior entry is UBU-D0322; the diff context does not show that number."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20261012T131052Z-UBU-Q0166/responses/claude_score_ubu-q0166-openai-gpt-6-20261012-carrier-evidence_stdout.json",
+      "stderr_path": null
+    }
+  }
+]

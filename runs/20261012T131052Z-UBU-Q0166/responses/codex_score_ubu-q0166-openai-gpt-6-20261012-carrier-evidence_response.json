@@ -1,0 +1,25 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0166-openai-gpt-6-20261012-carrier-evidence",
+      "score": 78,
+      "patch_applies": true,
+      "implements_selected_work": false,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "The synthetic specimen tests candidate claim links, not preservation of the required claim content, qualifications, attribution, confidence semantics and source history.",
+        "Evidence resolution, adapter rejection, normalization, persistence/reload, review, admission and authorized exchange remain untested.",
+        "Runtime results lack exact invocation commands or a pinned probe harness and retrieved-output artifacts."
+      ],
+      "required_fixes": [
+        "Complete and document the revision-pinned mappings and UBU-D0321 fidelity fixtures across the required host paths, or demonstrate a governing host-contract gap and route it to separate versioned review.",
+        "Provide reproducible probe commands or a pinned harness and exact serialized outputs supporting the reported runtime comparisons."
+      ],
+      "rationale": "Mechanical validation passes, changes stay within allowed files, and UBU-Q0166 retains valid Open metadata. Local source inspection corroborates the pinned carrier types, payload reconstruction and review-presentation limitations. The proposal carefully distinguishes generic representation from adapter compatibility and failed field choices from schema gaps. It provides useful, conservative partial evidence, but does not complete the selected host-mapping and fidelity work."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0166-openai-gpt-6-20261012-carrier-evidence",
+  "selection_rationale": "The sole mechanically valid candidate merits credit for bounded, directly relevant evidence and accurate limitations. Its score is reduced for incomplete host-path coverage and insufficient runtime reproduction artifacts; this nomination is for local aggregation."
+}

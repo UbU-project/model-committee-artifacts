@@ -1,0 +1,224 @@
+# Model-Committee Cross-Scoring Request
+
+You are scoring candidate work proposals for the UbU `model-committee` process.
+
+Return exactly one JSON object. Do not return prose outside the JSON object.
+
+This is a v0.2 cross-score. You are not making the final selection; model-committee
+will aggregate valid cross-scores locally.
+
+Scoring provider: `codex`
+Authoring provider for the candidate proposal(s): `openai`
+
+## Selected question
+
+Question ID: `UBU-Q0166`  
+Question title: `Preserve perceptual qualifiers alongside the closed provenance enum`  
+Base commit: `f83c76714e4ab44f0e6c87e405057702d5bf4613`
+
+```markdown
+## UBU-Q0166: Preserve perceptual qualifiers alongside the closed provenance enum
+
+Status: Open Priority: MVP important Phase: Phase 2 Decision type: Data model Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 100 Depends on: None Blocks: None Resolved by: None Last scored: 2026-10-12 Scored from commit: None
+
+### Question
+
+Which revision-pinned host mappings preserve the claim-level qualifications specified by `UBU-D0321` through validation, serialization, storage, review and authorized exchange, and does a failed mapping demonstrate a schema gap requiring separate versioned review?
+
+### Current direction
+
+Delta §17.4. `UBU-D0293` decides kind mapping; `UBU-D0320` decides observation/admission bindings; `UBU-D0321` specifies claim-level qualifier content, field/evidence links and fidelity fixtures. The remaining work is a revision-pinned host field/payload mapping and round-trip evidence from the actual validators, serializers, store/review and exchange paths. Measured remains an instrument/reading, derived a computation from facts, and proposed an unconfirmed candidate. Do not infer host compatibility from prose payload slots. A demonstrated gap requires separate versioned chain review; no schema, pin or migration change is made here.
+
+### Resolution
+
+Open. `UBU-D0321` answers the preservation requirements, not whether a particular host implementation preserves them. Close this question only with the pinned mapping and fixture outcomes, or an explicit demonstrated gap routed to a separate versioned change. No passing adapter or actual schema gap is established by the design contract.
+
+---
+
+```
+
+## Candidate proposals
+
+```json
+[
+  {
+    "proposal_id": "UBU-Q0166-openai-gpt-6-20261012-carrier-evidence",
+    "provider_id": "openai",
+    "model_name": "gpt-6",
+    "question_id": "UBU-Q0166",
+    "base_commit": "f83c76714e4ab44f0e6c87e405057702d5bf4613",
+    "summary": "Record pinned candidate carrier results and distinguish mapping failures from schema gaps, keeping UBU-Q0166 open for complete host evidence.",
+    "rationale": "Actual host checks preserve synthetic inline claim links, reject structured field_provenance values and accept unknown profiles at generic layers. Source inspection identifies downstream normalization and presentation limitations. These bounded findings advance compatibility evidence without claiming a passing adapter or schema gap.",
+    "changed_files": [
+      "DECISIONS.md",
+      "DESIGN.md",
+      "OPEN_QUESTIONS.md"
+    ],
+    "patch": "diff --git a/DECISIONS.md b/DECISIONS.md\nindex 4c9464c..f6d60d0 100644\n--- a/DECISIONS.md\n+++ b/DECISIONS.md\n@@ -5118,3 +5118,15 @@ Resolve audio domain and target before exposing a playback alias. Explicit names\n Adopt the vague-command routing table and revision-pinned acceptance cases in DESIGN.md \u00a721.1.2. Unresolved references and unsupported readback, save, summary or reminder effects remain evidence/review items. Clarification cannot reset a turn or survive interruption. Media apps retain playback ownership; no automatic resume, content retrieval or transport replay follows an interruption or unknown outcome.\n \n This specifies behavior, not an implemented adapter or validated driving safety. `UBU-Q0128` remains Open for quantitative profiles, richer interpretation/action shapes, external-action confirmation grammar, messaging/media/coaching integration, device-specific behavior and naming. `UBU-Q0183` retains the release sequence.\n+\n+---\n+\n+## UBU-D0323: Candidate carrier probes leave perceptual host compatibility open\n+\n+**Status:** Accepted \u2192 DESIGN.md \u00a721.1.1. Narrows `UBU-Q0166`; records bounded revision-pinned representation evidence without enabling an adapter.\n+\n+Record the pinned inventory, synthetic link specimen and actual schema/Rust outcomes in DESIGN.md \u00a721.1.1. An inline candidate payload preserved that specimen; placing the structured specimen in string-valued `field_provenance` rejected. Generic schema/type validation also accepted an unknown qualifier profile, so it cannot substitute for the adapter's required profile and claim/version checks. These probes establish only candidate link representation, not full claim/qualifier preservation, evidence resolution or host-path compatibility.\n+\n+A failed mapping alone does not demonstrate a schema gap. Report the first failing pinned path and exact rejected or changed content. Distinguish an unsuitable field choice, missing adapter validation or normalization/store/review defect from a governing host-contract restriction that no compliant existing payload/ref mapping can satisfy. Only the latter demonstrated gap warrants the separate versioned schema/type/store chain review required by `UBU-D0321`.\n+\n+`UBU-Q0166` remains Open for complete mappings and actual normalization, evidence, store/review, admission and authorized-exchange fixtures. Source-inspected downstream limitations are not reported runtime outcomes. No schema, enum, FactProvenance field, dependency pin, migration or producer authority changes here; `UniverseTarget` remains name-only.\ndiff --git a/DESIGN.md b/DESIGN.md\nindex 5e3cc38..e35549d 100644\n--- a/DESIGN.md\n+++ b/DESIGN.md\n@@ -3271,6 +3271,31 @@ Losslessness means preservation of the permitted retained claims, qualifications\n \n No passing host mapping or schema gap is asserted here. A mapping that cannot preserve this content stays unresolved with a policy-permitted diagnostic. A demonstrated gap needs a separately reviewed versioned schema/type/store chain change and any required pins/migration; this payload contract makes none.\n \n+**Bounded host evidence (`UBU-D0323`; 2026-10-12).** These inspected Phase 2 checkout revisions identify evaluated code, not dependency-pin changes. Tracked files were clean. Offline locked builds used rustc `1.99.0 (b940084d7 2026-09-28)`; the core lockfile supplies serde `1.0.229` and serde_json `1.0.152`, and the schema validator uses jsonschema `0.46.5`.\n+\n+| Host path | Revision and observed carrier or limitation | Evidence scope |\n+|---|---|---|\n+| Candidate schema | `ubu-schemas@070d0a6f9a6ad7833dd523042925008316ce923b`, `schemas/core/advisory-candidate.schema.json`: `#/$defs/payload/oneOf/0/properties/value` accepts JSON; `#/properties/field_provenance/additionalProperties` requires strings. | Actual `tools/validate-fixtures` execution on the probes below. |\n+| Candidate Rust/JSON | `ubu-core@fa26bf678977f5e077229eb97a39cc1b8b960c9b`, `src/advisory_candidate.rs`: `CandidatePayload::Inline(serde_json::Value)` and `AdvisoryCandidate.field_provenance: BTreeMap<String, String>`. Its `schemas-ref` is the schema revision above. | Actual `AdvisoryCandidate` deserialization, `validate`, serialization, deserialization and reserialization; structured output comparison. |\n+| Candidate store/reload | `ubu-store@83a099f55220b1286ffb2dee3c9d19006e2090b5`, `src/candidates.rs::store_advisory_candidate` stores the serialized candidate in `advisory_candidates.payload_json`; `src/models/candidate_record.rs::CandidateRecord::candidate` deserializes it. | Source inspection only; no persistence/restart/replay fixture. |\n+| Normalization/review API | `ubu-orchestrator@9fddef16990ac89d07a168c75bf04b77c35b9bc3`, `src/api/advisory.rs::candidate_response` wraps stored JSON; `src/services/precondition_review.rs::vet_result` rebuilds accepted candidates' inline payload from `normalized_proposal`. | Source inspection only; added payload content cannot be assumed to survive that normalization path. |\n+| Review presentation | `ubu-ui@dda2312fd17a5dc330fef102f9def30ab88ac5bf`, `src/routes/Review.tsx`: the generic card presents confidence, evidence refs and normalized proposal without rendering `candidate.payload` qualifiers. | Source inspection only; API retention does not establish review fidelity. |\n+\n+**Reproducible carrier specimen.** Start from `fixtures/valid/core/advisory-candidate/proposed-precondition.json` at the schema revision above, with its `schema_version: \"1.0\"` and native proposal unchanged. Let `P` be:\n+\n+```json\n+{\"profile\":\"perceptual-qualifiers/1\",\"field_qualifiers\":[{\"field_path\":[\"preconditions\"],\"claim_refs\":[{\"evidence_ref\":\"synthetic:description\",\"evidence_version\":\"v1\",\"claim_key\":\"charge\"}]}]}\n+```\n+\n+| Probe input relative to that fixture | Canonical schema validator | Actual core validation/JSON outcome |\n+|---|---|---|\n+| Unchanged baseline | Accepted. | Whole structured candidate unchanged after round trip. |\n+| Add `payload.value.perceptual_qualifiers = P` | Accepted. | Whole structured candidate and `P` unchanged after round trip. |\n+| Replace `field_provenance.preconditions` with the object `P` | Rejected. | Rejected: `invalid type: map, expected a string`. |\n+| Inline case with only `P.profile` changed to `perceptual-qualifiers/unknown` | Accepted by the generic carrier schema. | Accepted and preserved by the generic type layer; required adapter rejection remains untested. |\n+\n+These are candidate link-carrier probes with unresolved synthetic refs, not the full qualifier/admission fixtures above. No producer/adapter, Discovery claim/evidence resolution, normalization, store/review, admission or authorized-exchange fixture was run; no policy-authorized exchange revision/configuration or complete host mapping is established. Unknown profiles still must remain unresolved before admission. The rejected direct field choice does not establish a schema gap when an inline representation remains available for testing. Report any failure at its pinned host stage with exact expected/retrieved content; distinguish mapping/implementation defects from a minimally reproduced host-contract restriction that a compliant existing payload/ref mapping cannot satisfy. `UBU-Q0166` stays Open for the remaining evidence, with no adapter enabled by these results.\n+\n **Supported operations.** Validate the native proposal against an already-supported candidate kind and ordinary admission operation before enqueueing an executable review proposal. Unresolved targets, unsupported object kinds and perceptual values without a supported adapter remain Discovery review evidence with the limitation visible; they cannot fall through to a generic mutation executor. `UniverseTarget` advice remains name-only under `UBU-D0296`: it cannot carry, default or admit a perceptual value. The operator may author a value through the ordinary assertion/measurement form linked to the evidence. Future perceptual value-candidate support requires its separately reviewed versioned adapter; this contract does not enable it. Intent, affect, Preferences, completion/effect claims and later-phase Resources/Skills/Techniques retain their existing source and admission gates.\n \n **Disclosure and session scope.** Evidence, candidates, alternatives, selectors, hashes and derivative review material inherit all supporting sources' disclosure/routing/retention restrictions; reference-only payloads do not waive them. Denied matches cannot leak identifiers, labels or existence through alternatives or counts. Reviewing permitted retained evidence is allowed after its capture session is paused/ended; it neither restarts capture nor transfers source consent or pending approval to another Device.\ndiff --git a/OPEN_QUESTIONS.md b/OPEN_QUESTIONS.md\nindex a8dace8..6c7ca84 100644\n--- a/OPEN_QUESTIONS.md\n+++ b/OPEN_QUESTIONS.md\n@@ -3156,25 +3156,25 @@ Resolved by `UBU-D0320`: DESIGN.md \u00a721.1.1 defines the `observation-admission/1\n ## UBU-Q0166: Preserve perceptual qualifiers alongside the closed provenance enum\n \n Status: Open Priority: MVP important Phase: Phase 2 Decision type: Data model Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 100 Depends on: None Blocks: None Resolved by: None Last scored: 2026-10-12 Scored from commit: None\n \n ### Question\n \n Which revision-pinned host mappings preserve the claim-level qualifications specified by `UBU-D0321` through validation, serialization, storage, review and authorized exchange, and does a failed mapping demonstrate a schema gap requiring separate versioned review?\n \n ### Current direction\n \n-Delta \u00a717.4. `UBU-D0293` decides kind mapping; `UBU-D0320` decides observation/admission bindings; `UBU-D0321` specifies claim-level qualifier content, field/evidence links and fidelity fixtures. The remaining work is a revision-pinned host field/payload mapping and round-trip evidence from the actual validators, serializers, store/review and exchange paths. Measured remains an instrument/reading, derived a computation from facts, and proposed an unconfirmed candidate. Do not infer host compatibility from prose payload slots. A demonstrated gap requires separate versioned chain review; no schema, pin or migration change is made here.\n+Delta \u00a717.4. `UBU-D0293` decides kind mapping; `UBU-D0320` decides observation/admission bindings; `UBU-D0321` specifies claim-level qualifier content, field/evidence links and fidelity fixtures. The remaining work is a revision-pinned host field/payload mapping and round-trip evidence from the actual validators, serializers, store/review and exchange paths. Measured remains an instrument/reading, derived a computation from facts, and proposed an unconfirmed candidate. Do not infer host compatibility from prose payload slots. A demonstrated gap requires separate versioned chain review; no schema, pin or migration change is made here. `UBU-D0323` records bounded candidate link-carrier checks and source-inspected downstream limitations. Full claims/qualifiers and resolved evidence revisions still need fixtures through the actual Discovery, normalization, store/review, admission and authorized-exchange paths. A rejected direct field mapping alone does not establish a schema gap.\n \n ### Resolution\n \n-Open. `UBU-D0321` answers the preservation requirements, not whether a particular host implementation preserves them. Close this question only with the pinned mapping and fixture outcomes, or an explicit demonstrated gap routed to a separate versioned change. No passing adapter or actual schema gap is established by the design contract.\n+Open. `UBU-D0321` answers preservation requirements; `UBU-D0323` records only a synthetic candidate link-carrier round trip, rejection by string-valued field_provenance and unknown-profile acceptance by generic host layers. Complete claim/qualifier mappings, required adapter validation and downstream fixture outcomes remain outstanding. Close only with the full pinned mapping and fixture evidence, or a minimally reproduced host-contract gap routed to a separate versioned change. No passing adapter or actual schema gap is established.\n \n ---\n \n ## UBU-Q0167: Consequence-sensitive corroboration before planning influence\n \n Status: Open Priority: MVP important Phase: Phase 2 Decision type: Process Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 100 Depends on: None Blocks: None Resolved by: None Last scored: 2026-10-12 Scored from commit: None\n \n ### Question\n \n How should consequence and uncertainty determine corroboration and human review before a visual interpretation can influence planning or execution?\n",
+    "commit_message": "docs: record bounded perceptual carrier evidence for UBU-Q0166",
+    "validation_notes": [
+      "git apply --check --whitespace=error passed against the current working tree; proposal generated from unmodified working-tree copies.",
+      "Offline locked builds of pinned ubu-schemas and ubu-core passed. The actual schema validator accepted baseline, inline and unknown-profile probes, and rejected structured field_provenance.",
+      "Actual AdvisoryCandidate validation and serde round trips preserved the complete baseline, inline and unknown-profile candidates; structured field_provenance rejected with 'invalid type: map, expected a string'.",
+      "Downstream findings are source inspection only; no producer, Discovery evidence-resolution, normalization, store/review, admission or exchange fixture passed or was claimed.",
+      "Selected-question metadata and neighboring question blocks remain unchanged. Repository files were not modified; UBU-Q0166 remains Open."
+    ],
+    "new_questions_added": [],
+    "questions_resolved": [],
+    "decisions_added": [
+      "UBU-D0323"
+    ],
+    "requires_human_review": true
+  }
+]
+```
+
+## Mechanical validation results
+
+```json
+[
+  {
+    "proposal_id": "UBU-Q0166-openai-gpt-6-20261012-carrier-evidence",
+    "patch_applies": true,
+    "allowlist_passed": true,
+    "changed_files": [
+      "DECISIONS.md",
+      "DESIGN.md",
+      "OPEN_QUESTIONS.md"
+    ],
+    "question_schema_passed": true,
+    "error": null,
+    "normalized_patch": null,
+    "warnings": [],
+    "ordinary_error": null,
+    "recount_error": null,
+    "normalization_error": null
+  }
+]
+```
+
+## Provider weights
+
+Provider weights are historical diagnostic context only in v0.2. Do not use
+self-trust or author identity as score evidence.
+
+```json
+{}
+```
+
+## JSON Schema
+
+Your output must satisfy this schema:
+
+```json
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "scores",
+    "selected_proposal_id",
+    "selection_rationale"
+  ],
+  "properties": {
+    "scores": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "proposal_id",
+          "score",
+          "patch_applies",
+          "implements_selected_work",
+          "preserves_question_schema",
+          "avoids_unnecessary_scope",
+          "decomposition_quality",
+          "risks",
+          "required_fixes",
+          "rationale"
+        ],
+        "properties": {
+          "proposal_id": {
+            "type": "string"
+          },
+          "score": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "patch_applies": {
+            "type": "boolean"
+          },
+          "implements_selected_work": {
+            "type": "boolean"
+          },
+          "preserves_question_schema": {
+            "type": "boolean"
+          },
+          "avoids_unnecessary_scope": {
+            "type": "boolean"
+          },
+          "decomposition_quality": {
+            "type": "string",
+            "enum": [
+              "none",
+              "good",
+              "bad",
+              "not_applicable"
+            ]
+          },
+          "risks": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "required_fixes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "rationale": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "selected_proposal_id": {
+      "type": "string"
+    },
+    "selection_rationale": {
+      "type": "string"
+    }
+  }
+}
+```
+
+## Scoring requirements
+
+Score each proposal from 0 to 100.
+
+Consider:
+
+- whether the patch applies cleanly;
+- whether it implements the selected work;
+- whether it preserves the question schema;
+- whether it avoids unnecessary scope;
+- whether it modifies only allowed files;
+- whether it creates useful decomposition if decomposition occurs;
+- whether it introduces new risks;
+- whether required fixes remain.
+
+Rules:
+
+- Score every proposal in this prompt.
+- `selected_proposal_id` must refer to one scored proposal from this prompt.
+- Manual override is not allowed in v0.2.
+- Prefer a patch that is valid, minimal, auditable, and directly responsive.
+- Do not select a proposal whose patch failed mechanical validation.
+- Allowed question `Status:` values are `Archived`, `Decomposed`, `Deferred`, `Open`, `Solved`, `Superseded`; a resolved question must use `Status: Solved`.
+- Reject `Status: Resolved` as a question-schema violation. Set `preserves_question_schema` to false and require `Status: Solved` as the fix; `Resolved by:` is a separate metadata field.
+- Do not score your own provider's proposal unless explicitly asked for diagnostic self-score.
+
+Return only JSON.

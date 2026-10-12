@@ -1,0 +1,11 @@
+[
+  {
+    "proposal_id": "UBU-Q0166-openai-gpt-6-20261012-carrier-evidence",
+    "author_provider": "openai",
+    "cross_score_count": 2,
+    "score_mean": 77.0,
+    "score_spread": 2,
+    "frontier_score_gap": 2,
+    "disagreement_flags": []
+  }
+]

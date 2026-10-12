@@ -1,0 +1,31 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0166-openai-gpt-6-20261012-carrier-evidence",
+      "score": 77,
+      "patch_applies": true,
+      "implements_selected_work": false,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Evidence resolution, adapter rejection, normalization, persistence/reload, review, admission and authorized exchange remain untested.",
+        "Only two of the five host paths (candidate schema, candidate Rust/JSON) have actual execution results; store/reload, normalization/review and review presentation are source inspection, and authorized exchange is not probed at all, so the question's core ask remains mostly unanswered.",
+        "Runtime results lack exact invocation commands or a pinned probe harness and retrieved-output artifacts.",
+        "The DESIGN.md \u00a721.1.1 insert embeds implementation-specific commit hashes, toolchain versions and Rust type names into the design contract; this is what revision pinning requires, but it will go stale and must not be read as a dependency pin.",
+        "The carrier specimen uses an unresolved synthetic evidence_ref, so it demonstrates link-carrier shape preservation only, not UBU-D0321 claim/qualifier fidelity with resolved evidence revisions.",
+        "The decision number UBU-D0323 assumes the prior entry is UBU-D0322; the diff context does not show that number.",
+        "The executed-probe claims (tools/validate-fixtures runs, AdvisoryCandidate serde round trips, rustc/serde/jsonschema versions, five pinned host commits) cannot be verified from the patch; the design doc will carry them as recorded evidence on the strength of the author's validation notes alone.",
+        "The synthetic specimen tests candidate claim links, not preservation of the required claim content, qualifications, attribution, confidence semantics and source history.",
+        "UBU-D0323 is written with Status: Accepted although the question is human-approval-required; this depends on repository convention that acceptance is gated at proposal application rather than in the decision text."
+      ],
+      "required_fixes": [
+        "Complete and document the revision-pinned mappings and UBU-D0321 fidelity fixtures across the required host paths, or demonstrate a governing host-contract gap and route it to separate versioned review.",
+        "Provide reproducible probe commands or a pinned harness and exact serialized outputs supporting the reported runtime comparisons."
+      ],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0166-openai-gpt-6-20261012-carrier-evidence",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}
