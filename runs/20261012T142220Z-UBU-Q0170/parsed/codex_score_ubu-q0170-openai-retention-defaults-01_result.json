@@ -1,0 +1,21 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0170-openai-retention-defaults-01",
+      "score": 96,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "The 60-second buffer ceiling and 24-hour clip default are policy choices requiring human approval.",
+        "Enforcement depends on device/runtime persistence controls, reliable expiry tracking and interruption-safe cleanup; the proposal explicitly gates enablement on demonstrated behavior."
+      ],
+      "required_fixes": [],
+      "rationale": "Mechanical validation confirms clean application, allowed files and preserved question schema with Status: Solved. The proposal directly defines transient buffers, purposeful clip approval, local storage eligibility and nonrenewing expiry. It preserves append-only historical evidence, prevents derivative retention from bypassing policy, and distinguishes access expiry from confirmed deletion. Related questions remain open, and enforcement requirements are accurately presented as future gates."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0170-openai-retention-defaults-01",
+  "selection_rationale": "The sole candidate is mechanically valid, directly responsive and appropriately scoped. This cross-score recommendation remains subject to local aggregation and required human approval."
+}

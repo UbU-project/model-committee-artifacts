@@ -1,0 +1,26 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0170-openai-retention-defaults-01",
+      "score": 84,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "none",
+      "risks": [
+        "The 60-second buffer ceiling and 24-hour clip expiry are asserted policy numbers with no cited basis; they are flagged as human-approval ceilings, which is correct for a Security question with 'Human approval required', but a reviewer must still confirm they are acceptable defaults.",
+        "Cross-references to UBU-Q0177 (described as hardware eligibility) and to '\u00a712.2' as the home of the new text cannot be verified from the prompt; if either is wrong the new contract and \u00a721.1.x pointers will be mislabeled.",
+        "The DESIGN.md addition is dense and partly implementation-flavored (monotonic source clock, decoded-frame deadlines, swap/hibernation/crash-dump inventory, pre-reopen cleanup reconciliation). This is still framed as policy and gates rather than shipped behavior, but it raises audit burden and edges toward UBU-Q0171's operator-control and enforcement scope.",
+        "'24 hours after the earliest captured sample' means later samples in a long clip get less than 24 hours; this is a deliberate anti-renewal choice but could surprise operators and should be understood at approval time.",
+        "Deletion-status reporting (scheduled/pending/failed/confirmed) is specified here while detailed operator discard controls remain open in UBU-Q0171; the two decisions will need to stay consistent when Q0171 is resolved."
+      ],
+      "required_fixes": [
+        "Confirm at the base commit that UBU-Q0177 exists and concerns hardware/Device eligibility, and that the insertion point near UBU-D0292 is actually within DESIGN.md \u00a712.2 so the \u00a721.1 cross-references are accurate; adjust the references if not."
+      ],
+      "rationale": "The patch passes mechanical validation, touches only the three expected documentation files, and directly answers the question: zero durable raw retention by default, a memory-only buffer with a 60-second acquisition-based ceiling, explicit version-bound approval for purposeful clips, encrypted local storage eligibility, an absolute 24-hour default expiry, and non-renewable deadlines. It explicitly separates raw-media deletion from append-only historical evidence and repeatedly states that automated enforcement is a gate, not a shipped claim, matching the 'Current direction' constraints. The OPEN_QUESTIONS.md hunk uses 'Status: Solved' with 'Resolved by: UBU-D0327' and preserves other metadata. Cross-references in the \u00a721.1 contract and \u00a721.1.5 gates are updated coherently so UBU-Q0170 is no longer listed as open there while UBU-Q0171 and UBU-Q0168 remain. requires_human_review is correctly set. Deductions are for the length and implementation-level detail of the normative text, unverifiable references to UBU-Q0177 and the \u00a712.2 section number, and some overlap with the still-open operator-controls question."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0170-openai-retention-defaults-01",
+  "selection_rationale": "Only one proposal was submitted and it passed all mechanical checks. It is directly responsive to UBU-Q0170, preserves the question schema with 'Status: Solved' and a matching 'Resolved by:' field, resolves exactly one question with one new decision, and keeps enforcement claims honest. No blocking fixes were identified; the listed fix is a reference-accuracy verification that a human approver should perform before merge."
+}

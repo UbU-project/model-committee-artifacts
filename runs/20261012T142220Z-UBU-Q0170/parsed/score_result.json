@@ -1,0 +1,28 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0170-openai-retention-defaults-01",
+      "score": 90,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "'24 hours after the earliest captured sample' means later samples in a long clip get less than 24 hours; this is a deliberate anti-renewal choice but could surprise operators and should be understood at approval time.",
+        "Cross-references to UBU-Q0177 (described as hardware eligibility) and to '\u00a712.2' as the home of the new text cannot be verified from the prompt; if either is wrong the new contract and \u00a721.1.x pointers will be mislabeled.",
+        "Deletion-status reporting (scheduled/pending/failed/confirmed) is specified here while detailed operator discard controls remain open in UBU-Q0171; the two decisions will need to stay consistent when Q0171 is resolved.",
+        "Enforcement depends on device/runtime persistence controls, reliable expiry tracking and interruption-safe cleanup; the proposal explicitly gates enablement on demonstrated behavior.",
+        "The 60-second buffer ceiling and 24-hour clip default are policy choices requiring human approval.",
+        "The 60-second buffer ceiling and 24-hour clip expiry are asserted policy numbers with no cited basis; they are flagged as human-approval ceilings, which is correct for a Security question with 'Human approval required', but a reviewer must still confirm they are acceptable defaults.",
+        "The DESIGN.md addition is dense and partly implementation-flavored (monotonic source clock, decoded-frame deadlines, swap/hibernation/crash-dump inventory, pre-reopen cleanup reconciliation). This is still framed as policy and gates rather than shipped behavior, but it raises audit burden and edges toward UBU-Q0171's operator-control and enforcement scope."
+      ],
+      "required_fixes": [
+        "Confirm at the base commit that UBU-Q0177 exists and concerns hardware/Device eligibility, and that the insertion point near UBU-D0292 is actually within DESIGN.md \u00a712.2 so the \u00a721.1 cross-references are accurate; adjust the references if not."
+      ],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0170-openai-retention-defaults-01",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}
