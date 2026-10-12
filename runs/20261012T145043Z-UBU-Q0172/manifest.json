@@ -1,0 +1,172 @@
+{
+  "schema_version": "0.4",
+  "run_id": "20261012T145043Z-UBU-Q0172",
+  "created_at_utc": "2026-10-12T14:50:43Z",
+  "repo_path": "../ubu-design",
+  "base_commit": "28dbdcccaa504603fa3a60d2a4210846f5d91666",
+  "selected_question_id": "UBU-Q0172",
+  "phase": "work-select",
+  "config_path": "config/models.json",
+  "status": "selected",
+  "commands": [
+    "model-committee run-loop"
+  ],
+  "providers_attempted": [
+    "codex",
+    "claude"
+  ],
+  "providers_succeeded": [
+    "codex",
+    "claude"
+  ],
+  "providers_failed": [],
+  "provider_attempts": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0172-openai-gpt-6-20261012",
+      "response_path": "runs/20261012T145043Z-UBU-Q0172/responses/codex_score_ubu-q0172-openai-gpt-6-20261012_response.json",
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0172-openai-gpt-6-20261012",
+      "response_path": "runs/20261012T145043Z-UBU-Q0172/responses/claude_score_ubu-q0172-openai-gpt-6-20261012_stdout.json",
+      "stderr_path": null
+    }
+  ],
+  "provider_successes": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20261012T145043Z-UBU-Q0172/parsed/codex_work_proposal.json"
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0172-openai-gpt-6-20261012",
+      "response_path": "runs/20261012T145043Z-UBU-Q0172/responses/codex_score_ubu-q0172-openai-gpt-6-20261012_response.json",
+      "parsed_path": "runs/20261012T145043Z-UBU-Q0172/parsed/codex_score_ubu-q0172-openai-gpt-6-20261012_result.json"
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0172-openai-gpt-6-20261012",
+      "response_path": "runs/20261012T145043Z-UBU-Q0172/responses/claude_score_ubu-q0172-openai-gpt-6-20261012_stdout.json",
+      "parsed_path": "runs/20261012T145043Z-UBU-Q0172/parsed/claude_score_ubu-q0172-openai-gpt-6-20261012_result.json"
+    }
+  ],
+  "provider_failures": [],
+  "score_matrix": [
+    {
+      "proposal_id": "UBU-Q0172-openai-gpt-6-20261012",
+      "author_provider": "openai",
+      "scorer_provider": "codex",
+      "score": 95,
+      "valid": true,
+      "rationale": "Mechanical validation passes, changes stay within the three allowed files, and question metadata correctly uses Status: Solved. The contract directly addresses visibility, reliability, independent corroboration, operator knowledge, contradictions and revocation. It distinguishes state, transition and Task attribution; prevents inference laundering; and preserves unconditional whole-list completion and existing provenance. Behavioral fixtures are clearly implementation requirements, not claimed passing results.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "Host preservation and enforcement of effect-evidence/1 remain unproven and gated by UBU-Q0166.",
+        "Already-recorded non-idempotent effects may hold completion pending a supported reconciliation path."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261012T145043Z-UBU-Q0172/responses/codex_score_ubu-q0172-openai-gpt-6-20261012_response.json",
+        "stderr_path": null
+      }
+    },
+    {
+      "proposal_id": "UBU-Q0172-openai-gpt-6-20261012",
+      "author_provider": "openai",
+      "scorer_provider": "claude",
+      "score": 84,
+      "valid": true,
+      "rationale": "The patch applies cleanly, touches only the three allowlisted files, and changes only Status and Resolved by in UBU-Q0172's metadata with Status: Solved. It directly answers the question: \u00a717.10 separates completion-compatible observations, native success assertions, scoped sufficient evidence and unresolved/contradicted/revoked assessments, and covers every item named in the current direction (visibility limits, source reliability, independent corroboration, operator confirmation, contradictory evidence, revocation, and no self-certification via Plans or summaries). It keeps consequential examples withheld, preserves FactProvenance per UBU-D0293, adds UBU-D0329 in the existing decision format, and fixes the two cross-references in \u00a721.1 and \u00a721.1.1 that would otherwise go stale. Deductions are for prose density, introduction of a new named profile and possibly new vocabulary that need human confirmation, and unverified reliance on \u00a710.2/UBU-D0242 semantics. No decomposition was attempted and none was needed. Human approval is correctly flagged.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "Section 17.10 is dense and long; many clauses per paragraph reduce auditability and make it harder for the human reviewer to verify each requirement independently.",
+        "Introduces a new named companion profile `effect-evidence/1` with a required-content table. The text claims no new first-class object or kernel field, but the profile is still new design surface that should be confirmed against existing profile naming and payload conventions.",
+        "Uses terms such as `admitted-frontier bindings`, `idempotency outcome` and `state_at_time`/`transition`/`task_caused_transition` scopes that could not be verified against existing DESIGN.md vocabulary from the diff alone; if they are new, they are undocumented terminology.",
+        "Relies on \u00a710.2 unconditional whole-list mutation semantics and UBU-D0242; correctness of the completion gate depends on those references being accurate, which was not independently checked here.",
+        "Only two stale `UBU-Q0172 retains ...` cross-references in DESIGN.md were updated; other documents (for example MULTIMODAL_*.md) outside the allowlist may still describe the question as open.",
+        "Required behavioral gates are stated as acceptance requirements; the decision could be misread as implemented unless reviewers keep the 'not passing results' caveat in view."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261012T145043Z-UBU-Q0172/responses/claude_score_ubu-q0172-openai-gpt-6-20261012_stdout.json",
+        "stderr_path": null
+      }
+    }
+  ],
+  "score_aggregates": [
+    {
+      "proposal_id": "UBU-Q0172-openai-gpt-6-20261012",
+      "author_provider": "openai",
+      "cross_score_count": 2,
+      "score_mean": 89.5,
+      "score_spread": 11,
+      "frontier_score_gap": 11,
+      "disagreement_flags": []
+    }
+  ],
+  "cross_score_count": 2,
+  "score_mean": 89.5,
+  "score_spread": 11,
+  "frontier_score_gap": 11,
+  "disagreement_flags": [],
+  "quorum_result": {
+    "valid": true,
+    "human_review_required": false,
+    "selected_proposal_id": "UBU-Q0172-openai-gpt-6-20261012",
+    "selected_score": 89.5,
+    "selected_cross_score_count": 2,
+    "blocked_reasons": [],
+    "manual_override": false
+  },
+  "selected_proposal_id": "UBU-Q0172-openai-gpt-6-20261012",
+  "automated_selection_valid": true,
+  "human_review_required": false,
+  "artifact_publication_status": "operator_pending",
+  "prompt_size_warning": false,
+  "prompt_context": {
+    "question_ids": [
+      "UBU-Q0172"
+    ],
+    "decision_ids": [],
+    "sections": {},
+    "core_sections": {
+      "DESIGN.md": [
+        "1"
+      ],
+      "DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md": [
+        "4"
+      ]
+    },
+    "missing_refs": {},
+    "context_chars": 22569,
+    "prompt_chars": 29405
+  }
+}

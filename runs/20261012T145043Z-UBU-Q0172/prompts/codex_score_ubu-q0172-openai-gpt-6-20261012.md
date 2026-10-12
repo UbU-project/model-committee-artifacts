@@ -1,0 +1,227 @@
+# Model-Committee Cross-Scoring Request
+
+You are scoring candidate work proposals for the UbU `model-committee` process.
+
+Return exactly one JSON object. Do not return prose outside the JSON object.
+
+This is a v0.2 cross-score. You are not making the final selection; model-committee
+will aggregate valid cross-scores locally.
+
+Scoring provider: `codex`
+Authoring provider for the candidate proposal(s): `openai`
+
+## Selected question
+
+Question ID: `UBU-Q0172`  
+Question title: `Evidence compatible with completion versus proof of an effect`  
+Base commit: `28dbdcccaa504603fa3a60d2a4210846f5d91666`
+
+```markdown
+## UBU-Q0172: Evidence compatible with completion versus proof of an effect
+
+Status: Open Priority: MVP important Phase: Phase 2 Decision type: Data model Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 100 Depends on: None Blocks: None Resolved by: None Last scored: 2026-10-12 Scored from commit: None
+
+### Question
+
+What evidence semantics distinguish an observation compatible with completion from evidence sufficient to claim the modeled effect occurred?
+
+### Current direction
+
+Delta §17.10. Specify visibility limits, source reliability, independent corroboration, operator confirmation, contradictory evidence and later revocation. Inference must not self-certify by flowing through a plan or summary. Consequential examples remain withheld until these semantics are decided and implemented.
+
+### Resolution
+
+Open.
+
+---
+
+```
+
+## Candidate proposals
+
+```json
+[
+  {
+    "proposal_id": "UBU-Q0172-openai-gpt-6-20261012",
+    "provider_id": "openai",
+    "model_name": "gpt-6",
+    "question_id": "UBU-Q0172",
+    "base_commit": "28dbdcccaa504603fa3a60d2a4210846f5d91666",
+    "summary": "Define scoped evidence for completion and effects, with separate gates for perceptual success, consequential reuse and later correction.",
+    "rationale": "Completion-compatible observations and native effect application cannot independently establish real-world outcomes. The contract binds exact claims, source limits, independent corroboration and operator knowledge, prevents inference laundering through Plans or summaries, and preserves append-only correction and policy-safe uncertainty. It retains native whole-list completion semantics while requiring host evidence checks before perceptual success and evidence-dependent downstream use.",
+    "changed_files": [
+      "DESIGN.md",
+      "DECISIONS.md",
+      "OPEN_QUESTIONS.md"
+    ],
+    "patch": "diff --git a/DESIGN.md b/DESIGN.md\n--- a/DESIGN.md\n+++ b/DESIGN.md\n@@ -2985,6 +2985,56 @@ Information-source distinctions formerly carried as enum members \u2014 GitHub even\n \n `authority_source` values are schema-controlled. Specific Identity, source object, and evidence path belong in surrounding fields such as `actor_identity_ref`, `created_by_identity_ref`, `capability_grant_ref`, `source_refs`, `external_reference_refs`, `provenance`, and the append-only Log entry. Automation, policy, and system authority sources are never unconstrained user-equivalent authority.\n \n+### 17.10 Completion compatibility and evidence of effects\n+\n+**Phase 2 evidence contract (`UBU-D0329`).** Evidence is sufficient only for a specified claim, effective time and intended use under the applicable workflow's verification requirements. It is a reviewable, defeasible basis for an admitted claim, not a guarantee of reality. The Log establishes which attributed claims and changes were admitted; recording an inference does not prove its content. Apply this contract with \u00a721.1.1's observation bindings, qualifiers and consequence-sensitive review.\n+\n+| Evidence or record | Permitted meaning |\n+|---|---|\n+| Observation compatible with completion | Activity, elapsed time, an apparent finished object, a receipt or a worker's delivery may fit successful execution while also fitting failure, partial work or a different outcome. Retain the exact observation and alternatives as evidence; it alone establishes neither successful Task completion nor any modeled effect. |\n+| Native successful completion | An admitted `task_completed` has \u00a710.2's success semantics and applies the whole modeled mutation list. This records the accepted success assertion and contractual state update. Neither that event nor the resulting UniverseState value independently verifies the real-world effect. |\n+| Sufficient evidence for a scoped effect claim | Evidence establishes the exact outcome or transition claimed, meets the reviewed consequence/workflow requirements below, and passes ordinary admission. Report the actual source and scope: operator-asserted, measured or derived. Verification never promotes the original inference's source kind. |\n+| Unresolved, contradicted or revoked assessment | Withhold the affected positive effect claim and evidence-dependent use pending clarification or correction. This classification does not itself prove failure, the opposite state, or that no action occurred. |\n+\n+**State, transition and attribution.** Distinguish a property observed at a time, a transition during an interval, and a transition caused by a particular Task attempt. An after-state alone cannot establish a change from the prior state or who caused it. An increment/decrement requires evidence for the claimed delta, not just a plausible final number; an absence claim requires a method with adequate authorized coverage, not an omitted field or object outside the camera view. Bind identity, target, quantities/units, effective interval and relevant before/after evidence. Task attribution additionally needs an attempt-linked execution record and a verification basis that addresses alternative causes. Narrow the claim when evidence supports only current state; do not award Task execution or effect attribution for an independently satisfied condition.\n+\n+**Sufficiency review.** Declare the exact postcondition/transition, verification method, required scope/coverage, relevant timing/freshness limits and consequence class before accepting evidence for that use. The operator reviews these requirements; a model cannot weaken them to make its own output pass. Unknown requirements or consequence take the unresolved/consequential path under `UBU-D0324`.\n+\n+- Check what the source can actually reveal: occlusion, sampling gaps, measurement range/accuracy, incomplete responses, ambiguous identity and partial Replica visibility. Missing or policy-withheld evidence remains unknown. A source reliable about appearance may be unable to establish function, persistence, delivery or another hidden property.\n+- Assess source identity, acquisition/knowledge basis, method, relevant reliability qualifications, effective time and contradictory claims. Authentication establishes origin, not correctness. Tool dispatch, a successful call or an acknowledgment verifies only what its documented result contract actually establishes; receipt is insufficient for an effect requiring durable commit or recipient outcome. Missing required reliability or freshness information prevents sufficiency for that scope.\n+- Apply `UBU-D0324`: a bounded reversible ordinary use may rely on one actual knowledgeable operator assertion; consequential use needs relevant corroboration independent of the original interpretation and explicit operator review of sufficiency. Record what the operator knows and how. A separately obtained inspection/reading may qualify; accepting prose, repeated frames without a distinct verification basis, copied reports, another model using the same input, vote counts and confidence supply no independent basis. Unknown independence is not corroboration. One independent source is necessary for consequential perceptual use, never automatically sufficient.\n+- Resolve decision-relevant contradictions and alternatives with their time/scope and reasons visible; do not vote or average them away. An applicable qualified-review or operation-specific evidence requirement still governs. Explicit review binds the exact claim, sufficient evidence and intended use. Acceptance, silence, a completion checkbox or external-action approval alone is not an attestation of every effect.\n+\n+**Bound assessment payload.** Reuse existing Discovery/advisory payload/evidence slots and ordinary review/Log links with the companion profile `effect-evidence/1`; this selects no new first-class object, provenance kind, Log event or kernel field. Required content is:\n+\n+| Binding | Required content |\n+|---|---|\n+| Claim | Stable claim key; Task/attempt refs where attribution is claimed; for a modeled Task effect, its Task/effect revision and mutation index/target; exact predicate, outcome or delta; `state_at_time`, `transition` or `task_caused_transition` scope; effective instant/interval and unknown timing bounds. |\n+| Requirements and evidence | Versioned verification requirements and intended use/consequence; supporting and conflicting evidence/claim refs with versions, source ancestry and independence basis; source capability/reliability, coverage/freshness limits, unavailable evidence and unresolved alternatives; observed target/context/policy versions or admitted-frontier bindings. |\n+| Assessment and review | `compatible`, `sufficient_for_scope`, `unresolved`, `contradicted` or `revoked`; rationale for that result and scope; actual confirmation/verification statement and actor/Device/times when present; bound review decision, resulting native Log/Snapshot/mutation refs and idempotency outcome when admitted. |\n+| Lifecycle and restrictions | Supersession/correction/revocation links and all source disclosure/routing/retention restrictions. Required links must resolve within the permitted retained evidence; summaries/hashes cannot replace missing semantics or grant visibility. |\n+\n+Keep `FactProvenance` as `{kind, recorded_at}` under `UBU-D0293`; preserve actual asserted/measured/derived bases and the original proposed inference through `UBU-D0321`. The revision-pinned adapter must demonstrate that the payload, review and host eligibility checks survive the `UBU-Q0166` paths. Unsupported operations or lossy/unresolvable bindings remain evidence-only.\n+\n+**Admission and downstream use.** For the Phase 2 perceptual completion path, check the lifecycle evidence and every modeled mutation's required outcome before submitting native successful completion: \u00a710.2 applies all mutations unconditionally, so a partly verified effect list cannot become `task_completed`. Keep partial activity/outcome evidence for review; a separately reviewed supported Snapshot may assert only the observed fields without completing the Task. This adds a gate before native completion, not conditional mutation application. Bind prior Snapshot/mutation admissions representing the same outcome; completion and reconciliation must leave that transition counted once, with no Plan using intermediate incorrect state. If the native path cannot coherently reconcile an already observed non-idempotent effect, hold completion for a supported reviewed reconciliation rather than silently skipping/reapplying a mutation. Existing direct operator success admission retains its native semantics; when its effects have only contractual/assumed support, expose that basis rather than reporting independently verified effects.\n+\n+Apply the scoped evidence checks in host admission and Plan-input/execution preparation, including downstream uses of completion-derived values. For a use requiring verified effects, a simulated or contractually applied value cannot satisfy the evidence gate merely because its native predicate matches; preserve the dependency blocker. Authorized explicit assumptions retain their actual assertion provenance and cannot bypass consequential evidence requirements. A Plan, simulation, summary, Lore synthesis, projection, replay or derived computation preserves its source ancestry and cannot manufacture independent corroboration. Admission atomically binds the exact approved versions, native changes, assessment/review links and idempotency outcome under `UBU-D0320`; recheck current authority, policy and evidence before use. Evidence approval and external-action approval remain separately bound decisions.\n+\n+**Contradiction, correction and revocation.** Material conflicting evidence, corrected/revoked claims or changed use/versions invalidate the applicable assessment before affected Plan reuse, projection or execution. Append `log_correction_added` and separately admitted replacement Snapshot/mutations where supported, retaining the original claim and why its interpretation changed. Recalculate affected Plans from the corrected admitted view. A later legitimate state change need not negate a supported historical effect at an earlier time; reassess current-state freshness separately.\n+\n+Withdrawing support without replacement establishes unknown, not an inverse mutation: do not negate an increment, resurrect a deleted value, reopen a terminal Task or repeat an external action automatically. Reconstruct affected current state only through a supported, validated correction from admitted history/observations; if that cannot be established, block affected evidence-dependent use pending review. Source expiry/purge or a partial Replica marks permitted unavailability and prevents unsupported renewed sufficiency, while leaving admitted historical claims intact until an actual correction/revocation. Raw media need not outlive its policy when separately authorized retained evidence is sufficient. Current Device/actor revocation blocks unauthorized new admission/use but does not itself prove all past claims false. Restricted diagnostics disclose neither denied content nor denied existence.\n+\n+**Required behavioral gates.** Before enabling a producer or consequential example, pin the adapter, schemas, storage/review/admission and host Plan-input/execution revisions and policy profiles. Exercise these synthetic cases through the real paths, recording exact inputs, reviews, canonical diffs and corrected/replayed outcomes:\n+\n+- A high-confidence completion proxy and worker `delivered` record produce evidence only; one verified mutation in a multi-mutation effect list cannot complete the Task or apply the remainder.\n+- An after-state already present before the attempt supports at most the scoped state claim; missing/occluded data and incomplete query results establish neither transition nor absence. A call acknowledgment lacking durable-outcome semantics leaves that effect unresolved.\n+- A bounded knowledgeable assertion supports its reviewed ordinary scope; consequential reuse needs renewed independent evidence/review. Shared-source model agreement and a Plan/summary of an assumption never count as corroboration.\n+- Adequate attempt/outcome evidence plus scoped review admits exactly the supported native outcome once; changed evidence/Task/policy bindings reject stale approval, and restart/exchange replay applies no duplicate increment or other mutation. A prior Snapshot already incorporating the same transition requires a coherent reviewed handoff, not a second count or silently omitted mutation.\n+- A material contradiction or linked revocation invalidates affected uses, appends correction history and triggers recalculation without an invented inverse or repeat action. A later state change preserves a valid earlier historical claim.\n+- Purged evidence and a restricted partial Replica preserve only permitted gaps/history, block unsupported renewed claims and leak no denied existence. Sufficient evidence without action authority/approval dispatches nothing.\n+\n+These are acceptance requirements, not passing results. `UBU-Q0172` is answered as an evidence-semantics contract; host mapping, implementation and release acceptance remain separate gates. Consequential examples remain withheld until this contract is implemented and its relevant gates pass.\n+\n ## 18. Identities\n \n An **Identity** is the external-facing communication and authorization surface.\n@@ -3256,7 +3306,7 @@ Routing defaults are conservative. Local-only processing is required for raw sen\n \n The architecture is observation \u2192 candidate objects/facts \u2192 Identity and object resolution against permitted persistent context \u2192 candidate UniverseState/Resource implications \u2192 proposed preconditions or constraints \u2192 CPU semantic/policy/conflict validation and operator admission \u2192 planning or recalculation over admitted state. Ambiguous identity matches remain alternatives, not merged objects. The camera can suggest the relevance of an observed object to the user's life; it cannot infer intent, affect, Preference changes or ownership as self-certifying truth.\n \n-Confidence helps choose high-information clarification, not bypass admission. Corroboration is consequence-sensitive: escalate evidence and human review when an interpretation could change a consequential action; unknown or incompatible evidence stays unresolved. An observation consistent with completion is not proof that the modeled effect occurred. `UBU-D0293` defines source-kind mapping; `UBU-D0320` specifies observation bindings/admission; `UBU-D0321` specifies qualifier preservation; `UBU-D0324` specifies corroboration and review below. `UBU-Q0166` and `UBU-Q0172` retain host-mapping evidence and proof-of-effect questions. Existing candidate/Discovery records are the reuse point, not newly implemented perception schemas.\n+Confidence helps choose high-information clarification, not bypass admission. Corroboration is consequence-sensitive: escalate evidence and human review when an interpretation could change a consequential action; unknown or incompatible evidence stays unresolved. An observation consistent with completion is not proof that the modeled effect occurred. `UBU-D0293` defines source-kind mapping; `UBU-D0320` specifies observation bindings/admission; `UBU-D0321` specifies qualifier preservation; `UBU-D0324` specifies corroboration and review below. `UBU-Q0166` retains host-mapping evidence; `UBU-D0329` specifies completion/effect evidence in \u00a717.10. Existing candidate/Discovery records are the reuse point, not newly implemented perception schemas.\n \n The execution loop is **See \u2192 understand \u2192 plan \u2192 direct \u2192 observe \u2192 verify \u2192 learn \u2192 update**. Understanding proposes interpretations; planning remains the kernel's; direction presents an inspectable next action; new observations prompt reconciliation; verification uses the required evidence and operator review; learning proposes model corrections; only admitted updates close the loop. Inference never certifies itself by being repeated downstream. Technique guidance, observed Skill development and procedure-to-Technique capture depend on the later-phase objects and unresolved evidence/safety questions, not merely access to a camera. See [the interaction document](MULTIMODAL_INTERACTION.md) and [the security boundary](MULTIMODAL_SECURITY.md).\n \n@@ -3350,7 +3400,7 @@ Independent corroboration requires an identifiable acquisition or knowledge basi\n \n **Assessment bindings and later use.** Retain the reviewed use/scope, consequences, supporting and conflicting claim refs/versions, independence basis, unresolved issues and sufficiency rationale with existing candidate/evidence payloads and ordinary review/Log links; preserve `FactProvenance` as `{kind, recorded_at}`. Apply the check in host admission and Plan-input/execution preparation. Ordinary acceptance is not approval for a later consequential use. A changed use, material new contradiction, source correction/unavailability, or changed candidate/target/context/policy binding invalidates the applicable assessment and approval before affected Plan reuse or execution. Use the ordinary append-only correction and conflict paths; invalidate affected Plans and recalculate from admitted corrections without rewriting history or letting late model output undo an operator correction. An adapter unable to retain or enforce these links remains disabled for that use under `UBU-Q0166`.\n \n-Evidence review/admission neither grants capture/export capability nor approves an external action. Immediately before execution, recheck current admitted inputs, sufficiency for that operation, Plan legitimacy, authority, Device trust, Compartment/export policy and the operation's own scoped approval. A review may present both decisions, but must record and bind them separately. Apparent completion remains evidence-only until the applicable lifecycle/effect requirements are met; `UBU-Q0172` retains proof-of-effect semantics.\n+Evidence review/admission neither grants capture/export capability nor approves an external action. Immediately before execution, recheck current admitted inputs, sufficiency for that operation, Plan legitimacy, authority, Device trust, Compartment/export policy and the operation's own scoped approval. A review may present both decisions, but must record and bind them separately. Apparent completion remains evidence-only until \u00a717.10's lifecycle/effect evidence requirements under `UBU-D0329` are met.\n \n **Required fixtures.** Before enabling a producer/adapter, pin its revision, host schemas and policy configuration, and serialize the following scenarios through the real validators, review storage and admission reducer. Fixture labels below denote distinct stable schema-valid ids. Record exact input payloads/versions, decisions, candidate/evidence links, expected canonical diffs/Logs and replay outcomes. These are required acceptance cases, not passing implementation results.\n \n@@ -3376,9 +3426,9 @@ Evidence review/admission neither grants capture/export capability nor approves\n | Consequential inference with high confidence, two models using one frame, copied reports or unknown lineage; then an independently obtained matching reading/inspection | The first set cannot satisfy independent corroboration. The new evidence preserves ancestry and may support a freshly bound review, without automatic admission or execution. |\n | Independent but stale/inconclusive evidence, contradictory target/value/time, denied evidence or unresolved identity | The affected claim/use remains unresolved with policy-safe alternatives; no source voting, capacity release, precondition satisfaction or dependent dispatch. |\n | New contradiction or operator correction after acceptance, changed use/versions/policy, and delayed model output | The old assessment/approval cannot authorize affected Plan reuse or execution; admitted corrections append history and trigger recalculation, and the late result cannot overwrite them. |\n-| Sufficient evidence and admitted candidate, but no external-action approval or a revoked grant; apparent completion without effect evidence | No external dispatch or inferred completion/effect. Evidence sufficiency cannot replace action authorization or `UBU-Q0172`'s remaining proof requirements. |\n+| Sufficient evidence and admitted candidate, but no external-action approval or a revoked grant; apparent completion without effect evidence | No external dispatch or inferred completion/effect. Evidence sufficiency cannot replace action authorization or \u00a717.10's completion/effect requirements. |\n \n-`UBU-D0321` specifies qualifier content and fidelity gates; `UBU-D0324` specifies consequence-sensitive corroboration and review; `UBU-Q0166` retains revision-pinned host-mapping evidence and demonstrated schema-gap review. `UBU-D0326` specifies segmentation and scoped local analysis in \u00a721.1.5; `UBU-D0327` and `UBU-D0328` specify raw-media retention and operator controls in \u00a712.2; `UBU-Q0172` retains proof-of-effect semantics. This contract freezes bindings, reuse, corroboration and admission behavior without claiming the remaining questions or implementation acceptance are complete.\n+`UBU-D0321` specifies qualifier content and fidelity gates; `UBU-D0324` specifies consequence-sensitive corroboration and review; `UBU-Q0166` retains revision-pinned host-mapping evidence and demonstrated schema-gap review. `UBU-D0326` specifies segmentation and scoped local analysis in \u00a721.1.5; `UBU-D0327` and `UBU-D0328` specify raw-media retention and operator controls in \u00a712.2; `UBU-D0329` specifies completion/effect evidence in \u00a717.10. This contract freezes bindings, reuse, corroboration and admission behavior without claiming the remaining questions or implementation acceptance are complete.\n \n #### 21.1.2 Restricted-attention audio envelope\n \ndiff --git a/DECISIONS.md b/DECISIONS.md\n--- a/DECISIONS.md\n+++ b/DECISIONS.md\n@@ -5206,3 +5206,15 @@ Before enabling these controls, pin implementation, Device/OS/runtime/backend an\n - Discard and interrupted/failed purge distinguish pending and confirmed local cleanup, remove disallowed reconstructive derivatives and preserve only permitted historical links/gaps without claiming remote recall or erasure.\n \n These are required fixtures, not passing results. This resolves controls as a design contract, not implementation or physical deletion; `UBU-Q0168`, `UBU-Q0177` and `UBU-Q0162` retain measured performance, hardware eligibility and Log-enforcement scope. No Phase 1 default, wire schema, kernel API or existing authority gate changes.\n+\n+---\n+\n+## UBU-D0329: Completion compatibility and verified effects have separate evidence gates\n+\n+**Status:** Accepted \u2192 DESIGN.md \u00a717.10 and \u00a721.1.1. Resolves `UBU-Q0172`'s evidence-semantics contract; complements `UBU-D0320`, `UBU-D0321` and `UBU-D0324` without claiming implementation acceptance.\n+\n+Adopt `effect-evidence/1` over existing evidence/candidate payloads and review/Log links. Separate completion-compatible observations, native success assertions and sufficient evidence for an exact state/transition/Task-attribution claim at a specified time and use. Visibility, reliability, independent corroboration and knowledgeable operator confirmation govern sufficiency; unresolved contradictions and missing required evidence block the affected claim/use. Plans, summaries, simulated or contractually applied values and shared-source model agreement cannot independently verify effects.\n+\n+Gate perceptual successful completion before \u00a710.2's unconditional whole-list effect application; partial evidence cannot admit successful completion. Existing direct operator success retains its native contract, with assumed versus verified effect support visible. Recheck evidence-dependent downstream use in the host; consequential reuse and external action retain their separately scoped evidence, authority and approval requirements.\n+\n+Corrections/revocations append history, invalidate affected uses and recalculate from supported admitted corrections without inventing inverse effects or repeating actions. Distinguish historical truth, current freshness, source unavailability and actual withdrawal of support. Preserve source restrictions and existing provenance types. Require \u00a717.10's revision-pinned behavioral gates before enablement; `UBU-Q0166` retains host-mapping evidence, and consequential examples remain withheld until implemented gates pass.\ndiff --git a/OPEN_QUESTIONS.md b/OPEN_QUESTIONS.md\n--- a/OPEN_QUESTIONS.md\n+++ b/OPEN_QUESTIONS.md\n@@ -3263,19 +3263,19 @@ Resolved by `UBU-D0328`: DESIGN.md \u00a712.2 defines inspection, independent artifa\n \n ## UBU-Q0172: Evidence compatible with completion versus proof of an effect\n \n-Status: Open Priority: MVP important Phase: Phase 2 Decision type: Data model Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 100 Depends on: None Blocks: None Resolved by: None Last scored: 2026-10-12 Scored from commit: None\n+Status: Solved Priority: MVP important Phase: Phase 2 Decision type: Data model Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 100 Depends on: None Blocks: None Resolved by: UBU-D0329 Last scored: 2026-10-12 Scored from commit: None\n \n ### Question\n \n What evidence semantics distinguish an observation compatible with completion from evidence sufficient to claim the modeled effect occurred?\n \n ### Current direction\n \n Delta \u00a717.10. Specify visibility limits, source reliability, independent corroboration, operator confirmation, contradictory evidence and later revocation. Inference must not self-certify by flowing through a plan or summary. Consequential examples remain withheld until these semantics are decided and implemented.\n \n ### Resolution\n \n-Open.\n+Resolved by `UBU-D0329`: DESIGN.md \u00a717.10 distinguishes completion-compatible evidence, native success assertions and sufficient evidence for exact state, transition and Task-attribution claims. Sufficiency binds scope/time/use, visibility, source reliability, independent corroboration, actual operator knowledge and contradictory evidence. Perceptual completion checks the whole effect list before native success; contractual effect application, Plans and summaries cannot self-certify verified effects. Bound reviews and append-only corrections/revocations govern downstream use, recalculation and policy-safe unavailability. This resolves the semantics contract, not implementation acceptance; `UBU-Q0166` retains host mapping and consequential examples remain withheld until the relevant implemented gates pass.\n \n ---\n \n",
+    "commit_message": "docs: distinguish completion compatibility from verified effects (UBU-Q0172)",
+    "validation_notes": [
+      "Generated from unmodified current working-tree copies and proposed copies using git diff --no-index; optional index hash headers omitted for the requested header order.",
+      "git apply --check --whitespace=error against /home/sean/ubu-design passed; validation did not use the index.",
+      "Verified one OPEN_QUESTIONS.md hunk contains UBU-Q0172's heading, its metadata and its own Resolution; only Status and Resolved by change in its metadata.",
+      "Confirmed UBU-D0329 and DESIGN.md \u00a717.10 were unused; changes are limited to the three allowlisted files and working-tree bytes remain unchanged.",
+      "Reviewed against UBU-D0242's unconditional completion effects and UBU-D0320/0321/0324 evidence and admission boundaries. Behavioral fixtures are required implementation gates, not reported test results.",
+      "Human approval is required; consequential examples remain withheld until the relevant implemented gates pass."
+    ],
+    "new_questions_added": [],
+    "questions_resolved": [
+      "UBU-Q0172"
+    ],
+    "decisions_added": [
+      "UBU-D0329"
+    ],
+    "requires_human_review": true
+  }
+]
+```
+
+## Mechanical validation results
+
+```json
+[
+  {
+    "proposal_id": "UBU-Q0172-openai-gpt-6-20261012",
+    "patch_applies": true,
+    "allowlist_passed": true,
+    "changed_files": [
+      "DECISIONS.md",
+      "DESIGN.md",
+      "OPEN_QUESTIONS.md"
+    ],
+    "question_schema_passed": true,
+    "error": null,
+    "normalized_patch": null,
+    "warnings": [],
+    "ordinary_error": null,
+    "recount_error": null,
+    "normalization_error": null
+  }
+]
+```
+
+## Provider weights
+
+Provider weights are historical diagnostic context only in v0.2. Do not use
+self-trust or author identity as score evidence.
+
+```json
+{}
+```
+
+## JSON Schema
+
+Your output must satisfy this schema:
+
+```json
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "scores",
+    "selected_proposal_id",
+    "selection_rationale"
+  ],
+  "properties": {
+    "scores": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "proposal_id",
+          "score",
+          "patch_applies",
+          "implements_selected_work",
+          "preserves_question_schema",
+          "avoids_unnecessary_scope",
+          "decomposition_quality",
+          "risks",
+          "required_fixes",
+          "rationale"
+        ],
+        "properties": {
+          "proposal_id": {
+            "type": "string"
+          },
+          "score": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "patch_applies": {
+            "type": "boolean"
+          },
+          "implements_selected_work": {
+            "type": "boolean"
+          },
+          "preserves_question_schema": {
+            "type": "boolean"
+          },
+          "avoids_unnecessary_scope": {
+            "type": "boolean"
+          },
+          "decomposition_quality": {
+            "type": "string",
+            "enum": [
+              "none",
+              "good",
+              "bad",
+              "not_applicable"
+            ]
+          },
+          "risks": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "required_fixes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "rationale": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "selected_proposal_id": {
+      "type": "string"
+    },
+    "selection_rationale": {
+      "type": "string"
+    }
+  }
+}
+```
+
+## Scoring requirements
+
+Score each proposal from 0 to 100.
+
+Consider:
+
+- whether the patch applies cleanly;
+- whether it implements the selected work;
+- whether it preserves the question schema;
+- whether it avoids unnecessary scope;
+- whether it modifies only allowed files;
+- whether it creates useful decomposition if decomposition occurs;
+- whether it introduces new risks;
+- whether required fixes remain.
+
+Rules:
+
+- Score every proposal in this prompt.
+- `selected_proposal_id` must refer to one scored proposal from this prompt.
+- Manual override is not allowed in v0.2.
+- Prefer a patch that is valid, minimal, auditable, and directly responsive.
+- Do not select a proposal whose patch failed mechanical validation.
+- Allowed question `Status:` values are `Archived`, `Decomposed`, `Deferred`, `Open`, `Solved`, `Superseded`; a resolved question must use `Status: Solved`.
+- Reject `Status: Resolved` as a question-schema violation. Set `preserves_question_schema` to false and require `Status: Solved` as the fix; `Resolved by:` is a separate metadata field.
+- Do not score your own provider's proposal unless explicitly asked for diagnostic self-score.
+
+Return only JSON.

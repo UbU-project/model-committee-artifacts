@@ -1,0 +1,27 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0172-openai-gpt-6-20261012",
+      "score": 90,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Already-recorded non-idempotent effects may hold completion pending a supported reconciliation path.",
+        "Host preservation and enforcement of effect-evidence/1 remain unproven and gated by UBU-Q0166.",
+        "Introduces a new named companion profile `effect-evidence/1` with a required-content table. The text claims no new first-class object or kernel field, but the profile is still new design surface that should be confirmed against existing profile naming and payload conventions.",
+        "Only two stale `UBU-Q0172 retains ...` cross-references in DESIGN.md were updated; other documents (for example MULTIMODAL_*.md) outside the allowlist may still describe the question as open.",
+        "Relies on \u00a710.2 unconditional whole-list mutation semantics and UBU-D0242; correctness of the completion gate depends on those references being accurate, which was not independently checked here.",
+        "Required behavioral gates are stated as acceptance requirements; the decision could be misread as implemented unless reviewers keep the 'not passing results' caveat in view.",
+        "Section 17.10 is dense and long; many clauses per paragraph reduce auditability and make it harder for the human reviewer to verify each requirement independently.",
+        "Uses terms such as `admitted-frontier bindings`, `idempotency outcome` and `state_at_time`/`transition`/`task_caused_transition` scopes that could not be verified against existing DESIGN.md vocabulary from the diff alone; if they are new, they are undocumented terminology."
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0172-openai-gpt-6-20261012",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}

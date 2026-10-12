@@ -1,0 +1,25 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0172-openai-gpt-6-20261012",
+      "score": 84,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "none",
+      "risks": [
+        "Section 17.10 is dense and long; many clauses per paragraph reduce auditability and make it harder for the human reviewer to verify each requirement independently.",
+        "Introduces a new named companion profile `effect-evidence/1` with a required-content table. The text claims no new first-class object or kernel field, but the profile is still new design surface that should be confirmed against existing profile naming and payload conventions.",
+        "Uses terms such as `admitted-frontier bindings`, `idempotency outcome` and `state_at_time`/`transition`/`task_caused_transition` scopes that could not be verified against existing DESIGN.md vocabulary from the diff alone; if they are new, they are undocumented terminology.",
+        "Relies on \u00a710.2 unconditional whole-list mutation semantics and UBU-D0242; correctness of the completion gate depends on those references being accurate, which was not independently checked here.",
+        "Only two stale `UBU-Q0172 retains ...` cross-references in DESIGN.md were updated; other documents (for example MULTIMODAL_*.md) outside the allowlist may still describe the question as open.",
+        "Required behavioral gates are stated as acceptance requirements; the decision could be misread as implemented unless reviewers keep the 'not passing results' caveat in view."
+      ],
+      "required_fixes": [],
+      "rationale": "The patch applies cleanly, touches only the three allowlisted files, and changes only Status and Resolved by in UBU-Q0172's metadata with Status: Solved. It directly answers the question: \u00a717.10 separates completion-compatible observations, native success assertions, scoped sufficient evidence and unresolved/contradicted/revoked assessments, and covers every item named in the current direction (visibility limits, source reliability, independent corroboration, operator confirmation, contradictory evidence, revocation, and no self-certification via Plans or summaries). It keeps consequential examples withheld, preserves FactProvenance per UBU-D0293, adds UBU-D0329 in the existing decision format, and fixes the two cross-references in \u00a721.1 and \u00a721.1.1 that would otherwise go stale. Deductions are for prose density, introduction of a new named profile and possibly new vocabulary that need human confirmation, and unverified reliance on \u00a710.2/UBU-D0242 semantics. No decomposition was attempted and none was needed. Human approval is correctly flagged."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0172-openai-gpt-6-20261012",
+  "selection_rationale": "Only one proposal was submitted and it passed mechanical validation, applies cleanly, respects the allowlist and question schema, and delivers a complete evidence-semantics contract that matches the question's stated direction. Remaining concerns are advisory (density, new profile name and vocabulary, cross-document reference hygiene) and are appropriate for the required human review rather than blocking."
+}
