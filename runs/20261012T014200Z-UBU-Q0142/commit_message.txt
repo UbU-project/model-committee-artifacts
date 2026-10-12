@@ -1,0 +1,1 @@
+UMC: docs: define recovery for interrupted Phase 2 sync sessions

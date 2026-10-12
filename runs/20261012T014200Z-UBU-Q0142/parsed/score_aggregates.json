@@ -1,0 +1,11 @@
+[
+  {
+    "proposal_id": "UBU-Q0142-openai-gpt-6-disconnect-recovery",
+    "author_provider": "openai",
+    "cross_score_count": 2,
+    "score_mean": 88.0,
+    "score_spread": 16,
+    "frontier_score_gap": 16,
+    "disagreement_flags": []
+  }
+]

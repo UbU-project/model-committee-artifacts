@@ -1,0 +1,20 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0142-openai-gpt-6-disconnect-recovery",
+      "score": 96,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Durable admission, recovery metadata, and per-recipient acknowledgments add implementation obligations; the required interruption and recovery certification remains outstanding."
+      ],
+      "required_fixes": [],
+      "rationale": "Mechanical validation passes, and the checkout matches the stated base commit. The patch directly resolves disconnection handling with durable incremental admission, dependency-safe staging, idempotent recovery, safe discard, and scope-bound completion. It distinguishes lost acknowledgment from failed admission and preserves current authority, Compartment privacy, conflict review, and Plan invalidation rules. Changes stay within allowed files and preserve question metadata while correctly using Status: Solved."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0142-openai-gpt-6-disconnect-recovery",
+  "selection_rationale": "The sole candidate is mechanically valid, directly responsive, and has no blocking fixes identified. This is an advisory cross-score for local aggregation; human approval remains required."
+}
