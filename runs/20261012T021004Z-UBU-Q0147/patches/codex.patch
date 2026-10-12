@@ -1,0 +1,72 @@
+diff --git a/DECISIONS.md b/DECISIONS.md
+index 119961d..9c7b683 100644
+--- a/DECISIONS.md
++++ b/DECISIONS.md
+@@ -5008,3 +5008,28 @@
+ - Partial/restricted replicas expose only permitted diagnostics, including counts and recurrence; intentional visibility limits survive successful exchange. Stale-state acceptance or dismissal cannot bypass policy denial or required `manual_decision` review.
+ 
+ These are required behavior checks, not evidence of implementation or completed certification.
++
++---
++
++## UBU-D0316: Future syncable manual-review Tasks terminate at the diagnostic path
++
++**Status:** Accepted → DESIGN.md §1. Resolves `UBU-Q0147`; defines a future versioned extension to DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md §17 under `UBU-D0247` and `UBU-D0248`.
++
++A future release may admit a genuinely shared Dynamic Task for reviewing a sync conflict. The Task reserves attention; the existing diagnostic/prompt remains the independent way to make and admit the decision. The first Phase 2 sync release retains §17's diagnostic-only model. The extension must enforce these rules:
++
++1. **Independent admission.** Create the Task through an authorized ordinary `mutation`, with uncontested admitted Objective/owner references and independently valid duration, title, and other required scheduling inputs. Its conflict-episode reference identifies evidence to inspect, not a prerequisite to admit the contested effects. Verified evidence may remain pending/candidate state; it cannot supply authoritative planner facts. Preserve all required causal parents and admission dependencies: missing evidence or an unresolved Task dependency can defer Task admission, but Task admission is never a dependency of resolving the source conflict. The versioned reference semantics must express this distinction rather than dropping required parents.
++2. **Stable episode identity.** Within the authorized scope, derive the Task identity from a versioned canonical descriptor containing the owning scope, affected object references, conflict class, contested base versions, and sorted conflicting statement content addresses. Equivalent creations coalesce idempotently; differing authored Task fields require ordinary review, never a clock-based choice of user intent. A partial Replica with a different evidence frontier may identify a different episode; do not claim global uniqueness or discard its evidence. Coalesce proven equivalent work only under current policy. A resolution closes only the evidence/frontier it actually covers; late creation or replay cannot reopen that resolved episode.
++3. **Independent scheduling.** The CPU may schedule the Task using only validated, policy-permitted, uncontested inputs and demonstrably available Calendar capacity. Keep the contested region and its dependent work blocked. Missing or quarantined Calendar data is not free time, and protected blocks remain constraints. If a safe placement cannot be certified, leave the Task unplaced and the direct diagnostic available. Reserving review time does not establish a successful resolution or authorize dependent work. Recheck relevant state and policy before placement or execution; admitted changes trigger §22's invalidation/recalculation rules.
++4. **A terminal base case.** Only conflicts in ordinary domain state may generate review Tasks. Conflicts involving a review Task, its creation/lifecycle statements, scheduling/projection artifacts, or conflict-resolution statements go directly to the existing policy-safe `manual_decision` diagnostic. They must not generate a review-of-review Task. Preserve review-workflow provenance through related artifacts so a retry or projection cannot re-enter the Task generator under a new object kind. There is at most one Task-generation layer per root conflict; diagnostics remain device-local derived state.
++5. **Resolution precedes lifecycle reconciliation.** Validate and admit the source conflict's `conflict_resolution` against the current relevant evidence frontier, object/policy versions, Device trust, and actor authority, without requiring the review Task, a Plan, placement, or Task completion. Stale or competing resolutions retain ordinary blocking review; they do not spawn another Task or silently select an intent. Reconcile Task completion afterward through the ordinary admitted lifecycle path. Failure or conflict in that update cannot undo the resolution. Snooze, rejection, deletion, and Task completion alone cannot clear the underlying conflict or its blocking diagnostic; a Task whose covered episode is resolved is no longer eligible for review scheduling.
++6. **No authority or disclosure shortcut.** Creation, identity, metadata, evidence links, timing, counts, and projection inherit the restrictions of all source evidence. A deterministic hash is not a safe public identifier; denied Devices receive only permitted opaque representations, or nothing when existence is denied. If current trust or policy authority is unresolved, fail closed for Task admission, scheduling, disclosure, and resolution as applicable. Keep only the existing permitted diagnostic and recovery actions; neither the Task nor its prior admission grants emergency authority.
++
++These rules cut both cycles: planning the review never requires admission of the effects being reviewed, and making the decision never requires planning the review. Conflicts in the scheduling wrapper terminate at a prompt rather than creating another wrapper. This bounds structural regress; eventual human agreement or delivery is not guaranteed during continuing concurrent writes.
++
++Before enabling this optional extension, version and align the Task, sync-admission, and planner contracts and demonstrate:
++
++- Concurrent creation, edits, duplicate/reordered/replayed statements, and differing partial evidence frontiers across at least three Devices: equivalent authorized closures converge, resolved episodes stay closed, and review-workflow conflicts generate no descendant Tasks.
++- A contested region, protected Calendar collision, missing scheduling inputs, or entirely unavailable capacity: no unsafe placement or dependent execution, while a permitted source-conflict resolution can be admitted with the Task absent, unplaced, snoozed, or itself contested.
++- Competing/stale resolutions, resolution before Task creation, a failed completion update, Device revocation, and policy/visibility changes on partial replicas: independent resolution, blocking review, current authority, and protection of denied payload, source identity, and Compartment identity remain intact.
++
++These are future implementation gates, not completed evidence and not additional gates for the diagnostic-only Phase 2 release.
+diff --git a/DESIGN.md b/DESIGN.md
+index 1e0b23e..934a0d9 100644
+--- a/DESIGN.md
++++ b/DESIGN.md
+@@ -56,6 +56,8 @@
+ 
+ Generate visible text, counts, urgency, and reappearance only from evidence or derived warnings allowed at this Replica's replication level. Restricted notices use DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md §23's "A protected object cannot sync to this Device." without denied payload, source object identifiers, or Compartment ids/labels; omit object-specific notices when even existence is denied. Warnings preserve intentional partial replication and never recommend powering off other Devices or switching to a single primary Device.
+ 
++**Future schedulable manual review (`UBU-D0316`).** A later versioned extension may admit a shared Dynamic review Task with independent, coherent scheduling inputs and a protected conflict-episode identity. Its target is evidence to review, not admitted contested effects. Place it only in validated unaffected Calendar capacity; otherwise keep it unplaced. The diagnostic/prompt must still admit a permitted source-conflict `conflict_resolution` without review Task creation, placement, or completion. Conflicts in the Task, its scheduling/projection artifacts, or resolution workflow terminate at that diagnostic and never spawn review-of-review Tasks. Task lifecycle reconciliation follows resolution; snooze or deletion cannot clear the underlying blocker. Current authority and source privacy govern every step. The first Phase 2 sync release retains §17's diagnostic-only model until this extension's versioned contracts and behavioral gates pass.
++
+ ---
+ 
+ ## 2. Core Principles
+diff --git a/OPEN_QUESTIONS.md b/OPEN_QUESTIONS.md
+index 88f5bab..5adedbf 100644
+--- a/OPEN_QUESTIONS.md
++++ b/OPEN_QUESTIONS.md
+@@ -2633,19 +2633,19 @@
+ 
+ ## UBU-Q0147: Schedulable syncable manual-review Task and the causal regress
+ 
+-Status: Open Priority: Post-MVP Phase: Phase 2 Decision type: Architecture Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 100 Depends on: None Blocks: Phase 2+ manual-review Task scheduling Resolved by: None Last scored: 2026-10-11 Scored from commit: None
++Status: Solved Priority: Post-MVP Phase: Phase 2 Decision type: Architecture Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 100 Depends on: None Blocks: Phase 2+ manual-review Task scheduling Resolved by: UBU-D0316 Last scored: 2026-10-11 Scored from commit: None
+ 
+ Formerly UBU-QSYNC-009 (retired from DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md section 28). Defining context: DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md §17.
+ 
+ ### Question
+ 
+ If a future phase wants a genuinely schedulable, syncable manual-review Task (rather than the
+ device-local diagnostic surface of §17), how is the causal regress and planner loop resolved so that
+ the review Task does not depend on the coherence it exists to restore?
+ 
+ ### Resolution
+ 
+-Open.
++Resolved by `UBU-D0316`: a future versioned extension may admit a shared Dynamic manual-review Task with independent coherent planning inputs and a protected conflict-episode identity. Contested effects remain pending; resolution never depends on Task creation, placement, or completion. Review-workflow conflicts terminate at the existing diagnostic/prompt without spawning another review Task. Placement requires validated unaffected capacity, and current authority/privacy checks remain mandatory. The first Phase 2 sync release retains its diagnostic-only baseline; the optional extension requires contract alignment and behavioral evidence before enablement.
+ 
+ ---
+ 

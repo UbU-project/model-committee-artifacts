@@ -1,0 +1,24 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0147-openai-gpt-6-20261011",
+      "score": 84,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "none",
+      "risks": [
+        "Cross-references to UBU-D0247, UBU-D0248, and DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md \u00a722/\u00a723 could not be verified from the scoring context; if any of them do not say what the decision assumes, the versioning and invalidation hooks in rules 1 and 3 lose their anchor.",
+        "DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md \u00a717 is not touched, so the contract that the decision claims to extend carries no forward pointer to UBU-D0316; a reader of \u00a717 alone will not discover that a future extension is defined.",
+        "Rule 2 derives Task identity from a canonical descriptor that includes conflicting statement content addresses; the decision acknowledges partial replicas may produce divergent episode ids, which means a user on several Devices can legitimately see more than one review Task for one root conflict until coalescing under policy occurs. This is accepted rather than solved.",
+        "The DESIGN.md \u00a71 paragraph is dense for an overview section and partially duplicates the decision text; if DECISIONS.md is later revised, the two could drift.",
+        "The decision is long (six numbered rules plus three gate groups) and the question requires human approval; reviewers must read the whole text to confirm no rule contradicts existing \u00a717 behavior, which raises review cost."
+      ],
+      "required_fixes": [],
+      "rationale": "The patch applied cleanly and passed allowlist and question-schema validation. The question metadata uses Status: Solved with Resolved by: UBU-D0316 and leaves ranking fields intact. The decision is directly responsive to the causal regress: rule 1 makes Task admission depend only on uncontested inputs and treats the conflict episode as evidence rather than a prerequisite, rule 3 scopes scheduling to validated uncontested capacity with an unplaced fallback, rule 4 supplies a terminal base case by routing any conflict in review-workflow objects to the existing manual_decision diagnostic instead of a review-of-review Task, and rule 5 ensures resolution never depends on the Task or its Plan. Together these cut both the planner loop and the regress, which is exactly what the question asked for. The identity and privacy rules (2 and 6) address the obvious multi-Device failure modes a syncable Task introduces. Scope is limited to the three files one expects for a question resolution and explicitly preserves the diagnostic-only Phase 2 baseline, so it does not overreach into implementation. Deductions are for unverifiable cross-references, the missing forward pointer from the extended contract section, and the density of the DESIGN.md insertion."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0147-openai-gpt-6-20261011",
+  "selection_rationale": "Only one proposal was submitted and it passed mechanical validation. It resolves UBU-Q0147 with a coherent architecture answer that severs both dependency cycles and bounds regress with an explicit terminal base case, uses the correct Status: Solved schema, and confines changes to DECISIONS.md, DESIGN.md, and OPEN_QUESTIONS.md. Remaining concerns are verification of cited decisions and sections plus discoverability from \u00a717, none of which block selection but all of which belong in the required human approval review."
+}

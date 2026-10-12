@@ -1,0 +1,20 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0147-openai-gpt-6-20261011",
+      "score": 95,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Episode identity, partial-frontier reconciliation, and reference/admission semantics require future contract alignment and behavioral validation before enablement."
+      ],
+      "required_fixes": [],
+      "rationale": "Supplied mechanical validation confirms clean application, allowed files, and preserved question schema. The proposal addresses both cycles through independent scheduling inputs, resolution independent of Task lifecycle, and a terminal diagnostic path for review-workflow conflicts. Authority, privacy, causal-parent requirements, and the diagnostic-only Phase 2 baseline remain protected. The remaining implementation work is explicitly gated."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0147-openai-gpt-6-20261011",
+  "selection_rationale": "The sole candidate is mechanically valid, directly responsive, and appropriately scoped. This cross-score supports it for local aggregation; required human approval remains intact."
+}

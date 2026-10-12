@@ -1,0 +1,226 @@
+# Model-Committee Cross-Scoring Request
+
+You are scoring candidate work proposals for the UbU `model-committee` process.
+
+Return exactly one JSON object. Do not return prose outside the JSON object.
+
+This is a v0.2 cross-score. You are not making the final selection; model-committee
+will aggregate valid cross-scores locally.
+
+Scoring provider: `claude`
+Authoring provider for the candidate proposal(s): `openai`
+
+## Selected question
+
+Question ID: `UBU-Q0147`  
+Question title: `Schedulable syncable manual-review Task and the causal regress`  
+Base commit: `b86dfa27597c9e1e87971c7319880c55207ef6b2`
+
+```markdown
+## UBU-Q0147: Schedulable syncable manual-review Task and the causal regress
+
+Status: Open Priority: Post-MVP Phase: Phase 2 Decision type: Architecture Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 100 Depends on: None Blocks: Phase 2+ manual-review Task scheduling Resolved by: None Last scored: 2026-10-11 Scored from commit: None
+
+Formerly UBU-QSYNC-009 (retired from DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md section 28). Defining context: DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md §17.
+
+### Question
+
+If a future phase wants a genuinely schedulable, syncable manual-review Task (rather than the
+device-local diagnostic surface of §17), how is the causal regress and planner loop resolved so that
+the review Task does not depend on the coherence it exists to restore?
+
+### Resolution
+
+Open.
+
+---
+
+```
+
+## Candidate proposals
+
+```json
+[
+  {
+    "proposal_id": "UBU-Q0147-openai-gpt-6-20261011",
+    "provider_id": "openai",
+    "model_name": "gpt-6",
+    "question_id": "UBU-Q0147",
+    "base_commit": "b86dfa27597c9e1e87971c7319880c55207ef6b2",
+    "summary": "Define future shared manual-review Tasks with independent scheduling and a terminal diagnostic fallback.",
+    "rationale": "A genuine shared Task can reserve review time using coherent independent inputs, while the source conflict remains resolvable without that Task or its Plan. Prohibiting descendant review Tasks for conflicts in the review workflow bounds causal regress. Current authority, evidence, privacy, and Calendar constraints remain mandatory; the first Phase 2 release keeps its diagnostic-only baseline.",
+    "changed_files": [
+      "DECISIONS.md",
+      "DESIGN.md",
+      "OPEN_QUESTIONS.md"
+    ],
+    "patch": "diff --git a/DECISIONS.md b/DECISIONS.md\nindex 119961d..9c7b683 100644\n--- a/DECISIONS.md\n+++ b/DECISIONS.md\n@@ -5008,3 +5008,28 @@\n - Partial/restricted replicas expose only permitted diagnostics, including counts and recurrence; intentional visibility limits survive successful exchange. Stale-state acceptance or dismissal cannot bypass policy denial or required `manual_decision` review.\n \n These are required behavior checks, not evidence of implementation or completed certification.\n+\n+---\n+\n+## UBU-D0316: Future syncable manual-review Tasks terminate at the diagnostic path\n+\n+**Status:** Accepted \u2192 DESIGN.md \u00a71. Resolves `UBU-Q0147`; defines a future versioned extension to DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md \u00a717 under `UBU-D0247` and `UBU-D0248`.\n+\n+A future release may admit a genuinely shared Dynamic Task for reviewing a sync conflict. The Task reserves attention; the existing diagnostic/prompt remains the independent way to make and admit the decision. The first Phase 2 sync release retains \u00a717's diagnostic-only model. The extension must enforce these rules:\n+\n+1. **Independent admission.** Create the Task through an authorized ordinary `mutation`, with uncontested admitted Objective/owner references and independently valid duration, title, and other required scheduling inputs. Its conflict-episode reference identifies evidence to inspect, not a prerequisite to admit the contested effects. Verified evidence may remain pending/candidate state; it cannot supply authoritative planner facts. Preserve all required causal parents and admission dependencies: missing evidence or an unresolved Task dependency can defer Task admission, but Task admission is never a dependency of resolving the source conflict. The versioned reference semantics must express this distinction rather than dropping required parents.\n+2. **Stable episode identity.** Within the authorized scope, derive the Task identity from a versioned canonical descriptor containing the owning scope, affected object references, conflict class, contested base versions, and sorted conflicting statement content addresses. Equivalent creations coalesce idempotently; differing authored Task fields require ordinary review, never a clock-based choice of user intent. A partial Replica with a different evidence frontier may identify a different episode; do not claim global uniqueness or discard its evidence. Coalesce proven equivalent work only under current policy. A resolution closes only the evidence/frontier it actually covers; late creation or replay cannot reopen that resolved episode.\n+3. **Independent scheduling.** The CPU may schedule the Task using only validated, policy-permitted, uncontested inputs and demonstrably available Calendar capacity. Keep the contested region and its dependent work blocked. Missing or quarantined Calendar data is not free time, and protected blocks remain constraints. If a safe placement cannot be certified, leave the Task unplaced and the direct diagnostic available. Reserving review time does not establish a successful resolution or authorize dependent work. Recheck relevant state and policy before placement or execution; admitted changes trigger \u00a722's invalidation/recalculation rules.\n+4. **A terminal base case.** Only conflicts in ordinary domain state may generate review Tasks. Conflicts involving a review Task, its creation/lifecycle statements, scheduling/projection artifacts, or conflict-resolution statements go directly to the existing policy-safe `manual_decision` diagnostic. They must not generate a review-of-review Task. Preserve review-workflow provenance through related artifacts so a retry or projection cannot re-enter the Task generator under a new object kind. There is at most one Task-generation layer per root conflict; diagnostics remain device-local derived state.\n+5. **Resolution precedes lifecycle reconciliation.** Validate and admit the source conflict's `conflict_resolution` against the current relevant evidence frontier, object/policy versions, Device trust, and actor authority, without requiring the review Task, a Plan, placement, or Task completion. Stale or competing resolutions retain ordinary blocking review; they do not spawn another Task or silently select an intent. Reconcile Task completion afterward through the ordinary admitted lifecycle path. Failure or conflict in that update cannot undo the resolution. Snooze, rejection, deletion, and Task completion alone cannot clear the underlying conflict or its blocking diagnostic; a Task whose covered episode is resolved is no longer eligible for review scheduling.\n+6. **No authority or disclosure shortcut.** Creation, identity, metadata, evidence links, timing, counts, and projection inherit the restrictions of all source evidence. A deterministic hash is not a safe public identifier; denied Devices receive only permitted opaque representations, or nothing when existence is denied. If current trust or policy authority is unresolved, fail closed for Task admission, scheduling, disclosure, and resolution as applicable. Keep only the existing permitted diagnostic and recovery actions; neither the Task nor its prior admission grants emergency authority.\n+\n+These rules cut both cycles: planning the review never requires admission of the effects being reviewed, and making the decision never requires planning the review. Conflicts in the scheduling wrapper terminate at a prompt rather than creating another wrapper. This bounds structural regress; eventual human agreement or delivery is not guaranteed during continuing concurrent writes.\n+\n+Before enabling this optional extension, version and align the Task, sync-admission, and planner contracts and demonstrate:\n+\n+- Concurrent creation, edits, duplicate/reordered/replayed statements, and differing partial evidence frontiers across at least three Devices: equivalent authorized closures converge, resolved episodes stay closed, and review-workflow conflicts generate no descendant Tasks.\n+- A contested region, protected Calendar collision, missing scheduling inputs, or entirely unavailable capacity: no unsafe placement or dependent execution, while a permitted source-conflict resolution can be admitted with the Task absent, unplaced, snoozed, or itself contested.\n+- Competing/stale resolutions, resolution before Task creation, a failed completion update, Device revocation, and policy/visibility changes on partial replicas: independent resolution, blocking review, current authority, and protection of denied payload, source identity, and Compartment identity remain intact.\n+\n+These are future implementation gates, not completed evidence and not additional gates for the diagnostic-only Phase 2 release.\ndiff --git a/DESIGN.md b/DESIGN.md\nindex 1e0b23e..934a0d9 100644\n--- a/DESIGN.md\n+++ b/DESIGN.md\n@@ -56,6 +56,8 @@\n \n Generate visible text, counts, urgency, and reappearance only from evidence or derived warnings allowed at this Replica's replication level. Restricted notices use DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md \u00a723's \"A protected object cannot sync to this Device.\" without denied payload, source object identifiers, or Compartment ids/labels; omit object-specific notices when even existence is denied. Warnings preserve intentional partial replication and never recommend powering off other Devices or switching to a single primary Device.\n \n+**Future schedulable manual review (`UBU-D0316`).** A later versioned extension may admit a shared Dynamic review Task with independent, coherent scheduling inputs and a protected conflict-episode identity. Its target is evidence to review, not admitted contested effects. Place it only in validated unaffected Calendar capacity; otherwise keep it unplaced. The diagnostic/prompt must still admit a permitted source-conflict `conflict_resolution` without review Task creation, placement, or completion. Conflicts in the Task, its scheduling/projection artifacts, or resolution workflow terminate at that diagnostic and never spawn review-of-review Tasks. Task lifecycle reconciliation follows resolution; snooze or deletion cannot clear the underlying blocker. Current authority and source privacy govern every step. The first Phase 2 sync release retains \u00a717's diagnostic-only model until this extension's versioned contracts and behavioral gates pass.\n+\n ---\n \n ## 2. Core Principles\ndiff --git a/OPEN_QUESTIONS.md b/OPEN_QUESTIONS.md\nindex 88f5bab..5adedbf 100644\n--- a/OPEN_QUESTIONS.md\n+++ b/OPEN_QUESTIONS.md\n@@ -2633,19 +2633,19 @@\n \n ## UBU-Q0147: Schedulable syncable manual-review Task and the causal regress\n \n-Status: Open Priority: Post-MVP Phase: Phase 2 Decision type: Architecture Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 100 Depends on: None Blocks: Phase 2+ manual-review Task scheduling Resolved by: None Last scored: 2026-10-11 Scored from commit: None\n+Status: Solved Priority: Post-MVP Phase: Phase 2 Decision type: Architecture Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 100 Depends on: None Blocks: Phase 2+ manual-review Task scheduling Resolved by: UBU-D0316 Last scored: 2026-10-11 Scored from commit: None\n \n Formerly UBU-QSYNC-009 (retired from DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md section 28). Defining context: DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md \u00a717.\n \n ### Question\n \n If a future phase wants a genuinely schedulable, syncable manual-review Task (rather than the\n device-local diagnostic surface of \u00a717), how is the causal regress and planner loop resolved so that\n the review Task does not depend on the coherence it exists to restore?\n \n ### Resolution\n \n-Open.\n+Resolved by `UBU-D0316`: a future versioned extension may admit a shared Dynamic manual-review Task with independent coherent planning inputs and a protected conflict-episode identity. Contested effects remain pending; resolution never depends on Task creation, placement, or completion. Review-workflow conflicts terminate at the existing diagnostic/prompt without spawning another review Task. Placement requires validated unaffected capacity, and current authority/privacy checks remain mandatory. The first Phase 2 sync release retains its diagnostic-only baseline; the optional extension requires contract alignment and behavioral evidence before enablement.\n \n ---\n \n",
+    "commit_message": "Resolve UBU-Q0147 with bounded syncable review Task semantics",
+    "validation_notes": [
+      "Generated the diff from current working-tree files and proposed in-memory contents using git diff --no-index; repository files were left unchanged.",
+      "git apply --check and git apply --check --whitespace=error passed against the current working tree, without --cached or --recount.",
+      "UBU-Q0147 metadata and resolution share one hunk containing its exact heading and own Resolution section; ranking/scoring metadata is preserved.",
+      "Changes are limited to the three listed files. UBU-D0316 was unused; no question ids were added.",
+      "JSON fields, identifiers, patch scope, and hunk ranges were validated. Behavioral scenarios are future implementation gates, not completed tests."
+    ],
+    "new_questions_added": [],
+    "questions_resolved": [
+      "UBU-Q0147"
+    ],
+    "decisions_added": [
+      "UBU-D0316"
+    ],
+    "requires_human_review": true
+  }
+]
+```
+
+## Mechanical validation results
+
+```json
+[
+  {
+    "proposal_id": "UBU-Q0147-openai-gpt-6-20261011",
+    "patch_applies": true,
+    "allowlist_passed": true,
+    "changed_files": [
+      "DECISIONS.md",
+      "DESIGN.md",
+      "OPEN_QUESTIONS.md"
+    ],
+    "question_schema_passed": true,
+    "error": null,
+    "normalized_patch": null,
+    "warnings": [],
+    "ordinary_error": null,
+    "recount_error": null,
+    "normalization_error": null
+  }
+]
+```
+
+## Provider weights
+
+Provider weights are historical diagnostic context only in v0.2. Do not use
+self-trust or author identity as score evidence.
+
+```json
+{}
+```
+
+## JSON Schema
+
+Your output must satisfy this schema:
+
+```json
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "scores",
+    "selected_proposal_id",
+    "selection_rationale"
+  ],
+  "properties": {
+    "scores": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "proposal_id",
+          "score",
+          "patch_applies",
+          "implements_selected_work",
+          "preserves_question_schema",
+          "avoids_unnecessary_scope",
+          "decomposition_quality",
+          "risks",
+          "required_fixes",
+          "rationale"
+        ],
+        "properties": {
+          "proposal_id": {
+            "type": "string"
+          },
+          "score": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "patch_applies": {
+            "type": "boolean"
+          },
+          "implements_selected_work": {
+            "type": "boolean"
+          },
+          "preserves_question_schema": {
+            "type": "boolean"
+          },
+          "avoids_unnecessary_scope": {
+            "type": "boolean"
+          },
+          "decomposition_quality": {
+            "type": "string",
+            "enum": [
+              "none",
+              "good",
+              "bad",
+              "not_applicable"
+            ]
+          },
+          "risks": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "required_fixes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "rationale": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "selected_proposal_id": {
+      "type": "string"
+    },
+    "selection_rationale": {
+      "type": "string"
+    }
+  }
+}
+```
+
+## Scoring requirements
+
+Score each proposal from 0 to 100.
+
+Consider:
+
+- whether the patch applies cleanly;
+- whether it implements the selected work;
+- whether it preserves the question schema;
+- whether it avoids unnecessary scope;
+- whether it modifies only allowed files;
+- whether it creates useful decomposition if decomposition occurs;
+- whether it introduces new risks;
+- whether required fixes remain.
+
+Rules:
+
+- Score every proposal in this prompt.
+- `selected_proposal_id` must refer to one scored proposal from this prompt.
+- Manual override is not allowed in v0.2.
+- Prefer a patch that is valid, minimal, auditable, and directly responsive.
+- Do not select a proposal whose patch failed mechanical validation.
+- Allowed question `Status:` values are `Archived`, `Decomposed`, `Deferred`, `Open`, `Solved`, `Superseded`; a resolved question must use `Status: Solved`.
+- Reject `Status: Resolved` as a question-schema violation. Set `preserves_question_schema` to false and require `Status: Solved` as the fix; `Resolved by:` is a separate metadata field.
+- Do not score your own provider's proposal unless explicitly asked for diagnostic self-score.
+
+Return only JSON.

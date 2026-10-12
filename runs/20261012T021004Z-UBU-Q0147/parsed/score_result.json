@@ -1,0 +1,25 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0147-openai-gpt-6-20261011",
+      "score": 90,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Cross-references to UBU-D0247, UBU-D0248, and DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md \u00a722/\u00a723 could not be verified from the scoring context; if any of them do not say what the decision assumes, the versioning and invalidation hooks in rules 1 and 3 lose their anchor.",
+        "DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md \u00a717 is not touched, so the contract that the decision claims to extend carries no forward pointer to UBU-D0316; a reader of \u00a717 alone will not discover that a future extension is defined.",
+        "Episode identity, partial-frontier reconciliation, and reference/admission semantics require future contract alignment and behavioral validation before enablement.",
+        "Rule 2 derives Task identity from a canonical descriptor that includes conflicting statement content addresses; the decision acknowledges partial replicas may produce divergent episode ids, which means a user on several Devices can legitimately see more than one review Task for one root conflict until coalescing under policy occurs. This is accepted rather than solved.",
+        "The DESIGN.md \u00a71 paragraph is dense for an overview section and partially duplicates the decision text; if DECISIONS.md is later revised, the two could drift.",
+        "The decision is long (six numbered rules plus three gate groups) and the question requires human approval; reviewers must read the whole text to confirm no rule contradicts existing \u00a717 behavior, which raises review cost."
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0147-openai-gpt-6-20261011",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}
