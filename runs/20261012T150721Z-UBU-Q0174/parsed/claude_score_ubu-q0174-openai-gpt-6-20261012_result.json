@@ -1,0 +1,26 @@
+{
+  "scores": [
+    {
+      "proposal_id": "ubu-q0174-openai-gpt-6-20261012",
+      "score": 82,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "none",
+      "risks": [
+        "The question's Current direction points at 'Delta \u00a717.12', but the proposal adds the contract as DESIGN.md \u00a721.1.6 and does not touch or cross-reference \u00a717.12; readers following the question metadata may not find the new section.",
+        "Introduces a 'release envelope' as a new controller-owned versioned artifact (supported workflows/steps, prerequisites, clarification limits, professional roles). It is declared without a schema, owner or lifecycle, so it may become a de facto new object even though the text says no new kernel field, provenance kind or Log event is selected.",
+        "The section is very dense and leans on many cross-references (\u00a7\u00a721.1.2\u201321.1.5, \u00a717.0, \u00a717.10, \u00a722.4, UBU-D0324/D0325/D0329, UBU-Q0166/Q0168/Q0175). Any of those that do not say what the proposal assumes would leave dangling obligations; this could not be verified from the diff alone.",
+        "Prescriptive UI/behavior details (exact 'Guidance stopped' notice contents, emergency-escalation message rules, restricted-attention output envelope) go slightly beyond a process contract and may need to be reconciled with existing session-lifecycle and attention sections.",
+        "The urgent-harm row forbids 'waiting for more images or diagnostic questioning'; combined with the fallibility caveat this is sound, but it depends on an unspecified classifier of 'possible immediate serious harm', which is itself hazardous uncertainty the proposal does not bound."
+      ],
+      "required_fixes": [
+        "Add a one-line pointer in or near \u00a717.12 (or state in the Resolution why \u00a721.1 is the correct home) so the 'Delta \u00a717.12' direction in the question resolves to \u00a721.1.6."
+      ],
+      "rationale": "Mechanical validation passes: the patch applies, only the three allowlisted files change, and the question block uses Status: Solved with Resolved by: UBU-D0330 and an updated Resolution while leaving other metadata untouched. The content is directly responsive to every element of the Current direction: domain limits (release envelope and excluded domains), missing context, hazardous uncertainty, contradictory observations and failed verification, user-visible stop behavior, 'camera access is not domain competence', and explicit bounding that guidance is not professional replacement. It also handles resumption, separates escalation from contact/export/action authority, defers expert packets to UBU-Q0175, and reuses existing session/evidence/Log contracts rather than adding kernel objects, which keeps scope reasonable for a Process decision. The main shortcomings are the \u00a717.12 placement mismatch, the unspecified release-envelope artifact, and heavy density, none of which block adoption. Score reflects a valid, auditable, complete resolution with modest follow-up needed."
+    }
+  ],
+  "selected_proposal_id": "ubu-q0174-openai-gpt-6-20261012",
+  "selection_rationale": "Only one proposal was submitted and it passed mechanical validation (applies cleanly, allowlist and question schema pass). It implements the selected work completely, uses Status: Solved with a correct Resolved by field, adds a single decision UBU-D0330 and a single design subsection, and avoids new kernel objects. Residual issues (section placement relative to \u00a717.12, undefined release-envelope artifact, density) are follow-up fixes rather than disqualifiers."
+}

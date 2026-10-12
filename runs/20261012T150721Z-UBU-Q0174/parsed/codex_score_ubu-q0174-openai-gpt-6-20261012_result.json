@@ -1,0 +1,20 @@
+{
+  "scores": [
+    {
+      "proposal_id": "ubu-q0174-openai-gpt-6-20261012",
+      "score": 96,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "none",
+      "risks": [
+        "Workflow-specific release envelopes and professional-qualification checks require implementation and validation before enablement; these process requirements do not establish operational safety."
+      ],
+      "required_fixes": [],
+      "rationale": "Mechanical validation passes, and changes are confined to the three allowed files. The proposal directly specifies domain limits, missing-context and hazardous-uncertainty stops, contradictory observations, professional and emergency escalation, visible cancellation, and fresh resumption. It correctly uses Status: Solved, preserves existing privacy, attention, authority and evidence contracts, and leaves expert packets and later Technique execution scoped to their existing work. Some cancellation rules repeat existing contracts, but no material scope expansion or blocking defect was found."
+    }
+  ],
+  "selected_proposal_id": "ubu-q0174-openai-gpt-6-20261012",
+  "selection_rationale": "The sole submitted proposal is mechanically valid and directly responsive, with no required fixes. This cross-score supports local aggregation; final acceptance remains subject to human approval."
+}

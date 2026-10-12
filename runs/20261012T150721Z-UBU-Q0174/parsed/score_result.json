@@ -1,0 +1,27 @@
+{
+  "scores": [
+    {
+      "proposal_id": "ubu-q0174-openai-gpt-6-20261012",
+      "score": 89,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Introduces a 'release envelope' as a new controller-owned versioned artifact (supported workflows/steps, prerequisites, clarification limits, professional roles). It is declared without a schema, owner or lifecycle, so it may become a de facto new object even though the text says no new kernel field, provenance kind or Log event is selected.",
+        "Prescriptive UI/behavior details (exact 'Guidance stopped' notice contents, emergency-escalation message rules, restricted-attention output envelope) go slightly beyond a process contract and may need to be reconciled with existing session-lifecycle and attention sections.",
+        "The question's Current direction points at 'Delta \u00a717.12', but the proposal adds the contract as DESIGN.md \u00a721.1.6 and does not touch or cross-reference \u00a717.12; readers following the question metadata may not find the new section.",
+        "The section is very dense and leans on many cross-references (\u00a7\u00a721.1.2\u201321.1.5, \u00a717.0, \u00a717.10, \u00a722.4, UBU-D0324/D0325/D0329, UBU-Q0166/Q0168/Q0175). Any of those that do not say what the proposal assumes would leave dangling obligations; this could not be verified from the diff alone.",
+        "The urgent-harm row forbids 'waiting for more images or diagnostic questioning'; combined with the fallibility caveat this is sound, but it depends on an unspecified classifier of 'possible immediate serious harm', which is itself hazardous uncertainty the proposal does not bound.",
+        "Workflow-specific release envelopes and professional-qualification checks require implementation and validation before enablement; these process requirements do not establish operational safety."
+      ],
+      "required_fixes": [
+        "Add a one-line pointer in or near \u00a717.12 (or state in the Resolution why \u00a721.1 is the correct home) so the 'Delta \u00a717.12' direction in the question resolves to \u00a721.1.6."
+      ],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "ubu-q0174-openai-gpt-6-20261012",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}

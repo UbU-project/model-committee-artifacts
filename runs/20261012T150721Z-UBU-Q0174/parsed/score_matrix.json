@@ -1,0 +1,48 @@
+[
+  {
+    "proposal_id": "ubu-q0174-openai-gpt-6-20261012",
+    "author_provider": "openai",
+    "scorer_provider": "codex",
+    "score": 96,
+    "valid": true,
+    "rationale": "Mechanical validation passes, and changes are confined to the three allowed files. The proposal directly specifies domain limits, missing-context and hazardous-uncertainty stops, contradictory observations, professional and emergency escalation, visible cancellation, and fresh resumption. It correctly uses Status: Solved, preserves existing privacy, attention, authority and evidence contracts, and leaves expert packets and later Technique execution scoped to their existing work. Some cancellation rules repeat existing contracts, but no material scope expansion or blocking defect was found.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [
+      "Workflow-specific release envelopes and professional-qualification checks require implementation and validation before enablement; these process requirements do not establish operational safety."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20261012T150721Z-UBU-Q0174/responses/codex_score_ubu-q0174-openai-gpt-6-20261012_response.json",
+      "stderr_path": null
+    }
+  },
+  {
+    "proposal_id": "ubu-q0174-openai-gpt-6-20261012",
+    "author_provider": "openai",
+    "scorer_provider": "claude",
+    "score": 82,
+    "valid": true,
+    "rationale": "Mechanical validation passes: the patch applies, only the three allowlisted files change, and the question block uses Status: Solved with Resolved by: UBU-D0330 and an updated Resolution while leaving other metadata untouched. The content is directly responsive to every element of the Current direction: domain limits (release envelope and excluded domains), missing context, hazardous uncertainty, contradictory observations and failed verification, user-visible stop behavior, 'camera access is not domain competence', and explicit bounding that guidance is not professional replacement. It also handles resumption, separates escalation from contact/export/action authority, defers expert packets to UBU-Q0175, and reuses existing session/evidence/Log contracts rather than adding kernel objects, which keeps scope reasonable for a Process decision. The main shortcomings are the \u00a717.12 placement mismatch, the unspecified release-envelope artifact, and heavy density, none of which block adoption. Score reflects a valid, auditable, complete resolution with modest follow-up needed.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [
+      "Add a one-line pointer in or near \u00a717.12 (or state in the Resolution why \u00a721.1 is the correct home) so the 'Delta \u00a717.12' direction in the question resolves to \u00a721.1.6."
+    ],
+    "risks": [
+      "The question's Current direction points at 'Delta \u00a717.12', but the proposal adds the contract as DESIGN.md \u00a721.1.6 and does not touch or cross-reference \u00a717.12; readers following the question metadata may not find the new section.",
+      "Introduces a 'release envelope' as a new controller-owned versioned artifact (supported workflows/steps, prerequisites, clarification limits, professional roles). It is declared without a schema, owner or lifecycle, so it may become a de facto new object even though the text says no new kernel field, provenance kind or Log event is selected.",
+      "The section is very dense and leans on many cross-references (\u00a7\u00a721.1.2\u201321.1.5, \u00a717.0, \u00a717.10, \u00a722.4, UBU-D0324/D0325/D0329, UBU-Q0166/Q0168/Q0175). Any of those that do not say what the proposal assumes would leave dangling obligations; this could not be verified from the diff alone.",
+      "Prescriptive UI/behavior details (exact 'Guidance stopped' notice contents, emergency-escalation message rules, restricted-attention output envelope) go slightly beyond a process contract and may need to be reconciled with existing session-lifecycle and attention sections.",
+      "The urgent-harm row forbids 'waiting for more images or diagnostic questioning'; combined with the fallibility caveat this is sound, but it depends on an unspecified classifier of 'possible immediate serious harm', which is itself hazardous uncertainty the proposal does not bound."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20261012T150721Z-UBU-Q0174/responses/claude_score_ubu-q0174-openai-gpt-6-20261012_stdout.json",
+      "stderr_path": null
+    }
+  }
+]
