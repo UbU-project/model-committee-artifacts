@@ -1,0 +1,28 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0163-openai-gpt-6-retirement-gates",
+      "score": 80,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "DESIGN.md text cites UBU-D0279, a 'CPU reference path', enabled planner backends and Compartment policy; if any of those names do not match existing design vocabulary at the base commit, the new section will dangle.",
+        "UBU-D0318 is marked Accepted while UBU-Q0163 stays Open with Resolved by: None; the prose explains the split, but downstream tooling that pairs decisions with question status may read it as inconsistent.",
+        "The new DESIGN.md \u00a71 block is four dense paragraphs introducing a 'coverage manifest' without saying where it is stored or what format it takes, which makes the gate harder to audit later.",
+        "Decision number UBU-D0318 is allocated by the proposal without visible evidence that it is the next free number; a concurrent proposal could collide.",
+        "The Current direction addition partly duplicates the Resolution paragraph, adding redundancy to the question record."
+      ],
+      "required_fixes": [
+        "Confirm UBU-D0279 and the other cross-referenced terms exist in DESIGN.md/DECISIONS.md at the base commit before merge.",
+        "Confirm UBU-D0318 is the next unallocated decision id.",
+        "Optionally trim the DESIGN.md insert or move manifest details into the decision so \u00a71 stays readable."
+      ],
+      "rationale": "Patch applies cleanly, touches only the three allowlisted documents, and leaves the UBU-Q0163 metadata line and Status: Open untouched, which is appropriate for a Human-approval-required process question with no implementation evidence yet. It answers the question as posed by defining concrete verification gates (one Task lineage per occurrence, UTC/DST correctness, backend agreement on busy/free capacity, no double counting, residual blocking for unsupported inputs, operator-approved batch handoff with plan invalidation) and correctly refuses to claim retirement has happened. It honours the existing direction that timed expanded instances already capture. Deductions are for density, unverifiable cross-references, and minor redundancy rather than for any correctness or schema failure."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0163-openai-gpt-6-retirement-gates",
+  "selection_rationale": "Only one proposal was offered and it passed mechanical validation, preserves the question schema, stays within the allowlisted files, and directly specifies the verified capture and occupancy behaviour the question asks for while keeping the question Open pending evidence and operator approval. Remaining concerns are editorial and reference-verification items, not blockers."
+}

@@ -1,0 +1,77 @@
+diff --git a/DECISIONS.md b/DECISIONS.md
+index c75469c..e5b91c0 100644
+--- a/DECISIONS.md
++++ b/DECISIONS.md
+@@ -5051,3 +5051,20 @@ Before enabling this workflow, demonstrate:
+ - Long or oversized histories, exhausted storage and queryable archival respect finite limits without silent loss; restricted replicas and policy-directed purge cannot disclose or reconstruct denied source content through prose, coverage or cached context.
+ 
+ These are required implementation checks, not evidence of completed implementation or a claim that arbitrary model paraphrase is provably lossless.
++
++---
++
++## UBU-D0318: Recurring-busy blockers retire only after scoped capture and occupancy verification
++
++**Status:** Accepted → DESIGN.md §1. Specifies the retirement process for `UBU-Q0163`; implementation evidence and the operator's scoped retirement remain open.
++
++Adopt the coverage manifest, stable occurrence lineage, capacity checks and reviewed blocker handoff in DESIGN.md §1. Existing timed expanded-instance capture is the baseline, not evidence that all recurrence is unsupported or that every relevant commitment is covered. Series-level import is optional when expanded instances demonstrably cover the reviewed scope. Keep residual blockers for unsupported or unverified intervals.
++
++Before any scoped retirement, attach revision-pinned behavioral evidence demonstrating:
++
++- Expanded-instance capture and repeated/on-demand capture preserve one Task lineage per occurrence across retry and restart. Different occurrences remain distinct; single-occurrence and series edits, cancellations and explicit exceptions used by the reviewed scope remove stale future occupancy without rewriting logged history.
++- Timezone/DST resolution and horizon-crossing intervals match expected UTC occupancy. All-day, floating-time, unexpanded series and other unsupported inputs produce explicit outcomes with retained protection; interrupted or incomplete capture cannot certify coverage. Horizon advancement repeats the coverage check.
++- The CPU reference path and enabled planner backends agree on busy/free capacity and reject flexible placement inside fixed commitments. Replacement Tasks, their projections and workaround blockers are not counted twice; genuine commitment overlaps remain conflicts.
++- A mixed covered/uncovered blocker retains exactly the required residual protection. Approved handoff, interrupted handoff, stale-version refusal, restart and replay preserve reservations, invalidate old Plans and prevent reuse/projection until recalculation is certified.
++
++These are required implementation and retirement checks, not passing results. Closing `UBU-Q0163` requires the source/path inventory, these results and the recorded operator-approved handoff for the identified workaround.
+diff --git a/DESIGN.md b/DESIGN.md
+index 5698f8b..3ab6b20 100644
+--- a/DESIGN.md
++++ b/DESIGN.md
+@@ -70,6 +70,14 @@ Declare finite storage, prompt, result and job time/call limits. Retain source h
+ 
+ Source records, synthesized prose, coverage maps and subsequent context inherit all source disclosure, routing and retention restrictions; local processing does not waive them. Reject synthesis into a Task whose destination policy cannot protect its sources. Recheck policy on every read, sync and export. Authorized redaction/purge also removes disallowed content from dependent prose, revisions and cached context; prevent reconstruction from retained derivatives. Keep only permitted minimized gap metadata, disclose incompleteness without revealing denied existence, and never claim lossless retention beyond that scope.
+ 
++**Recurring-busy workaround retirement (`UBU-D0318`).** Timed expanded recurrence instances already capture as individual Tasks. Retire a temporary manual capacity blocker only for an operator-reviewed source/series and planning scope with verified replacement occupancy. Full series-level import is not a prerequisite when expanded instances cover that scope; unsupported inputs, missed/on-demand capture and incomplete coverage retain explicit residual blocking.
++
++Record a policy-permitted coverage manifest binding the implementation revision, source/series references, capture window/cursor and completeness evidence, source and admitted input versions, planning horizon, expected busy UTC intervals, occurrence-to-Task lineage, and blocker references. Every relevant busy occurrence must map to one active capacity-bearing representation; record how any uncovered part of the blocker remains protected. Titles or coincident times do not establish occurrence identity. Repeated capture, restart and replay preserve lineage without duplicate Tasks. Moves, cancellations and series changes supersede prior active reservations through ordinary admission while preserving logged history; absence from an incomplete response cannot establish cancellation.
++
++Fixed busy commitments use capacity-occupying Static Tasks at validated UTC start/end times and bound chunks under `UBU-D0279`. Capture counts, Calendar display and Task existence alone do not prove occupancy. Verify the CPU reference path and each enabled planner backend against expected occupied/free intervals: flexible placements cannot enter busy time, and a source occurrence, its projection and its temporary blocker cannot consume capacity twice. Distinct commitments that genuinely overlap retain their conflict rather than being deduplicated by time.
++
++Before removal, show the exact blocker replacements and residual intervals and obtain explicit operator approval bound to the manifest and current versions. Apply them through ordinary admission as one batch, or an equivalent serialized handoff that prevents Plan certification/projection of intermediate missing or doubled occupancy. Invalidate affected Plans and certify recalculation before reuse or projection. Failure or stale inputs preserve protection and require fresh review. Retire only the identified workaround, preserving source commitments and history. Advancing the horizon or receiving material source changes requires renewed coverage checks before using affected capacity; missing, stale or policy-withheld data never proves free time. Evidence and diagnostics obey current Compartment policy; this process neither grants capture/export authority nor bypasses existing sync/projection checks.
++
+ ---
+ 
+ ## 2. Core Principles
+diff --git a/OPEN_QUESTIONS.md b/OPEN_QUESTIONS.md
+index e7ee071..45a808a 100644
+--- a/OPEN_QUESTIONS.md
++++ b/OPEN_QUESTIONS.md
+@@ -3074,25 +3074,27 @@ Open. Append-only correction is already decided. The reported offending path, co
+ ## UBU-Q0163: Retire the uncaptured recurring-busy capacity workaround
+ 
+ Status: Open Priority: MVP important Phase: Phase 2 Decision type: Process Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 100 Depends on: None Blocks: None Resolved by: None Last scored: 2026-10-11 Scored from commit: None
+ 
+ ### Question
+ 
+ What verified capture/occupancy behavior allows removal of the temporary manual blocking Static event used for uncaptured recurring busy time during the Phase 1b-to-Phase 2 transition?
+ 
+ ### Current direction
+ 
++`UBU-D0318` specifies the scoped capture, capacity and blocker-handoff gates in DESIGN.md §1. Remaining work is the actual source/series inventory, implementation-path references, revision-pinned passing checks and operator approval for the identified blocker replacements. Unsupported or incomplete coverage retains residual blocking.
++
+ Recorded operator-reported limitation: uncaptured busy time is invisible to the planner, so a manual capacity blocker can prevent placement there but can also collide with subsequently captured commitments. Timed expanded recurrence instances already capture as individual Tasks; do not describe all recurrence as unsupported. Series semantics, unsupported inputs and missed/on-demand capture still need review. Remove the workaround only when relevant recurring commitments demonstrably occupy the correct capacity, without duplicates or double counting. No operator event or collision tally is reproduced here.
+ 
+ ### Resolution
+ 
+-Open.
++Open. `UBU-D0318` specifies the retirement process; verified implementation evidence and the scoped operator-approved blocker handoff remain outstanding. This specification removes no blocker and makes no claim that recurring-busy coverage is complete.
+ 
+ ---
+ 
+ ## UBU-Q0164: Deliver the primary camera-and-voice surface with usable alternatives
+ 
+ Status: Open Priority: MVP important Phase: Phase 2 Decision type: Product Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 100 Depends on: None Blocks: None Resolved by: None Last scored: 2026-10-11 Scored from commit: None
+ 
+ ### Question
+ 
+ How does the MVP realize its already-decided primary camera-and-voice surface while keeping text/forms useful for preference, privacy, precision and context?
