@@ -1,0 +1,26 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0169-openai-gpt-6-local-media-1",
+      "score": 92,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Adapter enablement still requires measured finite limits, an effective retention policy, and demonstrated isolation, revocation and artifact cleanup.",
+        "New DESIGN.md \u00a721.1.5 cross-references \u00a712.2, \u00a721.1.3 and \u00a7\u00a721.3\u201321.4; these section numbers are not visible in the patch context and should be confirmed to exist so the contract does not dangle.",
+        "The section introduces named logical operations (`media.frames.extract`, `media.events.detect`, `media.sections.isolate`) and an adapter profile label (`local-media/1`). The text hedges that this is a boundary, not a wire schema, but these names may be read later as frozen interface commitments.",
+        "The section is long and dense (~40 lines of tightly packed constraints). It matches the style of adjacent \u00a721.1.x content but will be hard to audit line by line and may overlap with retention rules still owned by UBU-Q0170/UBU-Q0171.",
+        "The statement 'Continuous capture cannot be enabled with unresolved effective retention policy' adds a hard gate coupling this decision to UBU-Q0170, which is reasonable but is new policy rather than pure architecture."
+      ],
+      "required_fixes": [
+        "Verify that DESIGN.md \u00a712.2, \u00a721.1.3 and \u00a7\u00a721.3\u201321.4 exist at the base commit and point at capture controls and export/routing content as the new text claims; adjust references if not."
+      ],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0169-openai-gpt-6-local-media-1",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}

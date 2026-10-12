@@ -1,0 +1,20 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0169-openai-gpt-6-local-media-1",
+      "score": 96,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Adapter enablement still requires measured finite limits, an effective retention policy, and demonstrated isolation, revocation and artifact cleanup."
+      ],
+      "required_fixes": [],
+      "rationale": "Mechanical validation confirms clean application, allowed files and question-schema preservation, including Status: Solved. The architecture directly covers segmentation, buffering, timestamps, source boundaries, scoped operations, cancellation and intermediate retention. Cross-references remain consistent, and numerical acceptance, retention defaults, operator controls and implementation evidence retain their existing scope. No blocking defect is evident."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0169-openai-gpt-6-local-media-1",
+  "selection_rationale": "The sole candidate is mechanically valid and directly answers the selected architecture question with explicit enforcement gates and no unnecessary question or schema expansion. This cross-score leaves final aggregation to model-committee."
+}
