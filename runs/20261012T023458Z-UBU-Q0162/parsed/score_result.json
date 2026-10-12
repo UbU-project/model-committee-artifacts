@@ -1,0 +1,24 @@
+{
+  "scores": [
+    {
+      "proposal_id": "codex-UBU-Q0162-log-correction-audit",
+      "score": 80,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Adds two non-standard subsections ('Audit and minimum repair', 'Closure evidence') inside a question entry. Mechanical schema validation passed, but tooling or readers expecting only Question / Current direction / Resolution may not anticipate them.",
+        "Cites event types, envelope fields, decision IDs (UBU-D0071, UBU-D0248, UBU-D0258) and DESIGN.md sections (12.1, 12.2, 17.3) that cannot be verified from this prompt; a stale or wrong reference would make the repair spec misleading.",
+        "Does not identify the offending edit path, so the question's core 'where' remains unanswered; this is acknowledged and consistent with the documentation-only scope, but the entry is now longer without being closer to closure.",
+        "Resolution section becomes multi-sentence prose rather than a terse state marker, which slightly weakens the convention that Resolution holds the closure outcome.",
+        "Several bullets read as normative rules (generic edit/delete paths must reject edits to admitted history, atomic commit of entry plus compensation, correction does not auto-undo Task or UniverseState effects). If any of these are not already covered by existing decisions, they are effectively new design rules placed in an open question rather than a decision record."
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 1 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "codex-UBU-Q0162-log-correction-audit",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}

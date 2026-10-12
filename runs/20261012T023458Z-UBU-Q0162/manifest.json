@@ -1,0 +1,134 @@
+{
+  "schema_version": "0.4",
+  "run_id": "20261012T023458Z-UBU-Q0162",
+  "created_at_utc": "2026-10-12T02:34:58Z",
+  "repo_path": "../ubu-design",
+  "base_commit": "c13175653923461f78b785d07b5e0cba7a28d2ae",
+  "selected_question_id": "UBU-Q0162",
+  "phase": "work-select",
+  "config_path": "config/models.json",
+  "status": "selected",
+  "commands": [
+    "model-committee run-loop"
+  ],
+  "providers_attempted": [
+    "codex",
+    "claude"
+  ],
+  "providers_succeeded": [
+    "codex",
+    "claude"
+  ],
+  "providers_failed": [],
+  "provider_attempts": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "codex-UBU-Q0162-log-correction-audit",
+      "response_path": "runs/20261012T023458Z-UBU-Q0162/responses/claude_score_codex-ubu-q0162-log-correction-audit_stdout.json",
+      "stderr_path": null
+    }
+  ],
+  "provider_successes": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20261012T023458Z-UBU-Q0162/parsed/codex_work_proposal.json"
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "codex-UBU-Q0162-log-correction-audit",
+      "response_path": "runs/20261012T023458Z-UBU-Q0162/responses/claude_score_codex-ubu-q0162-log-correction-audit_stdout.json",
+      "parsed_path": "runs/20261012T023458Z-UBU-Q0162/parsed/claude_score_codex-ubu-q0162-log-correction-audit_result.json"
+    }
+  ],
+  "provider_failures": [],
+  "score_matrix": [
+    {
+      "proposal_id": "codex-UBU-Q0162-log-correction-audit",
+      "author_provider": "codex",
+      "scorer_provider": "claude",
+      "score": 80,
+      "valid": true,
+      "rationale": "Patch applies cleanly, touches only OPEN_QUESTIONS.md, and edits only the UBU-Q0162 body while leaving the metadata line, Status: Open, neighbouring questions and IDs intact. It is directly responsive: the current direction asks for an audit of edit paths that distinguishes annotation, corrected views and compensating entries from rewriting admitted history, and the proposal specifies exactly that audit, a minimum repair expressed in the existing Log envelope and linked-correction event types, media-deletion handling, and concrete closure evidence. It correctly keeps the question Open and does not claim a reproduction, ticket or passing checks it does not have. Deductions are for verbosity relative to a 'minimum' spec, unverifiable cross-references, non-standard subsection headings, and normative language that may belong in a decision record; none of these block application or make the content wrong on its face, so no required fixes are listed.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "Cites event types, envelope fields, decision IDs (UBU-D0071, UBU-D0248, UBU-D0258) and DESIGN.md sections (12.1, 12.2, 17.3) that cannot be verified from this prompt; a stale or wrong reference would make the repair spec misleading.",
+        "Adds two non-standard subsections ('Audit and minimum repair', 'Closure evidence') inside a question entry. Mechanical schema validation passed, but tooling or readers expecting only Question / Current direction / Resolution may not anticipate them.",
+        "Several bullets read as normative rules (generic edit/delete paths must reject edits to admitted history, atomic commit of entry plus compensation, correction does not auto-undo Task or UniverseState effects). If any of these are not already covered by existing decisions, they are effectively new design rules placed in an open question rather than a decision record.",
+        "Resolution section becomes multi-sentence prose rather than a terse state marker, which slightly weakens the convention that Resolution holds the closure outcome.",
+        "Does not identify the offending edit path, so the question's core 'where' remains unanswered; this is acknowledged and consistent with the documentation-only scope, but the entry is now longer without being closer to closure."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261012T023458Z-UBU-Q0162/responses/claude_score_codex-ubu-q0162-log-correction-audit_stdout.json",
+        "stderr_path": null
+      }
+    }
+  ],
+  "score_aggregates": [
+    {
+      "proposal_id": "codex-UBU-Q0162-log-correction-audit",
+      "author_provider": "codex",
+      "cross_score_count": 1,
+      "score_mean": 80.0,
+      "score_spread": 0,
+      "frontier_score_gap": 0,
+      "disagreement_flags": []
+    }
+  ],
+  "cross_score_count": 1,
+  "score_mean": 80.0,
+  "score_spread": 0,
+  "frontier_score_gap": 0,
+  "disagreement_flags": [],
+  "quorum_result": {
+    "valid": true,
+    "human_review_required": false,
+    "selected_proposal_id": "codex-UBU-Q0162-log-correction-audit",
+    "selected_score": 80.0,
+    "selected_cross_score_count": 1,
+    "blocked_reasons": [],
+    "manual_override": false
+  },
+  "selected_proposal_id": "codex-UBU-Q0162-log-correction-audit",
+  "automated_selection_valid": true,
+  "human_review_required": false,
+  "artifact_publication_status": "operator_pending",
+  "prompt_size_warning": false,
+  "prompt_context": {
+    "question_ids": [
+      "UBU-Q0162"
+    ],
+    "decision_ids": [],
+    "sections": {},
+    "core_sections": {
+      "DESIGN.md": [
+        "1"
+      ],
+      "DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md": [
+        "4"
+      ]
+    },
+    "missing_refs": {},
+    "context_chars": 19986,
+    "prompt_chars": 26826
+  }
+}

@@ -1,0 +1,26 @@
+[
+  {
+    "proposal_id": "codex-UBU-Q0162-log-correction-audit",
+    "author_provider": "codex",
+    "scorer_provider": "claude",
+    "score": 80,
+    "valid": true,
+    "rationale": "Patch applies cleanly, touches only OPEN_QUESTIONS.md, and edits only the UBU-Q0162 body while leaving the metadata line, Status: Open, neighbouring questions and IDs intact. It is directly responsive: the current direction asks for an audit of edit paths that distinguishes annotation, corrected views and compensating entries from rewriting admitted history, and the proposal specifies exactly that audit, a minimum repair expressed in the existing Log envelope and linked-correction event types, media-deletion handling, and concrete closure evidence. It correctly keeps the question Open and does not claim a reproduction, ticket or passing checks it does not have. Deductions are for verbosity relative to a 'minimum' spec, unverifiable cross-references, non-standard subsection headings, and normative language that may belong in a decision record; none of these block application or make the content wrong on its face, so no required fixes are listed.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [
+      "Cites event types, envelope fields, decision IDs (UBU-D0071, UBU-D0248, UBU-D0258) and DESIGN.md sections (12.1, 12.2, 17.3) that cannot be verified from this prompt; a stale or wrong reference would make the repair spec misleading.",
+      "Adds two non-standard subsections ('Audit and minimum repair', 'Closure evidence') inside a question entry. Mechanical schema validation passed, but tooling or readers expecting only Question / Current direction / Resolution may not anticipate them.",
+      "Several bullets read as normative rules (generic edit/delete paths must reject edits to admitted history, atomic commit of entry plus compensation, correction does not auto-undo Task or UniverseState effects). If any of these are not already covered by existing decisions, they are effectively new design rules placed in an open question rather than a decision record.",
+      "Resolution section becomes multi-sentence prose rather than a terse state marker, which slightly weakens the convention that Resolution holds the closure outcome.",
+      "Does not identify the offending edit path, so the question's core 'where' remains unanswered; this is acknowledged and consistent with the documentation-only scope, but the entry is now longer without being closer to closure."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20261012T023458Z-UBU-Q0162/responses/claude_score_codex-ubu-q0162-log-correction-audit_stdout.json",
+      "stderr_path": null
+    }
+  }
+]
