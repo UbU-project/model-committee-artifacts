@@ -1,0 +1,1 @@
+UMC: docs: define interaction latency classes and measured profile gate

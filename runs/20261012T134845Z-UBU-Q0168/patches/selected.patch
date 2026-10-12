@@ -1,0 +1,123 @@
+diff --git a/DECISIONS.md b/DECISIONS.md
+index 12f31c9..3fe4f79 100644
+--- a/DECISIONS.md
++++ b/DECISIONS.md
+@@ -5133,12 +5133,24 @@ A failed mapping alone does not demonstrate a schema gap. Report the first faili
+ 
+ ---
+ 
+ ## UBU-D0324: Perceptual corroboration and review follow the consequence of use
+ 
+ **Status:** Accepted → DESIGN.md §21.1.1. Resolves `UBU-Q0167`'s process contract; complements `UBU-D0320` and `UBU-D0321` without asserting implementation acceptance.
+ 
+ Assess the consequence of a wrong claim for its exact intended use and downstream commitments. Clarification may use labelled hypotheses without admitting state. A bounded reversible ordinary change can use one actual operator confirmation plus ordinary admission. Consequential use requires relevant evidence independent of the original interpretation, review of decision-relevant uncertainty, resolution of conflicting alternatives and explicit operator review of sufficiency. Unknown consequence escalates review; unknown independence supplies no corroboration. Shared frames, copied reports, model agreement and confidence cannot satisfy independence, and one independent source never automatically establishes sufficiency.
+ 
+ Preserve the assessment, evidence/claim lineage, contradictions and reviewed scope through existing evidence/candidate and review/Log links. Changed use, material evidence, correction or bindings requires renewed assessment before affected Plan reuse/execution. Keep unresolved claims out of authoritative planning and effect assertions; corrections remain append-only and admitted changes invalidate/recalculate affected Plans. Authorized operator authoring retains its actual assertion/assumption provenance and ordinary semantics; the original model inference keeps its uncertainty.
+ 
+ Require the pinned behavioral gates in DESIGN.md §21.1.1 before enabling these paths. `UBU-Q0166` retains host-mapping/implementation evidence; `UBU-Q0172` retains proof-of-effect semantics. Evidence acceptance and external-action approval remain separate, current, version-bound decisions. No automatic confidence threshold, new provenance kind/field, schema, dependency pin or kernel API change is selected.
++
++---
++
++## UBU-D0325: Interaction latency classes bound waiting, freshness and degradation
++
++**Status:** Accepted → DESIGN.md §21.1.4. Narrows `UBU-Q0168`; numerical profiles and measured local-device acceptance remain Open.
++
++Adopt `snapshot_capture`, `conversational`, `streamed_supervision` and `retrospective` classes with controller-owned, versioned Device/backend/mode profiles. Separate acknowledgment, first useful result, total-job, context-age and stream-gap/backlog ceilings. Include queue time, enforce finite resource limits and monotonic deadlines, and expose a bounded fallback on expiry. Receipt, durable saving, candidate admission, CPU-certified planning and proof of execution remain distinct.
++
++Recheck original evidence/context/version/policy bindings before current guidance, admission or dispatch. Offline, battery and thermal pressure defer or reduce permitted work and preserve manual routes and validated cached planning. Interruption invalidates pending output/action bindings immediately; late results cannot overwrite corrections, resume capture, use old approval or trigger duplicate/unknown external effects. Privacy, attention, corroboration and hard-validation rules continue to govern every class.
++
++Require DESIGN.md §21.1.4's revision-pinned timings, sustained-load measurements and degradation fixtures before enabling each profile. No numerical latency, supported-hardware, safety-critical supervision or implementation claim is established, and no kernel API or wire-schema change is selected. `UBU-Q0168` remains Open until finite numerical ceilings and their measured behavior are reviewed.
+diff --git a/DESIGN.md b/DESIGN.md
+index 7d8eb35..fb98c32 100644
+--- a/DESIGN.md
++++ b/DESIGN.md
+@@ -3581,24 +3581,53 @@ Audit records link the session, evidence/candidate, budget and policy versions,
+ 
+ **Acceptance evidence.** Before claiming the primary surface delivered, attach revision-pinned scenario results on the real hardware selected by `UBU-Q0183`, identifying enabled sources/backends, policy configuration, outcomes and permitted candidate/admission references. Demonstrate:
+ 
+ - A shown concern plus voice uses a visible detail and permitted context to produce a useful candidate or consequential clarification, followed by operator correction, admission and a legitimate next action or explicit planning limitation. Exercise the other voice workflows and repeat every table row using only text/forms with both capture sources disabled. Equivalent accepted meanings produce matching canonical effects and recalculation, with source-appropriate provenance.
+ - Camera/microphone absence, denial or revocation; noisy speech or unsuccessful framing; offline/local-model failure and resource exhaustion allow manual completion without lost permitted input, fabricated observations, false saved-state acknowledgments or cloud fallback.
+ - Keyboard-only and screen-reader completion of text/form entry, exact-value correction and review with speech output disabled; guided acquisition can be stopped or replaced without repeated unexplained capture requests.
+ - Start, pause, resume, stop and revocation accurately control acquisition and visible state. Raw AV stays local; context and output respect Compartment denials, and export requires its separate authority. Retention behavior matches the approved policy rather than a documentation claim.
+ - Switching surfaces during a delayed interpretation, duplicate submission/replay, and material context, policy or Device change cause neither stale admission nor duplicate mutations. Preserved candidates carry no live capture consent or pending execution approval across Devices.
+ - Ambiguous objects, high-confidence interpretations and apparent completion remain unresolved/candidate evidence until required review and validation. Unknown/private intervals and channel choices create no inferred intent, affect, Preference, habit or completion claim. Restricted attention obeys §21.1.2: defer unavailable review rather than demand visual/form interaction or widen permissions.
+ 
+ This resolves interaction coverage and acceptance, not implementation. `UBU-Q0183` retains capture-mode/device allocation and delivery sequence; `UBU-Q0160` retains the mobile workload/API choice; `UBU-Q0128` retains numeric restricted-attention profiles and richer actions; `UBU-Q0166`–`UBU-Q0172` retain exact evidence, corroboration, latency, segmentation and retention contracts. Apply the existing evidence, policy and attention gates to each enabled slice. No particular backend, hardware support, latency target or later-phase planning object is established here.
+ 
++#### 21.1.4 Latency classes, freshness and interruption
++
++**Class contract (`UBU-D0325`).** Use four interaction latency classes. A snapshot capture is a bounded one-shot input; it does not itself admit a canonical Snapshot. Receipt, permitted durable saving, interpretation, candidate admission, planner certification and verification of an executed effect are separate outcomes. A receipt may say "Received" or "Processing"; "Saved" requires the relevant durable write, and neither message implies admission or execution.
++
++| Class | Clock and useful result | Deadline/degradation behavior |
++|---|---|---|
++| `snapshot_capture` | From controller acceptance of a one-shot capture request through acquisition, interpretation and presentation of a reviewable candidate or explicit unresolved result. | End acquisition and cancel unfinished interpretation at the job deadline. Preserve permitted saved evidence/drafts and show any unsaved input; offer an explicit retry or text/form entry. |
++| `conversational` | From acceptance of a completed user turn to the first substantive response or clarification, with a separate total turn deadline. | A missed response deadline ends waiting with an unavailable/deferred explanation; stop pending speech and interpretation. A new request uses fresh bindings and budgets. Restricted attention uses §21.1.2 rather than demanding visual review. |
++| `streamed_supervision` | From each permitted observation window to a usable candidate update, with a maximum observation age at presentation and a maximum gap since the last usable update. | On excessive age, gap or backlog, withdraw live guidance and show "Updates delayed/paused". Bound acquisition and queued work; expose permitted coverage gaps rather than replaying old observations as current supervision. This class supplies no safety-critical monitoring guarantee. |
++| `retrospective` | From job enqueue to a reviewable report over a pinned historical interval/source manifest, with bounded progress intervals and a total job deadline. | Yield to interactive work. On exhaustion, pause at a permitted durable checkpoint under §21.8 where supported, otherwise stop with retained sources. Label analyzed and missing scope; explicit continuation rechecks current policy and bindings. Partial work cannot claim full coverage. |
++
++**Deadline policy.** Before enabling a class on a Device/backend/mode, require a controller-owned versioned profile with finite local-acknowledgment, first-useful-result and total-job ceilings, applicable source/context-age ceilings, and, for streams, update-gap and backlog ceilings. Enabled work uses positive elapsed ceilings with acknowledgment <= first useful result <= total job. Declare finite concurrency, calls/work, prompt/result, memory/buffer and storage limits plus battery/thermal pause and recovery conditions. Missing or unsupported limits prevent that class's dispatch while manual routes and stop controls remain available. These are policy requirements, not new wire-schema fields or measured defaults.
++
++Bind elapsed deadlines to the local monotonic clock at the table's start event; include queueing, acquisition where applicable, preprocessing, generation, validation and presentation. Progress text, tokens, retries and intermediate frames cannot reset deadlines or count as a substantive result. Before waiting, show the active response/wait limit and fallback in the permitted channel; expiry produces the named degraded outcome and cancels outstanding work. The effective limits are the intersection of that profile, remaining session consent, current policy and §21.1.2's attention/turn budget where applicable. They may tighten during work; continuing beyond them requires a new explicit request and fresh bindings. Restart or clock discontinuity invalidates active jobs rather than extending their deadlines.
++
++**Freshness and authority.** Bind results to their original observation interval, source/session/context and target versions, policy versions and controller job/turn generation. Current guidance/dispatch requires a live generation and applicable age checks; unknown or uncertain age cannot establish freshness. Review/admission rechecks evidence, context, targets and current policy under ordinary review bindings. Reopening retained material establishes fresh review bindings rather than reviving a cancelled job. New generation timestamps and repeated summaries cannot refresh old evidence. Historical analysis may use permitted older evidence within its declared interval; applying findings to current state still requires current evidence and admission. Stale/superseded results remain labelled historical material only where retention permits, and cannot overwrite corrections, satisfy current preconditions or use expired approvals.
++
++Capture updates and planner streaming have separate timing traces. A planner chunk can reach the user only after CPU certification of its current request under PLANNING_KERNEL_CONTRACT.md §4; incomplete/final transport status does not establish an executed effect. Slow processing cannot waive evidence, hard validation, Compartment policy or `UBU-D0324`'s corroboration requirements.
++
++**Offline, battery and thermal degradation.** Keep local pause/stop/silence, visible source state, permitted draft handling and the manual admitted-state loop independent of model/network completion. Defer retrospective work first, reduce streaming rate or analysis scope within a declared profile, then offer bounded one-shot capture or text/forms; pause capture/analysis when limits cannot be met. Disclose the active class, reason, retained/unsaved work and freshness limitation without leaking denied source existence. Resource pressure never extends media retention, silently evicts accepted input/history or starts another source.
++
++Offline operation uses available permitted local backends and manual routes; no hidden cloud fallback. Cached Plan guidance is usable only after §16.5–§16.7's legitimacy/envelope/freshness checks. If those checks fail, show the planning limitation or eligible clarification rather than an obsolete next action. Returning connectivity, power or temperature may permit a finer compute profile, but cannot restart paused/stopped acquisition, speech or queued actions without current consent and fresh controller bindings.
++
++**Interruption.** Pause, stop, silence, cancellation, a superseding turn, source/Compartment or Device change, and consent revocation invalidate the affected pending output/action bindings locally without waiting for a backend acknowledgment. Stop the affected acquisition/output and request cancellation; reject late callbacks for live guidance or dispatch even while the backend finishes. Require bounded cancellation/resource release under its permitted lifecycle; an adapter without that bound cannot enable the class. Preserve already-admitted state, permitted durable sources/drafts and ordinary idempotency outcomes. Interrupted work does not establish an effect or authorize external-action replay; existing outcome/idempotency rules still apply. Reviewing retained candidates later neither resumes capture nor restores approval; restart/handoff requires new local bindings and ordinary review.
++
++**Measured enablement gate (`UBU-Q0168`).** Select numeric ceilings only from revision-pinned evidence on each proposed Device/backend/mode; record OS/runtime/model/template, implementation and policy revisions, source/context sizes, load and instrumentation. Measure controller acceptance, acknowledgment, first useful result, completion, observation age at presentation, stream gaps and stop/output-quiescence separately from admission, first CPU-certified planner chunk and final planner response. Report sample counts, median and tail distributions, misses, errors/degraded outcomes, memory/storage, battery/energy where observable, and sustained thermal behavior; unavailable metrics stay explicit. Report successful interpretations separately from unresolved/degraded outcomes; latency alone establishes neither correctness nor usefulness.
++
++Exercise cold and warm operation, competing work and sustained streams; offline/backend loss, low battery and thermal/resource exhaustion; interruption during acquisition/inference/output; queue overload and deadline expiry; source/context changes, corrections, revocation, restart/handoff and delayed/duplicate results. Demonstrate bounded waiting/backlog, working manual fallback, truthful saved/coverage/freshness status, no stale admission/dispatch and no hidden rerouting. Publish the selected finite ceilings and demonstrated fallback for each enabled class; an unmeasured class remains unavailable. Hardware selection remains `UBU-Q0177`, restricted-attention numeric profiles remain `UBU-Q0128`, and delivery sequence remains `UBU-Q0183`. `UBU-Q0168` stays Open for these numerical profiles and measured acceptance; this contract asserts no implementation, supported hardware or achieved latency.
++
+ ### 21.2 Structured-output admission pipeline
+ 
+ LLM, parser, worker, and agent outputs should follow an admission pipeline:
+ 
+ ```text
+ output
+   -> schema validation
+   -> semantic validation
+   -> Compartment and policy validation
+   -> provenance and confidence attachment
+   -> conflict detection
+   -> user-review classification
+diff --git a/OPEN_QUESTIONS.md b/OPEN_QUESTIONS.md
+index e2cadf1..ad66b18 100644
+--- a/OPEN_QUESTIONS.md
++++ b/OPEN_QUESTIONS.md
+@@ -3190,29 +3190,29 @@ Resolved by `UBU-D0324`: DESIGN.md §21.1.1 defines clarification, bounded ordin
+ ---
+ 
+ ## UBU-Q0168: Snapshot, conversational, streamed and retrospective latency classes
+ 
+ Status: Open Priority: MVP important Phase: Phase 2 Decision type: Architecture Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 100 Depends on: None Blocks: None Resolved by: None Last scored: 2026-10-12 Scored from commit: None
+ 
+ ### Question
+ 
+ Which latency classes and degradation behavior are required for snapshots, conversational interaction, streamed supervision and retrospective analysis?
+ 
+ ### Current direction
+ 
+-Delta §17.6. Decide user-visible deadlines, stale-context handling, offline/battery/thermal limits and interruption semantics through measured local-device evidence. Capture latency is distinct from planner streaming and from proof of execution. No performance numbers or supported-hardware claims are established.
++Delta §17.6. `UBU-D0325` defines the four latency classes and deadline, freshness, degradation and interruption semantics in DESIGN.md §21.1.4. Select actual user-visible deadlines, source/context-age limits, stream gap/backlog caps and battery/thermal conditions through revision-pinned local-device evidence. Capture latency remains distinct from planner streaming, admission and proof of execution. No measured performance numbers or supported-hardware claims are established.
+ 
+ ### Resolution
+ 
+-Open.
++Open. `UBU-D0325` answers the class/degradation architecture; numerical profiles and measured acceptance remain unresolved. Close only after evidence for each enabled Device/backend/mode pins implementation and policy revisions, selects finite deadlines and freshness/resource ceilings, and demonstrates the specified ordinary, sustained-load, offline, interruption and stale-result behavior. `UBU-Q0177` retains secure hardware selection, `UBU-Q0128` retains quantitative restricted-attention profiles and `UBU-Q0183` retains delivery sequence. A parameterized contract alone is insufficient to close this question.
+ 
+ ---
+ 
+ ## UBU-Q0169: Local AV segmentation and bounded agent/tool interfaces
+ 
+ Status: Open Priority: MVP important Phase: Phase 2 Decision type: Architecture Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 100 Depends on: None Blocks: None Resolved by: None Last scored: 2026-10-12 Scored from commit: None
+ 
+ ### Question
+ 
+ How are local audio/video streams segmented, and what scoped interfaces expose frame extraction, event detection and relevant-section isolation?
+ 
+ ### Current direction

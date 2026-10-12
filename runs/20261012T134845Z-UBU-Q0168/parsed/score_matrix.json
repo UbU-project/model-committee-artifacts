@@ -1,0 +1,48 @@
+[
+  {
+    "proposal_id": "openai-gpt-6-ubu-q0168-latency-contract-20261012",
+    "author_provider": "openai",
+    "scorer_provider": "codex",
+    "score": null,
+    "valid": false,
+    "rationale": "",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [],
+    "schema_validation": {
+      "valid": false,
+      "message": "codex exited with 1",
+      "response_path": "runs/20261012T134845Z-UBU-Q0168/responses/codex_score_openai-gpt-6-ubu-q0168-latency-contract-20261012_response.json",
+      "stderr_path": "runs/20261012T134845Z-UBU-Q0168/responses/codex_score_openai-gpt-6-ubu-q0168-latency-contract-20261012_stderr.txt"
+    }
+  },
+  {
+    "proposal_id": "openai-gpt-6-ubu-q0168-latency-contract-20261012",
+    "author_provider": "openai",
+    "scorer_provider": "claude",
+    "score": 80,
+    "valid": true,
+    "rationale": "Mechanical validation passed (applies cleanly, allowlist of DECISIONS.md/DESIGN.md/OPEN_QUESTIONS.md, question schema intact). The patch directly answers the question's core ask \u2014 which latency classes exist and how each degrades \u2014 by defining snapshot_capture, conversational, streamed_supervision and retrospective with separate acknowledgment / first-useful-result / total-job / context-age / stream-gap ceilings, monotonic-clock deadlines, freshness-and-authority binding, offline/battery/thermal degradation ordering, and interruption semantics that invalidate pending bindings locally and forbid late results from overwriting corrections or triggering duplicate effects. It correctly keeps capture latency, planner streaming and proof of execution distinct, as the question's current direction requires, and it defers all numeric ceilings and hardware claims to a revision-pinned measurement gate rather than inventing numbers. Keeping Q0168 at Status: Open with an updated 'Current direction' and 'Resolution' is a conservative, schema-valid choice consistent with the question's own instruction that deadlines come from measured local-device evidence; the single-line metadata is preserved byte-for-byte. The decision block follows the house format used by UBU-D0324 (Status \u2192 DESIGN.md anchor, explicit non-claims). Deductions are for unverifiable cross-references, the Q0177/Q0183 hardware attribution ambiguity, the untouched Delta \u00a717.6 pointer, and the absence of a machine-visible Resolved-by/narrowed-by link; none of these are blocking, and requires_human_review is correctly set given the question's human-approval eligibility.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [
+      "Verify that UBU-Q0177 is the intended owner of 'hardware selection' and that it is distinct from UBU-Q0183's 'real hardware' / device-allocation role in \u00a721.1.3; align wording or reference if they overlap.",
+      "Confirm DESIGN.md \u00a721.8, \u00a716.5\u2013\u00a716.7 and PLANNING_KERNEL_CONTRACT.md \u00a74 exist and cover durable checkpoints, cached-Plan freshness checks and CPU certification respectively.",
+      "Optionally check Delta \u00a717.6 for any statement that now conflicts with \u00a721.1.4 and add a one-line pointer there if the repo convention expects it."
+    ],
+    "risks": [
+      "Cross-reference consistency is unverified from the prompt alone: the new text cites DESIGN.md \u00a721.8 (durable checkpoint), \u00a716.5\u2013\u00a716.7 (cached Plan legitimacy/envelope/freshness) and PLANNING_KERNEL_CONTRACT.md \u00a74 (CPU certification); if any anchor is absent or means something different, the contract points at nothing.",
+      "Possible ownership conflict: existing \u00a721.1.3 says scenario results run on 'the real hardware selected by UBU-Q0183', while the new \u00a721.1.4 and the Q0168 resolution text say hardware selection remains UBU-Q0177 ('secure hardware selection'). If these are not genuinely distinct concerns, the repo now attributes hardware selection to two different questions.",
+      "The question stays Open with 'Resolved by: None' even though UBU-D0325 now answers its architectural half; the partial resolution is recorded only in prose, so tooling that tracks decision\u2192question linkage will not see the narrowing.",
+      "Delta \u00a717.6 is still cited as the question's source direction but is not touched; if that section states a contract that differs from \u00a721.1.4 the two now diverge.",
+      "The \u00a721.1.4 addition is dense (roughly 29 lines of long paragraphs plus a table) with many normative 'cannot/never/requires' statements; auditability is acceptable but reviewers must read it closely to catch any clause that overreaches into implementation or schema claims. On a read-through none does, and the decision explicitly disclaims numeric, hardware, safety-critical, kernel API and wire-schema changes."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20261012T134845Z-UBU-Q0168/responses/claude_score_openai-gpt-6-ubu-q0168-latency-contract-20261012_stdout.json",
+      "stderr_path": null
+    }
+  }
+]

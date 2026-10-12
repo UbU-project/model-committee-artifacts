@@ -1,0 +1,28 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-gpt-6-ubu-q0168-latency-contract-20261012",
+      "score": 80,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Cross-reference consistency is unverified from the prompt alone: the new text cites DESIGN.md \u00a721.8 (durable checkpoint), \u00a716.5\u2013\u00a716.7 (cached Plan legitimacy/envelope/freshness) and PLANNING_KERNEL_CONTRACT.md \u00a74 (CPU certification); if any anchor is absent or means something different, the contract points at nothing.",
+        "Delta \u00a717.6 is still cited as the question's source direction but is not touched; if that section states a contract that differs from \u00a721.1.4 the two now diverge.",
+        "Possible ownership conflict: existing \u00a721.1.3 says scenario results run on 'the real hardware selected by UBU-Q0183', while the new \u00a721.1.4 and the Q0168 resolution text say hardware selection remains UBU-Q0177 ('secure hardware selection'). If these are not genuinely distinct concerns, the repo now attributes hardware selection to two different questions.",
+        "The question stays Open with 'Resolved by: None' even though UBU-D0325 now answers its architectural half; the partial resolution is recorded only in prose, so tooling that tracks decision\u2192question linkage will not see the narrowing.",
+        "The \u00a721.1.4 addition is dense (roughly 29 lines of long paragraphs plus a table) with many normative 'cannot/never/requires' statements; auditability is acceptable but reviewers must read it closely to catch any clause that overreaches into implementation or schema claims. On a read-through none does, and the decision explicitly disclaims numeric, hardware, safety-critical, kernel API and wire-schema changes."
+      ],
+      "required_fixes": [
+        "Confirm DESIGN.md \u00a721.8, \u00a716.5\u2013\u00a716.7 and PLANNING_KERNEL_CONTRACT.md \u00a74 exist and cover durable checkpoints, cached-Plan freshness checks and CPU certification respectively.",
+        "Optionally check Delta \u00a717.6 for any statement that now conflicts with \u00a721.1.4 and add a one-line pointer there if the repo convention expects it.",
+        "Verify that UBU-Q0177 is the intended owner of 'hardware selection' and that it is distinct from UBU-Q0183's 'real hardware' / device-allocation role in \u00a721.1.3; align wording or reference if they overlap."
+      ],
+      "rationale": "Aggregate cross-score mean from 1 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "openai-gpt-6-ubu-q0168-latency-contract-20261012",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}

@@ -1,0 +1,11 @@
+[
+  {
+    "proposal_id": "openai-gpt-6-ubu-q0168-latency-contract-20261012",
+    "author_provider": "openai",
+    "cross_score_count": 1,
+    "score_mean": 80.0,
+    "score_spread": 0,
+    "frontier_score_gap": 0,
+    "disagreement_flags": []
+  }
+]
