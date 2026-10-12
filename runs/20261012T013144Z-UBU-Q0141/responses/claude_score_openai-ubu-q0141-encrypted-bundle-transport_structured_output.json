@@ -1,0 +1,25 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-ubu-q0141-encrypted-bundle-transport",
+      "score": 84,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "The new decision is dense and introduces many normative requirements (revocation grant exclusion, outer-filename leakage rules, ciphertext size/timing documentation, completion-by-checkpoint semantics) that may overlap with or subtly diverge from existing DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md \u00a78/\u00a727 text; this cross-score cannot verify consistency against those sections from the prompt alone.",
+        "It expands the Phase 2 freeze gate beyond UBU-D0312 with two new mandatory check bundles and a hard 'Failure blocks the Phase 2 freeze' clause; this is a real commitment increase that a human approver should consciously accept.",
+        "The question's 'MVP-supported path' wording is interpreted as 'first Phase 2 sync release', with the single-Device MVP explicitly retaining its scope. This is a reasonable reading given the question's Phase 2 tag, but a reviewer expecting a Phase 1 MVP answer should confirm the interpretation.",
+        "The decision requires an exercised rclone/rsync workflow with the actual exporter and importer, which is implementation evidence that does not yet exist; the text acknowledges this, but the resolution rests on a future certification rather than present fact.",
+        "No follow-up question is opened for the bundle envelope format, key-wrapping scheme, or cipher suite; these are left to implementation and may resurface as open questions later.",
+        "Only mechanical validation confirms the patch applies at base commit d8ce0c7; the scorer could not independently inspect the UbU working tree."
+      ],
+      "required_fixes": [],
+      "rationale": "The patch passes mechanical validation, touches only DECISIONS.md, DESIGN.md, and OPEN_QUESTIONS.md, and directly answers both halves of UBU-Q0141: it names the transport floor (authenticated encrypted bundle export/import through a user-selected file store) and decides the MVP-versus-design-compatible question (required for the first Phase 2 sync release with one certified rclone/rsync copy workflow before freeze; built-in clients and other backends optional and labeled design-compatible). The OPEN_QUESTIONS.md hunk correctly uses Status: Solved and Resolved by: UBU-D0313 while preserving all other metadata fields. The DESIGN.md \u00a71 addition is a short, consistent summary that cross-references the new decision. The main weakness is verbosity: the decision specifies more security and admission semantics than strictly needed to set a minimum, and it adds new freeze-gate checks, which raises some risk of duplication or conflict with the sync contract and increases Phase 2 commitments. Those concerns reduce the score modestly but do not require changes before acceptance; the proposal already flags requires_human_review, which is appropriate for a human-approval-required architecture decision."
+    }
+  ],
+  "selected_proposal_id": "openai-ubu-q0141-encrypted-bundle-transport",
+  "selection_rationale": "Only one proposal was submitted and it passed mechanical validation, preserves the question schema with Status: Solved and a proper Resolved by field, modifies only allowed files, and gives a direct, auditable answer to both parts of UBU-Q0141. Its density and the added freeze-gate checks are noted as risks for the human approver rather than blockers."
+}

@@ -1,0 +1,1 @@
+UMC: docs: require certified encrypted bundle transport for Phase 2

@@ -1,0 +1,27 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-ubu-q0141-encrypted-bundle-transport",
+      "score": 90,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "It expands the Phase 2 freeze gate beyond UBU-D0312 with two new mandatory check bundles and a hard 'Failure blocks the Phase 2 freeze' clause; this is a real commitment increase that a human approver should consciously accept.",
+        "No follow-up question is opened for the bundle envelope format, key-wrapping scheme, or cipher suite; these are left to implementation and may resurface as open questions later.",
+        "Only mechanical validation confirms the patch applies at base commit d8ce0c7; the scorer could not independently inspect the UbU working tree.",
+        "Recipient-key provisioning, rotation, and policy isolation still require implementation and certification.",
+        "The decision requires an exercised rclone/rsync workflow with the actual exporter and importer, which is implementation evidence that does not yet exist; the text acknowledges this, but the resolution rests on a future certification rather than present fact.",
+        "The new decision is dense and introduces many normative requirements (revocation grant exclusion, outer-filename leakage rules, ciphertext size/timing documentation, completion-by-checkpoint semantics) that may overlap with or subtly diverge from existing DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md \u00a78/\u00a727 text; this cross-score cannot verify consistency against those sections from the prompt alone.",
+        "The question's 'MVP-supported path' wording is interpreted as 'first Phase 2 sync release', with the single-Device MVP explicitly retaining its scope. This is a reasonable reading given the question's Phase 2 tag, but a reviewer expecting a Phase 1 MVP answer should confirm the interpretation.",
+        "User-managed storage can expose ciphertext sizes and transfer timing or retain previously delivered bundles; the proposal explicitly acknowledges these limits."
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "openai-ubu-q0141-encrypted-bundle-transport",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}

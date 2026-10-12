@@ -1,0 +1,177 @@
+{
+  "schema_version": "0.4",
+  "run_id": "20261012T013144Z-UBU-Q0141",
+  "created_at_utc": "2026-10-12T01:31:44Z",
+  "repo_path": "../ubu-design",
+  "base_commit": "d8ce0c79bb8ebfe3c9c77adf87cbdc1dd317fcd1",
+  "selected_question_id": "UBU-Q0141",
+  "phase": "work-select",
+  "config_path": "config/models.json",
+  "status": "selected",
+  "commands": [
+    "model-committee run-loop"
+  ],
+  "providers_attempted": [
+    "codex",
+    "claude"
+  ],
+  "providers_succeeded": [
+    "codex",
+    "claude"
+  ],
+  "providers_failed": [],
+  "provider_attempts": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "openai-ubu-q0141-encrypted-bundle-transport",
+      "response_path": "runs/20261012T013144Z-UBU-Q0141/responses/codex_score_openai-ubu-q0141-encrypted-bundle-transport_response.json",
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "openai-ubu-q0141-encrypted-bundle-transport",
+      "response_path": "runs/20261012T013144Z-UBU-Q0141/responses/claude_score_openai-ubu-q0141-encrypted-bundle-transport_stdout.json",
+      "stderr_path": null
+    }
+  ],
+  "provider_successes": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20261012T013144Z-UBU-Q0141/parsed/codex_work_proposal.json"
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "openai-ubu-q0141-encrypted-bundle-transport",
+      "response_path": "runs/20261012T013144Z-UBU-Q0141/responses/codex_score_openai-ubu-q0141-encrypted-bundle-transport_response.json",
+      "parsed_path": "runs/20261012T013144Z-UBU-Q0141/parsed/codex_score_openai-ubu-q0141-encrypted-bundle-transport_result.json"
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "openai-ubu-q0141-encrypted-bundle-transport",
+      "response_path": "runs/20261012T013144Z-UBU-Q0141/responses/claude_score_openai-ubu-q0141-encrypted-bundle-transport_stdout.json",
+      "parsed_path": "runs/20261012T013144Z-UBU-Q0141/parsed/claude_score_openai-ubu-q0141-encrypted-bundle-transport_result.json"
+    }
+  ],
+  "provider_failures": [],
+  "score_matrix": [
+    {
+      "proposal_id": "openai-ubu-q0141-encrypted-bundle-transport",
+      "author_provider": "openai",
+      "scorer_provider": "codex",
+      "score": 97,
+      "valid": true,
+      "rationale": "Mechanical validation passes, changes stay within allowed files, and Q0141 uses Status: Solved while preserving its scoring metadata. The proposal directly defines a testable Phase 2 transport minimum: actual encrypted export/import and one exercised rclone or rsync workflow. It preserves the earlier MVP scope, D0312's three-Device freeze gate, transport-independent admission, Compartment privacy, and authenticated completion. Outstanding implementation evidence is accurately distinguished from the architectural resolution.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "Recipient-key provisioning, rotation, and policy isolation still require implementation and certification.",
+        "User-managed storage can expose ciphertext sizes and transfer timing or retain previously delivered bundles; the proposal explicitly acknowledges these limits."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261012T013144Z-UBU-Q0141/responses/codex_score_openai-ubu-q0141-encrypted-bundle-transport_response.json",
+        "stderr_path": null
+      }
+    },
+    {
+      "proposal_id": "openai-ubu-q0141-encrypted-bundle-transport",
+      "author_provider": "openai",
+      "scorer_provider": "claude",
+      "score": 84,
+      "valid": true,
+      "rationale": "The patch passes mechanical validation, touches only DECISIONS.md, DESIGN.md, and OPEN_QUESTIONS.md, and directly answers both halves of UBU-Q0141: it names the transport floor (authenticated encrypted bundle export/import through a user-selected file store) and decides the MVP-versus-design-compatible question (required for the first Phase 2 sync release with one certified rclone/rsync copy workflow before freeze; built-in clients and other backends optional and labeled design-compatible). The OPEN_QUESTIONS.md hunk correctly uses Status: Solved and Resolved by: UBU-D0313 while preserving all other metadata fields. The DESIGN.md \u00a71 addition is a short, consistent summary that cross-references the new decision. The main weakness is verbosity: the decision specifies more security and admission semantics than strictly needed to set a minimum, and it adds new freeze-gate checks, which raises some risk of duplication or conflict with the sync contract and increases Phase 2 commitments. Those concerns reduce the score modestly but do not require changes before acceptance; the proposal already flags requires_human_review, which is appropriate for a human-approval-required architecture decision.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "The new decision is dense and introduces many normative requirements (revocation grant exclusion, outer-filename leakage rules, ciphertext size/timing documentation, completion-by-checkpoint semantics) that may overlap with or subtly diverge from existing DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md \u00a78/\u00a727 text; this cross-score cannot verify consistency against those sections from the prompt alone.",
+        "It expands the Phase 2 freeze gate beyond UBU-D0312 with two new mandatory check bundles and a hard 'Failure blocks the Phase 2 freeze' clause; this is a real commitment increase that a human approver should consciously accept.",
+        "The question's 'MVP-supported path' wording is interpreted as 'first Phase 2 sync release', with the single-Device MVP explicitly retaining its scope. This is a reasonable reading given the question's Phase 2 tag, but a reviewer expecting a Phase 1 MVP answer should confirm the interpretation.",
+        "The decision requires an exercised rclone/rsync workflow with the actual exporter and importer, which is implementation evidence that does not yet exist; the text acknowledges this, but the resolution rests on a future certification rather than present fact.",
+        "No follow-up question is opened for the bundle envelope format, key-wrapping scheme, or cipher suite; these are left to implementation and may resurface as open questions later.",
+        "Only mechanical validation confirms the patch applies at base commit d8ce0c7; the scorer could not independently inspect the UbU working tree."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261012T013144Z-UBU-Q0141/responses/claude_score_openai-ubu-q0141-encrypted-bundle-transport_stdout.json",
+        "stderr_path": null
+      }
+    }
+  ],
+  "score_aggregates": [
+    {
+      "proposal_id": "openai-ubu-q0141-encrypted-bundle-transport",
+      "author_provider": "openai",
+      "cross_score_count": 2,
+      "score_mean": 90.5,
+      "score_spread": 13,
+      "frontier_score_gap": 13,
+      "disagreement_flags": []
+    }
+  ],
+  "cross_score_count": 2,
+  "score_mean": 90.5,
+  "score_spread": 13,
+  "frontier_score_gap": 13,
+  "disagreement_flags": [],
+  "quorum_result": {
+    "valid": true,
+    "human_review_required": false,
+    "selected_proposal_id": "openai-ubu-q0141-encrypted-bundle-transport",
+    "selected_score": 90.5,
+    "selected_cross_score_count": 2,
+    "blocked_reasons": [],
+    "manual_override": false
+  },
+  "selected_proposal_id": "openai-ubu-q0141-encrypted-bundle-transport",
+  "automated_selection_valid": true,
+  "human_review_required": false,
+  "artifact_publication_status": "operator_pending",
+  "prompt_size_warning": false,
+  "prompt_context": {
+    "question_ids": [
+      "UBU-Q0141"
+    ],
+    "decision_ids": [],
+    "sections": {
+      "DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md": [
+        "8",
+        "27"
+      ]
+    },
+    "core_sections": {
+      "DESIGN.md": [
+        "1"
+      ],
+      "DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md": [
+        "4"
+      ]
+    },
+    "missing_refs": {},
+    "context_chars": 10334,
+    "prompt_chars": 17356
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-ubu-q0141-encrypted-bundle-transport",
+      "score": 97,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Recipient-key provisioning, rotation, and policy isolation still require implementation and certification.",
+        "User-managed storage can expose ciphertext sizes and transfer timing or retain previously delivered bundles; the proposal explicitly acknowledges these limits."
+      ],
+      "required_fixes": [],
+      "rationale": "Mechanical validation passes, changes stay within allowed files, and Q0141 uses Status: Solved while preserving its scoring metadata. The proposal directly defines a testable Phase 2 transport minimum: actual encrypted export/import and one exercised rclone or rsync workflow. It preserves the earlier MVP scope, D0312's three-Device freeze gate, transport-independent admission, Compartment privacy, and authenticated completion. Outstanding implementation evidence is accurately distinguished from the architectural resolution."
+    }
+  ],
+  "selected_proposal_id": "openai-ubu-q0141-encrypted-bundle-transport",
+  "selection_rationale": "The sole candidate is valid, focused, and auditable, with concrete release gates and no required patch fixes. This is a cross-score recommendation for local aggregation."
+}

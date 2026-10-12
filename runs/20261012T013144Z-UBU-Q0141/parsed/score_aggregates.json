@@ -1,0 +1,11 @@
+[
+  {
+    "proposal_id": "openai-ubu-q0141-encrypted-bundle-transport",
+    "author_provider": "openai",
+    "cross_score_count": 2,
+    "score_mean": 90.5,
+    "score_spread": 13,
+    "frontier_score_gap": 13,
+    "disagreement_flags": []
+  }
+]

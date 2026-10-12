@@ -1,0 +1,62 @@
+diff --git a/DECISIONS.md b/DECISIONS.md
+--- a/DECISIONS.md
++++ b/DECISIONS.md
+@@ -4955,3 +4955,22 @@ Before final Phase 2 freeze, record topology research comparing serialized direc
+ - Partial-replica fixtures covering `full`, `metadata_only`, and `none`, including policy changes and restricted relay/recipient Devices. Forwarding, conflict diagnostics, and redacted views must preserve payload and Compartment-identity denial under current policy.
+ 
+ These are required research and implementation checks, not a claim that they have passed. Failure blocks the Phase 2 freeze until the topology or delivery implementation is corrected. Higher session concurrency or optional mesh may later be added while preserving the same statement and authority semantics.
++
++---
++
++## UBU-D0313: Phase 2 requires encrypted bundle store-and-forward with one certified file-copy workflow
++
++**Status:** Accepted → DESIGN.md §1. Resolves `UBU-Q0141`; specifies the indirect transport minimum under DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md §8, §27 and `UBU-D0312`.
++
++The first Phase 2 sync release must implement export and import of immutable encrypted SyncStatement bundles through a user-selected file store. Manual export/copy/import is sufficient. Before Phase 2 freeze, at least one documented external rclone or rsync copy workflow must be exercised with the actual exporter and importer through a user-controlled store. Schema-only compatibility or fixture-only bundles do not satisfy this gate. Built-in clients, background delivery, and additional backends are optional; unimplemented transports remain design-compatible and must be labeled accordingly. The earlier single-Device MVP retains its existing scope.
++
++Encrypt and authenticate bundle contents on an authorized exporting Device before shared-store writes, including statements, referenced payloads, and manifest/checkpoint metadata. Recipient/key scope must enforce Device, Zone, Compartment, routing, and retention policy; storage access or a common store password must not grant a restricted Device denied payload or Compartment identity. Once an exporter admits revocation, new exports must exclude that Device from decryption grants; previously delivered content retains the existing best-effort exposure/deletion limits. Decryption keys stay in authorized Device custody or policy-authorized encrypted recipient envelopes, never plaintext in the store. Outer filenames and transport diagnostics must expose no plaintext object or Compartment ids or labels. TLS or provider-side encryption alone is insufficient, and encryption does not authorize a forbidden export route. Document visible ciphertext sizes and transfer timing without claiming traffic-analysis protection or retroactive deletion of previously disclosed content.
++
++Forwarding preserves original statement identity, authorship, causal parents, observed object/policy versions, and idempotency. Import uses the same integrity, Device trust, policy, admission, conflict, and Plan-invalidation rules as direct sync. Store ordering, modification times, overwrites, deletions, and copy success cannot admit, supersede, or tombstone canonical state. Completion requires an admitted checkpoint or equivalent authenticated manifest commit; partial receipt must not admit dependent payloads without required statements. Incomplete delivery remains detectable and recoverable, repeated import is idempotent, and queued statements and causal dependencies remain recoverable across sessions subject to policy, as required by `UBU-D0312`.
++
++Before freeze, extend §27's fixtures and `UBU-D0312`'s required three-Device direct/store-and-forward research and implementation checks with:
++
++- An actual export/store/import round trip through the documented copy workflow, including reordered and duplicate bundles, interrupted/retried delivery, missing dependencies/checkpoints, an unavailable store, and a late rejoining Device. Equivalent policy-permitted statements must yield equivalent admitted state; copy success must never be reported as admission or global freshness.
++- Altered ciphertext/manifests, wrong or unauthorized recipient keys, stale object/policy versions, and revoked origin/recipient Devices, including restricted relays and `full`, `metadata_only`, and `none` replicas. Denied payload and Compartment identity remain inaccessible, conflicts follow ordinary review rules, and admitted changes trigger required Plan invalidation.
++
++Failure blocks the Phase 2 freeze. This decision records the required transport floor; implementation and certification evidence remain outstanding.
+diff --git a/DESIGN.md b/DESIGN.md
+--- a/DESIGN.md
++++ b/DESIGN.md
+@@ -30,6 +30,8 @@ For Phase 1, UbU must also be understandable as a first-person user experience.
+ 
+ For Phase 2, a single-live-session sync implementation is sufficient (`UBU-D0312`), with arbitrary N Devices, concurrent offline mutations, partial replicas, and transport-independent integrity-protected statements. Direct exchanges, imported bundles, and user-selected encrypted stores share the same causality, policy, and conflict rules; no Device or transport becomes a permanent canonical authority. Full automatic peer mesh is optional. DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md §26's topology research remains a freeze gate, with at least three Devices demonstrating serialized direct exchange and encrypted store-and-forward, recoverable delivery, deterministic admission/conflict handling, and Compartment-safe partial replication as specified by `UBU-D0312`.
+ 
++The minimum indirect path for the first Phase 2 sync release is implemented, authenticated encrypted bundle export/import through a user-selected file store, with at least one documented external rclone or rsync copy workflow exercised before freeze (`UBU-D0313`). Manual export/copy/import is sufficient; built-in clients and background delivery are optional. Encryption and recipient authorization protect statements, payloads, and manifests before storage, while ordinary admission and Compartment policy govern every import.
++
+ ---
+ 
+ ## 2. Core Principles
+diff --git a/OPEN_QUESTIONS.md b/OPEN_QUESTIONS.md
+--- a/OPEN_QUESTIONS.md
++++ b/OPEN_QUESTIONS.md
+@@ -2526,18 +2526,18 @@ This rejects a pure Lamport clock because wall-time adjacency is useful for oper
+ 
+ ## UBU-Q0141: Minimum acceptable encrypted indirect sync transport
+ 
+-Status: Open Priority: Post-MVP Phase: Phase 2 Decision type: Architecture Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 100 Depends on: None Blocks: Phase 2 sync transport Resolved by: None Last scored: 2026-10-11 Scored from commit: None
++Status: Solved Priority: Post-MVP Phase: Phase 2 Decision type: Architecture Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 100 Depends on: None Blocks: Phase 2 sync transport Resolved by: UBU-D0313 Last scored: 2026-10-11 Scored from commit: None
+ 
+ Formerly UBU-QSYNC-003 (retired from DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md section 28). Defining context: DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md §8, §27.
+ 
+ ### Question
+ 
+ What is the minimum acceptable encrypted indirect sync transport? Should encrypted rclone/rsync-
+ compatible storage be an MVP-supported path or only design-compatible?
+ 
+ ### Resolution
+ 
+-Open.
++Resolved by `UBU-D0313`: the first Phase 2 sync release requires implemented encrypted bundle export/import over a user-selected file store, with at least one documented rclone or rsync copy workflow certified before freeze. Manual export/copy/import suffices; built-in clients and additional backends are optional, and unimplemented transports remain design-compatible. Authenticated encryption, policy-scoped recipient access, and ordinary statement admission/completion rules are mandatory. The earlier single-Device MVP retains its scope, and `UBU-D0312`'s three-Device research gate remains required. Implementation and certification evidence remain outstanding.
+ 
+ ---
+ 
