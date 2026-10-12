@@ -1,0 +1,21 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-ubu-q0128-interaction-budget-v1",
+      "score": 96,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Quantitative profile ceilings and usability/driving-safety validation remain open; serialization alone does not establish safe operating values.",
+        "Freshness checks, cumulative counters and immediate local controls require runtime enforcement that this documentation patch does not implement."
+      ],
+      "required_fixes": [],
+      "rationale": "Reported mechanical validation confirms clean application, allowed files and preserved question schema. The patch directly addresses the budget serialization gap with closed shapes, explicit units, controller-owned bindings, expiry and cumulative turn accounting. It preserves candidate admission, scoped media permissions and consequential-action deferral, keeps UBU-Q0128 Open and makes no implementation claim."
+    }
+  ],
+  "selected_proposal_id": "openai-ubu-q0128-interaction-budget-v1",
+  "selection_rationale": "The sole candidate is mechanically valid, directly responsive and auditable, with no required fixes identified. This cross-score supports local aggregation; human product approval remains required."
+}

@@ -1,0 +1,53 @@
+[
+  {
+    "proposal_id": "openai-ubu-q0128-interaction-budget-v1",
+    "author_provider": "openai",
+    "scorer_provider": "codex",
+    "score": 96,
+    "valid": true,
+    "rationale": "Reported mechanical validation confirms clean application, allowed files and preserved question schema. The patch directly addresses the budget serialization gap with closed shapes, explicit units, controller-owned bindings, expiry and cumulative turn accounting. It preserves candidate admission, scoped media permissions and consequential-action deferral, keeps UBU-Q0128 Open and makes no implementation claim.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [
+      "Quantitative profile ceilings and usability/driving-safety validation remain open; serialization alone does not establish safe operating values.",
+      "Freshness checks, cumulative counters and immediate local controls require runtime enforcement that this documentation patch does not implement."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20261012T010721Z-UBU-Q0128/responses/codex_score_openai-ubu-q0128-interaction-budget-v1_response.json",
+      "stderr_path": null
+    }
+  },
+  {
+    "proposal_id": "openai-ubu-q0128-interaction-budget-v1",
+    "author_provider": "openai",
+    "scorer_provider": "claude",
+    "score": 86,
+    "valid": true,
+    "rationale": "The patch applies cleanly, passes the allowlist and question-schema checks, and leaves UBU-Q0128 `Status: Open` with its metadata line untouched. It targets exactly one of the items the Resolution lists as open, the exact serialized budget, and answers it with a closed JSON Schema plus controller-side semantic checks (freshness, revision binding, turn-owned counters, high-risk invariants). The `allowed_operations` enum matches the D0309 initial permissions exactly, so the envelope is not widened. It consistently removes 'the serialized budget' from the open-item lists in DESIGN.md and OPEN_QUESTIONS.md and adds a matching D0311 paragraph and Resolution sentence. Deductions are for density, the local_controls versus manual_availability wording gap, a coarse locomotion-risk enum that leaks into profile design, and the fail-closed 32-item reference caps. No blocking fixes.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [
+      "Add one sentence clarifying that `local_controls` denotes hands-free or single-action physical/voice stop controls, so `manual_availability = none` plus mandatory `local_controls` is not contradictory.",
+      "Optionally add a one-line note to the D0310 record (or a 'refined by UBU-D0311' pointer) so DECISIONS.md does not still list the serialized budget as open."
+    ],
+    "risks": [
+      "The DESIGN.md block is dense: a 60-line JSON Schema plus seven long semantic bullets in one hunk, which makes human audit of the normative rules harder than the surrounding D0309/D0310 text.",
+      "Mild semantic tension: high-risk modes require `manual_availability = none`, yet `local_controls` is a mandatory input channel and local pause/stop/silence is required to remain available. The text never says what a local control is when hands are unavailable (steering-wheel button, voice 'stop', watch tap).",
+      "`locomotion_risk` has only low/high/unknown and high/unknown collapses to the driving envelope, so walking/running profiles must be classed as `low` to get any menu or clarification allowance; this pre-empts part of the still-open quantitative profile work.",
+      "`policy_versions`/`grant_versions` are capped at 32 with fail-closed overflow; a session spanning many Compartments or grants could be unable to issue any budget.",
+      "Byte caps on the complete normalized model invocation including tool declarations and grammar are provider-dependent to measure; the decision disclaims implementation, but the rule reads as if it is mechanically checkable.",
+      "The historical D0310 record in DECISIONS.md still lists 'the serialized budget' as open; the patch updates DESIGN.md and OPEN_QUESTIONS.md but not that sentence. Acceptable if decision records are treated as immutable, but a reader of DECISIONS.md alone sees a stale open-item list.",
+      "Fixed `const` values for `confirmation_policy` and `deferral_policy` mean any widening of the envelope requires a schema version bump; intentional, but rigid.",
+      "I could not inspect the UbU repository at the base commit, so consistency with other DESIGN.md \u00a721.1.2 text outside the shown hunks relies on the mechanical validation and the author's notes."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20261012T010721Z-UBU-Q0128/responses/claude_score_openai-ubu-q0128-interaction-budget-v1_stdout.json",
+      "stderr_path": null
+    }
+  }
+]
