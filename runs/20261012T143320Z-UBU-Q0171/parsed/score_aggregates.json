@@ -1,0 +1,11 @@
+[
+  {
+    "proposal_id": "openai-UBU-Q0171-operator-controls-20261012",
+    "author_provider": "openai",
+    "cross_score_count": 2,
+    "score_mean": 91.5,
+    "score_spread": 11,
+    "frontier_score_gap": 11,
+    "disagreement_flags": []
+  }
+]

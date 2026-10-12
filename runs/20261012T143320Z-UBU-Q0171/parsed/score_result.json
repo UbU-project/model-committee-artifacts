@@ -1,0 +1,27 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-UBU-Q0171-operator-controls-20261012",
+      "score": 92,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "DECISIONS.md UBU-D0327 still reads '`UBU-Q0171` retains detailed operator controls'. Leaving historical decisions untouched is defensible, but the pointer is now stale and a reader of DECISIONS.md alone will not see that UBU-D0328 superseded that sentence.",
+        "Enforcement remains unverified; the required revision-pinned behavioral gates must pass before controls or export routes are enabled.",
+        "Export specifics (idempotency key, per-segment recheck on streamed export, recipient retention assurances) go deeper than the question strictly requires. They are in-domain and framed as a contract rather than implementation, so this is detail scope, not file scope.",
+        "The new DESIGN.md \u00a712.2 block is very dense (five long paragraphs plus a five-row table). It is hard to audit line by line and adds materially to prompt size for later committee rounds.",
+        "The new text cites DESIGN.md \u00a71, \u00a717.0 and \u00a7\u00a721.3\u201321.4 as still applying. Those anchors are not visible in the patch context and could not be verified from this prompt; a dangling section reference would be a real defect in a design contract.",
+        "The question's Current direction points at 'Delta \u00a717.9' while the design text lands in \u00a712.2 next to UBU-D0327. This is consistent with where UBU-D0327 was placed, but the mapping from the delta section to \u00a712.2 is implicit."
+      ],
+      "required_fixes": [
+        "Before merge, confirm DESIGN.md \u00a71, \u00a717.0 and \u00a7\u00a721.3\u201321.4 exist at base commit a3843f7 and cover what the new text attributes to them; retarget the references if not."
+      ],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "openai-UBU-Q0171-operator-controls-20261012",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}

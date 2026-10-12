@@ -1,0 +1,20 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-UBU-Q0171-operator-controls-20261012",
+      "score": 97,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Enforcement remains unverified; the required revision-pinned behavioral gates must pass before controls or export routes are enabled."
+      ],
+      "required_fixes": [],
+      "rationale": "Reported mechanical validation confirms clean application, allowed-file scope and question-schema preservation. The proposal directly specifies inspection and independent discard, summary, hash, clip and export controls, including retention effects, inherited source restrictions, separate export authority, stale-approval invalidation and minimized correction/deletion history. It preserves hard denials and distinguishes design resolution from implemented enforcement. No substantive required fixes are evident."
+    }
+  ],
+  "selected_proposal_id": "openai-UBU-Q0171-operator-controls-20261012",
+  "selection_rationale": "The sole supplied candidate is mechanically valid and directly resolves the selected design question. This identifier is provided for cross-score aggregation; human approval remains required."
+}

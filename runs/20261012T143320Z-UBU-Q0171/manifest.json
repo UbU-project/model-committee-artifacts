@@ -1,0 +1,172 @@
+{
+  "schema_version": "0.4",
+  "run_id": "20261012T143320Z-UBU-Q0171",
+  "created_at_utc": "2026-10-12T14:33:20Z",
+  "repo_path": "../ubu-design",
+  "base_commit": "a3843f72dab3ce719eb0a533a57d1098d4b041ed",
+  "selected_question_id": "UBU-Q0171",
+  "phase": "work-select",
+  "config_path": "config/models.json",
+  "status": "selected",
+  "commands": [
+    "model-committee run-loop"
+  ],
+  "providers_attempted": [
+    "codex",
+    "claude"
+  ],
+  "providers_succeeded": [
+    "codex",
+    "claude"
+  ],
+  "providers_failed": [],
+  "provider_attempts": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "openai-UBU-Q0171-operator-controls-20261012",
+      "response_path": "runs/20261012T143320Z-UBU-Q0171/responses/codex_score_openai-ubu-q0171-operator-controls-20261012_response.json",
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "openai-UBU-Q0171-operator-controls-20261012",
+      "response_path": "runs/20261012T143320Z-UBU-Q0171/responses/claude_score_openai-ubu-q0171-operator-controls-20261012_stdout.json",
+      "stderr_path": null
+    }
+  ],
+  "provider_successes": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20261012T143320Z-UBU-Q0171/parsed/codex_work_proposal.json"
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "openai-UBU-Q0171-operator-controls-20261012",
+      "response_path": "runs/20261012T143320Z-UBU-Q0171/responses/codex_score_openai-ubu-q0171-operator-controls-20261012_response.json",
+      "parsed_path": "runs/20261012T143320Z-UBU-Q0171/parsed/codex_score_openai-ubu-q0171-operator-controls-20261012_result.json"
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "openai-UBU-Q0171-operator-controls-20261012",
+      "response_path": "runs/20261012T143320Z-UBU-Q0171/responses/claude_score_openai-ubu-q0171-operator-controls-20261012_stdout.json",
+      "parsed_path": "runs/20261012T143320Z-UBU-Q0171/parsed/claude_score_openai-ubu-q0171-operator-controls-20261012_result.json"
+    }
+  ],
+  "provider_failures": [],
+  "score_matrix": [
+    {
+      "proposal_id": "openai-UBU-Q0171-operator-controls-20261012",
+      "author_provider": "openai",
+      "scorer_provider": "codex",
+      "score": 97,
+      "valid": true,
+      "rationale": "Reported mechanical validation confirms clean application, allowed-file scope and question-schema preservation. The proposal directly specifies inspection and independent discard, summary, hash, clip and export controls, including retention effects, inherited source restrictions, separate export authority, stale-approval invalidation and minimized correction/deletion history. It preserves hard denials and distinguishes design resolution from implemented enforcement. No substantive required fixes are evident.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "Enforcement remains unverified; the required revision-pinned behavioral gates must pass before controls or export routes are enabled."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261012T143320Z-UBU-Q0171/responses/codex_score_openai-ubu-q0171-operator-controls-20261012_response.json",
+        "stderr_path": null
+      }
+    },
+    {
+      "proposal_id": "openai-UBU-Q0171-operator-controls-20261012",
+      "author_provider": "openai",
+      "scorer_provider": "claude",
+      "score": 86,
+      "valid": true,
+      "rationale": "Mechanical validation passes: the patch applies, only the three allowlisted files change, and the UBU-Q0171 metadata line stays single-line with Status: Solved and Resolved by: UBU-D0328, which is the correct schema. Hunk offsets are internally consistent (20 added lines in \u00a712.2 shift the two later DESIGN.md hunks by exactly 20; the DECISIONS.md append and OPEN_QUESTIONS.md edit match their headers). The work is directly responsive to the question: it specifies capture state and pause/stop independent of model completion, a policy-filtered inventory showing destination, retention rule and cleanup state, independent discard/summary/hash/clip/export actions with nothing selected by default, hard local_only/no_cloud_llm/no_external_export denials carried onto derivatives and every egress route, and preserved minimized correction/deletion/gap metadata. It explicitly closes the two traps the Current direction names: hashes and summaries inherit source restrictions and can leak correlation, and raw deletion never grants export authority. The DECISIONS.md entry follows the UBU-D0327 pattern of revision-pinned behavioral gates stated as required fixtures rather than passing results, and the proposal correctly flags human review for a Security decision. Cross-reference updates in DESIGN.md (UBU-D0292 paragraph, retention paragraph, \u00a721.1 contract line, \u00a721.1.5 gates line) are the minimal set needed so the living document no longer says UBU-Q0171 is open. Deductions are for density and auditability of the new block, unverifiable section anchors, and the stale pointer left in the UBU-D0327 decision text. No decomposition was attempted, which is appropriate for a single design-contract question.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [
+        "Before merge, confirm DESIGN.md \u00a71, \u00a717.0 and \u00a7\u00a721.3\u201321.4 exist at base commit a3843f7 and cover what the new text attributes to them; retarget the references if not."
+      ],
+      "risks": [
+        "The new DESIGN.md \u00a712.2 block is very dense (five long paragraphs plus a five-row table). It is hard to audit line by line and adds materially to prompt size for later committee rounds.",
+        "The new text cites DESIGN.md \u00a71, \u00a717.0 and \u00a7\u00a721.3\u201321.4 as still applying. Those anchors are not visible in the patch context and could not be verified from this prompt; a dangling section reference would be a real defect in a design contract.",
+        "DECISIONS.md UBU-D0327 still reads '`UBU-Q0171` retains detailed operator controls'. Leaving historical decisions untouched is defensible, but the pointer is now stale and a reader of DECISIONS.md alone will not see that UBU-D0328 superseded that sentence.",
+        "The question's Current direction points at 'Delta \u00a717.9' while the design text lands in \u00a712.2 next to UBU-D0327. This is consistent with where UBU-D0327 was placed, but the mapping from the delta section to \u00a712.2 is implicit.",
+        "Export specifics (idempotency key, per-segment recheck on streamed export, recipient retention assurances) go deeper than the question strictly requires. They are in-domain and framed as a contract rather than implementation, so this is detail scope, not file scope."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261012T143320Z-UBU-Q0171/responses/claude_score_openai-ubu-q0171-operator-controls-20261012_stdout.json",
+        "stderr_path": null
+      }
+    }
+  ],
+  "score_aggregates": [
+    {
+      "proposal_id": "openai-UBU-Q0171-operator-controls-20261012",
+      "author_provider": "openai",
+      "cross_score_count": 2,
+      "score_mean": 91.5,
+      "score_spread": 11,
+      "frontier_score_gap": 11,
+      "disagreement_flags": []
+    }
+  ],
+  "cross_score_count": 2,
+  "score_mean": 91.5,
+  "score_spread": 11,
+  "frontier_score_gap": 11,
+  "disagreement_flags": [],
+  "quorum_result": {
+    "valid": true,
+    "human_review_required": false,
+    "selected_proposal_id": "openai-UBU-Q0171-operator-controls-20261012",
+    "selected_score": 91.5,
+    "selected_cross_score_count": 2,
+    "blocked_reasons": [],
+    "manual_override": false
+  },
+  "selected_proposal_id": "openai-UBU-Q0171-operator-controls-20261012",
+  "automated_selection_valid": true,
+  "human_review_required": false,
+  "artifact_publication_status": "operator_pending",
+  "prompt_size_warning": false,
+  "prompt_context": {
+    "question_ids": [
+      "UBU-Q0171"
+    ],
+    "decision_ids": [],
+    "sections": {},
+    "core_sections": {
+      "DESIGN.md": [
+        "1"
+      ],
+      "DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md": [
+        "4"
+      ]
+    },
+    "missing_refs": {},
+    "context_chars": 22525,
+    "prompt_chars": 29367
+  }
+}
