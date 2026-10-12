@@ -1,0 +1,21 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-ubu-q0163-source-audit-20261012",
+      "score": 90,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Static source evidence and unexecuted test assertions do not establish deployed coverage or planner-backend parity.",
+        "Scoped source inventory, cancellation-retirement verification and operator-approved blocker handoff remain outstanding."
+      ],
+      "required_fixes": [],
+      "rationale": "Valid, narrowly scoped documentation progress. The cited clean revision and implementation/test paths were independently confirmed, including skipped cancellations and retained missing-source Tasks. The patch advances the implementation inventory, provides a concrete verification handoff and preserves UBU-D0318 safeguards, Open status and human approval requirements. It does not complete the retirement gates, and accurately states that limitation."
+    }
+  ],
+  "selected_proposal_id": "openai-ubu-q0163-source-audit-20261012",
+  "selection_rationale": "The sole candidate passes mechanical validation and supplies accurate, auditable progress. This identifier is supplied for v0.2 aggregation, not a final committee selection or blocker-removal authorization."
+}

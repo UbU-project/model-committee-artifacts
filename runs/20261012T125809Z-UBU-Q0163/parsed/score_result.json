@@ -1,0 +1,27 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-ubu-q0163-source-audit-20261012",
+      "score": 81,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Adds a new H3 section ('Revision-pinned source audit and implementation handoff') between Current direction and Resolution; mechanical schema check passed, but this is a non-standard section shape for question blocks and may complicate future parsing or writeback.",
+        "Dense prose adds considerable length to a single question block without a decision record or linked artifact, which raises prompt-size and maintainability cost for a documentation-only change.",
+        "Scoped source inventory, cancellation-retirement verification and operator-approved blocker handoff remain outstanding.",
+        "Static source evidence and unexecuted test assertions do not establish deployed coverage or planner-backend parity.",
+        "The Current direction paragraph now references 'the source audit below', coupling the two sections so that later edits to one may leave the other stale.",
+        "The audit cites specific files and functions in a separate repository (ubu-phase2/ubu-orchestrator at 9fddef16) that cannot be verified from this repository; if any path or behavior claim is inaccurate, the question block would carry misleading implementation evidence."
+      ],
+      "required_fixes": [
+        "Before merge, a reviewer with access to the orchestrator checkout should spot-check the cited paths (calendar_wire, calendar_capture, calendar_sources, planning_service, calendar_projection, calendar_reconciliation_service, and the two test files) at revision 9fddef16 to confirm they exist and behave as described."
+      ],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "openai-ubu-q0163-source-audit-20261012",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}

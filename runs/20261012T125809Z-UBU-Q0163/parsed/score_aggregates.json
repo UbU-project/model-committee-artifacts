@@ -1,0 +1,11 @@
+[
+  {
+    "proposal_id": "openai-ubu-q0163-source-audit-20261012",
+    "author_provider": "openai",
+    "cross_score_count": 2,
+    "score_mean": 81.0,
+    "score_spread": 18,
+    "frontier_score_gap": 18,
+    "disagreement_flags": []
+  }
+]

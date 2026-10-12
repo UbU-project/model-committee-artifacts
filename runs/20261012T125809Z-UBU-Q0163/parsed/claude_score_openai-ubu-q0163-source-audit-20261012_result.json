@@ -1,0 +1,25 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-ubu-q0163-source-audit-20261012",
+      "score": 72,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "none",
+      "risks": [
+        "The audit cites specific files and functions in a separate repository (ubu-phase2/ubu-orchestrator at 9fddef16) that cannot be verified from this repository; if any path or behavior claim is inaccurate, the question block would carry misleading implementation evidence.",
+        "Adds a new H3 section ('Revision-pinned source audit and implementation handoff') between Current direction and Resolution; mechanical schema check passed, but this is a non-standard section shape for question blocks and may complicate future parsing or writeback.",
+        "The Current direction paragraph now references 'the source audit below', coupling the two sections so that later edits to one may leave the other stale.",
+        "Dense prose adds considerable length to a single question block without a decision record or linked artifact, which raises prompt-size and maintainability cost for a documentation-only change."
+      ],
+      "required_fixes": [
+        "Before merge, a reviewer with access to the orchestrator checkout should spot-check the cited paths (calendar_wire, calendar_capture, calendar_sources, planning_service, calendar_projection, calendar_reconciliation_service, and the two test files) at revision 9fddef16 to confirm they exist and behave as described."
+      ],
+      "rationale": "Patch applies cleanly, touches only OPEN_QUESTIONS.md, and alters only the UBU-Q0163 block while preserving its single-line metadata and Status: Open. It directly addresses part of the stated remaining work (implementation-path references, revision-pinned inventory) and is candid that no tests were executed, no blocker is retired, and the operator source/series inventory remains outstanding, which matches the human-approval-required constraint. It is responsive and minimal in file scope, but its substantive value rests on cross-repository source claims that cannot be mechanically or locally verified here, and it introduces a non-standard subsection and a fair amount of prose. No decomposition occurs. Score reflects a sound, honest, incremental documentation step with moderate unverifiable-evidence risk."
+    }
+  ],
+  "selected_proposal_id": "openai-ubu-q0163-source-audit-20261012",
+  "selection_rationale": "Only one proposal was submitted and it passed all mechanical validation (patch applies, allowlist, question schema). It keeps UBU-Q0163 Open as required, confines changes to the target block, and records revision-pinned implementation references without overclaiming passing behavioral evidence or authorizing blocker removal. Its main weakness is reliance on cross-repo source citations that need independent spot-checking, which is noted as a required fix rather than a disqualifier."
+}

@@ -1,0 +1,175 @@
+{
+  "schema_version": "0.4",
+  "run_id": "20261012T125809Z-UBU-Q0163",
+  "created_at_utc": "2026-10-12T12:58:09Z",
+  "repo_path": "../ubu-design",
+  "base_commit": "547030976ca3bb2bacdcf57d3420adde781fe951",
+  "selected_question_id": "UBU-Q0163",
+  "phase": "work-select",
+  "config_path": "config/models.json",
+  "status": "selected",
+  "commands": [
+    "model-committee run-loop"
+  ],
+  "providers_attempted": [
+    "codex",
+    "claude"
+  ],
+  "providers_succeeded": [
+    "codex",
+    "claude"
+  ],
+  "providers_failed": [],
+  "provider_attempts": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "openai-ubu-q0163-source-audit-20261012",
+      "response_path": "runs/20261012T125809Z-UBU-Q0163/responses/codex_score_openai-ubu-q0163-source-audit-20261012_response.json",
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "openai-ubu-q0163-source-audit-20261012",
+      "response_path": "runs/20261012T125809Z-UBU-Q0163/responses/claude_score_openai-ubu-q0163-source-audit-20261012_stdout.json",
+      "stderr_path": null
+    }
+  ],
+  "provider_successes": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20261012T125809Z-UBU-Q0163/parsed/codex_work_proposal.json"
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "openai-ubu-q0163-source-audit-20261012",
+      "response_path": "runs/20261012T125809Z-UBU-Q0163/responses/codex_score_openai-ubu-q0163-source-audit-20261012_response.json",
+      "parsed_path": "runs/20261012T125809Z-UBU-Q0163/parsed/codex_score_openai-ubu-q0163-source-audit-20261012_result.json"
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "openai-ubu-q0163-source-audit-20261012",
+      "response_path": "runs/20261012T125809Z-UBU-Q0163/responses/claude_score_openai-ubu-q0163-source-audit-20261012_stdout.json",
+      "parsed_path": "runs/20261012T125809Z-UBU-Q0163/parsed/claude_score_openai-ubu-q0163-source-audit-20261012_result.json"
+    }
+  ],
+  "provider_failures": [],
+  "score_matrix": [
+    {
+      "proposal_id": "openai-ubu-q0163-source-audit-20261012",
+      "author_provider": "openai",
+      "scorer_provider": "codex",
+      "score": 90,
+      "valid": true,
+      "rationale": "Valid, narrowly scoped documentation progress. The cited clean revision and implementation/test paths were independently confirmed, including skipped cancellations and retained missing-source Tasks. The patch advances the implementation inventory, provides a concrete verification handoff and preserves UBU-D0318 safeguards, Open status and human approval requirements. It does not complete the retirement gates, and accurately states that limitation.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "Static source evidence and unexecuted test assertions do not establish deployed coverage or planner-backend parity.",
+        "Scoped source inventory, cancellation-retirement verification and operator-approved blocker handoff remain outstanding."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261012T125809Z-UBU-Q0163/responses/codex_score_openai-ubu-q0163-source-audit-20261012_response.json",
+        "stderr_path": null
+      }
+    },
+    {
+      "proposal_id": "openai-ubu-q0163-source-audit-20261012",
+      "author_provider": "openai",
+      "scorer_provider": "claude",
+      "score": 72,
+      "valid": true,
+      "rationale": "Patch applies cleanly, touches only OPEN_QUESTIONS.md, and alters only the UBU-Q0163 block while preserving its single-line metadata and Status: Open. It directly addresses part of the stated remaining work (implementation-path references, revision-pinned inventory) and is candid that no tests were executed, no blocker is retired, and the operator source/series inventory remains outstanding, which matches the human-approval-required constraint. It is responsive and minimal in file scope, but its substantive value rests on cross-repository source claims that cannot be mechanically or locally verified here, and it introduces a non-standard subsection and a fair amount of prose. No decomposition occurs. Score reflects a sound, honest, incremental documentation step with moderate unverifiable-evidence risk.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [
+        "Before merge, a reviewer with access to the orchestrator checkout should spot-check the cited paths (calendar_wire, calendar_capture, calendar_sources, planning_service, calendar_projection, calendar_reconciliation_service, and the two test files) at revision 9fddef16 to confirm they exist and behave as described."
+      ],
+      "risks": [
+        "The audit cites specific files and functions in a separate repository (ubu-phase2/ubu-orchestrator at 9fddef16) that cannot be verified from this repository; if any path or behavior claim is inaccurate, the question block would carry misleading implementation evidence.",
+        "Adds a new H3 section ('Revision-pinned source audit and implementation handoff') between Current direction and Resolution; mechanical schema check passed, but this is a non-standard section shape for question blocks and may complicate future parsing or writeback.",
+        "The Current direction paragraph now references 'the source audit below', coupling the two sections so that later edits to one may leave the other stale.",
+        "Dense prose adds considerable length to a single question block without a decision record or linked artifact, which raises prompt-size and maintainability cost for a documentation-only change."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261012T125809Z-UBU-Q0163/responses/claude_score_openai-ubu-q0163-source-audit-20261012_stdout.json",
+        "stderr_path": null
+      }
+    }
+  ],
+  "score_aggregates": [
+    {
+      "proposal_id": "openai-ubu-q0163-source-audit-20261012",
+      "author_provider": "openai",
+      "cross_score_count": 2,
+      "score_mean": 81.0,
+      "score_spread": 18,
+      "frontier_score_gap": 18,
+      "disagreement_flags": []
+    }
+  ],
+  "cross_score_count": 2,
+  "score_mean": 81.0,
+  "score_spread": 18,
+  "frontier_score_gap": 18,
+  "disagreement_flags": [],
+  "quorum_result": {
+    "valid": true,
+    "human_review_required": false,
+    "selected_proposal_id": "openai-ubu-q0163-source-audit-20261012",
+    "selected_score": 81.0,
+    "selected_cross_score_count": 2,
+    "blocked_reasons": [],
+    "manual_override": false
+  },
+  "selected_proposal_id": "openai-ubu-q0163-source-audit-20261012",
+  "automated_selection_valid": true,
+  "human_review_required": false,
+  "artifact_publication_status": "operator_pending",
+  "prompt_size_warning": false,
+  "prompt_context": {
+    "question_ids": [
+      "UBU-Q0163"
+    ],
+    "decision_ids": [
+      "UBU-D0318"
+    ],
+    "sections": {
+      "DESIGN.md": [
+        "1"
+      ]
+    },
+    "core_sections": {
+      "DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md": [
+        "4"
+      ]
+    },
+    "missing_refs": {},
+    "context_chars": 25683,
+    "prompt_chars": 32578
+  }
+}
