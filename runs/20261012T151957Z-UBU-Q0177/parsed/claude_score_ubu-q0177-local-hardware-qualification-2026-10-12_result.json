@@ -1,0 +1,28 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0177-local-hardware-qualification-2026-10-12",
+      "score": 74,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "none",
+      "risks": [
+        "The concrete trial requirements (30 cold-start trials, 100 warm trials, 30 minutes sustained workload) are invented thresholds with no stated derivation; once in DESIGN.md they may harden into arbitrary acceptance gates.",
+        "The DESIGN.md block cites \u00a712.2, \u00a721.1.3, \u00a721.1.4, \u00a721.1.5, \u00a723.1 and DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md \u00a726; the validation notes do not say these targets were verified, so dangling references are possible.",
+        "The question's current direction points at Delta \u00a717.15, but the new material is inserted in DESIGN.md \u00a71; if \u00a71 is not the delta location, the two pointers diverge.",
+        "The DESIGN.md addition is six dense paragraphs; the volume makes it hard to audit and increases the chance of contradicting existing retention, Device or Compartment contracts.",
+        "The question stays Open with unchanged priority and no new sub-question, so the committee may re-select it without any new real-device evidence being available."
+      ],
+      "required_fixes": [
+        "Mark the 30/100/30-minute trial counts as provisional operator-reviewable defaults or give a rationale for them.",
+        "Confirm every cited section and contract reference (\u00a712.2, \u00a721.1.x, \u00a723.1, DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md \u00a726) exists at the base commit.",
+        "Confirm DESIGN.md \u00a71 is the intended home for accepted deltas, or add a pointer at Delta \u00a717.15 so the question's current-direction reference and the new text agree."
+      ],
+      "rationale": "The patch applies cleanly, touches only the three allowlisted files, leaves the Q0177 metadata line intact with Status: Open and Resolved by: None, and limits OPEN_QUESTIONS.md edits to the selected question. It does not answer the literal question (no hardware profile is selected), but it narrows it honestly by defining a revision-pinned qualification protocol instead of fabricating a RAM floor or benchmark results, and it says plainly that the protocol cannot close the question. That is the responsible shape for an Architecture question requiring measured evidence and human approval. Deductions are for unexplained numeric thresholds, unverified cross-references, the sheer length of the DESIGN.md block, and the fact that the question is advanced rather than resolved."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0177-local-hardware-qualification-2026-10-12",
+  "selection_rationale": "Only one proposal was submitted and it passed mechanical validation, allowlist and question-schema checks. It is auditable, stays within scope, and avoids inventing hardware measurements, so it is selectable despite leaving UBU-Q0177 Open pending real-device evidence and operator review."
+}
