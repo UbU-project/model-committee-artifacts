@@ -1,0 +1,21 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0165-openai-gpt-6-observation-admission-1",
+      "score": 94,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Fixtures specify scenarios and expected outcomes but do not supply complete serialized records or demonstrate host-schema compatibility; these remain explicit implementation gates.",
+        "Future adapters must preserve the evidence-only fallback while qualifier fidelity, corroboration sufficiency and proof-of-effect semantics remain unresolved."
+      ],
+      "required_fixes": [],
+      "rationale": "Mechanical validation passes, changes stay within the three allowed files, and Q0165 uses Status: Solved with its metadata preserved. The contract covers source/session/context bindings, ambiguity, candidate dependencies, observed versions, review, replay and corrections through existing Discovery/advisory machinery. It preserves name-only UniverseTarget advice and unchanged FactProvenance fields, requires explicit admission, and keeps adjacent questions open. No blocking architectural defect was identified."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0165-openai-gpt-6-observation-admission-1",
+  "selection_rationale": "The sole eligible proposal passes validation and directly addresses the selected contract with auditable admission boundaries. This cross-score is for local aggregation; human approval remains required."
+}

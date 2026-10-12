@@ -1,0 +1,29 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0165-openai-gpt-6-observation-admission-1",
+      "score": 89,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Cross-references to \u00a712.2 `DiscoveryEvidenceItem`, \u00a721.2.1 `AdvisoryCandidate`, \u00a711.3 operation/target/payload rules, \u00a710.1 preconditions and `UBU-D0296` cannot be verified from the scoring prompt; if any anchor is absent or numbered differently at the base commit, the contract has dangling references.",
+        "Fixtures specify scenarios and expected outcomes but do not supply complete serialized records or demonstrate host-schema compatibility; these remain explicit implementation gates.",
+        "Future adapters must preserve the evidence-only fallback while qualifier fidelity, corroboration sufficiency and proof-of-effect semantics remain unresolved.",
+        "Introduces terminology (`observation-admission/1`, capture keys, admitted envelope/frontier digest, candidate-creation vs review-operation idempotency keys) that may not correspond to existing named concepts in DESIGN.md; reviewers must confirm these are reuse rather than new first-class machinery despite the text's claim.",
+        "Light scope bleed into retention (raw-media purge behavior) and corroboration (repetition cannot satisfy corroboration), which are nominally retained by UBU-Q0167 and UBU-Q0169\u2013Q0171; the text frames these as reuse of existing policy but still states behavior.",
+        "Question is marked Human approval required; the proposal correctly sets requires_human_review but the decision text uses 'Accepted' status, which should be understood as pending human approval through the committee flow.",
+        "The DESIGN.md addition is roughly 43 dense lines with long single-paragraph sections and two wide tables, which lowers line-level auditability and raises the chance that a subtle semantic contradiction with existing \u00a721.2 admission text goes unnoticed."
+      ],
+      "required_fixes": [
+        "Before merge, confirm at base commit 2ee88e3 that the referenced anchors exist and match: \u00a712.2 `DiscoveryEvidenceItem`, \u00a721.2.1 `AdvisoryCandidate`, \u00a711.3 UniverseState operation/target/payload rules, \u00a710.1 preconditions, and `UBU-D0296` name-only UniverseTarget advice.",
+        "Confirm `UBU-D0320` is the next unused decision id and that the `## UBU-D0320:` heading plus `**Status:**` line match the formatting convention of the preceding DECISIONS.md entries."
+      ],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0165-openai-gpt-6-observation-admission-1",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}
