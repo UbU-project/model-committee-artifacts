@@ -1,0 +1,140 @@
+{
+  "schema_version": "0.4",
+  "run_id": "20261012T012430Z-UBU-Q0139",
+  "created_at_utc": "2026-10-12T01:24:30Z",
+  "repo_path": "../ubu-design",
+  "base_commit": "72f8188accfe15d8eb36cf649903db9eb5d3f1e3",
+  "selected_question_id": "UBU-Q0139",
+  "phase": "work-select",
+  "config_path": "config/models.json",
+  "status": "selected",
+  "commands": [
+    "model-committee run-loop"
+  ],
+  "providers_attempted": [
+    "codex",
+    "claude"
+  ],
+  "providers_succeeded": [
+    "codex",
+    "claude"
+  ],
+  "providers_failed": [],
+  "provider_attempts": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "codex-UBU-Q0139-single-live-session",
+      "response_path": "runs/20261012T012430Z-UBU-Q0139/responses/claude_score_codex-ubu-q0139-single-live-session_stdout.json",
+      "stderr_path": null
+    }
+  ],
+  "provider_successes": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20261012T012430Z-UBU-Q0139/parsed/codex_work_proposal.json"
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "codex-UBU-Q0139-single-live-session",
+      "response_path": "runs/20261012T012430Z-UBU-Q0139/responses/claude_score_codex-ubu-q0139-single-live-session_stdout.json",
+      "parsed_path": "runs/20261012T012430Z-UBU-Q0139/parsed/claude_score_codex-ubu-q0139-single-live-session_result.json"
+    }
+  ],
+  "provider_failures": [],
+  "score_matrix": [
+    {
+      "proposal_id": "codex-UBU-Q0139-single-live-session",
+      "author_provider": "codex",
+      "scorer_provider": "claude",
+      "score": 84,
+      "valid": true,
+      "rationale": "Mechanical validation passed: patch applies, only allowed files (DECISIONS.md, DESIGN.md, OPEN_QUESTIONS.md) are touched, and the question schema is preserved with `Status: Solved` and `Resolved by: UBU-D0312`. The proposal answers UBU-Q0139 directly: single-live-session is sufficient for Phase 2, full mesh is optional, conditioned on an arbitrary-N data model, transport-independent statements, and \u00a726's pre-freeze research gate. The OPEN_QUESTIONS.md hunk replaces only the `Open.` resolution and the status/resolved-by metadata, leaving neighbors untouched. The decision is honest that research and fixtures are required, not performed. Deductions are for unverifiable references to contract vocabulary and section numbers, a verbose decision that extends into relay/forwarding semantics beyond the minimal topology answer, and redundant DESIGN.md text. No blocking fixes identified; human approval remains required before application.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "The decision names partial-replica modes (`full`, `metadata_only`, `none`) and specific contract sections (\u00a73, \u00a725, \u00a726) that cannot be verified from this prompt; if those terms are not defined in DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md the freeze-gate text references non-existent vocabulary.",
+        "UBU-D0312 sequencing and the decision header format (`**Status:** Accepted \u2192 DESIGN.md \u00a71`) are asserted but not verifiable here; a collision or format mismatch with existing DECISIONS.md entries would need manual correction.",
+        "The decision adds a fairly broad set of normative forwarding/relay/recovery requirements beyond the narrow topology choice; these are arguably responsive to the question's 'N-device compatible and transport-independent' condition but widen what Phase 2 must demonstrate before freeze.",
+        "The DESIGN.md paragraph is placed in \u00a71 alongside Phase 1 framing rather than a sync-specific section; consistent with the decision's own pointer, but it slightly dilutes \u00a71's focus and duplicates decision content.",
+        "Question is marked Solved and decision marked Accepted in the same patch while the question's auto-choice eligibility is 'Human approval required'; the proposal correctly flags requires_human_review, but the patch must not be applied without that approval."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261012T012430Z-UBU-Q0139/responses/claude_score_codex-ubu-q0139-single-live-session_stdout.json",
+        "stderr_path": null
+      }
+    }
+  ],
+  "score_aggregates": [
+    {
+      "proposal_id": "codex-UBU-Q0139-single-live-session",
+      "author_provider": "codex",
+      "cross_score_count": 1,
+      "score_mean": 84.0,
+      "score_spread": 0,
+      "frontier_score_gap": 0,
+      "disagreement_flags": []
+    }
+  ],
+  "cross_score_count": 1,
+  "score_mean": 84.0,
+  "score_spread": 0,
+  "frontier_score_gap": 0,
+  "disagreement_flags": [],
+  "quorum_result": {
+    "valid": true,
+    "human_review_required": false,
+    "selected_proposal_id": "codex-UBU-Q0139-single-live-session",
+    "selected_score": 84.0,
+    "selected_cross_score_count": 1,
+    "blocked_reasons": [],
+    "manual_override": false
+  },
+  "selected_proposal_id": "codex-UBU-Q0139-single-live-session",
+  "automated_selection_valid": true,
+  "human_review_required": false,
+  "artifact_publication_status": "operator_pending",
+  "prompt_size_warning": false,
+  "prompt_context": {
+    "question_ids": [
+      "UBU-Q0139"
+    ],
+    "decision_ids": [],
+    "sections": {
+      "DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md": [
+        "3",
+        "25",
+        "26"
+      ]
+    },
+    "core_sections": {
+      "DESIGN.md": [
+        "1"
+      ],
+      "DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md": [
+        "4"
+      ]
+    },
+    "missing_refs": {},
+    "context_chars": 10024,
+    "prompt_chars": 17148
+  }
+}

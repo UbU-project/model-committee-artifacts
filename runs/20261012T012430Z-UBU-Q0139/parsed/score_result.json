@@ -1,0 +1,24 @@
+{
+  "scores": [
+    {
+      "proposal_id": "codex-UBU-Q0139-single-live-session",
+      "score": 84,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Question is marked Solved and decision marked Accepted in the same patch while the question's auto-choice eligibility is 'Human approval required'; the proposal correctly flags requires_human_review, but the patch must not be applied without that approval.",
+        "The DESIGN.md paragraph is placed in \u00a71 alongside Phase 1 framing rather than a sync-specific section; consistent with the decision's own pointer, but it slightly dilutes \u00a71's focus and duplicates decision content.",
+        "The decision adds a fairly broad set of normative forwarding/relay/recovery requirements beyond the narrow topology choice; these are arguably responsive to the question's 'N-device compatible and transport-independent' condition but widen what Phase 2 must demonstrate before freeze.",
+        "The decision names partial-replica modes (`full`, `metadata_only`, `none`) and specific contract sections (\u00a73, \u00a725, \u00a726) that cannot be verified from this prompt; if those terms are not defined in DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md the freeze-gate text references non-existent vocabulary.",
+        "UBU-D0312 sequencing and the decision header format (`**Status:** Accepted \u2192 DESIGN.md \u00a71`) are asserted but not verifiable here; a collision or format mismatch with existing DECISIONS.md entries would need manual correction."
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 1 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "codex-UBU-Q0139-single-live-session",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}

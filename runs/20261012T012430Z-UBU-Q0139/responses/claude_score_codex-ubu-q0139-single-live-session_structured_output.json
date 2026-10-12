@@ -1,0 +1,24 @@
+{
+  "scores": [
+    {
+      "proposal_id": "codex-UBU-Q0139-single-live-session",
+      "score": 84,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "none",
+      "risks": [
+        "The decision names partial-replica modes (`full`, `metadata_only`, `none`) and specific contract sections (\u00a73, \u00a725, \u00a726) that cannot be verified from this prompt; if those terms are not defined in DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md the freeze-gate text references non-existent vocabulary.",
+        "UBU-D0312 sequencing and the decision header format (`**Status:** Accepted \u2192 DESIGN.md \u00a71`) are asserted but not verifiable here; a collision or format mismatch with existing DECISIONS.md entries would need manual correction.",
+        "The decision adds a fairly broad set of normative forwarding/relay/recovery requirements beyond the narrow topology choice; these are arguably responsive to the question's 'N-device compatible and transport-independent' condition but widen what Phase 2 must demonstrate before freeze.",
+        "The DESIGN.md paragraph is placed in \u00a71 alongside Phase 1 framing rather than a sync-specific section; consistent with the decision's own pointer, but it slightly dilutes \u00a71's focus and duplicates decision content.",
+        "Question is marked Solved and decision marked Accepted in the same patch while the question's auto-choice eligibility is 'Human approval required'; the proposal correctly flags requires_human_review, but the patch must not be applied without that approval."
+      ],
+      "required_fixes": [],
+      "rationale": "Mechanical validation passed: patch applies, only allowed files (DECISIONS.md, DESIGN.md, OPEN_QUESTIONS.md) are touched, and the question schema is preserved with `Status: Solved` and `Resolved by: UBU-D0312`. The proposal answers UBU-Q0139 directly: single-live-session is sufficient for Phase 2, full mesh is optional, conditioned on an arbitrary-N data model, transport-independent statements, and \u00a726's pre-freeze research gate. The OPEN_QUESTIONS.md hunk replaces only the `Open.` resolution and the status/resolved-by metadata, leaving neighbors untouched. The decision is honest that research and fixtures are required, not performed. Deductions are for unverifiable references to contract vocabulary and section numbers, a verbose decision that extends into relay/forwarding semantics beyond the minimal topology answer, and redundant DESIGN.md text. No blocking fixes identified; human approval remains required before application."
+    }
+  ],
+  "selected_proposal_id": "codex-UBU-Q0139-single-live-session",
+  "selection_rationale": "Only one proposal was submitted and it passed all mechanical checks. It is directly responsive to the question, uses the correct `Status: Solved` schema with a separate `Resolved by:` field, stays within the allowed files, and correctly flags that human approval is required. Remaining concerns are verification items (contract vocabulary, decision ID sequencing) rather than defects in the patch."
+}
