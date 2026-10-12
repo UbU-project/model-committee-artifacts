@@ -1,0 +1,21 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0161-openai-gpt-6-20261011",
+      "score": 95,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Semantic fidelity depends on thorough operator review; complete structural coverage cannot detect all omissions or distorted qualifications.",
+        "Growing source histories increase storage, synthesis and review costs. Concrete limits and derivative-purge behavior still require implementation and validation."
+      ],
+      "required_fixes": [],
+      "rationale": "Supplied mechanical validation confirms clean application, allowlisted files and preserved question schema, including Status: Solved. The proposal directly resolves retention, synthesis acceptance, corrections and later Clarify context. Exact sources remain independent of derived prose; bidirectional coverage, explicit review and version-bound admission make replacement auditable. Failure handling and finite-budget behavior prevent silent loss, while privacy rules cover retained derivatives. The documentation clearly distinguishes the adopted product contract from outstanding implementation evidence. No blocking fixes are apparent."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0161-openai-gpt-6-20261011",
+  "selection_rationale": "The sole candidate is mechanically valid, directly responsive and confined to the relevant documentation. It is suitable for local aggregation with the residual implementation risks noted above; this cross-score does not constitute final committee selection or human approval."
+}
