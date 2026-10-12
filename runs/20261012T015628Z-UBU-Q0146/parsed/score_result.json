@@ -1,0 +1,27 @@
+{
+  "scores": [
+    {
+      "proposal_id": "ubu-q0146-openai-gpt-6-sync-state-warnings-20261011",
+      "score": 90,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Cannot verify from the prompt that cited anchors exist and say what is claimed (contract \u00a710, \u00a717, \u00a717.0, \u00a722, \u00a723; UBU-D0248, UBU-D0312, UBU-D0313, UBU-D0314); the patch context only confirms UBU-D0312/UBU-D0313 and UBU-D0314 are referenced nearby.",
+        "DESIGN.md addition is seven dense paragraphs with exact user-facing strings and a per-dismissal logging requirement; this is more implementation-level detail than a Product decision strictly needs and may drift from the eventual UI.",
+        "Decision ID UBU-D0315 assumed to be the next unused ID; a collision with a concurrently authored decision would require renumbering across all three files.",
+        "Decision marked `Status: Accepted` while the question requires human approval; acceptable as a proposed state but must not be merged without that approval.",
+        "References `decision_kind: safeguard_advisory_bypassed` under DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md \u00a717.0 without modifying that read-only contract; if the contract enumerates decision_kind values, this is an unregistered value and the design would depend on an undefined statement shape.",
+        "Unknown peer freshness could cause frequent projection reviews and habitual bypass; reviewed-batch behavior needs usability validation."
+      ],
+      "required_fixes": [
+        "Confirm `safeguard_advisory_bypassed` is a permitted `decision_kind` for `decision_recorded` in the sync contract \u00a717.0, or point the stale-state acceptance record at an existing statement kind / register the new value through the contract's own change process."
+      ],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "ubu-q0146-openai-gpt-6-sync-state-warnings-20261011",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}

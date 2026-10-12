@@ -1,0 +1,20 @@
+{
+  "scores": [
+    {
+      "proposal_id": "ubu-q0146-openai-gpt-6-sync-state-warnings-20261011",
+      "score": 95,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Unknown peer freshness could cause frequent projection reviews and habitual bypass; reviewed-batch behavior needs usability validation."
+      ],
+      "required_fixes": [],
+      "rationale": "Mechanical validation passes, and repository review confirms consistency with the sync contract and existing decisions. Only allowed canonical files change. UBU-Q0146 correctly becomes Solved, retains its metadata, and references the new decision. The proposal directly addresses concurrent Device use through scoped status, evidence-based warnings, durable suppression, and operation-bound stale-state acceptance while preserving privacy, authority, and blocking conflict checks. Required behavior checks are clearly distinguished from completed implementation evidence."
+    }
+  ],
+  "selected_proposal_id": "ubu-q0146-openai-gpt-6-sync-state-warnings-20261011",
+  "selection_rationale": "The sole candidate is mechanically valid, focused, and auditable. This cross-score nomination is for local aggregation; the Product decision still requires human approval."
+}

@@ -1,0 +1,11 @@
+[
+  {
+    "proposal_id": "ubu-q0146-openai-gpt-6-sync-state-warnings-20261011",
+    "author_provider": "openai",
+    "cross_score_count": 2,
+    "score_mean": 89.5,
+    "score_spread": 11,
+    "frontier_score_gap": 11,
+    "disagreement_flags": []
+  }
+]
