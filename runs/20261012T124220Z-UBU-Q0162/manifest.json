@@ -1,0 +1,191 @@
+{
+  "schema_version": "0.4",
+  "run_id": "20261012T124220Z-UBU-Q0162",
+  "created_at_utc": "2026-10-12T12:42:20Z",
+  "repo_path": "../ubu-design",
+  "base_commit": "d9d809deeeda132bac547fbebcce98015fe413ba",
+  "selected_question_id": "UBU-Q0162",
+  "phase": "work-select",
+  "config_path": "config/models.json",
+  "status": "selected",
+  "commands": [
+    "model-committee run-loop"
+  ],
+  "providers_attempted": [
+    "codex",
+    "claude"
+  ],
+  "providers_succeeded": [
+    "codex",
+    "claude"
+  ],
+  "providers_failed": [],
+  "provider_attempts": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0162-openai-log-admission-audit",
+      "response_path": "runs/20261012T124220Z-UBU-Q0162/responses/codex_score_ubu-q0162-openai-log-admission-audit_response.json",
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0162-openai-log-admission-audit",
+      "response_path": "runs/20261012T124220Z-UBU-Q0162/responses/claude_score_ubu-q0162-openai-log-admission-audit_stdout.json",
+      "stderr_path": null
+    }
+  ],
+  "provider_successes": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20261012T124220Z-UBU-Q0162/parsed/codex_work_proposal.json"
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0162-openai-log-admission-audit",
+      "response_path": "runs/20261012T124220Z-UBU-Q0162/responses/codex_score_ubu-q0162-openai-log-admission-audit_response.json",
+      "parsed_path": "runs/20261012T124220Z-UBU-Q0162/parsed/codex_score_ubu-q0162-openai-log-admission-audit_result.json"
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0162-openai-log-admission-audit",
+      "response_path": "runs/20261012T124220Z-UBU-Q0162/responses/claude_score_ubu-q0162-openai-log-admission-audit_stdout.json",
+      "parsed_path": "runs/20261012T124220Z-UBU-Q0162/parsed/claude_score_ubu-q0162-openai-log-admission-audit_result.json"
+    }
+  ],
+  "provider_failures": [],
+  "score_matrix": [
+    {
+      "proposal_id": "UBU-Q0162-openai-log-admission-audit",
+      "author_provider": "openai",
+      "scorer_provider": "codex",
+      "score": 84,
+      "valid": true,
+      "rationale": "Mechanical validation passes, and inspection of the clean store checkout at the cited revision confirms the generic LogEntry acceptance, mutable objects writer, batch route and test fixture. The patch is minimal, actionable and honest about its limits. It substantially advances the documentation audit but does not complete the required reproduction, filed remediation ticket or implementation evidence.",
+      "implements_selected_work": false,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [
+        "Complete the privacy-safe, revision-pinned before/after reproduction and trace the reported control through admission to its writer.",
+        "Link a filed remediation ticket with the remaining bypass inventory; retain Open status until the specified behavioral closure checks pass."
+      ],
+      "risks": [
+        "The verified generic LogEntry admission gap is not yet connected to the operator-reported edit control.",
+        "The proposed boundary repair remains untested, and legacy LogEntry rows require compatibility review."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261012T124220Z-UBU-Q0162/responses/codex_score_ubu-q0162-openai-log-admission-audit_response.json",
+        "stderr_path": null
+      }
+    },
+    {
+      "proposal_id": "UBU-Q0162-openai-log-admission-audit",
+      "author_provider": "openai",
+      "scorer_provider": "claude",
+      "score": 78,
+      "valid": true,
+      "rationale": "Patch applies, touches only OPEN_QUESTIONS.md, preserves the single-line metadata, keeps Status: Open as the question's own closure rules require, and adds a focused Source audit and remediation handoff section with concrete file/symbol references, a named repair ticket scope, and explicit test expectations. It honestly disclaims runtime reproduction and the link to the operator's reported control, consistent with the question's rule that a reserialized file or editable draft is not evidence of changed history. This is close to the maximum a docs-only committee patch can deliver for an implementation-audit question. Deductions are for unverifiable source claims that a reviewer must check, the unverified UBU-D0071 reference, and the fact that the core reported path is still unidentified.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [
+        "Human reviewer should confirm at ubu-store 83a099f that the listed files/symbols exist and that write_object_row's version-update branch accepts LogEntry rows without a type guard before merging the audit text.",
+        "Confirm UBU-D0071 is the decision establishing append-only Logs and linked corrections, or correct the reference.",
+        "Follow-up (not a patch defect): file the proposed remediation ticket and record its ID in the question once created."
+      ],
+      "risks": [
+        "Cited ubu-store symbols (object_type_from_str, validate_object_record, admit_object, admit_prepared_object, write_object_row, admit_batch, BatchWrite::Object, append_prepared_log, cross_writer_key_is_global_per_device) and the claim that the VersionRef::Version branch lacks a LogEntry guard cannot be verified from this scoring context; if any are inaccurate the handoff misdirects remediation.",
+        "The UBU-D0071 cross-reference added to Current direction is unverified; a wrong decision ID would embed a bad link in the canonical question text.",
+        "The audit pins a ubu-store revision that differs from the ubu-design base commit; that is appropriate for an implementation audit but the pinned revision must actually exist and match the described source.",
+        "Test files named for extension (tests/admit_object.rs, tests/admit_batch.rs) are asserted to exist without evidence.",
+        "The proposal identifies a candidate bypass but explicitly does not connect it to the operator-reported control, so the primary question (which path the reported edit uses) remains unanswered; readers could mistake the candidate gap for the confirmed cause."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261012T124220Z-UBU-Q0162/responses/claude_score_ubu-q0162-openai-log-admission-audit_stdout.json",
+        "stderr_path": null
+      }
+    }
+  ],
+  "score_aggregates": [
+    {
+      "proposal_id": "UBU-Q0162-openai-log-admission-audit",
+      "author_provider": "openai",
+      "cross_score_count": 2,
+      "score_mean": 81.0,
+      "score_spread": 6,
+      "frontier_score_gap": 6,
+      "disagreement_flags": []
+    }
+  ],
+  "cross_score_count": 2,
+  "score_mean": 81.0,
+  "score_spread": 6,
+  "frontier_score_gap": 6,
+  "disagreement_flags": [],
+  "quorum_result": {
+    "valid": true,
+    "human_review_required": false,
+    "selected_proposal_id": "UBU-Q0162-openai-log-admission-audit",
+    "selected_score": 81.0,
+    "selected_cross_score_count": 2,
+    "blocked_reasons": [],
+    "manual_override": false
+  },
+  "selected_proposal_id": "UBU-Q0162-openai-log-admission-audit",
+  "automated_selection_valid": true,
+  "human_review_required": false,
+  "artifact_publication_status": "operator_pending",
+  "prompt_size_warning": false,
+  "prompt_context": {
+    "question_ids": [
+      "UBU-Q0162"
+    ],
+    "decision_ids": [
+      "UBU-D0248",
+      "UBU-D0258"
+    ],
+    "sections": {
+      "DESIGN.md": [
+        "12.1",
+        "12.2",
+        "23.1"
+      ],
+      "DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md": [
+        "16",
+        "17"
+      ]
+    },
+    "core_sections": {
+      "DESIGN.md": [
+        "1"
+      ],
+      "DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md": [
+        "4"
+      ]
+    },
+    "missing_refs": {},
+    "context_chars": 52701,
+    "prompt_chars": 59990
+  }
+}

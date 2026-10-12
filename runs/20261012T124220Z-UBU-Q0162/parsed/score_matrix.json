@@ -1,0 +1,54 @@
+[
+  {
+    "proposal_id": "UBU-Q0162-openai-log-admission-audit",
+    "author_provider": "openai",
+    "scorer_provider": "codex",
+    "score": 84,
+    "valid": true,
+    "rationale": "Mechanical validation passes, and inspection of the clean store checkout at the cited revision confirms the generic LogEntry acceptance, mutable objects writer, batch route and test fixture. The patch is minimal, actionable and honest about its limits. It substantially advances the documentation audit but does not complete the required reproduction, filed remediation ticket or implementation evidence.",
+    "implements_selected_work": false,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [
+      "Complete the privacy-safe, revision-pinned before/after reproduction and trace the reported control through admission to its writer.",
+      "Link a filed remediation ticket with the remaining bypass inventory; retain Open status until the specified behavioral closure checks pass."
+    ],
+    "risks": [
+      "The verified generic LogEntry admission gap is not yet connected to the operator-reported edit control.",
+      "The proposed boundary repair remains untested, and legacy LogEntry rows require compatibility review."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20261012T124220Z-UBU-Q0162/responses/codex_score_ubu-q0162-openai-log-admission-audit_response.json",
+      "stderr_path": null
+    }
+  },
+  {
+    "proposal_id": "UBU-Q0162-openai-log-admission-audit",
+    "author_provider": "openai",
+    "scorer_provider": "claude",
+    "score": 78,
+    "valid": true,
+    "rationale": "Patch applies, touches only OPEN_QUESTIONS.md, preserves the single-line metadata, keeps Status: Open as the question's own closure rules require, and adds a focused Source audit and remediation handoff section with concrete file/symbol references, a named repair ticket scope, and explicit test expectations. It honestly disclaims runtime reproduction and the link to the operator's reported control, consistent with the question's rule that a reserialized file or editable draft is not evidence of changed history. This is close to the maximum a docs-only committee patch can deliver for an implementation-audit question. Deductions are for unverifiable source claims that a reviewer must check, the unverified UBU-D0071 reference, and the fact that the core reported path is still unidentified.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [
+      "Human reviewer should confirm at ubu-store 83a099f that the listed files/symbols exist and that write_object_row's version-update branch accepts LogEntry rows without a type guard before merging the audit text.",
+      "Confirm UBU-D0071 is the decision establishing append-only Logs and linked corrections, or correct the reference.",
+      "Follow-up (not a patch defect): file the proposed remediation ticket and record its ID in the question once created."
+    ],
+    "risks": [
+      "Cited ubu-store symbols (object_type_from_str, validate_object_record, admit_object, admit_prepared_object, write_object_row, admit_batch, BatchWrite::Object, append_prepared_log, cross_writer_key_is_global_per_device) and the claim that the VersionRef::Version branch lacks a LogEntry guard cannot be verified from this scoring context; if any are inaccurate the handoff misdirects remediation.",
+      "The UBU-D0071 cross-reference added to Current direction is unverified; a wrong decision ID would embed a bad link in the canonical question text.",
+      "The audit pins a ubu-store revision that differs from the ubu-design base commit; that is appropriate for an implementation audit but the pinned revision must actually exist and match the described source.",
+      "Test files named for extension (tests/admit_object.rs, tests/admit_batch.rs) are asserted to exist without evidence.",
+      "The proposal identifies a candidate bypass but explicitly does not connect it to the operator-reported control, so the primary question (which path the reported edit uses) remains unanswered; readers could mistake the candidate gap for the confirmed cause."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20261012T124220Z-UBU-Q0162/responses/claude_score_ubu-q0162-openai-log-admission-audit_stdout.json",
+      "stderr_path": null
+    }
+  }
+]

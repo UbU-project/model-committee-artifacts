@@ -1,0 +1,1 @@
+UMC: docs: pin Q0162 LogEntry admission gap and repair handoff
