@@ -1,0 +1,47 @@
+[
+  {
+    "proposal_id": "UBU-Q0178-openai-local-compute-cost-envelopes",
+    "author_provider": "openai",
+    "scorer_provider": "codex",
+    "score": 92,
+    "valid": true,
+    "rationale": "Mechanical validation passes, changes stay within allowed files, and Q0178's Open metadata is preserved. The proposal adds concrete bounded local routes, matched-workload cost and effort comparisons, and useful end-to-end acceptance criteria while preserving existing security and retention gates. It appropriately leaves hardware, latency, mobile API and release decisions in their existing questions. This is substantial design progress, with practical affordability still awaiting evidence.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [
+      "No measured configuration or cost envelope is established; affordable multimodal operation remains unproven.",
+      "Both routes assume suitable owned hardware, limiting conclusions about users without access to that hardware."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20261012T153315Z-UBU-Q0178/responses/codex_score_ubu-q0178-openai-local-compute-cost-envelopes_response.json",
+      "stderr_path": null
+    }
+  },
+  {
+    "proposal_id": "UBU-Q0178-openai-local-compute-cost-envelopes",
+    "author_provider": "openai",
+    "scorer_provider": "claude",
+    "score": 80,
+    "valid": true,
+    "rationale": "Patch applies cleanly, touches only the three allowlisted files, and passed question-schema validation. Q0178's metadata line is untouched, Status stays Open, and the Resolution is expanded in the same 'Open. UBU-D033x answers X only. Close after ...' pattern already used for Q0177, giving consistent, auditable closure criteria. The content is directly responsive: it covers every element of the current direction (smaller/quantized local models, bounded snapshots, CPU inference, qualified latency classes, operator-owned trusted worker hardware, no hosted dependency) and adds a concrete cost-evidence contract (predeclared budgets, dated regional prices, energy/storage/effort accounting, incremental vs. replacement costs, 'lower-cost' only against a named comparator) that operationalizes 'measure tradeoffs before claiming reach or costs'. It explicitly refuses to let a text-only fallback or smaller model stand in for affordable multimodal reach, which guards against a cheap false close. It correctly defers to Q0177/Q0168/Q0160/Q0183 for adjacent scope. Deductions are for verbosity and duplication of D0331 gates in DESIGN.md, the lack of a non-exhaustive clause on candidate routes, and the fact that this is a narrowing rather than a selection. No decomposition occurred and none was needed, since Q0178 itself remains the vehicle for the eventual evidence-backed selection.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [
+      "Protocol-only narrowing: UBU-D0332 names two candidate routes and a cost-evidence contract but selects no path, so the question's core product decision remains unanswered until real-device trials are run and reviewed.",
+      "The 'existing personal worker' route presumes the user already owns a laptop/desktop; for the economically precarious population the question targets, this route may be unavailable, and the text only partly mitigates by separating incremental outlay from acquisition cost.",
+      "The DESIGN.md \u00a71 insertion is seven dense paragraphs that largely restate UBU-D0331 gates (consent, freshness, retention, review, Plan certification); this duplication increases maintenance burden and the chance of drift between the two sections.",
+      "The decision reads as limiting comparison to exactly two routes; it does not state that the candidate list is non-exhaustive, which could be interpreted as excluding other lower-cost paths (shared/community hardware, refurbished devices) from future evaluation.",
+      "Blanket exclusion of any hosted inference, paid API credential or subscription for these routes is stricter than the current direction's 'hidden hosted-model dependency' wording; this is defensible for 'local compute paths' but slightly tightens the question's framing."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20261012T153315Z-UBU-Q0178/responses/claude_score_ubu-q0178-openai-local-compute-cost-envelopes_stdout.json",
+      "stderr_path": null
+    }
+  }
+]

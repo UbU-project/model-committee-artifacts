@@ -1,0 +1,26 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0178-openai-local-compute-cost-envelopes",
+      "score": 86,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Blanket exclusion of any hosted inference, paid API credential or subscription for these routes is stricter than the current direction's 'hidden hosted-model dependency' wording; this is defensible for 'local compute paths' but slightly tightens the question's framing.",
+        "Both routes assume suitable owned hardware, limiting conclusions about users without access to that hardware.",
+        "No measured configuration or cost envelope is established; affordable multimodal operation remains unproven.",
+        "Protocol-only narrowing: UBU-D0332 names two candidate routes and a cost-evidence contract but selects no path, so the question's core product decision remains unanswered until real-device trials are run and reviewed.",
+        "The 'existing personal worker' route presumes the user already owns a laptop/desktop; for the economically precarious population the question targets, this route may be unavailable, and the text only partly mitigates by separating incremental outlay from acquisition cost.",
+        "The DESIGN.md \u00a71 insertion is seven dense paragraphs that largely restate UBU-D0331 gates (consent, freshness, retention, review, Plan certification); this duplication increases maintenance burden and the chance of drift between the two sections.",
+        "The decision reads as limiting comparison to exactly two routes; it does not state that the candidate list is non-exhaustive, which could be interpreted as excluding other lower-cost paths (shared/community hardware, refurbished devices) from future evaluation."
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0178-openai-local-compute-cost-envelopes",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}
