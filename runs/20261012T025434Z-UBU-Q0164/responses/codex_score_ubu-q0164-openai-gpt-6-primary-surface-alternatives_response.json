@@ -1,0 +1,20 @@
+{
+  "scores": [
+    {
+      "proposal_id": "ubu-q0164-openai-gpt-6-primary-surface-alternatives",
+      "score": 96,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Delivery remains unverified: real-device behavioral evidence and existing device, evidence, latency and retention decisions are still required."
+      ],
+      "required_fixes": [],
+      "rationale": "Mechanical validation passes, and changes stay within the three allowed files. The workflow matrix, independent source controls, accessible text/forms, failure continuity and behavioral acceptance directly answer UBU-Q0164's product contract. Status: Solved correctly links to UBU-D0319 while preserving other metadata. Existing admission, provenance, privacy and restricted-attention boundaries remain intact; adjacent questions retain their scope. The patch explicitly distinguishes specification from implemented delivery."
+    }
+  ],
+  "selected_proposal_id": "ubu-q0164-openai-gpt-6-primary-surface-alternatives",
+  "selection_rationale": "The candidate is mechanically valid, directly responsive and auditable, with no required patch fixes identified. This selection is advisory for local aggregation and remains subject to human review."
+}

@@ -1,0 +1,46 @@
+[
+  {
+    "proposal_id": "ubu-q0164-openai-gpt-6-primary-surface-alternatives",
+    "author_provider": "openai",
+    "scorer_provider": "codex",
+    "score": 96,
+    "valid": true,
+    "rationale": "Mechanical validation passes, and changes stay within the three allowed files. The workflow matrix, independent source controls, accessible text/forms, failure continuity and behavioral acceptance directly answer UBU-Q0164's product contract. Status: Solved correctly links to UBU-D0319 while preserving other metadata. Existing admission, provenance, privacy and restricted-attention boundaries remain intact; adjacent questions retain their scope. The patch explicitly distinguishes specification from implemented delivery.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [
+      "Delivery remains unverified: real-device behavioral evidence and existing device, evidence, latency and retention decisions are still required."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20261012T025434Z-UBU-Q0164/responses/codex_score_ubu-q0164-openai-gpt-6-primary-surface-alternatives_response.json",
+      "stderr_path": null
+    }
+  },
+  {
+    "proposal_id": "ubu-q0164-openai-gpt-6-primary-surface-alternatives",
+    "author_provider": "openai",
+    "scorer_provider": "claude",
+    "score": 84,
+    "valid": true,
+    "rationale": "Mechanical validation passed on all checks (applies cleanly, allowlist, question schema) with no warnings. The patch is directly responsive: it answers the open part of UBU-Q0164 (interaction coverage and acceptance, not re-litigating scope) with a workflow table that pairs each camera/voice route with a text/form route, explicit independent source controls and pre-capture disclosure, continuity/degradation rules for missing, declined, noisy or failed sources, keyboard/screen-reader requirements, and revision-pinned behavioral acceptance evidence. It covers the four named concerns (preference via explicit pairwise statements only, privacy via disclosure/local route/Compartment/retention, precision via exact-value editing and on-demand precision, context via permitted context and binding invalidation). Status: Solved and Resolved by: UBU-D0319 are set correctly in a single hunk that preserves the scoring metadata line. The new decision UBU-D0319 is concise, points at the DESIGN section, and explicitly bounds what it does and does not resolve, deferring device sequencing, mobile workload, audio profiles, evidence, latency and retention to their existing questions. Only the three expected files change and no unrelated edits appear. Points withheld for unverifiable cross-reference accuracy, possible section-numbering mismatch, the implicit dependency on open UBU-Q0183 for acceptance, and the heavy density of the added contract.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [
+      "Cross-references to UBU-Q0160, UBU-Q0128 and UBU-Q0165\u2013UBU-Q0172 and the scope attributed to each are not verifiable from this prompt; a misattributed scope boundary would mislead later resolvers.",
+      "New heading number \u00a721.1.3 and the inline reference to \u00a721.1.2 assume the existing restricted-attention section is numbered 21.1.2 and that 21.1.3 is unused; the hunk context is consistent with this but it is not confirmed.",
+      "Acceptance evidence requires real hardware selected by open UBU-Q0183, so delivery acceptance is effectively gated on another open question while the question's 'Depends on: None' metadata is left unchanged.",
+      "The DESIGN.md addition is very dense normative text with many must-constraints (no repeated capture retries, no recurring permission prompts, no cloud AV reroute); this is within the question's scope but increases the chance of over-constraining implementation or conflicting with later evidence/latency decisions.",
+      "The question is Human-approval-required and is marked Solved; this is mitigated by requires_human_review=true but the status change should not be merged without that approval."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20261012T025434Z-UBU-Q0164/responses/claude_score_ubu-q0164-openai-gpt-6-primary-surface-alternatives_stdout.json",
+      "stderr_path": null
+    }
+  }
+]

@@ -1,0 +1,1 @@
+UMC: docs: define MVP camera-and-voice coverage and usable alternatives
