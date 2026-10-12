@@ -1,0 +1,170 @@
+{
+  "schema_version": "0.4",
+  "run_id": "20261012T133222Z-UBU-Q0167",
+  "created_at_utc": "2026-10-12T13:32:22Z",
+  "repo_path": "../ubu-design",
+  "base_commit": "734e6a1fbb79027e960a2eebc39b96b92b11e61e",
+  "selected_question_id": "UBU-Q0167",
+  "phase": "work-select",
+  "config_path": "config/models.json",
+  "status": "selected",
+  "commands": [
+    "model-committee run-loop"
+  ],
+  "providers_attempted": [
+    "codex",
+    "claude"
+  ],
+  "providers_succeeded": [
+    "codex",
+    "claude"
+  ],
+  "providers_failed": [],
+  "provider_attempts": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0167-openai-gpt-6-20261012",
+      "response_path": "runs/20261012T133222Z-UBU-Q0167/responses/codex_score_ubu-q0167-openai-gpt-6-20261012_response.json",
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0167-openai-gpt-6-20261012",
+      "response_path": "runs/20261012T133222Z-UBU-Q0167/responses/claude_score_ubu-q0167-openai-gpt-6-20261012_stdout.json",
+      "stderr_path": null
+    }
+  ],
+  "provider_successes": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20261012T133222Z-UBU-Q0167/parsed/codex_work_proposal.json"
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0167-openai-gpt-6-20261012",
+      "response_path": "runs/20261012T133222Z-UBU-Q0167/responses/codex_score_ubu-q0167-openai-gpt-6-20261012_response.json",
+      "parsed_path": "runs/20261012T133222Z-UBU-Q0167/parsed/codex_score_ubu-q0167-openai-gpt-6-20261012_result.json"
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0167-openai-gpt-6-20261012",
+      "response_path": "runs/20261012T133222Z-UBU-Q0167/responses/claude_score_ubu-q0167-openai-gpt-6-20261012_stdout.json",
+      "parsed_path": "runs/20261012T133222Z-UBU-Q0167/parsed/claude_score_ubu-q0167-openai-gpt-6-20261012_result.json"
+    }
+  ],
+  "provider_failures": [],
+  "score_matrix": [
+    {
+      "proposal_id": "UBU-Q0167-openai-gpt-6-20261012",
+      "author_provider": "openai",
+      "scorer_provider": "codex",
+      "score": 97,
+      "valid": true,
+      "rationale": "Mechanical validation passes, changes stay within the three allowed files, and the question correctly uses Status: Solved. The contract directly covers proportionate review, independent corroboration, unknown and conflicting evidence, operator correction, reassessment before consequential reuse, and separate external-action authorization. Adjacent implementation and proof-of-effect questions remain open, with no schema or kernel changes.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "Runtime enforcement remains unverified and depends on host mappings and behavioral fixtures; the proposal explicitly gates enablement on those checks."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261012T133222Z-UBU-Q0167/responses/codex_score_ubu-q0167-openai-gpt-6-20261012_response.json",
+        "stderr_path": null
+      }
+    },
+    {
+      "proposal_id": "UBU-Q0167-openai-gpt-6-20261012",
+      "author_provider": "openai",
+      "scorer_provider": "claude",
+      "score": 86,
+      "valid": true,
+      "rationale": "Mechanical validation passes: patch applies, only the three allowed files change, and UBU-Q0167 keeps its single-line metadata with Status: Solved and Resolved by: UBU-D0324 populated correctly. The content answers the question as framed by the current direction: a three-tier use classification (clarification, bounded reversible ordinary change, consequential use) keeps ordinary clarification proportionate; a precise definition of independent corroboration explicitly excludes model confidence, repeated frames, multiple models on one input, copied reports and vote counts; unresolved/conflicting-source behavior is specified (no averaging, no inference from absence, no silent source choice, coherent-subset partial progress); operator authoring and correction are preserved as append-only with Plan invalidation and no late-output overwrite; and the boundary between evidence admission and external-action authorization is stated with a pre-execution recheck. No automatic confidence threshold is selected, matching the direction. Cross-references in existing paragraphs are updated consistently so Q0167 no longer appears as retained-open in \u00a721.1.1 while Q0166 and Q0172 do. The resolution text is honest that it settles the process contract, not implementation, host fidelity or proof-of-effect. Deductions reflect the Accepted status ahead of required human approval, the possible hidden schema implication of the retention requirements, and the density/overlap of the new acceptance-case table.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "DECISIONS.md records UBU-D0324 as Accepted while the question's auto-choice eligibility is Human approval required; the proposal sets requires_human_review, but the recorded status assumes approval that has not yet occurred.",
+        "The assessment-binding paragraph requires retaining reviewed use/scope, consequence class, independence basis and sufficiency rationale 'with existing candidate/evidence payloads', while the decision asserts no schema change. If the existing companion payload has no slot for these, this silently implies a schema addition that UBU-D0321's schema-gap chain would need to review.",
+        "The consequential tier requires an independent corroborating source for every decision-critical perceptual claim; combined with the broad consequential category list (any claim that releases capacity or unlocks dependent execution), this could be operationally heavy, though operator direct inspection qualifying as a source keeps it workable.",
+        "'Bounded ordinary use by explicit operator cost/reversibility limits' does not say where those limits are declared or how a reviewer learns the current limit, leaving the ordinary/consequential boundary partly unspecified in practice.",
+        "Section 21.1.1 grows by roughly 20 dense lines plus two tables; the new acceptance-case table partly overlaps the existing fixture table, adding maintenance burden if the two drift."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261012T133222Z-UBU-Q0167/responses/claude_score_ubu-q0167-openai-gpt-6-20261012_stdout.json",
+        "stderr_path": null
+      }
+    }
+  ],
+  "score_aggregates": [
+    {
+      "proposal_id": "UBU-Q0167-openai-gpt-6-20261012",
+      "author_provider": "openai",
+      "cross_score_count": 2,
+      "score_mean": 91.5,
+      "score_spread": 11,
+      "frontier_score_gap": 11,
+      "disagreement_flags": []
+    }
+  ],
+  "cross_score_count": 2,
+  "score_mean": 91.5,
+  "score_spread": 11,
+  "frontier_score_gap": 11,
+  "disagreement_flags": [],
+  "quorum_result": {
+    "valid": true,
+    "human_review_required": false,
+    "selected_proposal_id": "UBU-Q0167-openai-gpt-6-20261012",
+    "selected_score": 91.5,
+    "selected_cross_score_count": 2,
+    "blocked_reasons": [],
+    "manual_override": false
+  },
+  "selected_proposal_id": "UBU-Q0167-openai-gpt-6-20261012",
+  "automated_selection_valid": true,
+  "human_review_required": false,
+  "artifact_publication_status": "operator_pending",
+  "prompt_size_warning": false,
+  "prompt_context": {
+    "question_ids": [
+      "UBU-Q0167"
+    ],
+    "decision_ids": [],
+    "sections": {},
+    "core_sections": {
+      "DESIGN.md": [
+        "1"
+      ],
+      "DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md": [
+        "4"
+      ]
+    },
+    "missing_refs": {},
+    "context_chars": 22607,
+    "prompt_chars": 29443
+  }
+}

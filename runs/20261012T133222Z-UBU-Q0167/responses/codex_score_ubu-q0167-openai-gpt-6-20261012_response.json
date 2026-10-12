@@ -1,0 +1,20 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0167-openai-gpt-6-20261012",
+      "score": 97,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Runtime enforcement remains unverified and depends on host mappings and behavioral fixtures; the proposal explicitly gates enablement on those checks."
+      ],
+      "required_fixes": [],
+      "rationale": "Mechanical validation passes, changes stay within the three allowed files, and the question correctly uses Status: Solved. The contract directly covers proportionate review, independent corroboration, unknown and conflicting evidence, operator correction, reassessment before consequential reuse, and separate external-action authorization. Adjacent implementation and proof-of-effect questions remain open, with no schema or kernel changes."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0167-openai-gpt-6-20261012",
+  "selection_rationale": "The sole candidate is mechanically valid and comprehensively addresses the selected process question. It is suitable for aggregation, with no blocking fixes identified."
+}
