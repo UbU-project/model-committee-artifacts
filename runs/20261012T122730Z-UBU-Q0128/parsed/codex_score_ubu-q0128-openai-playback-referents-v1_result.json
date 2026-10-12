@@ -1,0 +1,21 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0128-openai-playback-referents-v1",
+      "score": 94,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "none",
+      "risks": [
+        "Correct dispatch depends on adapters enforcing target and control-revision bindings; adapter support is not demonstrated.",
+        "Acceptance fixtures remain unexecuted, so this establishes a design contract rather than validated runtime behavior."
+      ],
+      "required_fixes": [],
+      "rationale": "Supplied mechanical validation confirms clean application, allowed files and preserved question schema. The patch directly addresses initial-envelope playback referents and vague commands while preserving UBU-D0309\u2013UBU-D0311 authority boundaries. It adds explicit ambiguity handling, interruption invalidation and replay protections without expanding actions or claiming full resolution. UBU-Q0128 appropriately remains Open."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0128-openai-playback-referents-v1",
+  "selection_rationale": "The sole candidate is mechanically valid, focused and auditable, with no required fixes identified. This is a cross-score recommendation for local aggregation, not final committee selection."
+}

@@ -1,0 +1,185 @@
+{
+  "schema_version": "0.4",
+  "run_id": "20261012T122730Z-UBU-Q0128",
+  "created_at_utc": "2026-10-12T12:27:30Z",
+  "repo_path": "../ubu-design",
+  "base_commit": "47c766e5ffea71c99f177a80f55df1488d026659",
+  "selected_question_id": "UBU-Q0128",
+  "phase": "work-select",
+  "config_path": "config/models.json",
+  "status": "selected",
+  "commands": [
+    "model-committee run-loop"
+  ],
+  "providers_attempted": [
+    "codex",
+    "claude"
+  ],
+  "providers_succeeded": [
+    "codex",
+    "claude"
+  ],
+  "providers_failed": [],
+  "provider_attempts": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0128-openai-playback-referents-v1",
+      "response_path": "runs/20261012T122730Z-UBU-Q0128/responses/codex_score_ubu-q0128-openai-playback-referents-v1_response.json",
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0128-openai-playback-referents-v1",
+      "response_path": "runs/20261012T122730Z-UBU-Q0128/responses/claude_score_ubu-q0128-openai-playback-referents-v1_stdout.json",
+      "stderr_path": null
+    }
+  ],
+  "provider_successes": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20261012T122730Z-UBU-Q0128/parsed/codex_work_proposal.json"
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0128-openai-playback-referents-v1",
+      "response_path": "runs/20261012T122730Z-UBU-Q0128/responses/codex_score_ubu-q0128-openai-playback-referents-v1_response.json",
+      "parsed_path": "runs/20261012T122730Z-UBU-Q0128/parsed/codex_score_ubu-q0128-openai-playback-referents-v1_result.json"
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0128-openai-playback-referents-v1",
+      "response_path": "runs/20261012T122730Z-UBU-Q0128/responses/claude_score_ubu-q0128-openai-playback-referents-v1_stdout.json",
+      "parsed_path": "runs/20261012T122730Z-UBU-Q0128/parsed/claude_score_ubu-q0128-openai-playback-referents-v1_result.json"
+    }
+  ],
+  "provider_failures": [],
+  "score_matrix": [
+    {
+      "proposal_id": "UBU-Q0128-openai-playback-referents-v1",
+      "author_provider": "openai",
+      "scorer_provider": "codex",
+      "score": 94,
+      "valid": true,
+      "rationale": "Supplied mechanical validation confirms clean application, allowed files and preserved question schema. The patch directly addresses initial-envelope playback referents and vague commands while preserving UBU-D0309\u2013UBU-D0311 authority boundaries. It adds explicit ambiguity handling, interruption invalidation and replay protections without expanding actions or claiming full resolution. UBU-Q0128 appropriately remains Open.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "Correct dispatch depends on adapters enforcing target and control-revision bindings; adapter support is not demonstrated.",
+        "Acceptance fixtures remain unexecuted, so this establishes a design contract rather than validated runtime behavior."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261012T122730Z-UBU-Q0128/responses/codex_score_ubu-q0128-openai-playback-referents-v1_response.json",
+        "stderr_path": null
+      }
+    },
+    {
+      "proposal_id": "UBU-Q0128-openai-playback-referents-v1",
+      "author_provider": "openai",
+      "scorer_provider": "claude",
+      "score": 80,
+      "valid": true,
+      "rationale": "The patch applies cleanly, touches only DECISIONS.md, DESIGN.md and OPEN_QUESTIONS.md, and leaves UBU-Q0128 Open with Resolved by: None and all metadata intact. It fills a real gap: UBU-D0309 through D0311 require a fresh unambiguous playback target but do not say how one is chosen or how 'pause that', 'go back', 'save this', 'what did I miss' and 'remind me about this' route. The answer is conservative and consistent with prior direction: explicit targets must resolve uniquely, implicit targets need a session selection plus fresh evidence and no competing audio, foreground/recency/model confidence cannot pick a target, referents clear on interruption or mode/endpoint/Device change, dispatch binds integration, target, control revision and endpoint and cannot fall back to a global active-player command, and every unsupported vague command defers or becomes unresolved evidence rather than an inferred effect. Local pause/stop/silence stopping UbU output immediately without inferring a second app effect is a sound safety property. The decision record, DESIGN text and OPEN_QUESTIONS current-direction and resolution updates agree with each other and correctly scope the contribution to subquestions 9, 14 and 15. Deductions are for unverifiable cross-references to v1 vocabulary, the density of the DESIGN insertion, and its placement ahead of the schema it depends on. No blocking fix is required; a reviewer should confirm `identify_playback_target` and `media_transport/pause` exist in the v1 closed set, and may prefer moving the section after the UBU-D0311 paragraph.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "References `identify_playback_target` as the sole clarification kind and `media_transport/pause` as an action shape; neither is quoted in the prompt, so whether they exist in the closed `AudioInterpretationV1` vocabulary from UBU-D0310 is unverified. If `identify_playback_target` is not already in v1, the text contradicts its own claim that it does not expand `AudioInterpretationV1`.",
+        "The DESIGN.md \u00a721.1.2 insertion is dense (several long paragraphs plus a table and a fixture list), which weakens auditability of a decision that touches dispatch safety.",
+        "The new section is placed between the UBU-D0309 controller-boundary paragraph and the UBU-D0310 schema paragraph, so it uses aliases and action names before the document defines them.",
+        "UBU-D0322 uniqueness and the DECISIONS.md anchor are asserted by the author's validation notes only; mechanical validation confirms the patch applies but not ID uniqueness.",
+        "Acceptance fixtures are stated as requirements rather than results, which is honest, but there is no pointer to where those fixtures would live or who gates adapter enablement."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261012T122730Z-UBU-Q0128/responses/claude_score_ubu-q0128-openai-playback-referents-v1_stdout.json",
+        "stderr_path": null
+      }
+    }
+  ],
+  "score_aggregates": [
+    {
+      "proposal_id": "UBU-Q0128-openai-playback-referents-v1",
+      "author_provider": "openai",
+      "cross_score_count": 2,
+      "score_mean": 87.0,
+      "score_spread": 14,
+      "frontier_score_gap": 14,
+      "disagreement_flags": []
+    }
+  ],
+  "cross_score_count": 2,
+  "score_mean": 87.0,
+  "score_spread": 14,
+  "frontier_score_gap": 14,
+  "disagreement_flags": [],
+  "quorum_result": {
+    "valid": true,
+    "human_review_required": false,
+    "selected_proposal_id": "UBU-Q0128-openai-playback-referents-v1",
+    "selected_score": 87.0,
+    "selected_cross_score_count": 2,
+    "blocked_reasons": [],
+    "manual_override": false
+  },
+  "selected_proposal_id": "UBU-Q0128-openai-playback-referents-v1",
+  "automated_selection_valid": true,
+  "human_review_required": false,
+  "artifact_publication_status": "operator_pending",
+  "prompt_size_warning": true,
+  "prompt_context": {
+    "question_ids": [
+      "UBU-Q0128"
+    ],
+    "decision_ids": [
+      "UBU-D0292",
+      "UBU-D0293",
+      "UBU-D0309",
+      "UBU-D0310",
+      "UBU-D0311"
+    ],
+    "sections": {
+      "DESIGN.md": [
+        "2.13",
+        "4.2",
+        "11.2",
+        "12.2",
+        "21"
+      ]
+    },
+    "core_sections": {
+      "DESIGN.md": [
+        "1"
+      ],
+      "DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md": [
+        "4"
+      ]
+    },
+    "missing_refs": {},
+    "context_chars": 149252,
+    "prompt_chars": 156586
+  }
+}

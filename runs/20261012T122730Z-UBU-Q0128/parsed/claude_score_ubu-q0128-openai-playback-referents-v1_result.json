@@ -1,0 +1,24 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0128-openai-playback-referents-v1",
+      "score": 80,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "References `identify_playback_target` as the sole clarification kind and `media_transport/pause` as an action shape; neither is quoted in the prompt, so whether they exist in the closed `AudioInterpretationV1` vocabulary from UBU-D0310 is unverified. If `identify_playback_target` is not already in v1, the text contradicts its own claim that it does not expand `AudioInterpretationV1`.",
+        "The DESIGN.md \u00a721.1.2 insertion is dense (several long paragraphs plus a table and a fixture list), which weakens auditability of a decision that touches dispatch safety.",
+        "The new section is placed between the UBU-D0309 controller-boundary paragraph and the UBU-D0310 schema paragraph, so it uses aliases and action names before the document defines them.",
+        "UBU-D0322 uniqueness and the DECISIONS.md anchor are asserted by the author's validation notes only; mechanical validation confirms the patch applies but not ID uniqueness.",
+        "Acceptance fixtures are stated as requirements rather than results, which is honest, but there is no pointer to where those fixtures would live or who gates adapter enablement."
+      ],
+      "required_fixes": [],
+      "rationale": "The patch applies cleanly, touches only DECISIONS.md, DESIGN.md and OPEN_QUESTIONS.md, and leaves UBU-Q0128 Open with Resolved by: None and all metadata intact. It fills a real gap: UBU-D0309 through D0311 require a fresh unambiguous playback target but do not say how one is chosen or how 'pause that', 'go back', 'save this', 'what did I miss' and 'remind me about this' route. The answer is conservative and consistent with prior direction: explicit targets must resolve uniquely, implicit targets need a session selection plus fresh evidence and no competing audio, foreground/recency/model confidence cannot pick a target, referents clear on interruption or mode/endpoint/Device change, dispatch binds integration, target, control revision and endpoint and cannot fall back to a global active-player command, and every unsupported vague command defers or becomes unresolved evidence rather than an inferred effect. Local pause/stop/silence stopping UbU output immediately without inferring a second app effect is a sound safety property. The decision record, DESIGN text and OPEN_QUESTIONS current-direction and resolution updates agree with each other and correctly scope the contribution to subquestions 9, 14 and 15. Deductions are for unverifiable cross-references to v1 vocabulary, the density of the DESIGN insertion, and its placement ahead of the schema it depends on. No blocking fix is required; a reviewer should confirm `identify_playback_target` and `media_transport/pause` exist in the v1 closed set, and may prefer moving the section after the UBU-D0311 paragraph."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0128-openai-playback-referents-v1",
+  "selection_rationale": "Only one proposal was submitted and it passed mechanical validation. It is a bounded, doc-only slice that partially answers open subquestions 9, 14 and 15 of UBU-Q0128 without widening the initial restricted-attention envelope, keeps the question Open with valid schema, and is internally consistent across all three changed files. Remaining concerns are verification of two v1 vocabulary references and readability, neither of which blocks adoption."
+}

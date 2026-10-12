@@ -1,0 +1,26 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0128-openai-playback-referents-v1",
+      "score": 87,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Acceptance fixtures are stated as requirements rather than results, which is honest, but there is no pointer to where those fixtures would live or who gates adapter enablement.",
+        "Acceptance fixtures remain unexecuted, so this establishes a design contract rather than validated runtime behavior.",
+        "Correct dispatch depends on adapters enforcing target and control-revision bindings; adapter support is not demonstrated.",
+        "References `identify_playback_target` as the sole clarification kind and `media_transport/pause` as an action shape; neither is quoted in the prompt, so whether they exist in the closed `AudioInterpretationV1` vocabulary from UBU-D0310 is unverified. If `identify_playback_target` is not already in v1, the text contradicts its own claim that it does not expand `AudioInterpretationV1`.",
+        "The DESIGN.md \u00a721.1.2 insertion is dense (several long paragraphs plus a table and a fixture list), which weakens auditability of a decision that touches dispatch safety.",
+        "The new section is placed between the UBU-D0309 controller-boundary paragraph and the UBU-D0310 schema paragraph, so it uses aliases and action names before the document defines them.",
+        "UBU-D0322 uniqueness and the DECISIONS.md anchor are asserted by the author's validation notes only; mechanical validation confirms the patch applies but not ID uniqueness."
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0128-openai-playback-referents-v1",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}
