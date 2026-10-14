@@ -1,0 +1,27 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0096-openai-gpt-6-20261014",
+      "score": 86,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Cross-references to UBU-D0155, UBU-D0156, UBU-D0165, UBU-D0273, \u00a717.0 and \u00a722.2.1, and the Log kinds `decision_recorded`/`safeguard_advisory_bypassed`, could not be verified from the prompt; if any is absent or named differently, the decision text would dangle.",
+        "The per-type matrix uses the phrase 'Base checks' without mapping it explicitly to the eight check codes, leaving the exact default set for `unilateral` and `retroactive_scope_clarification` open to interpretation.",
+        "The \u00a722.3 field list at DESIGN.md line ~1452 is cut off in the patch context; if `review_checkpoints` or `safeguard_policy` are marked 'provisional pending UBU-Q0096' there, or if other sections still say UBU-Q0096 retains gate scope, those notes are now stale and were not updated.",
+        "The new \u00a722.3.5 is long and very dense; it is consistent with the neighboring 22.3.x sections' style but increases prompt-size and reader burden for later work on UBU-Q0099 and UBU-Q0101.",
+        "`review_status` and `safeguard_policy` enum values and field sets are introduced here without a corresponding schema or fixture file change, so implementation conformance remains unspecified beyond prose."
+      ],
+      "required_fixes": [
+        "State the 'base' check set explicitly by code (e.g. introspection, extrospection, manipulation_risk, epistemic_transparency, graceful_nonachievement) in the matrix preamble so each row's default set is unambiguous.",
+        "Before merge, grep DESIGN.md and DECISIONS.md for remaining 'UBU-Q0096' mentions and any 'provisional' annotations on review fields in the \u00a722.3 list, and repoint them to \u00a722.3.5/UBU-D0354."
+      ],
+      "rationale": "The patch applies cleanly, touches only the three allowed files, and resolves UBU-Q0096 with Status: Solved and Resolved by: UBU-D0354 while preserving every other metadata field. All five subquestions are answered directly: the four types are retained with contexts as composable overlays (Q1), a per-type default matrix over eight named check codes (Q2), four context overlays with stated emphasis and union composition (Q3), any check configurable as a required gate via a versioned safeguard_policy with inspectable completion and exception authority (Q4), and bypass/disablement logged as counterfactual decision Logs with no preference inference and only authorized introspection use (Q5). It matches the question's 'current direction' of default-on advisory gates with explicit structural/external/user-required exceptions, keeps Phase 1 payload unchanged, and defers pacing/support detail and general safeguard UX to UBU-Q0099 and UBU-Q0101 instead of absorbing them. The four cross-reference edits in existing sections are necessary consistency updates, not scope creep. Deductions are for unverifiable decision/section references, the implicit 'base checks' mapping, and possible stale provisional notes elsewhere in DESIGN.md."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0096-openai-gpt-6-20261014",
+  "selection_rationale": "Only one proposal was submitted and it passed mechanical validation, preserves the question schema with Status: Solved, modifies only allowlisted files, and answers all five subquestions in a way consistent with the existing \u00a722.3.x contracts and the question's stated direction. Remaining issues are minor clarity and cross-reference hygiene fixes that do not block selection."
+}
