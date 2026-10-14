@@ -1,0 +1,29 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-ubu-q0092-typed-evidence-policies",
+      "score": 82,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "none",
+      "risks": [
+        "DESIGN.md \u00a722.2.1 is extremely dense; a single section carries enum definitions, parameter rules, intersection semantics, lease handling, purge semantics and conformance gates, which lowers auditability and raises the chance of latent internal contradictions.",
+        "Cross-references to \u00a7\u00a72.11, 21.3, 23, 22.3.1, DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md \u00a718, UBU-D0074 and UBU-D0162 could not be verified in this cross-score; if any target is absent or says something different, the contract inherits a dangling or inconsistent citation.",
+        "`compartment_ids` empty is defined as 'explicitly low-security, not protected'. Unless absent and empty are distinguished at the schema level, an omitted field could be read as a fail-open signal, contrary to the stated fail-closed posture.",
+        "Adds a `review` purpose not enumerated in subquestion 3 and mandates a Phase 2 `model_training` = `deny` policy; both are reasonable but are substantive policy choices that need the flagged human approval.",
+        "The conformance-fixture paragraph functions as implementation gating language inside a design section; it is framed as a gate rather than a claim, but it expands the decision's footprint beyond the enum contract.",
+        "Decision ID UBU-D0352 uniqueness is asserted only by the author's validation notes; a collision with another proposal in the same round would require renumbering."
+      ],
+      "required_fixes": [
+        "State explicitly that an absent `compartment_ids` field fails closed and that only an explicit empty list means low-security, so the field cannot be omitted to bypass protection.",
+        "Confirm during application that every cited section and decision (\u00a7\u00a72.11, 21.3, 23, 22.3.1, DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md \u00a718, UBU-D0074, UBU-D0162) exists at the base commit and matches the described semantics.",
+        "Consider splitting \u00a722.2.1 into sub-headings (retention, redaction, use, EvidenceRef, transient review, enforcement) to keep the section auditable without changing content."
+      ],
+      "rationale": "The patch applies cleanly, touches only the three allowed files, and the question block uses Status: Solved with Resolved by: UBU-D0352 while preserving every other metadata field and the Last scored / Scored from commit values. It answers all five subquestions directly: retention is split into orthogonal lifetime, retained form and review dimensions, which correctly separates 'summary only' and 'user review required' from deadline semantics; all six redaction values are defined as maximum-representation ceilings with explicit non-interchangeability and intersection rules; EvidenceUsePolicy covers every listed purpose with deny/allow/require_review decisions and non-transitive scoping; transient excerpt review is specified through bounded leases and a durable-copy prohibition; and EvidenceRef fields cover Compartment, source pinning, selector, timestamp range, generated summary, permission basis and provenance. The decision entry is appropriately scoped and does not overclaim implementation. Deductions are for density and auditability, unverifiable cross-references, the empty-compartment-list semantic, and modest expansion into conformance gating. No decomposition was attempted and none was needed for a question with answerability 90."
+    }
+  ],
+  "selected_proposal_id": "openai-ubu-q0092-typed-evidence-policies",
+  "selection_rationale": "Only one proposal was submitted and it passed mechanical validation, applies cleanly, preserves the question schema with Status: Solved, and resolves every subquestion of UBU-Q0092 with a typed, fail-closed contract that stays within the three allowed files. The remaining concerns are auditability of a very dense section, unverified cross-references, and one semantic edge case on empty compartment lists, all of which are fixable at application time rather than disqualifying."
+}

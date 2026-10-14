@@ -1,0 +1,192 @@
+{
+  "schema_version": "0.4",
+  "run_id": "20261014T070806Z-UBU-Q0092",
+  "created_at_utc": "2026-10-14T07:08:06Z",
+  "repo_path": "../ubu-design",
+  "base_commit": "2938bdec36cab6a41917580384c24fe88a7c5cbf",
+  "selected_question_id": "UBU-Q0092",
+  "phase": "work-select",
+  "config_path": "config/models.json",
+  "status": "selected",
+  "commands": [
+    "model-committee run-loop"
+  ],
+  "providers_attempted": [
+    "codex",
+    "claude"
+  ],
+  "providers_succeeded": [
+    "codex",
+    "claude"
+  ],
+  "providers_failed": [
+    "codex: ProviderError: codex exited with 1"
+  ],
+  "provider_attempts": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "openai-ubu-q0092-typed-evidence-policies",
+      "response_path": "runs/20261014T070806Z-UBU-Q0092/responses/codex_score_openai-ubu-q0092-typed-evidence-policies_response.json",
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "openai-ubu-q0092-typed-evidence-policies",
+      "response_path": "runs/20261014T070806Z-UBU-Q0092/responses/claude_score_openai-ubu-q0092-typed-evidence-policies_stdout.json",
+      "stderr_path": null
+    }
+  ],
+  "provider_successes": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20261014T070806Z-UBU-Q0092/parsed/codex_work_proposal.json"
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "openai-ubu-q0092-typed-evidence-policies",
+      "response_path": "runs/20261014T070806Z-UBU-Q0092/responses/claude_score_openai-ubu-q0092-typed-evidence-policies_stdout.json",
+      "parsed_path": "runs/20261014T070806Z-UBU-Q0092/parsed/claude_score_openai-ubu-q0092-typed-evidence-policies_result.json"
+    }
+  ],
+  "provider_failures": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "failure_class": "ProviderError",
+      "message": "codex exited with 1",
+      "timeout_seconds": null,
+      "exit_status": 1,
+      "stderr_path": "runs/20261014T070806Z-UBU-Q0092/responses/codex_score_openai-ubu-q0092-typed-evidence-policies_stderr.txt",
+      "response_path": "runs/20261014T070806Z-UBU-Q0092/responses/codex_score_openai-ubu-q0092-typed-evidence-policies_response.json",
+      "quorum_met": false
+    }
+  ],
+  "score_matrix": [
+    {
+      "proposal_id": "openai-ubu-q0092-typed-evidence-policies",
+      "author_provider": "openai",
+      "scorer_provider": "codex",
+      "score": null,
+      "valid": false,
+      "rationale": "",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [],
+      "schema_validation": {
+        "valid": false,
+        "message": "codex exited with 1",
+        "response_path": "runs/20261014T070806Z-UBU-Q0092/responses/codex_score_openai-ubu-q0092-typed-evidence-policies_response.json",
+        "stderr_path": "runs/20261014T070806Z-UBU-Q0092/responses/codex_score_openai-ubu-q0092-typed-evidence-policies_stderr.txt"
+      }
+    },
+    {
+      "proposal_id": "openai-ubu-q0092-typed-evidence-policies",
+      "author_provider": "openai",
+      "scorer_provider": "claude",
+      "score": 82,
+      "valid": true,
+      "rationale": "The patch applies cleanly, touches only the three allowed files, and the question block uses Status: Solved with Resolved by: UBU-D0352 while preserving every other metadata field and the Last scored / Scored from commit values. It answers all five subquestions directly: retention is split into orthogonal lifetime, retained form and review dimensions, which correctly separates 'summary only' and 'user review required' from deadline semantics; all six redaction values are defined as maximum-representation ceilings with explicit non-interchangeability and intersection rules; EvidenceUsePolicy covers every listed purpose with deny/allow/require_review decisions and non-transitive scoping; transient excerpt review is specified through bounded leases and a durable-copy prohibition; and EvidenceRef fields cover Compartment, source pinning, selector, timestamp range, generated summary, permission basis and provenance. The decision entry is appropriately scoped and does not overclaim implementation. Deductions are for density and auditability, unverifiable cross-references, the empty-compartment-list semantic, and modest expansion into conformance gating. No decomposition was attempted and none was needed for a question with answerability 90.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [
+        "State explicitly that an absent `compartment_ids` field fails closed and that only an explicit empty list means low-security, so the field cannot be omitted to bypass protection.",
+        "Confirm during application that every cited section and decision (\u00a7\u00a72.11, 21.3, 23, 22.3.1, DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md \u00a718, UBU-D0074, UBU-D0162) exists at the base commit and matches the described semantics.",
+        "Consider splitting \u00a722.2.1 into sub-headings (retention, redaction, use, EvidenceRef, transient review, enforcement) to keep the section auditable without changing content."
+      ],
+      "risks": [
+        "DESIGN.md \u00a722.2.1 is extremely dense; a single section carries enum definitions, parameter rules, intersection semantics, lease handling, purge semantics and conformance gates, which lowers auditability and raises the chance of latent internal contradictions.",
+        "Cross-references to \u00a7\u00a72.11, 21.3, 23, 22.3.1, DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md \u00a718, UBU-D0074 and UBU-D0162 could not be verified in this cross-score; if any target is absent or says something different, the contract inherits a dangling or inconsistent citation.",
+        "`compartment_ids` empty is defined as 'explicitly low-security, not protected'. Unless absent and empty are distinguished at the schema level, an omitted field could be read as a fail-open signal, contrary to the stated fail-closed posture.",
+        "Adds a `review` purpose not enumerated in subquestion 3 and mandates a Phase 2 `model_training` = `deny` policy; both are reasonable but are substantive policy choices that need the flagged human approval.",
+        "The conformance-fixture paragraph functions as implementation gating language inside a design section; it is framed as a gate rather than a claim, but it expands the decision's footprint beyond the enum contract.",
+        "Decision ID UBU-D0352 uniqueness is asserted only by the author's validation notes; a collision with another proposal in the same round would require renumbering."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261014T070806Z-UBU-Q0092/responses/claude_score_openai-ubu-q0092-typed-evidence-policies_stdout.json",
+        "stderr_path": null
+      }
+    }
+  ],
+  "score_aggregates": [
+    {
+      "proposal_id": "openai-ubu-q0092-typed-evidence-policies",
+      "author_provider": "openai",
+      "cross_score_count": 1,
+      "score_mean": 82.0,
+      "score_spread": 0,
+      "frontier_score_gap": 0,
+      "disagreement_flags": []
+    }
+  ],
+  "cross_score_count": 1,
+  "score_mean": 82.0,
+  "score_spread": 0,
+  "frontier_score_gap": 0,
+  "disagreement_flags": [],
+  "quorum_result": {
+    "valid": true,
+    "human_review_required": false,
+    "selected_proposal_id": "openai-ubu-q0092-typed-evidence-policies",
+    "selected_score": 82.0,
+    "selected_cross_score_count": 1,
+    "blocked_reasons": [],
+    "manual_override": false
+  },
+  "selected_proposal_id": "openai-ubu-q0092-typed-evidence-policies",
+  "automated_selection_valid": true,
+  "human_review_required": false,
+  "artifact_publication_status": "operator_pending",
+  "prompt_size_warning": false,
+  "prompt_context": {
+    "question_ids": [
+      "UBU-Q0028",
+      "UBU-Q0060",
+      "UBU-Q0083",
+      "UBU-Q0092"
+    ],
+    "decision_ids": [
+      "UBU-D0074",
+      "UBU-D0157",
+      "UBU-D0162"
+    ],
+    "sections": {
+      "DESIGN.md": [
+        "2.11",
+        "21.3"
+      ]
+    },
+    "core_sections": {
+      "DESIGN.md": [
+        "1"
+      ],
+      "DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md": [
+        "4"
+      ]
+    },
+    "missing_refs": {},
+    "context_chars": 58867,
+    "prompt_chars": 66054
+  }
+}

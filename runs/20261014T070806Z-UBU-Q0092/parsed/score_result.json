@@ -1,0 +1,29 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-ubu-q0092-typed-evidence-policies",
+      "score": 82,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Adds a `review` purpose not enumerated in subquestion 3 and mandates a Phase 2 `model_training` = `deny` policy; both are reasonable but are substantive policy choices that need the flagged human approval.",
+        "Cross-references to \u00a7\u00a72.11, 21.3, 23, 22.3.1, DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md \u00a718, UBU-D0074 and UBU-D0162 could not be verified in this cross-score; if any target is absent or says something different, the contract inherits a dangling or inconsistent citation.",
+        "DESIGN.md \u00a722.2.1 is extremely dense; a single section carries enum definitions, parameter rules, intersection semantics, lease handling, purge semantics and conformance gates, which lowers auditability and raises the chance of latent internal contradictions.",
+        "Decision ID UBU-D0352 uniqueness is asserted only by the author's validation notes; a collision with another proposal in the same round would require renumbering.",
+        "The conformance-fixture paragraph functions as implementation gating language inside a design section; it is framed as a gate rather than a claim, but it expands the decision's footprint beyond the enum contract.",
+        "`compartment_ids` empty is defined as 'explicitly low-security, not protected'. Unless absent and empty are distinguished at the schema level, an omitted field could be read as a fail-open signal, contrary to the stated fail-closed posture."
+      ],
+      "required_fixes": [
+        "Confirm during application that every cited section and decision (\u00a7\u00a72.11, 21.3, 23, 22.3.1, DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md \u00a718, UBU-D0074, UBU-D0162) exists at the base commit and matches the described semantics.",
+        "Consider splitting \u00a722.2.1 into sub-headings (retention, redaction, use, EvidenceRef, transient review, enforcement) to keep the section auditable without changing content.",
+        "State explicitly that an absent `compartment_ids` field fails closed and that only an explicit empty list means low-security, so the field cannot be omitted to bypass protection."
+      ],
+      "rationale": "Aggregate cross-score mean from 1 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "openai-ubu-q0092-typed-evidence-policies",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}
