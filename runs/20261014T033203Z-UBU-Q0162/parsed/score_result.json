@@ -1,0 +1,24 @@
+{
+  "scores": [
+    {
+      "proposal_id": "codex-ubu-q0162-candidate-admission-20261013",
+      "score": 80,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "The added test paragraph prescribes candidate-rollback semantics (candidate 'remains reviewable', no decision event, no receipt) that may need reconciling with existing advisory-candidate lifecycle rules elsewhere in the design; it is stated as a required check rather than a decision, which limits but does not eliminate the risk of implied new policy.",
+        "The new static-audit claims (src/candidates.rs::admit_advisory_candidate calling admit_prepared_object before write_decision, and the existence of tests/advisory_candidates.rs) could not be independently verified by this cross-score; if any symbol or file name is wrong, the remediation handoff would cite a nonexistent path.",
+        "The patch extends the question's prose again without advancing any of the three actual closure blockers (revision-pinned reproduction, filed ticket, passing checks); repeated audit-only refinements risk the block growing while the question stays Open."
+      ],
+      "required_fixes": [
+        "Before merge, confirm at ubu-store 83a099f55220b1286ffb2dee3c9d19006e2090b5 that src/candidates.rs::admit_advisory_candidate, src/candidates.rs::write_decision and tests/advisory_candidates.rs exist as named; if the test file does not exist, change 'Extend' to 'Add'."
+      ],
+      "rationale": "Aggregate cross-score mean from 1 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "codex-ubu-q0162-candidate-admission-20261013",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}

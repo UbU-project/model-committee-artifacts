@@ -1,0 +1,24 @@
+{
+  "scores": [
+    {
+      "proposal_id": "codex-ubu-q0162-candidate-admission-20261013",
+      "score": 80,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "none",
+      "risks": [
+        "The new static-audit claims (src/candidates.rs::admit_advisory_candidate calling admit_prepared_object before write_decision, and the existence of tests/advisory_candidates.rs) could not be independently verified by this cross-score; if any symbol or file name is wrong, the remediation handoff would cite a nonexistent path.",
+        "The added test paragraph prescribes candidate-rollback semantics (candidate 'remains reviewable', no decision event, no receipt) that may need reconciling with existing advisory-candidate lifecycle rules elsewhere in the design; it is stated as a required check rather than a decision, which limits but does not eliminate the risk of implied new policy.",
+        "The patch extends the question's prose again without advancing any of the three actual closure blockers (revision-pinned reproduction, filed ticket, passing checks); repeated audit-only refinements risk the block growing while the question stays Open."
+      ],
+      "required_fixes": [
+        "Before merge, confirm at ubu-store 83a099f55220b1286ffb2dee3c9d19006e2090b5 that src/candidates.rs::admit_advisory_candidate, src/candidates.rs::write_decision and tests/advisory_candidates.rs exist as named; if the test file does not exist, change 'Extend' to 'Add'."
+      ],
+      "rationale": "Mechanical validation passed and the hunk arithmetic (3 removed, 7 added, 55->59) is internally consistent. The change is confined to the UBU-Q0162 block, keeps the single-line metadata and Status: Open intact, and does not touch canonical decisions. It is directly responsive to the question's own instruction to inventory other application-owned write paths reaching the same records: naming advisory-candidate admission as a third route to write_object_row closes a plausible gap where a repair confined to admit_object and BatchWrite::Object would miss a caller. The remediation ticket scope, test requirements and Resolution paragraph are updated coherently and the proposal correctly refrains from claiming reproduction or passing evidence. Score is held below the high range because the core new factual claims are unverifiable from this scoring context and because the patch is an incremental audit refinement rather than progress on the stated closure blockers."
+    }
+  ],
+  "selected_proposal_id": "codex-ubu-q0162-candidate-admission-20261013",
+  "selection_rationale": "Only one proposal was submitted and it passed mechanical validation, preserves the question schema, stays within the Q0162 block, and makes a coherent, minimal, auditable addition to the source-audit and remediation handoff. Selection is conditional on a pre-merge check that the cited candidates.rs symbols and advisory_candidates.rs test file exist at the pinned ubu-store revision."
+}

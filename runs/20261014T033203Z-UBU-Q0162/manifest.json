@@ -1,0 +1,148 @@
+{
+  "schema_version": "0.4",
+  "run_id": "20261014T033203Z-UBU-Q0162",
+  "created_at_utc": "2026-10-14T03:32:03Z",
+  "repo_path": "../ubu-design",
+  "base_commit": "a2fb33b57f71eb3863265f6d79a9a2f2f36e71fd",
+  "selected_question_id": "UBU-Q0162",
+  "phase": "work-select",
+  "config_path": "config/models.json",
+  "status": "selected",
+  "commands": [
+    "model-committee run-loop"
+  ],
+  "providers_attempted": [
+    "codex",
+    "claude"
+  ],
+  "providers_succeeded": [
+    "codex",
+    "claude"
+  ],
+  "providers_failed": [],
+  "provider_attempts": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "codex-ubu-q0162-candidate-admission-20261013",
+      "response_path": "runs/20261014T033203Z-UBU-Q0162/responses/claude_score_codex-ubu-q0162-candidate-admission-20261013_stdout.json",
+      "stderr_path": null
+    }
+  ],
+  "provider_successes": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20261014T033203Z-UBU-Q0162/parsed/codex_work_proposal.json"
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "codex-ubu-q0162-candidate-admission-20261013",
+      "response_path": "runs/20261014T033203Z-UBU-Q0162/responses/claude_score_codex-ubu-q0162-candidate-admission-20261013_stdout.json",
+      "parsed_path": "runs/20261014T033203Z-UBU-Q0162/parsed/claude_score_codex-ubu-q0162-candidate-admission-20261013_result.json"
+    }
+  ],
+  "provider_failures": [],
+  "score_matrix": [
+    {
+      "proposal_id": "codex-ubu-q0162-candidate-admission-20261013",
+      "author_provider": "codex",
+      "scorer_provider": "claude",
+      "score": 80,
+      "valid": true,
+      "rationale": "Mechanical validation passed and the hunk arithmetic (3 removed, 7 added, 55->59) is internally consistent. The change is confined to the UBU-Q0162 block, keeps the single-line metadata and Status: Open intact, and does not touch canonical decisions. It is directly responsive to the question's own instruction to inventory other application-owned write paths reaching the same records: naming advisory-candidate admission as a third route to write_object_row closes a plausible gap where a repair confined to admit_object and BatchWrite::Object would miss a caller. The remediation ticket scope, test requirements and Resolution paragraph are updated coherently and the proposal correctly refrains from claiming reproduction or passing evidence. Score is held below the high range because the core new factual claims are unverifiable from this scoring context and because the patch is an incremental audit refinement rather than progress on the stated closure blockers.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [
+        "Before merge, confirm at ubu-store 83a099f55220b1286ffb2dee3c9d19006e2090b5 that src/candidates.rs::admit_advisory_candidate, src/candidates.rs::write_decision and tests/advisory_candidates.rs exist as named; if the test file does not exist, change 'Extend' to 'Add'."
+      ],
+      "risks": [
+        "The new static-audit claims (src/candidates.rs::admit_advisory_candidate calling admit_prepared_object before write_decision, and the existence of tests/advisory_candidates.rs) could not be independently verified by this cross-score; if any symbol or file name is wrong, the remediation handoff would cite a nonexistent path.",
+        "The added test paragraph prescribes candidate-rollback semantics (candidate 'remains reviewable', no decision event, no receipt) that may need reconciling with existing advisory-candidate lifecycle rules elsewhere in the design; it is stated as a required check rather than a decision, which limits but does not eliminate the risk of implied new policy.",
+        "The patch extends the question's prose again without advancing any of the three actual closure blockers (revision-pinned reproduction, filed ticket, passing checks); repeated audit-only refinements risk the block growing while the question stays Open."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261014T033203Z-UBU-Q0162/responses/claude_score_codex-ubu-q0162-candidate-admission-20261013_stdout.json",
+        "stderr_path": null
+      }
+    }
+  ],
+  "score_aggregates": [
+    {
+      "proposal_id": "codex-ubu-q0162-candidate-admission-20261013",
+      "author_provider": "codex",
+      "cross_score_count": 1,
+      "score_mean": 80.0,
+      "score_spread": 0,
+      "frontier_score_gap": 0,
+      "disagreement_flags": []
+    }
+  ],
+  "cross_score_count": 1,
+  "score_mean": 80.0,
+  "score_spread": 0,
+  "frontier_score_gap": 0,
+  "disagreement_flags": [],
+  "quorum_result": {
+    "valid": true,
+    "human_review_required": false,
+    "selected_proposal_id": "codex-ubu-q0162-candidate-admission-20261013",
+    "selected_score": 80.0,
+    "selected_cross_score_count": 1,
+    "blocked_reasons": [],
+    "manual_override": false
+  },
+  "selected_proposal_id": "codex-ubu-q0162-candidate-admission-20261013",
+  "automated_selection_valid": true,
+  "human_review_required": false,
+  "artifact_publication_status": "operator_pending",
+  "prompt_size_warning": false,
+  "prompt_context": {
+    "question_ids": [
+      "UBU-Q0162"
+    ],
+    "decision_ids": [
+      "UBU-D0071",
+      "UBU-D0248",
+      "UBU-D0258"
+    ],
+    "sections": {
+      "DESIGN.md": [
+        "12.1",
+        "12.2",
+        "23.1"
+      ],
+      "DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md": [
+        "16",
+        "17"
+      ]
+    },
+    "core_sections": {
+      "DESIGN.md": [
+        "1"
+      ],
+      "DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md": [
+        "4"
+      ]
+    },
+    "missing_refs": {},
+    "context_chars": 77381,
+    "prompt_chars": 84703
+  }
+}
