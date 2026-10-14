@@ -1,0 +1,26 @@
+[
+  {
+    "proposal_id": "codex-ubu-q0128-profile-qualification-d0365",
+    "author_provider": "codex",
+    "scorer_provider": "claude",
+    "score": 82,
+    "valid": true,
+    "rationale": "Patch passes mechanical validation, touches only DECISIONS.md, DESIGN.md and OPEN_QUESTIONS.md, and follows the repo's established decision pattern (new D-record, \u00a721.1.2 design text, Current-direction entry, Resolution sentence). It is directly responsive to an explicitly listed open slice of UBU-Q0128 (quantitative mode profiles) and narrows subquestions 2, 12, 16 and 19 without choosing numeric defaults, asserting safety results, altering either v1 schema, or expanding action permissions. Question metadata line is unchanged and Status stays Open with 'Resolved by: None', so schema is preserved. The content is internally consistent with prior direction: comprehension and burden are measured in review rather than diagnosed in-turn, resting carries no productivity floor, and enforcement must hold independently of outcome scores. Deductions are for unverifiable section cross-references, the potentially heavy re-trial burden tied to every revision change, and the slightly odd placement of the block before 'Initial permissions'. No blocking fixes identified.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [
+      "DESIGN.md text cites \u00a7\u00a721.1.3\u201321.1.4 and \u00a74.2 as existing evidence/MVP-minimum sections; these cross-references are not visible in the prompt and should be confirmed to resolve before merge.",
+      "Binding every profile to STT/TTS/model/template revisions and requiring new affected trials on any cap, template, speech-rate or rubric change creates a heavy re-qualification burden; combined with 'withhold unmeasured combinations', this could in practice gate all restricted-attention profiles behind human-factors trials even though the decision states it adds no MVP-release requirement.",
+      "The new qualification block is inserted between the serialized-budget paragraph and the 'Initial permissions' paragraph in \u00a721.1.2, so the method for qualifying numerical profiles now precedes the description of the envelope it qualifies; ordering is slightly awkward for readers.",
+      "Decision ID UBU-D0365 is appended at the end of DECISIONS.md without visible verification of the preceding ID; collision risk if another concurrent proposal claims the same number.",
+      "The DESIGN.md addition is dense (five paragraphs plus a table) for a method-only decision; consistent with repo style but increases audit effort."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20261014T095004Z-UBU-Q0128/responses/claude_score_codex-ubu-q0128-profile-qualification-d0365_stdout.json",
+      "stderr_path": null
+    }
+  }
+]

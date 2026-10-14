@@ -1,0 +1,24 @@
+{
+  "scores": [
+    {
+      "proposal_id": "codex-ubu-q0128-profile-qualification-d0365",
+      "score": 82,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Binding every profile to STT/TTS/model/template revisions and requiring new affected trials on any cap, template, speech-rate or rubric change creates a heavy re-qualification burden; combined with 'withhold unmeasured combinations', this could in practice gate all restricted-attention profiles behind human-factors trials even though the decision states it adds no MVP-release requirement.",
+        "DESIGN.md text cites \u00a7\u00a721.1.3\u201321.1.4 and \u00a74.2 as existing evidence/MVP-minimum sections; these cross-references are not visible in the prompt and should be confirmed to resolve before merge.",
+        "Decision ID UBU-D0365 is appended at the end of DECISIONS.md without visible verification of the preceding ID; collision risk if another concurrent proposal claims the same number.",
+        "The DESIGN.md addition is dense (five paragraphs plus a table) for a method-only decision; consistent with repo style but increases audit effort.",
+        "The new qualification block is inserted between the serialized-budget paragraph and the 'Initial permissions' paragraph in \u00a721.1.2, so the method for qualifying numerical profiles now precedes the description of the envelope it qualifies; ordering is slightly awkward for readers."
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 1 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "codex-ubu-q0128-profile-qualification-d0365",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}
