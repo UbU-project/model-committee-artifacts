@@ -1,0 +1,24 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-ubu-q0178-entry-cash-outcomes-20261014",
+      "score": 74,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "none",
+      "risks": [
+        "Protocol accretion: UBU-Q0178 can only close via operator-reviewed real-device measurements, and the Resolution already states a protocol cannot establish reach. This is the second accounting-contract decision layered on the question (after UBU-D0332) with no measurement progress, so marginal value is real but diminishing.",
+        "DESIGN.md \u00a71 grows by five dense paragraphs of accounting rules at the top-level section; readability of \u00a71 degrades and some of this material would sit better as a subsection or appendix referenced from \u00a71.",
+        "The 'unknown required payments prevent a budget pass' rule combined with mandatory secure-upkeep and replacement assumptions over an undeclared horizon could make every scenario fail on unknowns; the text gives no guidance on how the horizon is chosen or bounded.",
+        "The decision depends on UBU-D0336 being the immediately preceding decision whose runtime-isolation protections it cites; the diff context is consistent with that but could not be independently verified from this prompt.",
+        "Cosmetic: the diff index lines show 0000000 blob hashes from git diff --no-index; mechanical validation confirms it still applies."
+      ],
+      "required_fixes": [],
+      "rationale": "Patch applies, touches only the three allowed files, and the OPEN_QUESTIONS.md hunk changes only the Current direction and Resolution prose while leaving Status: Open and the scoring metadata line intact. The decision is directly responsive to the cost-evidence half of the question: whole-route totals genuinely can hide entry-cash barriers for precarious users, already-owned-worker assumptions can hide acquisition cost, and per-request costs can hide failed attempts, so making these auditable is a legitimate narrowing. It correctly refrains from selecting a path, inventing prices or claiming reach, and keeps the no-worker gap visible. Deductions are for process depth over progress, the growing weight of DESIGN.md \u00a71, and an unbounded horizon assumption that could make the budget gate unsatisfiable in practice."
+    }
+  ],
+  "selected_proposal_id": "openai-ubu-q0178-entry-cash-outcomes-20261014",
+  "selection_rationale": "Only proposal in this round; it passed mechanical validation, stays within the file allowlist, preserves the question schema, keeps UBU-Q0178 Open as required by its human-approval gate, and adds a bounded, auditable accounting extension to UBU-D0332 without overclaiming. Accept with the noted concerns about specification accretion and the undeclared cost horizon."
+}

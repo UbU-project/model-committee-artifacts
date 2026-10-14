@@ -1,0 +1,25 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-ubu-q0178-entry-cash-outcomes-20261014",
+      "score": 82,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Cosmetic: the diff index lines show 0000000 blob hashes from git diff --no-index; mechanical validation confirms it still applies.",
+        "DESIGN.md \u00a71 grows by five dense paragraphs of accounting rules at the top-level section; readability of \u00a71 degrades and some of this material would sit better as a subsection or appendix referenced from \u00a71.",
+        "Protocol accretion: UBU-Q0178 can only close via operator-reviewed real-device measurements, and the Resolution already states a protocol cannot establish reach. This is the second accounting-contract decision layered on the question (after UBU-D0332) with no measurement progress, so marginal value is real but diminishing.",
+        "The 'unknown required payments prevent a budget pass' rule combined with mandatory secure-upkeep and replacement assumptions over an undeclared horizon could make every scenario fail on unknowns; the text gives no guidance on how the horizon is chosen or bounded.",
+        "The decision depends on UBU-D0336 being the immediately preceding decision whose runtime-isolation protections it cites; the diff context is consistent with that but could not be independently verified from this prompt.",
+        "The proposal strengthens the evidence contract but supplies no measured affordable multimodal path; UBU-Q0178's substantive selection remains outstanding."
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "openai-ubu-q0178-entry-cash-outcomes-20261014",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}

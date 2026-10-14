@@ -1,0 +1,20 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-ubu-q0178-entry-cash-outcomes-20261014",
+      "score": 90,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "none",
+      "risks": [
+        "The proposal strengthens the evidence contract but supplies no measured affordable multimodal path; UBU-Q0178's substantive selection remains outstanding."
+      ],
+      "required_fixes": [],
+      "rationale": "Supplied mechanical validation confirms clean application, allowed files and preserved question schema. Ownership-specific payment ceilings address barriers hidden by amortization or assumed worker ownership, while all-attempt useful-outcome accounting exposes failure costs. The patch preserves security gates, operator review and Open status without inventing prices or reach. It implements useful, focused progress on the selected question, though empirical qualification remains incomplete."
+    }
+  ],
+  "selected_proposal_id": "openai-ubu-q0178-entry-cash-outcomes-20261014",
+  "selection_rationale": "The sole candidate is mechanically valid, scoped and auditable, with no required patch fixes identified. Its favorable cross-score reflects the accounting improvement; final selection remains with model-committee aggregation."
+}

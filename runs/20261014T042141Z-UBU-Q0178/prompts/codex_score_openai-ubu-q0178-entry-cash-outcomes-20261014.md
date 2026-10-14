@@ -1,0 +1,226 @@
+# Model-Committee Cross-Scoring Request
+
+You are scoring candidate work proposals for the UbU `model-committee` process.
+
+Return exactly one JSON object. Do not return prose outside the JSON object.
+
+This is a v0.2 cross-score. You are not making the final selection; model-committee
+will aggregate valid cross-scores locally.
+
+Scoring provider: `codex`
+Authoring provider for the candidate proposal(s): `openai`
+
+## Selected question
+
+Question ID: `UBU-Q0178`  
+Question title: `Economically accessible local compute paths`  
+Base commit: `5737469a673380cb20090788943a7f06648b4cea`
+
+```markdown
+## UBU-Q0178: Economically accessible local compute paths
+
+Status: Open Priority: MVP important Phase: Phase 2 Decision type: Product Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 100 Depends on: None Blocks: None Resolved by: None Last scored: 2026-10-14 Scored from commit: None
+
+### Question
+
+Which lower-cost local compute paths prevent economically precarious users from being excluded from the multimodal experience?
+
+### Current direction
+
+Delta §17.16. Consider smaller local models, bounded snapshots, CPU fallback, reduced latency classes and operator-controlled trusted hardware without a hidden hosted-model dependency. Measure the useful tradeoffs before claiming reach or costs. Compute accessibility is part of the mission, not a promised device minimum.
+
+`UBU-D0332` specifies a comparison of bounded CPU-capable single-Device inference and an existing personal worker, with whole-route cost/effort budgets and the qualification gates in DESIGN.md §1. Actual useful lower-cost profiles and cost envelopes remain unselected.
+
+### Resolution
+
+Open. `UBU-D0332` answers the candidate-path and cost-evidence contract only. Close after operator-reviewed comparative real-device results select at least one qualified lower-cost camera-and-voice path within declared cash, effort, energy and storage budgets, with useful end-to-end outcomes and mandatory security/retention gates met. A protocol, smaller model or text-only fallback cannot establish economically accessible multimodal reach.
+
+---
+
+```
+
+## Candidate proposals
+
+```json
+[
+  {
+    "proposal_id": "openai-ubu-q0178-entry-cash-outcomes-20261014",
+    "provider_id": "openai",
+    "model_name": "gpt-6",
+    "question_id": "UBU-Q0178",
+    "base_commit": "5737469a673380cb20090788943a7f06648b4cea",
+    "summary": "Add ownership-specific entry and period cash limits and all-attempt costs per useful multimodal outcome to the lower-cost comparison; keep UBU-Q0178 open for measured selection.",
+    "rationale": "Whole-route totals do not establish whether mandatory payments fit available cash when due. Already-owned worker assumptions and costs per request can also conceal acquisition barriers and failed useful work. This focused extension makes those barriers auditable under the existing real-device and runtime-isolation gates without inventing prices, passing profiles or population reach.",
+    "changed_files": [
+      "DECISIONS.md",
+      "DESIGN.md",
+      "OPEN_QUESTIONS.md"
+    ],
+    "patch": "diff --git a/DECISIONS.md b/DECISIONS.md\nindex 573fd66..0000000 100644\n--- a/DECISIONS.md\n+++ b/DECISIONS.md\n@@ -5304,3 +5304,15 @@ Extend `UBU-D0331`'s endpoint evidence with paired synthetic camera-and-voice jo\n Warm processes and shared read-only weights confer no prior-context authority. Apply \u00a721.1.5's artifact lifecycle and fresh broker checks; an unverified reuse path requires qualification of an isolated per-job runtime or remains unavailable. Measure cold/warm and sustained performance with those protections active and include their time, energy and aggregate resource costs in the support matrix.\n \n These are additional qualification fixtures, not passing tests or a selected configuration. `UBU-Q0177` remains Open for real-device evidence and operator-approved support; existing Device trust, Compartment, retention and endpoint threat-envelope boundaries remain in force.\n+\n+---\n+\n+## UBU-D0337: Lower-cost comparisons expose entry cash and cost per useful multimodal outcome\n+\n+**Status:** Accepted \u2192 DESIGN.md \u00a71. Narrows `UBU-Q0178`; measured lower-cost selection remains Open.\n+\n+Extend `UBU-D0332` with explicit Device-only and Device-plus-existing-worker ownership scenarios, keeping unavailable routes visible and acquisition/replacement assumptions separate. Predeclare entry-cash, cash-per-budget-period and total-horizon ceilings. Report mandatory payments when due, including secure upkeep and necessary replacement; amortization, assumed worker ownership and unconfirmed resale cannot conceal an entry or period budget failure.\n+\n+Report run-related cash, energy and active operator effort across all attempts and retries, plus each total per useful camera-and-voice outcome under the frozen rubric. Separate successful and successfully corrected counts; manual-only fallback cannot inflate the denominator, and zero useful outcomes yields undefined per-outcome values and no qualified workload. Keep fixed costs in whole-route totals and observed failure/correction burdens in period estimates.\n+\n+Publish scenario-specific payment schedules, outcome denominators and budget/gate results in the cost/support matrix. Selection requires operator-reviewed evidence with `UBU-D0331` and `UBU-D0336` protections active and applies only to the qualifying ownership/budget scenarios. This adds accounting requirements, not passing trials, prices, population reach or a selected path. `UBU-Q0178` remains Open; existing hardware, numeric-profile, mobile-planning and release-allocation questions retain their scope.\ndiff --git a/DESIGN.md b/DESIGN.md\nindex cf79589..0000000 100644\n--- a/DESIGN.md\n+++ b/DESIGN.md\n@@ -109,6 +109,14 @@ Declare the comparison baseline, usage period/workload and evaluated cash, effor\n \n Publish costs, effort, qualified workflows/classes and failures alongside `UBU-D0331`'s support matrix. Select a path only after the operator reviews evidence that it passes the declared usefulness, resource, cost and mandatory security/retention limits. If no path qualifies, retain useful manual operation and the explicit multimodal gap. `UBU-Q0178` remains Open until an evidence-backed lower-cost path is selected; this protocol establishes no price, device minimum or supported configuration. `UBU-Q0177` and `UBU-Q0168` retain hardware and numeric-profile acceptance; CPU inference here selects no mobile planner or compute API under `UBU-Q0160`.\n \n+**Entry cash and useful-outcome accounting (`UBU-D0337`).** Extend `UBU-D0332`'s comparison with explicit ownership scenarios: capture/review Device only, or capture/review Device plus an existing worker. Include the Device-only scenario even if its worker route is unavailable. Evaluate acquisition/replacement separately; an already-owned worker's zero acquisition outlay cannot be used in a scenario that must buy one.\n+\n+Before trials, declare finite entry-cash, cash-per-budget-period and total-horizon ceilings alongside the existing effort, energy and storage budgets. Entry cash includes every mandatory payment before the first useful multimodal outcome. Show subsequent payments in the period when due, including secure upkeep and necessary replacement under the declared assumptions. Amortization or unconfirmed resale proceeds cannot make a due payment fit. State the security-support and replacement assumptions over that horizon; continued use after an endpoint's declared maintained-security eligibility ends cannot be priced as a saving. Unknown required payments prevent a budget pass.\n+\n+For each measured workload, report all-attempt totals for run-related cash, energy and active operator minutes, including failures and retries, and divide each total by the number of useful multimodal outcomes. That denominator includes only successful or successfully corrected camera-and-voice workflows meeting the frozen rubric; keep those outcome counts separate. Manual-only completion after multimodal failure remains fallback and cannot enter the denominator. With zero qualifying outcomes, report per-outcome values as undefined and the workload as unqualified. Period estimates retain the observed outcome mix and disclose uncertainty; fixed entry, upkeep and replacement costs remain in whole-route totals.\n+\n+Add ownership prerequisites, entry/period payment schedules and ceilings, all-attempt totals, outcome denominators and per-outcome values to the cost/support matrix, with evidence links and pass/fail/unknown for each budget and mandatory gate. Select only for scenarios whose whole-route budgets and `UBU-D0331`/`UBU-D0336` qualification gates pass. Keep any no-worker multimodal gap visible. This extension selects no measured configuration or cost envelope; `UBU-Q0178` stays Open pending operator-reviewed results.\n+\n ---\n \n ## 2. Core Principles\ndiff --git a/OPEN_QUESTIONS.md b/OPEN_QUESTIONS.md\nindex 0d2afba..0000000 100644\n--- a/OPEN_QUESTIONS.md\n+++ b/OPEN_QUESTIONS.md\n@@ -3399,29 +3399,29 @@ Open. `UBU-D0331` answers the qualification protocol only. Close after actual re\n ## UBU-Q0178: Economically accessible local compute paths\n \n Status: Open Priority: MVP important Phase: Phase 2 Decision type: Product Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 100 Depends on: None Blocks: None Resolved by: None Last scored: 2026-10-14 Scored from commit: None\n \n ### Question\n \n Which lower-cost local compute paths prevent economically precarious users from being excluded from the multimodal experience?\n \n ### Current direction\n \n Delta \u00a717.16. Consider smaller local models, bounded snapshots, CPU fallback, reduced latency classes and operator-controlled trusted hardware without a hidden hosted-model dependency. Measure the useful tradeoffs before claiming reach or costs. Compute accessibility is part of the mission, not a promised device minimum.\n \n-`UBU-D0332` specifies a comparison of bounded CPU-capable single-Device inference and an existing personal worker, with whole-route cost/effort budgets and the qualification gates in DESIGN.md \u00a71. Actual useful lower-cost profiles and cost envelopes remain unselected.\n+`UBU-D0332` specifies a comparison of bounded CPU-capable single-Device inference and an existing personal worker, with whole-route cost/effort budgets and the qualification gates in DESIGN.md \u00a71. Actual useful lower-cost profiles and cost envelopes remain unselected. `UBU-D0337` adds explicit ownership scenarios, entry/period cash limits and all-attempt accounting per useful multimodal outcome; the no-worker scenario and any remaining gap must stay visible.\n \n ### Resolution\n \n-Open. `UBU-D0332` answers the candidate-path and cost-evidence contract only. Close after operator-reviewed comparative real-device results select at least one qualified lower-cost camera-and-voice path within declared cash, effort, energy and storage budgets, with useful end-to-end outcomes and mandatory security/retention gates met. A protocol, smaller model or text-only fallback cannot establish economically accessible multimodal reach.\n+Open. `UBU-D0332` answers the candidate-path and cost-evidence contract; `UBU-D0337` adds entry/period cash and useful-outcome accounting only. Close after operator-reviewed comparative real-device results select at least one qualified lower-cost camera-and-voice path for explicit ownership scenarios within declared entry, period and total cash, effort, energy and storage budgets, with useful end-to-end outcomes and mandatory security/retention gates met. Keep unqualified ownership scenarios and any no-worker gap explicit. A protocol, smaller model or text-only fallback cannot establish economically accessible multimodal reach.\n \n ---\n \n ## UBU-Q0179: Audience routing for the social-impact thesis\n \n Status: Open Priority: Post-MVP Phase: Post-MVP Decision type: Product Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: TBD Depends on: None Blocks: None Resolved by: None Last scored: Never Scored from commit: None\n \n ### Question\n \n Which additional parts of the social-impact thesis belong in public overview, funder, nonprofit/government outreach and canonical design material?\n \n ### Current direction\n",
+    "commit_message": "docs: refine lower-cost multimodal cash and outcome accounting",
+    "validation_notes": [
+      "Generated unified diffs with git diff --no-index against unchanged working-tree files and proposed in-memory contents supplied through stdin; no repository files were written.",
+      "git apply --check --whitespace=error - passed against /home/sean/ubu-design current working-tree files; no cached/index-only validation was used.",
+      "Verified the OPEN_QUESTIONS.md hunk includes the UBU-Q0178 heading and its own Resolution section; its Open status and complete single-line scoring metadata remain unchanged.",
+      "Verified UBU-D0337 was unused, is added once, and only DECISIONS.md, DESIGN.md and the selected OPEN_QUESTIONS.md block change.",
+      "No real-device trials or pricing observations were performed; no configuration or affordability claim is established, and operator review remains required."
+    ],
+    "new_questions_added": [],
+    "questions_resolved": [],
+    "decisions_added": [
+      "UBU-D0337"
+    ],
+    "requires_human_review": true
+  }
+]
+```
+
+## Mechanical validation results
+
+```json
+[
+  {
+    "proposal_id": "openai-ubu-q0178-entry-cash-outcomes-20261014",
+    "patch_applies": true,
+    "allowlist_passed": true,
+    "changed_files": [
+      "DECISIONS.md",
+      "DESIGN.md",
+      "OPEN_QUESTIONS.md"
+    ],
+    "question_schema_passed": true,
+    "error": null,
+    "normalized_patch": null,
+    "warnings": [],
+    "ordinary_error": null,
+    "recount_error": null,
+    "normalization_error": null
+  }
+]
+```
+
+## Provider weights
+
+Provider weights are historical diagnostic context only in v0.2. Do not use
+self-trust or author identity as score evidence.
+
+```json
+{}
+```
+
+## JSON Schema
+
+Your output must satisfy this schema:
+
+```json
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "scores",
+    "selected_proposal_id",
+    "selection_rationale"
+  ],
+  "properties": {
+    "scores": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "proposal_id",
+          "score",
+          "patch_applies",
+          "implements_selected_work",
+          "preserves_question_schema",
+          "avoids_unnecessary_scope",
+          "decomposition_quality",
+          "risks",
+          "required_fixes",
+          "rationale"
+        ],
+        "properties": {
+          "proposal_id": {
+            "type": "string"
+          },
+          "score": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "patch_applies": {
+            "type": "boolean"
+          },
+          "implements_selected_work": {
+            "type": "boolean"
+          },
+          "preserves_question_schema": {
+            "type": "boolean"
+          },
+          "avoids_unnecessary_scope": {
+            "type": "boolean"
+          },
+          "decomposition_quality": {
+            "type": "string",
+            "enum": [
+              "none",
+              "good",
+              "bad",
+              "not_applicable"
+            ]
+          },
+          "risks": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "required_fixes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "rationale": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "selected_proposal_id": {
+      "type": "string"
+    },
+    "selection_rationale": {
+      "type": "string"
+    }
+  }
+}
+```
+
+## Scoring requirements
+
+Score each proposal from 0 to 100.
+
+Consider:
+
+- whether the patch applies cleanly;
+- whether it implements the selected work;
+- whether it preserves the question schema;
+- whether it avoids unnecessary scope;
+- whether it modifies only allowed files;
+- whether it creates useful decomposition if decomposition occurs;
+- whether it introduces new risks;
+- whether required fixes remain.
+
+Rules:
+
+- Score every proposal in this prompt.
+- `selected_proposal_id` must refer to one scored proposal from this prompt.
+- Manual override is not allowed in v0.2.
+- Prefer a patch that is valid, minimal, auditable, and directly responsive.
+- Do not select a proposal whose patch failed mechanical validation.
+- Allowed question `Status:` values are `Archived`, `Decomposed`, `Deferred`, `Open`, `Solved`, `Superseded`; a resolved question must use `Status: Solved`.
+- Reject `Status: Resolved` as a question-schema violation. Set `preserves_question_schema` to false and require `Status: Solved` as the fix; `Resolved by:` is a separate metadata field.
+- Do not score your own provider's proposal unless explicitly asked for diagnostic self-score.
+
+Return only JSON.

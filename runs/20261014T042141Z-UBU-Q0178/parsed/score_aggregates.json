@@ -1,0 +1,11 @@
+[
+  {
+    "proposal_id": "openai-ubu-q0178-entry-cash-outcomes-20261014",
+    "author_provider": "openai",
+    "cross_score_count": 2,
+    "score_mean": 82.0,
+    "score_spread": 16,
+    "frontier_score_gap": 16,
+    "disagreement_flags": []
+  }
+]
