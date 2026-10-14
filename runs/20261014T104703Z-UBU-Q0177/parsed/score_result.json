@@ -1,0 +1,26 @@
+{
+  "scores": [
+    {
+      "proposal_id": "ubu-q0177-openai-20261014-complete-local-route",
+      "score": 84,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Actual hardware qualification remains outstanding; this protocol extension supplies no measured minimum or supported configuration.",
+        "Opaque delegated OS services may complicate implementation pinning and observation, requiring instrumentation or exclusion of affected modes.",
+        "Partial overlap with D0331 endpoint/storage gates and D0362 qualified-endpoint/worker-route requirements; the new DESIGN.md paragraphs restate rather than cross-reference some of those gates.",
+        "Protocol accretion: this is the fourth narrowing decision on UBU-Q0177 (after D0331, D0336, D0362) and still supplies no measured evidence, hardware, or evidence-collection owner; the question moves no closer to closure.",
+        "References to 'frozen useful-outcome fixtures' and 'the existing manual route' assume those artifacts are already defined in DESIGN.md; could not verify against the UbU repository from this environment, only via the mechanical validation result.",
+        "The DESIGN.md addition is three dense paragraphs of enforcement obligations (connected/blocked/backend-loss/reconnection conditions, denied-egress probe, worker-transfer control, retention costs, change rechecks); auditability of the support matrix grows harder with each layer.",
+        "The rule that an unobserved required path withholds the affected mode may be unsatisfiable on locked-down mobile platforms where OS-delegated speech/vision service traffic cannot be inspected, which could silently exclude primary mobile interaction; the text does not say whether that outcome is intended."
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "ubu-q0177-openai-20261014-complete-local-route",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}

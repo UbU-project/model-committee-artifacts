@@ -1,0 +1,228 @@
+# Model-Committee Cross-Scoring Request
+
+You are scoring candidate work proposals for the UbU `model-committee` process.
+
+Return exactly one JSON object. Do not return prose outside the JSON object.
+
+This is a v0.2 cross-score. You are not making the final selection; model-committee
+will aggregate valid cross-scores locally.
+
+Scoring provider: `claude`
+Authoring provider for the candidate proposal(s): `openai`
+
+## Selected question
+
+Question ID: `UBU-Q0177`  
+Question title: `Minimum viable secure local hardware for multimodal interaction`  
+Base commit: `6aa6f349da372a12a3e8e514dd0468d4547d6f3d`
+
+```markdown
+## UBU-Q0177: Minimum viable secure local hardware for multimodal interaction
+
+Status: Open Priority: MVP important Phase: Phase 2 Decision type: Architecture Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 100 Depends on: None Blocks: None Resolved by: None Last scored: 2026-10-14 Scored from commit: None
+
+### Question
+
+What measured local hardware profile can deliver the MVP multimodal experience securely and usefully?
+
+### Current direction
+
+Delta §17.15. Evaluate model quality, memory, latency, energy, sustained thermal behavior, endpoint security and local storage on supported devices. Distinguish primary mobile interaction from mobile planning workload (`UBU-Q0160`). No modern-phone universality or cloud-versus-local quality ranking is assumed.
+
+`UBU-D0331` specifies revision-pinned Device-role profiles, predeclared usefulness/resource criteria, real-device cold/warm and sustained trials, endpoint/storage gates and a reviewed support matrix in DESIGN.md §1. This narrows the qualification process without selecting hardware, a mobile planner or a compute API. `UBU-D0336` adds isolation fixtures across inference jobs and measures the enforced isolation/reset costs within that profile.
+
+`UBU-D0362` makes hardware-selection completeness explicit: the approved profile set must cover all mandatory capture/review slices in DESIGN.md §4.2 (`UBU-D0339`), with qualified endpoints, any worker routes and demonstrated shared-hardware workload limits.
+
+### Resolution
+
+Open. `UBU-D0331` answers the qualification protocol only. Close after actual real-device evidence demonstrates the declared MVP slices, numeric latency/resource profiles, endpoint and retention controls, sustained behavior and useful manual degradation, and the operator approves a scoped hardware/software support matrix. No measured minimum or supported Device is established by the protocol. `UBU-D0336` adds runtime-isolation gates; those fixtures also require passing deployment evidence before selection. `UBU-D0362` requires that selection to cover every mandatory §4.2 slice, with each endpoint and any inter-Device route qualified; partial coverage leaves this question Open.
+
+---
+
+```
+
+## Candidate proposals
+
+```json
+[
+  {
+    "proposal_id": "ubu-q0177-openai-20261014-complete-local-route",
+    "provider_id": "openai",
+    "model_name": "gpt-6",
+    "question_id": "UBU-Q0177",
+    "base_commit": "6aa6f349da372a12a3e8e514dd0468d4547d6f3d",
+    "summary": "Require complete-pipeline locality evidence, including delegated OS services and reconnection behavior, before approving multimodal hardware profiles.",
+    "rationale": "The existing protocol already defines hardware trials, job isolation and mandatory-slice coverage. Denying egress from the main inference process alone does not establish locality of speech, vision, speech output or delegated services. This focused extension makes their execution routes, failure behavior and aggregate costs reviewable while preserving the outstanding measured-selection decision.",
+    "changed_files": [
+      "DECISIONS.md",
+      "DESIGN.md",
+      "OPEN_QUESTIONS.md"
+    ],
+    "patch": "diff --git a/DECISIONS.md b/DECISIONS.md\n--- a/DECISIONS.md\n+++ b/DECISIONS.md\n@@ -5726,3 +5726,13 @@ Source/worker clock mappings require finite valid error bounds including drift.\n Require \u00a721.1.4's deterministic controller fixtures and pinned deployment suspension/return and applicable worker-route evidence, or demonstrated mode exclusion. Keep unplanned suspension gaps in the declared stream-coverage denominator. Failed required bounds withhold the affected mode. This selects no clock API, numerical values, passing implementation or supported hardware; `UBU-Q0168` remains Open pending operator-reviewed evidence.\n \n ---\n+\n+## UBU-D0368: Local multimodal qualification covers the complete processing route\n+\n+**Status:** Accepted \u2192 DESIGN.md \u00a71. Narrows `UBU-Q0177`; measured hardware selection remains Open.\n+\n+Extend `UBU-D0331`/`UBU-D0336` to every enabled source-processing stage, including OS-delegated speech, vision and speech-output services. Pin each stage's implementation/model, execution endpoint, effective permissions, persistence paths and allowed destinations. Qualify the complete route with deployed restrictions active under connected, Internet-blocked, backend-loss and reconnection conditions; inspect provider/service calls, network attempts and queued retries. Include denied-egress and applicable authorized-worker controls. An offline success, local API label or absent plaintext canary alone cannot prove connected-mode locality.\n+\n+Publish the pipeline manifest and pass/fail/missing evidence with `UBU-D0362`'s support matrix, including every stage's enforced resource and retention costs. Unknown required paths withhold the affected mode. Separate package/model acquisition and independently authorized sync/export from source processing; they grant no cloud-fallback or source-telemetry authority. This supplies no passing route, supported hardware or mobile planner/API selection. `UBU-Q0177` remains Open for real-device evidence and operator approval of complete mandatory-slice coverage.\n+\n+---\ndiff --git a/DESIGN.md b/DESIGN.md\n--- a/DESIGN.md\n+++ b/DESIGN.md\n@@ -106,6 +106,12 @@ Record pinned fixture/grant versions, expected and observed access/release outco\n \n Record pass, fail or missing evidence for each mandatory slice and each required endpoint/route gate. Operator-approved passing configurations may establish support for their qualified slices while incomplete coverage remains visible. Close `UBU-Q0177` only after the operator approves a complete support set with passing evidence for every mandatory slice; a bounded camera-and-voice result alone cannot establish the realtime slice. This clarifies hardware-selection completeness under the existing release scope and supplies no measured result or mobile planner/API selection.\n \n+**Complete local processing route (`UBU-D0368`).** For each proposed \u00a74.2 slice, extend the qualification profile with a stage-by-stage manifest of all enabled capture/preprocessing, OCR/vision, speech recognition, embeddings, inference and optional speech-output components, including delegated OS services. Bind each applicable stage to its implementation/model pins, execution Device/profile, effective permissions, input/intermediate copies, persistence paths and allowed destinations. Source-processing traffic stays on qualified endpoints and any selected authenticated encrypted, policy-authorized worker route. Keep package/model acquisition and separately authorized sync/export distinct; none authorizes cloud inference, hidden fallback or source-bearing telemetry.\n+\n+On the exact deployment with its egress restrictions active, exercise the frozen useful-outcome fixtures with Internet access available and blocked; preserve the selected permitted worker link in the latter condition. Also exercise unavailable local components, queued retries and restored connectivity. Inspect actual provider/service calls and network attempts/destinations for source content and intermediates, including services outside the main model process. Include a controlled denied-egress probe and, when selected, an authorized worker-transfer control to verify observation and enforcement. A successful networking-disabled run, a local API label or absence of a plaintext canary in encrypted traffic cannot establish connected-mode locality. Undeclared remote processing, unauthorized transmission or an unobserved required path withholds the affected mode; backend loss preserves permitted saved input and the existing manual route without remote substitution.\n+\n+Attach policy-safe manifest and observation evidence with pass/fail/missing stage dispositions to the support matrix. Measure the complete pipeline with its deployed restrictions active under the existing cold/warm and sustained trials, including every enabled stage's aggregate resource and retention costs. Apply affected rechecks when a stage, delegated provider, destination or enforcement configuration changes. These requirements supply no passing deployment or supported hardware; `UBU-Q0177` stays Open pending the existing complete-support-set evidence and operator approval.\n+\n **Economically accessible local paths (`UBU-D0332`).** Compare two candidate routes for a bounded camera-and-voice slice under `UBU-D0331`:\n \n - **Existing single Device:** bounded still-image capture and push-to-talk audio, with smaller/quantized or task-specific local models capable of CPU inference, finite context and serialized inference jobs. Evaluate supported older hardware without assuming that age, nominal RAM or model size establishes eligibility.\ndiff --git a/OPEN_QUESTIONS.md b/OPEN_QUESTIONS.md\n--- a/OPEN_QUESTIONS.md\n+++ b/OPEN_QUESTIONS.md\n@@ -3428,36 +3428,40 @@ Open.\n ## UBU-Q0177: Minimum viable secure local hardware for multimodal interaction\n \n Status: Open Priority: MVP important Phase: Phase 2 Decision type: Architecture Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 100 Depends on: None Blocks: None Resolved by: None Last scored: 2026-10-14 Scored from commit: None\n \n ### Question\n \n What measured local hardware profile can deliver the MVP multimodal experience securely and usefully?\n \n ### Current direction\n \n Delta \u00a717.15. Evaluate model quality, memory, latency, energy, sustained thermal behavior, endpoint security and local storage on supported devices. Distinguish primary mobile interaction from mobile planning workload (`UBU-Q0160`). No modern-phone universality or cloud-versus-local quality ranking is assumed.\n \n `UBU-D0331` specifies revision-pinned Device-role profiles, predeclared usefulness/resource criteria, real-device cold/warm and sustained trials, endpoint/storage gates and a reviewed support matrix in DESIGN.md \u00a71. This narrows the qualification process without selecting hardware, a mobile planner or a compute API. `UBU-D0336` adds isolation fixtures across inference jobs and measures the enforced isolation/reset costs within that profile.\n \n `UBU-D0362` makes hardware-selection completeness explicit: the approved profile set must cover all mandatory capture/review slices in DESIGN.md \u00a74.2 (`UBU-D0339`), with qualified endpoints, any worker routes and demonstrated shared-hardware workload limits.\n \n+`UBU-D0368` extends qualification to every enabled processing stage, including delegated OS services, with connected/offline, backend-loss and reconnection evidence for actual provider calls, egress restrictions and queued retries. The support matrix binds the complete pipeline and its resource/retention costs.\n+\n ### Resolution\n \n Open. `UBU-D0331` answers the qualification protocol only. Close after actual real-device evidence demonstrates the declared MVP slices, numeric latency/resource profiles, endpoint and retention controls, sustained behavior and useful manual degradation, and the operator approves a scoped hardware/software support matrix. No measured minimum or supported Device is established by the protocol. `UBU-D0336` adds runtime-isolation gates; those fixtures also require passing deployment evidence before selection. `UBU-D0362` requires that selection to cover every mandatory \u00a74.2 slice, with each endpoint and any inter-Device route qualified; partial coverage leaves this question Open.\n \n+`UBU-D0368` adds complete-route locality evidence; its required real-device trials remain outstanding and establish no supported configuration.\n+\n ---\n \n ## UBU-Q0178: Economically accessible local compute paths\n \n Status: Open Priority: MVP important Phase: Phase 2 Decision type: Product Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 100 Depends on: None Blocks: None Resolved by: None Last scored: 2026-10-14 Scored from commit: None\n \n ### Question\n \n Which lower-cost local compute paths prevent economically precarious users from being excluded from the multimodal experience?\n \n ### Current direction\n \n Delta \u00a717.16. Consider smaller local models, bounded snapshots, CPU fallback, reduced latency classes and operator-controlled trusted hardware without a hidden hosted-model dependency. Measure the useful tradeoffs before claiming reach or costs. Compute accessibility is part of the mission, not a promised device minimum.\n \n `UBU-D0332` specifies a comparison of bounded CPU-capable single-Device inference and an existing personal worker, with whole-route cost/effort budgets and the qualification gates in DESIGN.md \u00a71. Actual useful lower-cost profiles and cost envelopes remain unselected. `UBU-D0337` adds explicit ownership scenarios, entry/period cash limits and all-attempt accounting per useful multimodal outcome; the no-worker scenario and any remaining gap must stay visible. `UBU-D0363` adds first-use setup and interrupted package/model acquisition trials, accounting for transferred data, helper resources and peak installation/recovery storage by starting-state/ownership scenario.\n \n",
+    "commit_message": "docs: qualify complete local multimodal processing routes",
+    "validation_notes": [
+      "Generated unified hunks using git diff --no-index against unmodified current working-tree contents, with proposed contents supplied through stdin; normalized destination paths and omitted index lines.",
+      "git apply --check against the current working tree passed; no repository files were modified.",
+      "Verified UBU-D0368 is unused; no question IDs were allocated.",
+      "OPEN_QUESTIONS.md changes are confined to UBU-Q0177; its single-line metadata remains unchanged and its hunk includes the selected heading and its own Resolution section.",
+      "No hardware trials were performed. No supported Device, passing route or numerical performance result is claimed; complete real-device evidence and operator approval remain required."
+    ],
+    "new_questions_added": [],
+    "questions_resolved": [],
+    "decisions_added": [
+      "UBU-D0368"
+    ],
+    "requires_human_review": true
+  }
+]
+```
+
+## Mechanical validation results
+
+```json
+[
+  {
+    "proposal_id": "ubu-q0177-openai-20261014-complete-local-route",
+    "patch_applies": true,
+    "allowlist_passed": true,
+    "changed_files": [
+      "DECISIONS.md",
+      "DESIGN.md",
+      "OPEN_QUESTIONS.md"
+    ],
+    "question_schema_passed": true,
+    "error": null,
+    "normalized_patch": null,
+    "warnings": [],
+    "ordinary_error": null,
+    "recount_error": null,
+    "normalization_error": null
+  }
+]
+```
+
+## Provider weights
+
+Provider weights are historical diagnostic context only in v0.2. Do not use
+self-trust or author identity as score evidence.
+
+```json
+{}
+```
+
+## JSON Schema
+
+Your output must satisfy this schema:
+
+```json
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "scores",
+    "selected_proposal_id",
+    "selection_rationale"
+  ],
+  "properties": {
+    "scores": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "proposal_id",
+          "score",
+          "patch_applies",
+          "implements_selected_work",
+          "preserves_question_schema",
+          "avoids_unnecessary_scope",
+          "decomposition_quality",
+          "risks",
+          "required_fixes",
+          "rationale"
+        ],
+        "properties": {
+          "proposal_id": {
+            "type": "string"
+          },
+          "score": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "patch_applies": {
+            "type": "boolean"
+          },
+          "implements_selected_work": {
+            "type": "boolean"
+          },
+          "preserves_question_schema": {
+            "type": "boolean"
+          },
+          "avoids_unnecessary_scope": {
+            "type": "boolean"
+          },
+          "decomposition_quality": {
+            "type": "string",
+            "enum": [
+              "none",
+              "good",
+              "bad",
+              "not_applicable"
+            ]
+          },
+          "risks": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "required_fixes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "rationale": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "selected_proposal_id": {
+      "type": "string"
+    },
+    "selection_rationale": {
+      "type": "string"
+    }
+  }
+}
+```
+
+## Scoring requirements
+
+Score each proposal from 0 to 100.
+
+Consider:
+
+- whether the patch applies cleanly;
+- whether it implements the selected work;
+- whether it preserves the question schema;
+- whether it avoids unnecessary scope;
+- whether it modifies only allowed files;
+- whether it creates useful decomposition if decomposition occurs;
+- whether it introduces new risks;
+- whether required fixes remain.
+
+Rules:
+
+- Score every proposal in this prompt.
+- `selected_proposal_id` must refer to one scored proposal from this prompt.
+- Manual override is not allowed in v0.2.
+- Prefer a patch that is valid, minimal, auditable, and directly responsive.
+- Do not select a proposal whose patch failed mechanical validation.
+- Allowed question `Status:` values are `Archived`, `Decomposed`, `Deferred`, `Open`, `Solved`, `Superseded`; a resolved question must use `Status: Solved`.
+- Reject `Status: Resolved` as a question-schema violation. Set `preserves_question_schema` to false and require `Status: Solved` as the fix; `Resolved by:` is a separate metadata field.
+- Do not score your own provider's proposal unless explicitly asked for diagnostic self-score.
+
+Return only JSON.
