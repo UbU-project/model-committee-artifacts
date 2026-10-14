@@ -1,0 +1,1 @@
+UMC: docs: require complete MVP hardware support coverage

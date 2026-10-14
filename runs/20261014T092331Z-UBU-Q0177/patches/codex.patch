@@ -1,0 +1,74 @@
+diff --git a/DECISIONS.md b/DECISIONS.md
+index edf17cc..877b6d3 100644
+--- a/DECISIONS.md
++++ b/DECISIONS.md
+@@ -5654,3 +5654,15 @@ Account for every offered workload request, including refusals, timeouts, failur
+ DESIGN.md §21.1.4 supplies the accounting and pass/fail requirements alongside `UBU-D0331`/`UBU-D0336`'s endpoint/runtime trials and `UBU-D0335`'s enforcement fixtures. Correct bounded fallback alone cannot qualify an ordinary workload that misses its declared usefulness limit. This selects no numerical ceiling, passing implementation or supported hardware; `UBU-Q0168` stays Open pending operator-reviewed evidence.
+ 
+ ---
++
++## UBU-D0362: MVP hardware selection requires coverage of every mandatory capture slice
++
++**Status:** Accepted → DESIGN.md §1. Narrows `UBU-Q0177`; measured hardware selection remains Open.
++
++Apply `UBU-D0331`/`UBU-D0336` to a support set covering every mandatory §4.2 slice allocated by `UBU-D0339`: bounded laptop/desktop camera-and-voice, bounded phone capture/review with its selected inference route, and finite laptop/desktop realtime audio/video. Map each slice to exact capture, review and inference Device profiles and any inter-Device route, with revision-pinned passing whole-route evidence and operator approval bound to those revisions. Qualify proposed workloads on shared physical hardware or demonstrate enforced mode exclusions.
++
++Operator-approved passing configurations may establish scoped partial support. Keep failed or missing slices and endpoint/route gates visible; close `UBU-Q0177` only after every mandatory slice has an approved evidence-backed configuration. A bounded camera-and-voice path cannot substitute for the realtime slice.
++
++This clarifies completeness within the existing release scope. It supplies no measured result, supported minimum or mobile planner/API selection and changes no switch or release commitment.
++
++---
+diff --git a/DESIGN.md b/DESIGN.md
+index 2ac2027..c5ae5d7 100644
+--- a/DESIGN.md
++++ b/DESIGN.md
+@@ -102,6 +102,10 @@ Run paired synthetic camera-and-voice jobs A/B under distinct grants, with B den
+ 
+ Record pinned fixture/grant versions, expected and observed access/release outcomes, runtime permission observations, reset/termination behavior and policy-safe evidence links in the qualification report. Every enabled reuse/concurrency mode must demonstrate the allowed control and zero unauthorized reads/releases in these fixtures; unobserved mandatory paths remain unqualified. Repeat the cold/warm and sustained workload measurements with the enforced isolation, reset and cache restrictions active, accounting for their time, energy and aggregate memory/storage costs. Publish limitations beside the support matrix. These fixtures supply no passing runtime, hardware selection or forensic-erasure result.
+ 
++**MVP hardware support coverage (`UBU-D0362`).** Select a set of qualified hardware/software profiles that collectively covers every mandatory capture/review slice in §4.2 (`UBU-D0339`): bounded laptop/desktop camera-and-voice, bounded phone capture/review with its selected inference route, and finite laptop/desktop realtime audio/video. For each required slice, the support matrix identifies the exact capture, review and inference Device profiles, any inter-Device route, enabled sources/classes, declared concurrency and session limits, passing whole-route evidence and operator approval bound to those revisions. Shared physical hardware may cover several slices; qualify the proposed combined workload or enforce and demonstrate the declared mode exclusions under `UBU-D0331`/`UBU-D0336`.
++
++Record pass, fail or missing evidence for each mandatory slice and each required endpoint/route gate. Operator-approved passing configurations may establish support for their qualified slices while incomplete coverage remains visible. Close `UBU-Q0177` only after the operator approves a complete support set with passing evidence for every mandatory slice; a bounded camera-and-voice result alone cannot establish the realtime slice. This clarifies hardware-selection completeness under the existing release scope and supplies no measured result or mobile planner/API selection.
++
+ **Economically accessible local paths (`UBU-D0332`).** Compare two candidate routes for a bounded camera-and-voice slice under `UBU-D0331`:
+ 
+ - **Existing single Device:** bounded still-image capture and push-to-talk audio, with smaller/quantized or task-specific local models capable of CPU inference, finite context and serialized inference jobs. Evaluate supported older hardware without assuming that age, nominal RAM or model size establishes eligibility.
+diff --git a/OPEN_QUESTIONS.md b/OPEN_QUESTIONS.md
+index 90aab43..08b157c 100644
+--- a/OPEN_QUESTIONS.md
++++ b/OPEN_QUESTIONS.md
+@@ -3400,31 +3400,33 @@ Open.
+ ## UBU-Q0177: Minimum viable secure local hardware for multimodal interaction
+ 
+ Status: Open Priority: MVP important Phase: Phase 2 Decision type: Architecture Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 100 Depends on: None Blocks: None Resolved by: None Last scored: 2026-10-14 Scored from commit: None
+ 
+ ### Question
+ 
+ What measured local hardware profile can deliver the MVP multimodal experience securely and usefully?
+ 
+ ### Current direction
+ 
+ Delta §17.15. Evaluate model quality, memory, latency, energy, sustained thermal behavior, endpoint security and local storage on supported devices. Distinguish primary mobile interaction from mobile planning workload (`UBU-Q0160`). No modern-phone universality or cloud-versus-local quality ranking is assumed.
+ 
+ `UBU-D0331` specifies revision-pinned Device-role profiles, predeclared usefulness/resource criteria, real-device cold/warm and sustained trials, endpoint/storage gates and a reviewed support matrix in DESIGN.md §1. This narrows the qualification process without selecting hardware, a mobile planner or a compute API. `UBU-D0336` adds isolation fixtures across inference jobs and measures the enforced isolation/reset costs within that profile.
+ 
++`UBU-D0362` makes hardware-selection completeness explicit: the approved profile set must cover all mandatory capture/review slices in DESIGN.md §4.2 (`UBU-D0339`), with qualified endpoints, any worker routes and demonstrated shared-hardware workload limits.
++
+ ### Resolution
+ 
+-Open. `UBU-D0331` answers the qualification protocol only. Close after actual real-device evidence demonstrates the declared MVP slices, numeric latency/resource profiles, endpoint and retention controls, sustained behavior and useful manual degradation, and the operator approves a scoped hardware/software support matrix. No measured minimum or supported Device is established by the protocol. `UBU-D0336` adds runtime-isolation gates; those fixtures also require passing deployment evidence before selection.
++Open. `UBU-D0331` answers the qualification protocol only. Close after actual real-device evidence demonstrates the declared MVP slices, numeric latency/resource profiles, endpoint and retention controls, sustained behavior and useful manual degradation, and the operator approves a scoped hardware/software support matrix. No measured minimum or supported Device is established by the protocol. `UBU-D0336` adds runtime-isolation gates; those fixtures also require passing deployment evidence before selection. `UBU-D0362` requires that selection to cover every mandatory §4.2 slice, with each endpoint and any inter-Device route qualified; partial coverage leaves this question Open.
+ 
+ ---
+ 
+ ## UBU-Q0178: Economically accessible local compute paths
+ 
+ Status: Open Priority: MVP important Phase: Phase 2 Decision type: Product Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 100 Depends on: None Blocks: None Resolved by: None Last scored: 2026-10-14 Scored from commit: None
+ 
+ ### Question
+ 
+ Which lower-cost local compute paths prevent economically precarious users from being excluded from the multimodal experience?
+ 
+ ### Current direction
+ 
+ Delta §17.16. Consider smaller local models, bounded snapshots, CPU fallback, reduced latency classes and operator-controlled trusted hardware without a hidden hosted-model dependency. Measure the useful tradeoffs before claiming reach or costs. Compute accessibility is part of the mission, not a promised device minimum.

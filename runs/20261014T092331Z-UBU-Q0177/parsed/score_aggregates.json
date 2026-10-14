@@ -1,0 +1,11 @@
+[
+  {
+    "proposal_id": "UBU-Q0177-openai-gpt-6-support-coverage",
+    "author_provider": "openai",
+    "cross_score_count": 2,
+    "score_mean": 82.5,
+    "score_spread": 17,
+    "frontier_score_gap": 17,
+    "disagreement_flags": []
+  }
+]

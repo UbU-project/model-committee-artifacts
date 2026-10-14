@@ -1,0 +1,20 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0177-openai-gpt-6-support-coverage",
+      "score": 91,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "No measured hardware profile is established; real-device evidence and operator approval remain necessary."
+      ],
+      "required_fixes": [],
+      "rationale": "The patch passes mechanical validation, modifies only allowed files, and preserves the question metadata. It usefully clarifies complete MVP coverage, revision-pinned endpoint and route evidence, and shared-hardware workload qualification. Partial support remains explicit without prematurely closing the question. Its contribution is completion criteria rather than measured hardware selection."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0177-openai-gpt-6-support-coverage",
+  "selection_rationale": "The sole candidate is mechanically valid, focused, and auditable. It strengthens hardware-selection requirements while correctly retaining Open status pending measurements and human approval; final selection remains with model-committee."
+}
