@@ -1,0 +1,28 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0178-openai-gpt-6-secure-upkeep",
+      "score": 83,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Fourth document-only narrowing of UBU-Q0178 (after D0332, D0337, D0363) with no measured result; each added evidence contract raises the real-device trial burden and may delay the closure the question actually needs.",
+        "Introduces an 'ownership/horizon scenario' axis; 'horizon' is not defined in the patch and is not an established term in D0337's ownership scenarios, so the cost/support matrix axis is ambiguous.",
+        "Long-term affordability remains dependent on update-frequency assumptions and future security support; no measured accessible path is established.",
+        "One OS or runtime update cycle may underrepresent combined upkeep costs across independently updated components.",
+        "Partial overlap with D0363's interrupted package/model acquisition and peak recovery-storage accounting; the patch distinguishes update from first-use, but the separation of 'upkeep' from 'setup' totals will need care to avoid double counting despite the stated exactly-once rule.",
+        "References UBU-D0368 as a requalification gate; the prompt context suggests D0368 is the latest decision but its content cannot be verified here, so the cross-reference could be loose.",
+        "Requires one full security-update cycle per execution endpoint on exact hardware for every eligible route, which materially increases per-route trial cost and could bias selection away from the lowest-cost hardware the question is meant to protect, though the patch does say to evaluate shorter horizons or budgeted replacement separately."
+      ],
+      "required_fixes": [
+        "Define 'horizon' (or anchor it to D0337's period definition) so the ownership/horizon matrix axis is unambiguous before the decision is applied."
+      ],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0178-openai-gpt-6-secure-upkeep",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}

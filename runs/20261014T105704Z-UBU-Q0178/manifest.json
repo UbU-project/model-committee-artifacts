@@ -1,0 +1,178 @@
+{
+  "schema_version": "0.4",
+  "run_id": "20261014T105704Z-UBU-Q0178",
+  "created_at_utc": "2026-10-14T10:57:04Z",
+  "repo_path": "../ubu-design",
+  "base_commit": "a70cd7da53be9346c0184ea61c07c4da23118115",
+  "selected_question_id": "UBU-Q0178",
+  "phase": "work-select",
+  "config_path": "config/models.json",
+  "status": "selected",
+  "commands": [
+    "model-committee run-loop"
+  ],
+  "providers_attempted": [
+    "codex",
+    "claude"
+  ],
+  "providers_succeeded": [
+    "codex",
+    "claude"
+  ],
+  "providers_failed": [],
+  "provider_attempts": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0178-openai-gpt-6-secure-upkeep",
+      "response_path": "runs/20261014T105704Z-UBU-Q0178/responses/codex_score_ubu-q0178-openai-gpt-6-secure-upkeep_response.json",
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0178-openai-gpt-6-secure-upkeep",
+      "response_path": "runs/20261014T105704Z-UBU-Q0178/responses/claude_score_ubu-q0178-openai-gpt-6-secure-upkeep_stdout.json",
+      "stderr_path": null
+    }
+  ],
+  "provider_successes": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20261014T105704Z-UBU-Q0178/parsed/codex_work_proposal.json"
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0178-openai-gpt-6-secure-upkeep",
+      "response_path": "runs/20261014T105704Z-UBU-Q0178/responses/codex_score_ubu-q0178-openai-gpt-6-secure-upkeep_response.json",
+      "parsed_path": "runs/20261014T105704Z-UBU-Q0178/parsed/codex_score_ubu-q0178-openai-gpt-6-secure-upkeep_result.json"
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0178-openai-gpt-6-secure-upkeep",
+      "response_path": "runs/20261014T105704Z-UBU-Q0178/responses/claude_score_ubu-q0178-openai-gpt-6-secure-upkeep_stdout.json",
+      "parsed_path": "runs/20261014T105704Z-UBU-Q0178/parsed/claude_score_ubu-q0178-openai-gpt-6-secure-upkeep_result.json"
+    }
+  ],
+  "provider_failures": [],
+  "score_matrix": [
+    {
+      "proposal_id": "UBU-Q0178-openai-gpt-6-secure-upkeep",
+      "author_provider": "openai",
+      "scorer_provider": "codex",
+      "score": 90,
+      "valid": true,
+      "rationale": "The supplied validation confirms clean application, allowed files and preserved question schema. The patch adds relevant recurring-cost evidence, bounded recovery trials and requalification accounting while retaining ownership scenarios, the no-worker gap and human-reviewed closure. It is a useful incremental evidence requirement, but comparative real-device results remain outstanding.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "One OS or runtime update cycle may underrepresent combined upkeep costs across independently updated components.",
+        "Long-term affordability remains dependent on update-frequency assumptions and future security support; no measured accessible path is established."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261014T105704Z-UBU-Q0178/responses/codex_score_ubu-q0178-openai-gpt-6-secure-upkeep_response.json",
+        "stderr_path": null
+      }
+    },
+    {
+      "proposal_id": "UBU-Q0178-openai-gpt-6-secure-upkeep",
+      "author_provider": "openai",
+      "scorer_provider": "claude",
+      "score": 76,
+      "valid": true,
+      "rationale": "Patch applies cleanly, touches only the three allowlisted files, and keeps UBU-Q0178's metadata line and Status: Open intact with Resolved by: None. The added UBU-D0369 follows the established pattern of evidence-contract decisions for this question and addresses a real gap: recurring security-update and recovery costs on lower-cost hardware are part of the period cash, downtime and security-gate budgets the resolution already requires. It claims no measured configuration or path and explicitly preserves the no-worker gap. Deductions are for accretion of unmeasured requirements, the undefined 'horizon' term, an unverifiable D0368 cross-reference, and verbosity relative to a minimal narrowing. No decomposition occurs, which is appropriate for an evidence-contract increment.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [
+        "Define 'horizon' (or anchor it to D0337's period definition) so the ownership/horizon matrix axis is unambiguous before the decision is applied."
+      ],
+      "risks": [
+        "Fourth document-only narrowing of UBU-Q0178 (after D0332, D0337, D0363) with no measured result; each added evidence contract raises the real-device trial burden and may delay the closure the question actually needs.",
+        "Introduces an 'ownership/horizon scenario' axis; 'horizon' is not defined in the patch and is not an established term in D0337's ownership scenarios, so the cost/support matrix axis is ambiguous.",
+        "Requires one full security-update cycle per execution endpoint on exact hardware for every eligible route, which materially increases per-route trial cost and could bias selection away from the lowest-cost hardware the question is meant to protect, though the patch does say to evaluate shorter horizons or budgeted replacement separately.",
+        "References UBU-D0368 as a requalification gate; the prompt context suggests D0368 is the latest decision but its content cannot be verified here, so the cross-reference could be loose.",
+        "Partial overlap with D0363's interrupted package/model acquisition and peak recovery-storage accounting; the patch distinguishes update from first-use, but the separation of 'upkeep' from 'setup' totals will need care to avoid double counting despite the stated exactly-once rule."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261014T105704Z-UBU-Q0178/responses/claude_score_ubu-q0178-openai-gpt-6-secure-upkeep_stdout.json",
+        "stderr_path": null
+      }
+    }
+  ],
+  "score_aggregates": [
+    {
+      "proposal_id": "UBU-Q0178-openai-gpt-6-secure-upkeep",
+      "author_provider": "openai",
+      "cross_score_count": 2,
+      "score_mean": 83.0,
+      "score_spread": 14,
+      "frontier_score_gap": 14,
+      "disagreement_flags": []
+    }
+  ],
+  "cross_score_count": 2,
+  "score_mean": 83.0,
+  "score_spread": 14,
+  "frontier_score_gap": 14,
+  "disagreement_flags": [],
+  "quorum_result": {
+    "valid": true,
+    "human_review_required": false,
+    "selected_proposal_id": "UBU-Q0178-openai-gpt-6-secure-upkeep",
+    "selected_score": 83.0,
+    "selected_cross_score_count": 2,
+    "blocked_reasons": [],
+    "manual_override": false
+  },
+  "selected_proposal_id": "UBU-Q0178-openai-gpt-6-secure-upkeep",
+  "automated_selection_valid": true,
+  "human_review_required": false,
+  "artifact_publication_status": "operator_pending",
+  "prompt_size_warning": false,
+  "prompt_context": {
+    "question_ids": [
+      "UBU-Q0178"
+    ],
+    "decision_ids": [
+      "UBU-D0332",
+      "UBU-D0337",
+      "UBU-D0363"
+    ],
+    "sections": {
+      "DESIGN.md": [
+        "1"
+      ]
+    },
+    "core_sections": {
+      "DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md": [
+        "4"
+      ]
+    },
+    "missing_refs": {},
+    "context_chars": 51110,
+    "prompt_chars": 58045
+  }
+}

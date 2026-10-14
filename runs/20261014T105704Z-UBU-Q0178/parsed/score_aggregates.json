@@ -1,0 +1,11 @@
+[
+  {
+    "proposal_id": "UBU-Q0178-openai-gpt-6-secure-upkeep",
+    "author_provider": "openai",
+    "cross_score_count": 2,
+    "score_mean": 83.0,
+    "score_spread": 14,
+    "frontier_score_gap": 14,
+    "disagreement_flags": []
+  }
+]

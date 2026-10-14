@@ -1,0 +1,21 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0178-openai-gpt-6-secure-upkeep",
+      "score": 90,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "One OS or runtime update cycle may underrepresent combined upkeep costs across independently updated components.",
+        "Long-term affordability remains dependent on update-frequency assumptions and future security support; no measured accessible path is established."
+      ],
+      "required_fixes": [],
+      "rationale": "The supplied validation confirms clean application, allowed files and preserved question schema. The patch adds relevant recurring-cost evidence, bounded recovery trials and requalification accounting while retaining ownership scenarios, the no-worker gap and human-reviewed closure. It is a useful incremental evidence requirement, but comparative real-device results remain outstanding."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0178-openai-gpt-6-secure-upkeep",
+  "selection_rationale": "The sole candidate is mechanically valid, auditable and directly relevant to sustainable lower-cost compute. This cross-score supports its evidence-contract refinement without establishing affordability or resolving UBU-Q0178."
+}
