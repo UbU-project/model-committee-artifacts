@@ -1,0 +1,28 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-gpt-6-UBU-Q0184-20261014",
+      "score": 84,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Cross-references to UBU-D0289 (optional-work deferral) and UBU-D0171 are not verifiable from the prompt; if UBU-D0289 does not say what the decision attributes to it, the decision text would misstate prior policy.",
+        "The patch edits the existing P1B-79 enumeration paragraph in DECISIONS.md rather than only appending a new decision; the change is a stale-pointer update, but it rewrites recorded decision text.",
+        "The new 'Shared CPU/GPU goldens must cover ...' paragraph adds fairly prescriptive fixture requirements to the contract; this is defensible under UBU-D0301 but goes beyond the pure semantic answer the question asks for.",
+        "The sentence 'Unfinished internal construction cannot be certified as a feasible Stage 1 output' is unclear about what it refers to and could be read inconsistently by implementers.",
+        "The decision is marked 'Accepted' while the question is flagged 'Human approval required'; the proposal correctly sets requires_human_review, but the recorded status presumes approval.",
+        "The semantics require a Python behavior change (KeyError becomes a rejection reason) that the proposal correctly leaves outstanding; until implemented, the contract and the Python kernel disagree."
+      ],
+      "required_fixes": [
+        "Clarify or remove the 'Unfinished internal construction cannot be certified as a feasible Stage 1 output' sentence in PLANNING_KERNEL_CONTRACT.md so the rule is unambiguous.",
+        "Confirm UBU-D0289 actually establishes that permitted optional-work omission defers affected dependents; adjust the citation if it does not."
+      ],
+      "rationale": "The patch applies cleanly, touches only allowlisted files, and uses Status: Solved with Resolved by: UBU-D0340 while preserving all other question metadata. It answers the question directly: a candidate that retains a dependent while omitting a prerequisite is infeasible, with both Stage 1 feasibility fields false and a missing-prerequisite rejection reason, not an incomplete result. The definition of dependency_feasibility as a boolean over edges whose dependent is placed, vacuously true with no such edges, is coherent with the existing hard-constraint conjunction and with Rust's current behavior, and it correctly identifies that Python's KeyError path must become a safe rejection without claiming parity already exists. The contract paragraph, decision entry, and question resolution are mutually consistent. Deductions are for unverifiable cross-references, an in-place edit of prior decision text, one opaque sentence, and the fixture paragraph adding more prescription than the semantic decision strictly requires."
+    }
+  ],
+  "selected_proposal_id": "openai-gpt-6-UBU-Q0184-20261014",
+  "selection_rationale": "Only one proposal was submitted and it passed mechanical validation, applies cleanly, preserves the question schema with Status: Solved, and directly resolves UBU-Q0184 with a coherent, auditable decision across DECISIONS.md, OPEN_QUESTIONS.md, and PLANNING_KERNEL_CONTRACT.md. Remaining issues are minor clarity and citation checks, not blockers; human approval is still required per the question's eligibility flag and the proposal records that."
+}

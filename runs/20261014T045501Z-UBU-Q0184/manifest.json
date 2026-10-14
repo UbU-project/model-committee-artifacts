@@ -1,0 +1,182 @@
+{
+  "schema_version": "0.4",
+  "run_id": "20261014T045501Z-UBU-Q0184",
+  "created_at_utc": "2026-10-14T04:55:01Z",
+  "repo_path": "../ubu-design",
+  "base_commit": "001ab5c8ee3aa246a64595d3a735ef6d9c712642",
+  "selected_question_id": "UBU-Q0184",
+  "phase": "work-select",
+  "config_path": "config/models.json",
+  "status": "selected",
+  "commands": [
+    "model-committee run-loop"
+  ],
+  "providers_attempted": [
+    "codex",
+    "claude"
+  ],
+  "providers_succeeded": [
+    "codex",
+    "claude"
+  ],
+  "providers_failed": [],
+  "provider_attempts": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "openai-gpt-6-UBU-Q0184-20261014",
+      "response_path": "runs/20261014T045501Z-UBU-Q0184/responses/codex_score_openai-gpt-6-ubu-q0184-20261014_response.json",
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "openai-gpt-6-UBU-Q0184-20261014",
+      "response_path": "runs/20261014T045501Z-UBU-Q0184/responses/claude_score_openai-gpt-6-ubu-q0184-20261014_stdout.json",
+      "stderr_path": null
+    }
+  ],
+  "provider_successes": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20261014T045501Z-UBU-Q0184/parsed/codex_work_proposal.json"
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "openai-gpt-6-UBU-Q0184-20261014",
+      "response_path": "runs/20261014T045501Z-UBU-Q0184/responses/codex_score_openai-gpt-6-ubu-q0184-20261014_response.json",
+      "parsed_path": "runs/20261014T045501Z-UBU-Q0184/parsed/codex_score_openai-gpt-6-ubu-q0184-20261014_result.json"
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "openai-gpt-6-UBU-Q0184-20261014",
+      "response_path": "runs/20261014T045501Z-UBU-Q0184/responses/claude_score_openai-gpt-6-ubu-q0184-20261014_stdout.json",
+      "parsed_path": "runs/20261014T045501Z-UBU-Q0184/parsed/claude_score_openai-gpt-6-ubu-q0184-20261014_result.json"
+    }
+  ],
+  "provider_failures": [],
+  "score_matrix": [
+    {
+      "proposal_id": "openai-gpt-6-UBU-Q0184-20261014",
+      "author_provider": "openai",
+      "scorer_provider": "codex",
+      "score": 96,
+      "valid": true,
+      "rationale": "Mechanical validation confirms clean application, allowed paths, and schema preservation. The patch directly resolves infeasible versus incomplete, defines dependency presence and timing precisely, preserves optional-chain omission, and requires safe per-candidate rejection with meaningful parity fixtures. The three documentation changes are consistent and auditable, and explicitly distinguish semantic resolution from implementation evidence.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "The semantic decision requires human approval before adoption.",
+        "Python missing-prerequisite handling and CPU/GPU conformance remain unimplemented and unverified."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261014T045501Z-UBU-Q0184/responses/codex_score_openai-gpt-6-ubu-q0184-20261014_response.json",
+        "stderr_path": null
+      }
+    },
+    {
+      "proposal_id": "openai-gpt-6-UBU-Q0184-20261014",
+      "author_provider": "openai",
+      "scorer_provider": "claude",
+      "score": 84,
+      "valid": true,
+      "rationale": "The patch applies cleanly, touches only allowlisted files, and uses Status: Solved with Resolved by: UBU-D0340 while preserving all other question metadata. It answers the question directly: a candidate that retains a dependent while omitting a prerequisite is infeasible, with both Stage 1 feasibility fields false and a missing-prerequisite rejection reason, not an incomplete result. The definition of dependency_feasibility as a boolean over edges whose dependent is placed, vacuously true with no such edges, is coherent with the existing hard-constraint conjunction and with Rust's current behavior, and it correctly identifies that Python's KeyError path must become a safe rejection without claiming parity already exists. The contract paragraph, decision entry, and question resolution are mutually consistent. Deductions are for unverifiable cross-references, an in-place edit of prior decision text, one opaque sentence, and the fixture paragraph adding more prescription than the semantic decision strictly requires.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [
+        "Clarify or remove the 'Unfinished internal construction cannot be certified as a feasible Stage 1 output' sentence in PLANNING_KERNEL_CONTRACT.md so the rule is unambiguous.",
+        "Confirm UBU-D0289 actually establishes that permitted optional-work omission defers affected dependents; adjust the citation if it does not."
+      ],
+      "risks": [
+        "Cross-references to UBU-D0289 (optional-work deferral) and UBU-D0171 are not verifiable from the prompt; if UBU-D0289 does not say what the decision attributes to it, the decision text would misstate prior policy.",
+        "The patch edits the existing P1B-79 enumeration paragraph in DECISIONS.md rather than only appending a new decision; the change is a stale-pointer update, but it rewrites recorded decision text.",
+        "The new 'Shared CPU/GPU goldens must cover ...' paragraph adds fairly prescriptive fixture requirements to the contract; this is defensible under UBU-D0301 but goes beyond the pure semantic answer the question asks for.",
+        "The sentence 'Unfinished internal construction cannot be certified as a feasible Stage 1 output' is unclear about what it refers to and could be read inconsistently by implementers.",
+        "The decision is marked 'Accepted' while the question is flagged 'Human approval required'; the proposal correctly sets requires_human_review, but the recorded status presumes approval.",
+        "The semantics require a Python behavior change (KeyError becomes a rejection reason) that the proposal correctly leaves outstanding; until implemented, the contract and the Python kernel disagree."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261014T045501Z-UBU-Q0184/responses/claude_score_openai-gpt-6-ubu-q0184-20261014_stdout.json",
+        "stderr_path": null
+      }
+    }
+  ],
+  "score_aggregates": [
+    {
+      "proposal_id": "openai-gpt-6-UBU-Q0184-20261014",
+      "author_provider": "openai",
+      "cross_score_count": 2,
+      "score_mean": 90.0,
+      "score_spread": 12,
+      "frontier_score_gap": 12,
+      "disagreement_flags": []
+    }
+  ],
+  "cross_score_count": 2,
+  "score_mean": 90.0,
+  "score_spread": 12,
+  "frontier_score_gap": 12,
+  "disagreement_flags": [],
+  "quorum_result": {
+    "valid": true,
+    "human_review_required": false,
+    "selected_proposal_id": "openai-gpt-6-UBU-Q0184-20261014",
+    "selected_score": 90.0,
+    "selected_cross_score_count": 2,
+    "blocked_reasons": [],
+    "manual_override": false
+  },
+  "selected_proposal_id": "openai-gpt-6-UBU-Q0184-20261014",
+  "automated_selection_valid": true,
+  "human_review_required": false,
+  "artifact_publication_status": "operator_pending",
+  "prompt_size_warning": false,
+  "prompt_context": {
+    "question_ids": [
+      "UBU-Q0184"
+    ],
+    "decision_ids": [
+      "UBU-D0171",
+      "UBU-D0301"
+    ],
+    "sections": {
+      "PLANNING_KERNEL_CONTRACT.md": [
+        "5"
+      ]
+    },
+    "core_sections": {
+      "DESIGN.md": [
+        "1"
+      ],
+      "DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md": [
+        "4"
+      ]
+    },
+    "missing_refs": {},
+    "context_chars": 49026,
+    "prompt_chars": 56067
+  }
+}

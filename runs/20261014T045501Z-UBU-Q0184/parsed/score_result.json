@@ -1,0 +1,30 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-gpt-6-UBU-Q0184-20261014",
+      "score": 90,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Cross-references to UBU-D0289 (optional-work deferral) and UBU-D0171 are not verifiable from the prompt; if UBU-D0289 does not say what the decision attributes to it, the decision text would misstate prior policy.",
+        "Python missing-prerequisite handling and CPU/GPU conformance remain unimplemented and unverified.",
+        "The decision is marked 'Accepted' while the question is flagged 'Human approval required'; the proposal correctly sets requires_human_review, but the recorded status presumes approval.",
+        "The new 'Shared CPU/GPU goldens must cover ...' paragraph adds fairly prescriptive fixture requirements to the contract; this is defensible under UBU-D0301 but goes beyond the pure semantic answer the question asks for.",
+        "The patch edits the existing P1B-79 enumeration paragraph in DECISIONS.md rather than only appending a new decision; the change is a stale-pointer update, but it rewrites recorded decision text.",
+        "The semantic decision requires human approval before adoption.",
+        "The semantics require a Python behavior change (KeyError becomes a rejection reason) that the proposal correctly leaves outstanding; until implemented, the contract and the Python kernel disagree.",
+        "The sentence 'Unfinished internal construction cannot be certified as a feasible Stage 1 output' is unclear about what it refers to and could be read inconsistently by implementers."
+      ],
+      "required_fixes": [
+        "Clarify or remove the 'Unfinished internal construction cannot be certified as a feasible Stage 1 output' sentence in PLANNING_KERNEL_CONTRACT.md so the rule is unambiguous.",
+        "Confirm UBU-D0289 actually establishes that permitted optional-work omission defers affected dependents; adjust the citation if it does not."
+      ],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "openai-gpt-6-UBU-Q0184-20261014",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}
