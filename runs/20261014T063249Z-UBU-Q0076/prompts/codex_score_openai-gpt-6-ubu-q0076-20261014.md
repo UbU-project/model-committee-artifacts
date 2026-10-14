@@ -1,0 +1,238 @@
+# Model-Committee Cross-Scoring Request
+
+You are scoring candidate work proposals for the UbU `model-committee` process.
+
+Return exactly one JSON object. Do not return prose outside the JSON object.
+
+This is a v0.2 cross-score. You are not making the final selection; model-committee
+will aggregate valid cross-scores locally.
+
+Scoring provider: `codex`
+Authoring provider for the candidate proposal(s): `openai`
+
+## Selected question
+
+Question ID: `UBU-Q0076`  
+Question title: `Planning horizon, early-preparation bias, and short-horizon time discounting`  
+Base commit: `afb7d1a9290fbf8ec346e04b59331226d139d2fa`
+
+```markdown
+## UBU-Q0076: Planning horizon, early-preparation bias, and short-horizon time discounting
+
+Status: Open Priority: Research Phase: Phase 2 Decision type: Process Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 90 Depends on: UBU-Q0016, UBU-Q0051 Blocks: detailed planning horizon policy, premium planning horizon design Resolved by: None Last scored: 2026-10-14 Scored from commit: None
+
+### Question
+
+How far beyond the visible Calendar window should UbU look, when should prerequisite work be front-loaded, and when does time discounting become relevant to detailed planning?
+
+### Subquestions
+
+1. What is the default internal look-ahead for a one-day visible Calendar?
+2. When should a dependency chain be scheduled early rather than just in time?
+3. What makes a prerequisite chain fragile enough to justify early preparation?
+4. Should one week be the default upper bound for detailed local planning?
+5. Which longer-horizon plans belong to premium cloud, user-owned worker, or research modes?
+6. When should explicit temporal-discounting Preferences override the short-horizon zero-discount assumption?
+
+### Current direction
+
+The internal planning horizon may exceed the visible Calendar window. Fragile prerequisites should be completed as early as reasonably viable within short detailed horizons to avoid forced stressful choices later. For operational windows of one day to roughly one week, time discounting may usually be treated as negligible unless user Preferences say otherwise.
+
+### Resolution
+
+Open.
+
+---
+
+```
+
+## Candidate proposals
+
+```json
+[
+  {
+    "proposal_id": "openai-gpt-6-UBU-Q0076-20261014",
+    "provider_id": "openai",
+    "model_name": "gpt-6",
+    "question_id": "UBU-Q0076",
+    "base_commit": "afb7d1a9290fbf8ec346e04b59331226d139d2fa",
+    "summary": "Refine the provisional horizon policy into a seven-day detailed default, bounded future dependency inspection, evidence-based early preparation and explicit timing-Preference overrides.",
+    "rationale": "UBU-D0128 already establishes the direction. A concrete scope policy prevents the visible day from hiding preparation needs, bounds detailed computation, and avoids speculative front-loading. Distinguishing value discounting from feasibility and robustness preserves user sovereignty and current kernel scoring while keeping wider compute optional.",
+    "changed_files": [
+      "DESIGN.md",
+      "DECISIONS.md",
+      "OPEN_QUESTIONS.md",
+      "PLANNING_KERNEL_CONTRACT.md"
+    ],
+    "patch": "diff --git a/DESIGN.md b/DESIGN.md\nindex f5bb91f..3b247d3 100644\n--- a/DESIGN.md\n+++ b/DESIGN.md\n@@ -2449,6 +2449,20 @@ Within reasonable detailed planning windows, such as one day to roughly one week\n \n This is a bounded operational bias. It should not imply that all distant future work should be pulled forward. For short operational windows, time discounting may usually be treated as negligible unless explicit user Preferences say otherwise. Longer horizons require separate preference and temporal-discounting modeling.\n \n+**Phase 2 operational policy (`UBU-D0349`, refining `UBU-D0128`).** Distinguish the visible Calendar interval, the detailed scheduling interval, the future dependency frontier, and the reactive branch horizon. The visible interval is a view of the Plan; `PlanningRequest.time_window` is the interval actually scheduled. The reactive horizon remains independently resolved under \u00a716.7, normally one hour. Its coverage estimate cannot certify the whole detailed interval or future commitments.\n+\n+**Default and bounds.** For a one-day visible Calendar, target seven elapsed days (`604800` seconds) of detailed scheduling from `time_window.start_time`, ordinarily six additional days beyond the displayed day. Seven elapsed days is also the default upper bound for unattended detailed local planning, not a promise of optimality or a universal backend limit. Resolve explicit Calendar/user scope first, then execution-profile or Device policy, then this default. Constrained profiles may shorten the interval under task-count, time, memory, energy, or freshness limits; mobile retains \u00a716.10.6's stewardship workload. Record the requested and effective intervals, limits, policy source, and any reduction reason in controller/Calendar provenance and show them in the inspector. Keep the visible requested interval covered or explicitly report that it cannot be certified. A shorter horizon cannot silently erase a known current obligation or make unavailable capacity appear free. Preserve Static Tasks, mandatory routines, required prerequisites and support inside the effective interval; optional work uses `UBU-D0289`'s unplaced diagnostics. Its single bounded extension attempt stays inside the resolved upper bound unless an explicit scope override permits more.\n+\n+**Future dependency frontier.** Beyond the detailed interval, inspect already-modeled, policy-permitted commitments and dependency chains under recorded finite traversal and compute budgets. Retain deadline/window refs, unresolved dependency state, modeled lead times and uncertainty, and any latest viable preparation interval that can be conservatively derived. A commitment weeks away may justify an already-modeled preparation Task now when its lead time or scarce opportunity reaches the detailed interval. Do not materialize a complete distant daily schedule, infer an external response, or treat completion beyond the boundary as established. Truncated, stale, missing, or withheld frontier inputs mean incomplete analysis, not future feasibility. Carry findings into explanation and risk reporting; current-path failures use \u00a715.2.2's blocking rules, while out-of-scope findings cannot invalidate an otherwise legitimate current baseline merely by existing. Resource, Skill, and Technique expansion retain their existing implementation phases.\n+\n+**Fragility and early preparation.** A chain merits an earlier candidate placement when a modeled disruption can exhaust its usable slack or repair opportunity: duration variation or correlated delays, failure/rework, a narrow availability window, an unresolved external dependency, or modeled interruption/affect constraints. Explain the affected commitment, evidence/assumption refs, remaining usable slack, and recovery or alternate paths. Unknown inputs justify clarification or a qualitative warning, not an invented probability or numerical penalty. Prefer the earliest reasonably viable *stable* prerequisite completion when it demonstrably preserves repair options. Preconditions, allowed ranges, Static Tasks, recovery/support, full legitimization, accepted Preferences and final selection under \u00a716.3 still govern. Preparation must remain useful until consumption; expiry, rework, storage/carrying cost, irreversible action, cancellation risk and displacement of more-valued work can justify later placement. With adequate modeled slack and repair options, just-in-time placement is acceptable. Apply this bias in candidate construction and existing fragility/robustness comparisons, without manufacturing a Preference, boosting canonical Task value, or authorizing external action.\n+\n+**Wider modes.** Detailed schedules beyond seven days require an explicit scope override, finite task/search/rollout budgets, adequate modeled inputs and CPU certification. Capable local desktop or Phase 2 user-owned workers may provide them; no subscription or cloud dependency is required. Premium hosted or third-party providers may offer greater depth under \u00a716.8's existing authority, disclosure, Compartment and certification rules, with concrete cloud products still deferred. Worker loss returns to a disclosed shorter legitimate scope or diagnostic. Weeks/months normally use milestones, dependency envelopes and rolling refinement; years-long scenarios, speculative dependency expansion and learned temporal-value models remain research. A wider scope alone establishes neither higher certainty nor permission to route data externally.\n+\n+**Time discounting.** For operational comparisons within seven elapsed days, the default additional temporal discount rate is zero (multiplier `1`); waiting alone does not reduce modeled value. Deadlines, availability, duration uncertainty, success probability, affect and preparation costs still matter independently. An applicable explicitly accepted timing Preference overrides this assumption even within hours, subject to hard constraints and legitimacy. Calibration examples, inferred impatience, snoozes and revealed choices are not accepted discount parameters. Use accepted pairwise comparisons where sufficient; any numerical curve requires accepted shape/parameters, time origin, units, applicable outcomes/context and validity interval. Do not apply one curve indiscriminately to rewards, costs or all Objectives. Beyond seven days, elicit applicable timing Preferences or present scenarios without claiming a personalized temporal-value ranking. The current kernel has no placement-time discount input: preserve `UBU-D0282`'s value mapping and offer user choice when an applicable Preference cannot be represented. Automated placement-dependent scoring requires a versioned contract extension and parity checks; never silently ignore the Preference or claim it was honored.\n+\n+Before enabling this Phase 2 policy, require controller and enabled-backend fixtures for: a one-day view with a prerequisite for a later in-week commitment; a distant commitment whose modeled lead time requires action now; fragile versus repairable chains and an expiring prerequisite that should stay late; constrained budgets preserving mandatory work and disclosing incomplete scope; and zero-discount versus an explicit short-horizon timing Preference, including the unsupported-scoring user-choice path. Also exercise denied cloud routing and worker loss with useful local fallback. This is an accepted policy and required evidence protocol, not implemented behavior or passing runtime evidence.\n+\n ### 15.3 Calendar Logic\n \n Calendar Logic includes constraints such as:\ndiff --git a/DECISIONS.md b/DECISIONS.md\nindex 79d835a..327392b 100644\n--- a/DECISIONS.md\n+++ b/DECISIONS.md\n@@ -5472,3 +5472,17 @@ Warnings show possible concerns, permitted supporting and conflicting evidence,\n MVP reserves optional typed review/firewall/transparency hooks without expanding Phase 1 Relationship payloads. Supported Phase 2 generation/attempts require the applicable contract and \u00a722.3.4's paired strategy, privacy, context-routing, transparency, communication and bypass fixtures. This resolves the product contract, not implementation acceptance or a claim that UbU prevents manipulation. Transition-type gates, pacing/support, general review UX and typed evidence policies remain with `UBU-Q0096`, `UBU-Q0099`, `UBU-Q0101` and `UBU-Q0092`.\n \n ---\n+\n+## UBU-D0349: Detailed horizons default to seven days with bounded preparation and explicit timing Preferences\n+\n+**Status:** Accepted \u2192 DESIGN.md \u00a715.2.3; PLANNING_KERNEL_CONTRACT.md \u00a72. Resolves `UBU-Q0076`; refines the provisional architecture in `UBU-D0128`.\n+\n+For a one-day visible Calendar, the default detailed local planning target and unattended upper bound is seven elapsed days from the planning start. Keep visible, detailed, future dependency-frontier and reactive scopes distinct. Constrained profiles disclose shorter effective scope without dropping mandatory current work or claiming future feasibility; the reactive coverage target remains scoped to its own horizon.\n+\n+Front-load stable, already-modeled prerequisites when evidenced fragility threatens slack or repair options, while preserving hard constraints, full legitimization, support, accepted Preferences and existing Plan selection. Adequately repairable or expiring prerequisites may remain just in time. Use a finite future frontier to detect preparation needed now for later commitments without claiming a distant complete schedule.\n+\n+Additional temporal discounting defaults to zero within seven days. Explicit accepted timing Preferences apply even sooner; calibration prompts and behavior do not supply discount rates. Preserve current Task-value semantics and use user choice when placement-dependent timing cannot be represented, pending a versioned scoring extension.\n+\n+Wider detailed scopes require explicit overrides, finite budgets and CPU certification. Local desktop, user-owned worker and later premium/provider paths share the existing authority and privacy boundary; long-term speculative temporal-value planning remains research. The design specifies required enablement fixtures, not implemented support or passing evidence, and does not reopen Phase 1 scope.\n+\n+---\ndiff --git a/OPEN_QUESTIONS.md b/OPEN_QUESTIONS.md\nindex c179649..6c940df 100644\n--- a/OPEN_QUESTIONS.md\n+++ b/OPEN_QUESTIONS.md\n@@ -906,26 +906,26 @@ Deferred due to lack to preparation time.\n ## UBU-Q0076: Planning horizon, early-preparation bias, and short-horizon time discounting\n \n-Status: Open Priority: Research Phase: Phase 2 Decision type: Process Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 90 Depends on: UBU-Q0016, UBU-Q0051 Blocks: detailed planning horizon policy, premium planning horizon design Resolved by: None Last scored: 2026-10-14 Scored from commit: None\n+Status: Solved Priority: Research Phase: Phase 2 Decision type: Process Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 90 Depends on: UBU-Q0016, UBU-Q0051 Blocks: detailed planning horizon policy, premium planning horizon design Resolved by: UBU-D0349 Last scored: 2026-10-14 Scored from commit: None\n \n ### Question\n \n How far beyond the visible Calendar window should UbU look, when should prerequisite work be front-loaded, and when does time discounting become relevant to detailed planning?\n \n ### Subquestions\n \n 1. What is the default internal look-ahead for a one-day visible Calendar?\n 2. When should a dependency chain be scheduled early rather than just in time?\n 3. What makes a prerequisite chain fragile enough to justify early preparation?\n 4. Should one week be the default upper bound for detailed local planning?\n 5. Which longer-horizon plans belong to premium cloud, user-owned worker, or research modes?\n 6. When should explicit temporal-discounting Preferences override the short-horizon zero-discount assumption?\n \n ### Current direction\n \n The internal planning horizon may exceed the visible Calendar window. Fragile prerequisites should be completed as early as reasonably viable within short detailed horizons to avoid forced stressful choices later. For operational windows of one day to roughly one week, time discounting may usually be treated as negligible unless user Preferences say otherwise.\n \n ### Resolution\n \n-Open.\n+Resolved by `UBU-D0349`, refining `UBU-D0128`. DESIGN.md \u00a715.2.3 defines the seven-day detailed default and bound, separate visible/reactive scopes and future dependency frontier, evidence-based early preparation, wider-mode routing, and zero default time discount with accepted Preference overrides. PLANNING_KERNEL_CONTRACT.md \u00a72 preserves current scoring and requires a versioned extension for automated placement-dependent discounting. This resolves Phase 2 policy; implementation and enablement evidence remain required.\n \n ---\ndiff --git a/PLANNING_KERNEL_CONTRACT.md b/PLANNING_KERNEL_CONTRACT.md\nindex d0d439b..a4bbc87 100644\n--- a/PLANNING_KERNEL_CONTRACT.md\n+++ b/PLANNING_KERNEL_CONTRACT.md\n@@ -102,6 +102,12 @@ The Phase 1 contract deliberately defers mobile GPU targets, cloud GPU provider\n \n Solver/library identity is not part of `PlanningRequest`. Optional OR-Tools, SMT/MaxSMT, local-search, mobile GPU, cloud GPU, or learned-model backends must preserve this request/response contract and remain advisory until CPU certification. Backend choice is recorded on `PlanningResponse.engine_provenance`, not requested as a semantic planner input.\n \n+### Phase 2 note: controller-resolved horizons and timing Preferences\n+\n+`UBU-D0349` and DESIGN.md \u00a715.2.3 govern controller horizon selection. The controller supplies the effective detailed scheduling interval through existing `time_window` timestamps; `horizon_policy.reactive_horizon_seconds` remains independent. Visible scope, future dependency-frontier findings and horizon-selection reasons stay in controller/Calendar metadata. No unversioned request fields or new schema version are introduced here. Existing task-count and compute limits still apply, including the default `256`-Task ceiling; horizon growth cannot silently truncate required work.\n+\n+Current \u00a75 scoring retains `UBU-D0282`'s pairwise Task-Preference value mapping and `priority = 1.0`, with no additional elapsed-time discount factor or early-preparation value boost. The current schema cannot express a placement-dependent discount curve. When an accepted timing Preference cannot be represented by ordinary admitted comparisons, the controller offers user choice and reports that automatic timing comparison is unavailable. Such scoring requires a later versioned semantic extension with CPU/reference/backend parity checks, rather than changing `TaskSpec.value`, repurposing scoring weights or sending hidden fields. This note establishes policy compatibility, not implemented Phase 2 behavior.\n+\n ### Phase 3 note: Objective expansion is pre-kernel; `scoring_policy` carries trade-off weights\n \n The Phase 3 Objective-to-Task expansion and technicalizing stage (DESIGN.md \u00a715.2.1.1) runs on the CPU side **before** this contract is invoked. The kernel continues to receive a fully materialized `task_graph`; it does not expand Objectives, select Techniques, or consult any advisory model. This preserves the fixed `task_graph` input, the CPU-provided `topological_order`, the absence of Objectives/Techniques from `PlanningRequest`, and the kernel's determinism and no-I/O guarantee. Alternative Technique instantiations enter as separate candidates (either enumerated CPU-side and scored independently, or, if a later schema adds them, as mutually-exclusive choice-group nodes the kernel selects among deterministically \u2014 see `UBU-Q0125` subquestion 3).\n",
+    "commit_message": "docs: resolve UBU-Q0076 horizon and early-preparation policy",
+    "validation_notes": [
+      "Generated the diff with git diff --no-index from exact unmodified working-tree copies and proposed contents; normalized only temporary file paths in diff headers.",
+      "git apply --check - passed against the current working tree; git apply --numstat confirmed only the four allowed files.",
+      "The OPEN_QUESTIONS.md hunk includes the UBU-Q0076 heading and its own Resolution section; only that question changes, with single-line metadata and existing scores preserved.",
+      "Preserved and excluded the existing uncommitted UBU-Q0099 answerability update; repository files were not modified.",
+      "No request fields, schema version, Task-value formula, reactive horizon default or backend authority changes; placement-dependent discounting requires a later versioned extension.",
+      "Documentation proposal only: enablement fixtures are specified but were not run, and no implementation or performance support is claimed."
+    ],
+    "new_questions_added": [],
+    "questions_resolved": [
+      "UBU-Q0076"
+    ],
+    "decisions_added": [
+      "UBU-D0349"
+    ],
+    "requires_human_review": true
+  }
+]
+```
+
+## Mechanical validation results
+
+```json
+[
+  {
+    "proposal_id": "openai-gpt-6-UBU-Q0076-20261014",
+    "patch_applies": true,
+    "allowlist_passed": true,
+    "changed_files": [
+      "DECISIONS.md",
+      "DESIGN.md",
+      "OPEN_QUESTIONS.md",
+      "PLANNING_KERNEL_CONTRACT.md"
+    ],
+    "question_schema_passed": true,
+    "error": null,
+    "normalized_patch": null,
+    "warnings": [],
+    "ordinary_error": null,
+    "recount_error": null,
+    "normalization_error": null
+  }
+]
+```
+
+## Provider weights
+
+Provider weights are historical diagnostic context only in v0.2. Do not use
+self-trust or author identity as score evidence.
+
+```json
+{}
+```
+
+## JSON Schema
+
+Your output must satisfy this schema:
+
+```json
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "scores",
+    "selected_proposal_id",
+    "selection_rationale"
+  ],
+  "properties": {
+    "scores": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "proposal_id",
+          "score",
+          "patch_applies",
+          "implements_selected_work",
+          "preserves_question_schema",
+          "avoids_unnecessary_scope",
+          "decomposition_quality",
+          "risks",
+          "required_fixes",
+          "rationale"
+        ],
+        "properties": {
+          "proposal_id": {
+            "type": "string"
+          },
+          "score": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "patch_applies": {
+            "type": "boolean"
+          },
+          "implements_selected_work": {
+            "type": "boolean"
+          },
+          "preserves_question_schema": {
+            "type": "boolean"
+          },
+          "avoids_unnecessary_scope": {
+            "type": "boolean"
+          },
+          "decomposition_quality": {
+            "type": "string",
+            "enum": [
+              "none",
+              "good",
+              "bad",
+              "not_applicable"
+            ]
+          },
+          "risks": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "required_fixes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "rationale": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "selected_proposal_id": {
+      "type": "string"
+    },
+    "selection_rationale": {
+      "type": "string"
+    }
+  }
+}
+```
+
+## Scoring requirements
+
+Score each proposal from 0 to 100.
+
+Consider:
+
+- whether the patch applies cleanly;
+- whether it implements the selected work;
+- whether it preserves the question schema;
+- whether it avoids unnecessary scope;
+- whether it modifies only allowed files;
+- whether it creates useful decomposition if decomposition occurs;
+- whether it introduces new risks;
+- whether required fixes remain.
+
+Rules:
+
+- Score every proposal in this prompt.
+- `selected_proposal_id` must refer to one scored proposal from this prompt.
+- Manual override is not allowed in v0.2.
+- Prefer a patch that is valid, minimal, auditable, and directly responsive.
+- Do not select a proposal whose patch failed mechanical validation.
+- Allowed question `Status:` values are `Archived`, `Decomposed`, `Deferred`, `Open`, `Solved`, `Superseded`; a resolved question must use `Status: Solved`.
+- Reject `Status: Resolved` as a question-schema violation. Set `preserves_question_schema` to false and require `Status: Solved` as the fix; `Resolved by:` is a separate metadata field.
+- Do not score your own provider's proposal unless explicitly asked for diagnostic self-score.
+
+Return only JSON.

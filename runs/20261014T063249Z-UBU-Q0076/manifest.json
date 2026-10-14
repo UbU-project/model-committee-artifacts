@@ -1,0 +1,197 @@
+{
+  "schema_version": "0.4",
+  "run_id": "20261014T063249Z-UBU-Q0076",
+  "created_at_utc": "2026-10-14T06:32:49Z",
+  "repo_path": "../ubu-design",
+  "base_commit": "afb7d1a9290fbf8ec346e04b59331226d139d2fa",
+  "selected_question_id": "UBU-Q0076",
+  "phase": "work-select",
+  "config_path": "config/models.json",
+  "status": "selected",
+  "commands": [
+    "model-committee run-loop"
+  ],
+  "providers_attempted": [
+    "codex",
+    "claude"
+  ],
+  "providers_succeeded": [
+    "codex",
+    "claude"
+  ],
+  "providers_failed": [
+    "codex: ProviderError: codex exited with 1"
+  ],
+  "provider_attempts": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "openai-gpt-6-UBU-Q0076-20261014",
+      "response_path": "runs/20261014T063249Z-UBU-Q0076/responses/codex_score_openai-gpt-6-ubu-q0076-20261014_response.json",
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "openai-gpt-6-UBU-Q0076-20261014",
+      "response_path": "runs/20261014T063249Z-UBU-Q0076/responses/claude_score_openai-gpt-6-ubu-q0076-20261014_stdout.json",
+      "stderr_path": null
+    }
+  ],
+  "provider_successes": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20261014T063249Z-UBU-Q0076/parsed/codex_work_proposal.json"
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "openai-gpt-6-UBU-Q0076-20261014",
+      "response_path": "runs/20261014T063249Z-UBU-Q0076/responses/claude_score_openai-gpt-6-ubu-q0076-20261014_stdout.json",
+      "parsed_path": "runs/20261014T063249Z-UBU-Q0076/parsed/claude_score_openai-gpt-6-ubu-q0076-20261014_result.json"
+    }
+  ],
+  "provider_failures": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "failure_class": "ProviderError",
+      "message": "codex exited with 1",
+      "timeout_seconds": null,
+      "exit_status": 1,
+      "stderr_path": "runs/20261014T063249Z-UBU-Q0076/responses/codex_score_openai-gpt-6-ubu-q0076-20261014_stderr.txt",
+      "response_path": "runs/20261014T063249Z-UBU-Q0076/responses/codex_score_openai-gpt-6-ubu-q0076-20261014_response.json",
+      "quorum_met": false
+    }
+  ],
+  "score_matrix": [
+    {
+      "proposal_id": "openai-gpt-6-UBU-Q0076-20261014",
+      "author_provider": "openai",
+      "scorer_provider": "codex",
+      "score": null,
+      "valid": false,
+      "rationale": "",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [],
+      "schema_validation": {
+        "valid": false,
+        "message": "codex exited with 1",
+        "response_path": "runs/20261014T063249Z-UBU-Q0076/responses/codex_score_openai-gpt-6-ubu-q0076-20261014_response.json",
+        "stderr_path": "runs/20261014T063249Z-UBU-Q0076/responses/codex_score_openai-gpt-6-ubu-q0076-20261014_stderr.txt"
+      }
+    },
+    {
+      "proposal_id": "openai-gpt-6-UBU-Q0076-20261014",
+      "author_provider": "openai",
+      "scorer_provider": "claude",
+      "score": 84,
+      "valid": true,
+      "rationale": "Patch applies cleanly, touches only the four allowed files, and sets `Status: Solved` with `Resolved by: UBU-D0349` while preserving the single-line metadata and existing scores. All six subquestions are answered concretely: a seven-elapsed-day detailed default and unattended upper bound, a bounded future dependency frontier, explicit fragility criteria for early preparation, routing of wider horizons to explicit-override local/worker/premium paths with research deferrals, and a zero default discount with accepted timing-Preference overrides. The kernel contract note is appropriate rather than scope creep: it pins down that current scoring is unchanged and that placement-dependent discounting needs a versioned extension, which keeps the policy honest about what the kernel can express. The decision entry and the Resolution text are consistent with the DESIGN.md content and hedge correctly that this is accepted policy with required fixtures, not implemented behavior. Deductions are for verbosity and auditability of the DESIGN.md block, unverified section/decision anchors, and a few specific numeric claims about the contract that must match existing text.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "Cross-references to DESIGN.md sections (\u00a716.7, \u00a716.10.6, \u00a715.2.2, \u00a716.3, \u00a716.8) and to decisions UBU-D0128, UBU-D0282, UBU-D0289 could not be verified from the prompt; a stale or wrong anchor would weaken auditability.",
+        "UBU-D0349 is assumed to be the next free decision ID; a collision with a concurrently authored decision would require renumbering across all four files.",
+        "The PLANNING_KERNEL_CONTRACT.md note cites a default 256-Task ceiling and `priority = 1.0`; if those values do not match the current contract text the note introduces a contradiction.",
+        "The DESIGN.md insertion is eight dense paragraphs under a bolded lead-in rather than a numbered subsection, which makes later citation and review harder.",
+        "The policy adds new provenance/inspector reporting obligations (requested vs effective interval, reduction reason, policy source) that are adjacent to but not strictly asked by the question; modest scope growth.",
+        "Resolves a Research-priority, human-approval-required question in one step; the fixture list is specified but not run, so enablement remains unproven (correctly disclosed by the proposal)."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261014T063249Z-UBU-Q0076/responses/claude_score_openai-gpt-6-ubu-q0076-20261014_stdout.json",
+        "stderr_path": null
+      }
+    }
+  ],
+  "score_aggregates": [
+    {
+      "proposal_id": "openai-gpt-6-UBU-Q0076-20261014",
+      "author_provider": "openai",
+      "cross_score_count": 1,
+      "score_mean": 84.0,
+      "score_spread": 0,
+      "frontier_score_gap": 0,
+      "disagreement_flags": []
+    }
+  ],
+  "cross_score_count": 1,
+  "score_mean": 84.0,
+  "score_spread": 0,
+  "frontier_score_gap": 0,
+  "disagreement_flags": [],
+  "quorum_result": {
+    "valid": true,
+    "human_review_required": false,
+    "selected_proposal_id": "openai-gpt-6-UBU-Q0076-20261014",
+    "selected_score": 84.0,
+    "selected_cross_score_count": 1,
+    "blocked_reasons": [],
+    "manual_override": false
+  },
+  "selected_proposal_id": "openai-gpt-6-UBU-Q0076-20261014",
+  "automated_selection_valid": true,
+  "human_review_required": false,
+  "artifact_publication_status": "operator_pending",
+  "prompt_size_warning": true,
+  "prompt_context": {
+    "question_ids": [
+      "UBU-Q0014",
+      "UBU-Q0015",
+      "UBU-Q0016",
+      "UBU-Q0050",
+      "UBU-Q0051",
+      "UBU-Q0076"
+    ],
+    "decision_ids": [
+      "UBU-D0129",
+      "UBU-D0130",
+      "UBU-D0131",
+      "UBU-D0151",
+      "UBU-D0200"
+    ],
+    "sections": {
+      "DESIGN.md": [
+        "2.2.1",
+        "4",
+        "8.6",
+        "10.1",
+        "11.3",
+        "15.2.2",
+        "16"
+      ]
+    },
+    "core_sections": {
+      "DESIGN.md": [
+        "1"
+      ],
+      "DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md": [
+        "4"
+      ]
+    },
+    "missing_refs": {},
+    "context_chars": 162477,
+    "prompt_chars": 170191
+  }
+}

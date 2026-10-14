@@ -1,0 +1,25 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-gpt-6-UBU-Q0076-20261014",
+      "score": 84,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "none",
+      "risks": [
+        "Cross-references to DESIGN.md sections (\u00a716.7, \u00a716.10.6, \u00a715.2.2, \u00a716.3, \u00a716.8) and to decisions UBU-D0128, UBU-D0282, UBU-D0289 could not be verified from the prompt; a stale or wrong anchor would weaken auditability.",
+        "UBU-D0349 is assumed to be the next free decision ID; a collision with a concurrently authored decision would require renumbering across all four files.",
+        "The PLANNING_KERNEL_CONTRACT.md note cites a default 256-Task ceiling and `priority = 1.0`; if those values do not match the current contract text the note introduces a contradiction.",
+        "The DESIGN.md insertion is eight dense paragraphs under a bolded lead-in rather than a numbered subsection, which makes later citation and review harder.",
+        "The policy adds new provenance/inspector reporting obligations (requested vs effective interval, reduction reason, policy source) that are adjacent to but not strictly asked by the question; modest scope growth.",
+        "Resolves a Research-priority, human-approval-required question in one step; the fixture list is specified but not run, so enablement remains unproven (correctly disclosed by the proposal)."
+      ],
+      "required_fixes": [],
+      "rationale": "Patch applies cleanly, touches only the four allowed files, and sets `Status: Solved` with `Resolved by: UBU-D0349` while preserving the single-line metadata and existing scores. All six subquestions are answered concretely: a seven-elapsed-day detailed default and unattended upper bound, a bounded future dependency frontier, explicit fragility criteria for early preparation, routing of wider horizons to explicit-override local/worker/premium paths with research deferrals, and a zero default discount with accepted timing-Preference overrides. The kernel contract note is appropriate rather than scope creep: it pins down that current scoring is unchanged and that placement-dependent discounting needs a versioned extension, which keeps the policy honest about what the kernel can express. The decision entry and the Resolution text are consistent with the DESIGN.md content and hedge correctly that this is accepted policy with required fixtures, not implemented behavior. Deductions are for verbosity and auditability of the DESIGN.md block, unverified section/decision anchors, and a few specific numeric claims about the contract that must match existing text."
+    }
+  ],
+  "selected_proposal_id": "openai-gpt-6-UBU-Q0076-20261014",
+  "selection_rationale": "Only one proposal was submitted and it passed mechanical validation, applies cleanly, stays within the allowlist, preserves the question schema with `Status: Solved`, and directly resolves every subquestion of UBU-Q0076 with a coherent decision (UBU-D0349) and a compatible kernel-contract note. Remaining concerns are presentational and verification items, not blockers."
+}

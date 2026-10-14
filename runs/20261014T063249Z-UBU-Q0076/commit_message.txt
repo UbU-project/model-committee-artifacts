@@ -1,0 +1,1 @@
+UMC: docs: resolve UBU-Q0076 horizon and early-preparation policy
