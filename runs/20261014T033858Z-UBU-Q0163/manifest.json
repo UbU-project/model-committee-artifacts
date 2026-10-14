@@ -1,0 +1,176 @@
+{
+  "schema_version": "0.4",
+  "run_id": "20261014T033858Z-UBU-Q0163",
+  "created_at_utc": "2026-10-14T03:38:58Z",
+  "repo_path": "../ubu-design",
+  "base_commit": "f67a6cf8aec50c892157ebc5a7af70a0cb1f2ddd",
+  "selected_question_id": "UBU-Q0163",
+  "phase": "work-select",
+  "config_path": "config/models.json",
+  "status": "selected",
+  "commands": [
+    "model-committee run-loop"
+  ],
+  "providers_attempted": [
+    "codex",
+    "claude"
+  ],
+  "providers_succeeded": [
+    "codex",
+    "claude"
+  ],
+  "providers_failed": [],
+  "provider_attempts": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "ubu-q0163-openai-cancellation-acceptance-20261013",
+      "response_path": "runs/20261014T033858Z-UBU-Q0163/responses/codex_score_ubu-q0163-openai-cancellation-acceptance-20261013_response.json",
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "ubu-q0163-openai-cancellation-acceptance-20261013",
+      "response_path": "runs/20261014T033858Z-UBU-Q0163/responses/claude_score_ubu-q0163-openai-cancellation-acceptance-20261013_stdout.json",
+      "stderr_path": null
+    }
+  ],
+  "provider_successes": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20261014T033858Z-UBU-Q0163/parsed/codex_work_proposal.json"
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "ubu-q0163-openai-cancellation-acceptance-20261013",
+      "response_path": "runs/20261014T033858Z-UBU-Q0163/responses/codex_score_ubu-q0163-openai-cancellation-acceptance-20261013_response.json",
+      "parsed_path": "runs/20261014T033858Z-UBU-Q0163/parsed/codex_score_ubu-q0163-openai-cancellation-acceptance-20261013_result.json"
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "ubu-q0163-openai-cancellation-acceptance-20261013",
+      "response_path": "runs/20261014T033858Z-UBU-Q0163/responses/claude_score_ubu-q0163-openai-cancellation-acceptance-20261013_stdout.json",
+      "parsed_path": "runs/20261014T033858Z-UBU-Q0163/parsed/claude_score_ubu-q0163-openai-cancellation-acceptance-20261013_result.json"
+    }
+  ],
+  "provider_failures": [],
+  "score_matrix": [
+    {
+      "proposal_id": "ubu-q0163-openai-cancellation-acceptance-20261013",
+      "author_provider": "openai",
+      "scorer_provider": "codex",
+      "score": 90,
+      "valid": true,
+      "rationale": "Mechanical validation confirms clean application, allowed-file scope, and schema preservation. The bounded fixture meaningfully advances the cancellation handoff with concrete identity, replay, crash-recovery, occupancy, and negative controls. It preserves Open status, historical records, ordinary admission, and operator approval gates. The contribution specifies verification rather than supplying behavioral evidence.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "The acceptance slice remains unexecuted; it establishes no passing cancellation behavior, deployed coverage, or authorization to retire blockers."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261014T033858Z-UBU-Q0163/responses/codex_score_ubu-q0163-openai-cancellation-acceptance-20261013_response.json",
+        "stderr_path": null
+      }
+    },
+    {
+      "proposal_id": "ubu-q0163-openai-cancellation-acceptance-20261013",
+      "author_provider": "openai",
+      "scorer_provider": "claude",
+      "score": 80,
+      "valid": true,
+      "rationale": "Mechanical validation passes (applies, allowlist, schema). The patch is documentation-only, confined to the UBU-Q0163 block, keeps Status: Open with the single-line metadata intact, resolves nothing, adds no decisions, and claims no passing results or operator approval, which is the correct posture for a human-approval Process question. It is directly responsive: it turns the audit's identified cancellation/retirement gap into a concrete, auditable acceptance table (capture/restart lineage, explicit cancellation via the wire adapter including the no-dateTime case, replay idempotence, crash consistency, incomplete-list/out-of-horizon/unsupported-input controls, and rejected-evidence controls) plus planner-occupancy probes tied to the existing Dynamic-placement control. The observation that a mock feeding already-parsed events bypasses the gap because parse_event_with_diagnostic drops cancelled entries is accurate and useful. Downsides are partial redundancy with the existing handoff paragraph, some design-level requirements living in the question rather than the decision, and a few prescriptive fixture details that may exceed what the harness supports. Net: valid, minimal, auditable, responsive, with modest drift and over-specification risk.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [
+        "None blocking. Optional: fold the overlapping sentences of the existing handoff paragraph into the new slice (or reference it) so there is one reproduction spec per block.",
+        "Optional: state whether the evidence-binding requirements are drawn from UBU-D0318 or are new; if new, mark them as proposed and route them to the decision record rather than leaving them as implicit policy in the question."
+      ],
+      "risks": [
+        "The new slice overlaps the existing 'implementation handoff' paragraph in the same block; two overlapping specifications for the same reproduction can drift apart over later edits.",
+        "Normative adapter requirements (binding cancellation evidence to account/calendar, occurrence identity, source revision/ordering and admitted Task version) are design-level content placed in OPEN_QUESTIONS.md rather than in UBU-D0318/DESIGN.md, so they may be missed or conflict with the canonical retirement specification.",
+        "Several required results (interrupting admission before/after durable commit, probing every enabled planner backend, fixed clock at 2026-10-19T09:00:00Z) assume harness capabilities the orchestrator may not have; if infeasible as written the slice could stall rather than guide work.",
+        "The block grows by 19 lines in an already dense question; readability of UBU-Q0163 keeps degrading.",
+        "The diff index line uses a zero new-blob hash (f74dd69..0000000); harmless for apply but non-standard."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261014T033858Z-UBU-Q0163/responses/claude_score_ubu-q0163-openai-cancellation-acceptance-20261013_stdout.json",
+        "stderr_path": null
+      }
+    }
+  ],
+  "score_aggregates": [
+    {
+      "proposal_id": "ubu-q0163-openai-cancellation-acceptance-20261013",
+      "author_provider": "openai",
+      "cross_score_count": 2,
+      "score_mean": 85.0,
+      "score_spread": 10,
+      "frontier_score_gap": 10,
+      "disagreement_flags": []
+    }
+  ],
+  "cross_score_count": 2,
+  "score_mean": 85.0,
+  "score_spread": 10,
+  "frontier_score_gap": 10,
+  "disagreement_flags": [],
+  "quorum_result": {
+    "valid": true,
+    "human_review_required": false,
+    "selected_proposal_id": "ubu-q0163-openai-cancellation-acceptance-20261013",
+    "selected_score": 85.0,
+    "selected_cross_score_count": 2,
+    "blocked_reasons": [],
+    "manual_override": false
+  },
+  "selected_proposal_id": "ubu-q0163-openai-cancellation-acceptance-20261013",
+  "automated_selection_valid": true,
+  "human_review_required": false,
+  "artifact_publication_status": "operator_pending",
+  "prompt_size_warning": false,
+  "prompt_context": {
+    "question_ids": [
+      "UBU-Q0163"
+    ],
+    "decision_ids": [
+      "UBU-D0318"
+    ],
+    "sections": {
+      "DESIGN.md": [
+        "1"
+      ]
+    },
+    "core_sections": {
+      "DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md": [
+        "4"
+      ]
+    },
+    "missing_refs": {},
+    "context_chars": 38949,
+    "prompt_chars": 45844
+  }
+}

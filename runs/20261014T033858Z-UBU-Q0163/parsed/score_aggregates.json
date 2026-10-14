@@ -1,0 +1,11 @@
+[
+  {
+    "proposal_id": "ubu-q0163-openai-cancellation-acceptance-20261013",
+    "author_provider": "openai",
+    "cross_score_count": 2,
+    "score_mean": 85.0,
+    "score_spread": 10,
+    "frontier_score_gap": 10,
+    "disagreement_flags": []
+  }
+]

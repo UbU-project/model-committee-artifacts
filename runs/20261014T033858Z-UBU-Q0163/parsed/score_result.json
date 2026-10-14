@@ -1,0 +1,28 @@
+{
+  "scores": [
+    {
+      "proposal_id": "ubu-q0163-openai-cancellation-acceptance-20261013",
+      "score": 85,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Normative adapter requirements (binding cancellation evidence to account/calendar, occurrence identity, source revision/ordering and admitted Task version) are design-level content placed in OPEN_QUESTIONS.md rather than in UBU-D0318/DESIGN.md, so they may be missed or conflict with the canonical retirement specification.",
+        "Several required results (interrupting admission before/after durable commit, probing every enabled planner backend, fixed clock at 2026-10-19T09:00:00Z) assume harness capabilities the orchestrator may not have; if infeasible as written the slice could stall rather than guide work.",
+        "The acceptance slice remains unexecuted; it establishes no passing cancellation behavior, deployed coverage, or authorization to retire blockers.",
+        "The block grows by 19 lines in an already dense question; readability of UBU-Q0163 keeps degrading.",
+        "The diff index line uses a zero new-blob hash (f74dd69..0000000); harmless for apply but non-standard.",
+        "The new slice overlaps the existing 'implementation handoff' paragraph in the same block; two overlapping specifications for the same reproduction can drift apart over later edits."
+      ],
+      "required_fixes": [
+        "None blocking. Optional: fold the overlapping sentences of the existing handoff paragraph into the new slice (or reference it) so there is one reproduction spec per block.",
+        "Optional: state whether the evidence-binding requirements are drawn from UBU-D0318 or are new; if new, mark them as proposed and route them to the decision record rather than leaving them as implicit policy in the question."
+      ],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "ubu-q0163-openai-cancellation-acceptance-20261013",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}

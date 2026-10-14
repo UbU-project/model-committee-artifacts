@@ -1,0 +1,20 @@
+{
+  "scores": [
+    {
+      "proposal_id": "ubu-q0163-openai-cancellation-acceptance-20261013",
+      "score": 90,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "good",
+      "risks": [
+        "The acceptance slice remains unexecuted; it establishes no passing cancellation behavior, deployed coverage, or authorization to retire blockers."
+      ],
+      "required_fixes": [],
+      "rationale": "Mechanical validation confirms clean application, allowed-file scope, and schema preservation. The bounded fixture meaningfully advances the cancellation handoff with concrete identity, replay, crash-recovery, occupancy, and negative controls. It preserves Open status, historical records, ordinary admission, and operator approval gates. The contribution specifies verification rather than supplying behavioral evidence."
+    }
+  ],
+  "selected_proposal_id": "ubu-q0163-openai-cancellation-acceptance-20261013",
+  "selection_rationale": "The sole candidate is mechanically valid, auditable, and directly advances the documented cancellation gap while retaining all remaining retirement gates. This cross-score preference does not authorize blocker retirement."
+}
