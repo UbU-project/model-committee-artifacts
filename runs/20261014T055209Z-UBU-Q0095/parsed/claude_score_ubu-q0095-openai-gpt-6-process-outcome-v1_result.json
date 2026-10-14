@@ -1,0 +1,24 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0095-openai-gpt-6-process-outcome-v1",
+      "score": 90,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "none",
+      "risks": [
+        "The new \u00a722.3.2 is long and dense; several cross-references (\u00a722.3 single-proposal/one-clarification rule, \u00a77.3 one-time statuses, \u00a722.1.1 declaration path, UBU-D0273 review path) are asserted rather than visible in the diff and could not be independently verified from the supplied context.",
+        "The \u00a722.3 field bullet list for RelationshipScopeTransition (only the first two bullets are visible in the diff) may still carry 'provisional pending UBU-Q0095' style notes on process_success_criteria or outcome_observations that the patch does not update, leaving a stale marker.",
+        "Introduces new record shapes (process_assessment, criterion_id, action_or_check, applicability_condition/closure_branch, evidence_requirements, observation ids with coverage/uncertainty) and a 'withdrawn' observation kind beyond the question's suggested enumeration; this is within a Data model decision but adds surface area that later taxonomy/validation questions (UBU-Q0096\u2013Q0099) must stay consistent with.",
+        "Validation notes indicate the diff was generated against a working tree with uncommitted OPEN_QUESTIONS.md edits rather than HEAD; mechanical validation passed, but the base-commit vs working-tree distinction is a provenance caveat.",
+        "Decision text is at the limit of readability for a human approver; 'Human approval required' review will need to parse multiple nested dependencies to confirm it does not silently widen UBU-D0155/D0345 boundaries."
+      ],
+      "required_fixes": [],
+      "rationale": "Patch passes mechanical validation, touches only the three allowed files, and uses Status: Solved with Resolved by: UBU-D0346 while preserving all other metadata fields. It answers all five subquestions directly: a per-type criteria table for unilateral, exploratory, mutual and retroactive clarification; an explicit observation_kind vocabulary (accepted, declined, withdrawn, ambiguous, insufficient_evidence, no_response) with silence/coverage rules; a met/not_met/undetermined assessment that maps to existing \u00a77.3 statuses so completed can coexist with declined or unresolved outcomes; explicit language that refusal is neither user failure nor a task_failed event; and a scoped, reviewed path from observations into Relationship hypotheses under UBU-D0273 without automatic declaration changes. Edits to existing DESIGN.md paragraphs are limited to replacing 'remain UBU-Q0095' pointers with the new \u00a722.3.2 reference, which is necessary rather than scope creep. The decision correctly frames itself as a data-model contract, not shipped orchestration or passing fixtures. Deductions are for verbosity, unverifiable cross-references, and the possibility of a stale provisional note in the \u00a722.3 field list."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0095-openai-gpt-6-process-outcome-v1",
+  "selection_rationale": "Only one candidate was supplied and it passed mechanical validation (applies cleanly, allowlist and question schema checks passed). It directly resolves UBU-Q0095 with a complete, well-bounded data-model decision that aligns with the question's stated direction and existing decisions UBU-D0155, D0273, D0344 and D0345, with no required fixes outstanding."
+}

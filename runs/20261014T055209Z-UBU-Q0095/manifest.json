@@ -1,0 +1,183 @@
+{
+  "schema_version": "0.4",
+  "run_id": "20261014T055209Z-UBU-Q0095",
+  "created_at_utc": "2026-10-14T05:52:09Z",
+  "repo_path": "../ubu-design",
+  "base_commit": "bf1a30d92564850b0e5759d0d6b2f0b00243cf37",
+  "selected_question_id": "UBU-Q0095",
+  "phase": "work-select",
+  "config_path": "config/models.json",
+  "status": "selected",
+  "commands": [
+    "model-committee run-loop"
+  ],
+  "providers_attempted": [
+    "codex",
+    "claude"
+  ],
+  "providers_succeeded": [
+    "codex",
+    "claude"
+  ],
+  "providers_failed": [],
+  "provider_attempts": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0095-openai-gpt-6-process-outcome-v1",
+      "response_path": "runs/20261014T055209Z-UBU-Q0095/responses/codex_score_ubu-q0095-openai-gpt-6-process-outcome-v1_response.json",
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0095-openai-gpt-6-process-outcome-v1",
+      "response_path": "runs/20261014T055209Z-UBU-Q0095/responses/claude_score_ubu-q0095-openai-gpt-6-process-outcome-v1_stdout.json",
+      "stderr_path": null
+    }
+  ],
+  "provider_successes": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20261014T055209Z-UBU-Q0095/parsed/codex_work_proposal.json"
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0095-openai-gpt-6-process-outcome-v1",
+      "response_path": "runs/20261014T055209Z-UBU-Q0095/responses/codex_score_ubu-q0095-openai-gpt-6-process-outcome-v1_response.json",
+      "parsed_path": "runs/20261014T055209Z-UBU-Q0095/parsed/codex_score_ubu-q0095-openai-gpt-6-process-outcome-v1_result.json"
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0095-openai-gpt-6-process-outcome-v1",
+      "response_path": "runs/20261014T055209Z-UBU-Q0095/responses/claude_score_ubu-q0095-openai-gpt-6-process-outcome-v1_stdout.json",
+      "parsed_path": "runs/20261014T055209Z-UBU-Q0095/parsed/claude_score_ubu-q0095-openai-gpt-6-process-outcome-v1_result.json"
+    }
+  ],
+  "provider_failures": [],
+  "score_matrix": [
+    {
+      "proposal_id": "UBU-Q0095-openai-gpt-6-process-outcome-v1",
+      "author_provider": "openai",
+      "scorer_provider": "codex",
+      "score": 97,
+      "valid": true,
+      "rationale": "Mechanical validation passes, and changes remain within the three allowed files. The proposal answers all five subquestions with user-controlled criteria, scoped response observations, evidence-bound assessments, existing terminal Objective statuses, and reviewed hypothesis updates. It preserves declaration history, counterparty autonomy, uncertainty, and advisory safeguards. UBU-Q0095 correctly becomes Solved without altering its remaining metadata. Adjacent questions retain their scope, and conformance fixtures are explicitly distinguished from executed implementation checks.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "Implementation still depends on authentic-refusal validation and typed evidence-policy details reserved for UBU-Q0097 and UBU-Q0092."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261014T055209Z-UBU-Q0095/responses/codex_score_ubu-q0095-openai-gpt-6-process-outcome-v1_response.json",
+        "stderr_path": null
+      }
+    },
+    {
+      "proposal_id": "UBU-Q0095-openai-gpt-6-process-outcome-v1",
+      "author_provider": "openai",
+      "scorer_provider": "claude",
+      "score": 90,
+      "valid": true,
+      "rationale": "Patch passes mechanical validation, touches only the three allowed files, and uses Status: Solved with Resolved by: UBU-D0346 while preserving all other metadata fields. It answers all five subquestions directly: a per-type criteria table for unilateral, exploratory, mutual and retroactive clarification; an explicit observation_kind vocabulary (accepted, declined, withdrawn, ambiguous, insufficient_evidence, no_response) with silence/coverage rules; a met/not_met/undetermined assessment that maps to existing \u00a77.3 statuses so completed can coexist with declined or unresolved outcomes; explicit language that refusal is neither user failure nor a task_failed event; and a scoped, reviewed path from observations into Relationship hypotheses under UBU-D0273 without automatic declaration changes. Edits to existing DESIGN.md paragraphs are limited to replacing 'remain UBU-Q0095' pointers with the new \u00a722.3.2 reference, which is necessary rather than scope creep. The decision correctly frames itself as a data-model contract, not shipped orchestration or passing fixtures. Deductions are for verbosity, unverifiable cross-references, and the possibility of a stale provisional note in the \u00a722.3 field list.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "The new \u00a722.3.2 is long and dense; several cross-references (\u00a722.3 single-proposal/one-clarification rule, \u00a77.3 one-time statuses, \u00a722.1.1 declaration path, UBU-D0273 review path) are asserted rather than visible in the diff and could not be independently verified from the supplied context.",
+        "The \u00a722.3 field bullet list for RelationshipScopeTransition (only the first two bullets are visible in the diff) may still carry 'provisional pending UBU-Q0095' style notes on process_success_criteria or outcome_observations that the patch does not update, leaving a stale marker.",
+        "Introduces new record shapes (process_assessment, criterion_id, action_or_check, applicability_condition/closure_branch, evidence_requirements, observation ids with coverage/uncertainty) and a 'withdrawn' observation kind beyond the question's suggested enumeration; this is within a Data model decision but adds surface area that later taxonomy/validation questions (UBU-Q0096\u2013Q0099) must stay consistent with.",
+        "Validation notes indicate the diff was generated against a working tree with uncommitted OPEN_QUESTIONS.md edits rather than HEAD; mechanical validation passed, but the base-commit vs working-tree distinction is a provenance caveat.",
+        "Decision text is at the limit of readability for a human approver; 'Human approval required' review will need to parse multiple nested dependencies to confirm it does not silently widen UBU-D0155/D0345 boundaries."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261014T055209Z-UBU-Q0095/responses/claude_score_ubu-q0095-openai-gpt-6-process-outcome-v1_stdout.json",
+        "stderr_path": null
+      }
+    }
+  ],
+  "score_aggregates": [
+    {
+      "proposal_id": "UBU-Q0095-openai-gpt-6-process-outcome-v1",
+      "author_provider": "openai",
+      "cross_score_count": 2,
+      "score_mean": 93.5,
+      "score_spread": 7,
+      "frontier_score_gap": 7,
+      "disagreement_flags": []
+    }
+  ],
+  "cross_score_count": 2,
+  "score_mean": 93.5,
+  "score_spread": 7,
+  "frontier_score_gap": 7,
+  "disagreement_flags": [],
+  "quorum_result": {
+    "valid": true,
+    "human_review_required": false,
+    "selected_proposal_id": "UBU-Q0095-openai-gpt-6-process-outcome-v1",
+    "selected_score": 93.5,
+    "selected_cross_score_count": 2,
+    "blocked_reasons": [],
+    "manual_override": false
+  },
+  "selected_proposal_id": "UBU-Q0095-openai-gpt-6-process-outcome-v1",
+  "automated_selection_valid": true,
+  "human_review_required": false,
+  "artifact_publication_status": "operator_pending",
+  "prompt_size_warning": false,
+  "prompt_context": {
+    "question_ids": [
+      "UBU-Q0026",
+      "UBU-Q0087",
+      "UBU-Q0094",
+      "UBU-Q0095"
+    ],
+    "decision_ids": [
+      "UBU-D0076",
+      "UBU-D0344",
+      "UBU-D0345"
+    ],
+    "sections": {
+      "DESIGN.md": [
+        "7.5",
+        "22.1.1",
+        "22.3.1"
+      ]
+    },
+    "core_sections": {
+      "DESIGN.md": [
+        "1"
+      ],
+      "DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md": [
+        "4"
+      ]
+    },
+    "missing_refs": {},
+    "context_chars": 67426,
+    "prompt_chars": 74809
+  }
+}

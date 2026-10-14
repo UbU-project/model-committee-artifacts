@@ -1,0 +1,20 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0095-openai-gpt-6-process-outcome-v1",
+      "score": 97,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Implementation still depends on authentic-refusal validation and typed evidence-policy details reserved for UBU-Q0097 and UBU-Q0092."
+      ],
+      "required_fixes": [],
+      "rationale": "Mechanical validation passes, and changes remain within the three allowed files. The proposal answers all five subquestions with user-controlled criteria, scoped response observations, evidence-bound assessments, existing terminal Objective statuses, and reviewed hypothesis updates. It preserves declaration history, counterparty autonomy, uncertainty, and advisory safeguards. UBU-Q0095 correctly becomes Solved without altering its remaining metadata. Adjacent questions retain their scope, and conformance fixtures are explicitly distinguished from executed implementation checks."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0095-openai-gpt-6-process-outcome-v1",
+  "selection_rationale": "The sole candidate is mechanically valid, auditable, and directly responsive, with no required fixes identified. This cross-score supports local aggregation; human approval remains required."
+}

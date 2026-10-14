@@ -1,0 +1,25 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0095-openai-gpt-6-process-outcome-v1",
+      "score": 94,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Decision text is at the limit of readability for a human approver; 'Human approval required' review will need to parse multiple nested dependencies to confirm it does not silently widen UBU-D0155/D0345 boundaries.",
+        "Implementation still depends on authentic-refusal validation and typed evidence-policy details reserved for UBU-Q0097 and UBU-Q0092.",
+        "Introduces new record shapes (process_assessment, criterion_id, action_or_check, applicability_condition/closure_branch, evidence_requirements, observation ids with coverage/uncertainty) and a 'withdrawn' observation kind beyond the question's suggested enumeration; this is within a Data model decision but adds surface area that later taxonomy/validation questions (UBU-Q0096\u2013Q0099) must stay consistent with.",
+        "The new \u00a722.3.2 is long and dense; several cross-references (\u00a722.3 single-proposal/one-clarification rule, \u00a77.3 one-time statuses, \u00a722.1.1 declaration path, UBU-D0273 review path) are asserted rather than visible in the diff and could not be independently verified from the supplied context.",
+        "The \u00a722.3 field bullet list for RelationshipScopeTransition (only the first two bullets are visible in the diff) may still carry 'provisional pending UBU-Q0095' style notes on process_success_criteria or outcome_observations that the patch does not update, leaving a stale marker.",
+        "Validation notes indicate the diff was generated against a working tree with uncommitted OPEN_QUESTIONS.md edits rather than HEAD; mechanical validation passed, but the base-commit vs working-tree distinction is a provenance caveat."
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0095-openai-gpt-6-process-outcome-v1",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}

@@ -1,0 +1,1 @@
+UMC: docs: separate relationship transition process success from outcomes

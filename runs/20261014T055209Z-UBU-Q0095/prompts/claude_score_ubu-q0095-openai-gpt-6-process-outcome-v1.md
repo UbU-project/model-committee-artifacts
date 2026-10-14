@@ -1,0 +1,236 @@
+# Model-Committee Cross-Scoring Request
+
+You are scoring candidate work proposals for the UbU `model-committee` process.
+
+Return exactly one JSON object. Do not return prose outside the JSON object.
+
+This is a v0.2 cross-score. You are not making the final selection; model-committee
+will aggregate valid cross-scores locally.
+
+Scoring provider: `claude`
+Authoring provider for the candidate proposal(s): `openai`
+
+## Selected question
+
+Question ID: `UBU-Q0095`  
+Question title: `Process success and outcome observations in RelationshipScopeTransition`  
+Base commit: `bf1a30d92564850b0e5759d0d6b2f0b00243cf37`
+
+```markdown
+## UBU-Q0095: Process success and outcome observations in RelationshipScopeTransition
+
+Status: Open Priority: MVP important Phase: Phase 2 Decision type: Data model Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 90 Depends on: UBU-Q0094 Blocks: consent-dependent transitions, Objective status, graceful nonachievement Resolved by: None Last scored: 2026-10-14 Scored from commit: None
+
+### Question
+
+How should UbU distinguish user-controlled process success from autonomous counterparty outcome observations?
+
+### Subquestions
+
+1. What `process_success_criteria` are valid for unilateral, exploratory, mutual, and retroactive clarification transitions?
+2. What outcome observations should be enumerated: accepted, declined, ambiguous, insufficient evidence, no response, or others?
+3. How should an Objective be terminal and process-successful when the desired mutual outcome is not achieved?
+4. How should Objective status avoid treating refusal as user failure?
+5. How should outcome observations update Relationship evidence and hypotheses?
+
+### Current direction
+
+Counterparty response is evidence, not user success or failure. Consent-dependent transitions can be process-successful even when declined.
+
+### Resolution
+
+Open.
+
+---
+
+```
+
+## Candidate proposals
+
+```json
+[
+  {
+    "proposal_id": "UBU-Q0095-openai-gpt-6-process-outcome-v1",
+    "provider_id": "openai",
+    "model_name": "gpt-6",
+    "question_id": "UBU-Q0095",
+    "base_commit": "bf1a30d92564850b0e5759d0d6b2f0b00243cf37",
+    "summary": "Define evidence-bound process success, scoped counterparty response observations and terminal closure for RelationshipScopeTransition.",
+    "rationale": "UBU-D0155 and UBU-D0345 already separate counterparty response from user success. This proposal completes that contract with criteria for each existing transition type, response evidence and uncertainty rules, and completed/met versus abandoned status mappings. It lets declined or unresolved attempts close successfully without implying consent, changing declaration history or treating refusal as user failure.",
+    "changed_files": [
+      "DECISIONS.md",
+      "DESIGN.md",
+      "OPEN_QUESTIONS.md"
+    ],
+    "patch": "diff --git a/DECISIONS.md b/DECISIONS.md\nindex 236c04e..32f3c5a 100644\n--- a/DECISIONS.md\n+++ b/DECISIONS.md\n@@ -5424,3 +5424,17 @@ Only a separately admitted explicit user declaration/correction changes `ownDecl\n Keep Phase 1 maintenance and required payload unchanged. Reserve optional MVP target/history/provenance hooks; supported Phase 2 attempts must satisfy the core bindings. Dedicated UI and richer orchestration remain post-MVP, with detailed outcome, type, validation, safeguard and evidence-policy work in the existing questions. DESIGN.md \u00a722.3.1 defines conformance fixtures; this resolves the model contract, not implementation acceptance.\n \n ---\n+\n+## UBU-D0346: Relationship transition process success is independent of counterparty response\n+\n+**Status:** Accepted \u2192 DESIGN.md \u00a722.3.2. Resolves `UBU-Q0095`; refines `UBU-D0155` within `UBU-D0344`, `UBU-D0345` and `UBU-D0273`, preserving \u00a722.4's advisory boundary.\n+\n+Version process criteria and assessments separately from response observations. Criteria evaluate user-controlled actions and checks for unilateral, exploratory, mutual and retroactive clarification attempts, including finite outcome-independent closure branches. They cannot require counterparty assent, feelings or performance. Consent evidence governs eligible branch selection without making assent a success requirement or granting action authority.\n+\n+Use scoped, provenance-bearing observations with kinds `accepted`, `declined`, `withdrawn`, `ambiguous`, `insufficient_evidence` and `no_response`. Silence is neither refusal nor consent; no response requires evidenced channel/window coverage. Partial and conditional replies remain scoped, and acceptance does not prove implemented scope or continuing consent. Preserve earlier observations, corrections, uncertainty and counterevidence.\n+\n+A reviewed `met` process assessment permits the owning one-time Objective to become `completed` regardless of the counterparty outcome. Stopping with unfulfilled or unassessable criteria uses `abandoned` with `not_met` or `undetermined`, without framing refusal as personal failure. Authentic refusal closes the exploratory attempt, retires remaining pursuit through ordinary admission and preserves history. Late evidence cannot reactivate it; renewed pursuit requires the existing new-attempt/Objective lineage rules.\n+\n+Admitted observations become policy-permitted evidence for scoped hypothesis review, not automatic declarations, affect edits, planner constraints or claims about inner states. Declaration changes remain separate explicit user admissions. DESIGN.md \u00a722.3.2 defines the record fields, status mappings and conformance fixtures; this accepts the Phase 2 data-model contract, not shipped orchestration or passing fixtures. Existing taxonomy, Step/refusal validation, safeguard, pacing/support and typed evidence-policy questions retain their remaining scope; Phase 1 maintenance is unchanged.\n+\n+---\ndiff --git a/DESIGN.md b/DESIGN.md\nindex fdac08f..f83096f 100644\n--- a/DESIGN.md\n+++ b/DESIGN.md\n@@ -1421,7 +1421,7 @@ A user may create an Objective to change the user's participation in a Relations\n \n A Relationship scope transition Objective must target user-controlled behavior: disclosures, invitations, boundary-setting, availability changes, communication changes, clarification attempts, and accepted model updates. It must model counterparty response as uncertain and autonomous. For consent-dependent transitions, counterparty response is `outcome_observations`, not user success or failure.\n \n-`RelationshipScopeTransition` is a semantic target/reference for such Objectives. Identity, ownership and history bindings follow \u00a722.3.1 (`UBU-D0345`); additional process/review fields remain provisional where noted:\n+`RelationshipScopeTransition` is a semantic target/reference for such Objectives. Identity, ownership and history bindings follow \u00a722.3.1 (`UBU-D0345`); process criteria, observations and closure follow \u00a722.3.2 (`UBU-D0346`). Additional review fields remain provisional where noted:\n \n - `relationship_ref`;\n - `transition_type`: `unilateral`, `exploratory`, `mutual`, or `retroactive_scope_clarification`;\n@@ -4286,7 +4286,7 @@ Compare declaration changes separately from observed scope divergence. A `ScopeA\n \n Distinguish reviewed scope evolution from possible unnoticed scope creep through explicit user review: ask whether the observed change was intended, when it began, and which dimensions the user now endorses. A user-confirmed declaration or scoped review annotation can document intentional evolution of the user's participation. Expansion without matching reviewed intent is only a candidate discrepancy, not proof of unconscious intent or wrongdoing. Reviewing evolution preserves earlier discrepancies and uncertainty about mutual scope. Under `UBU-D0273`, accepting a finding admits a separate scoped observation, annotation or correction; changing the declaration baseline additionally requires an explicit user declaration/correction. Rejection retains the existing privacy-minimized suppression record. Findings cannot silently update scope or become hidden planner constraints. Proactive evidence-count, recency and salience thresholds remain `UBU-Q0089`; typed evidence-policy enums remain `UBU-Q0092`.\n \n-A deliberate transition binds its `scope_history_context` to baseline declaration ids/versions and records a separate desired scope. Any resulting declaration explicitly links the transition, Objective and permitted review/Log evidence; Relationship reverse references retain transitions across active, completed, abandoned, declined and superseded states. Starting, completing or declining an Objective never automatically changes current participation. A process-successful invitation with a refusal leaves the current declaration intact unless the user separately declares a change in the user's own participation. Retrospective clarification records its effective interval and later recording time. Transition identity, Objective ownership, reverse references and provenance follow \u00a722.3.1 (`UBU-D0345`); process/outcome details remain `UBU-Q0095`.\n+A deliberate transition binds its `scope_history_context` to baseline declaration ids/versions and records a separate desired scope. Any resulting declaration explicitly links the transition, Objective and permitted review/Log evidence; Relationship reverse references retain transitions across active, completed, abandoned, declined and superseded states. Starting, completing or declining an Objective never automatically changes current participation. A process-successful invitation with a refusal leaves the current declaration intact unless the user separately declares a change in the user's own participation. Retrospective clarification records its effective interval and later recording time. Transition identity, Objective ownership, reverse references and provenance follow \u00a722.3.1 (`UBU-D0345`); process/outcome details follow \u00a722.3.2 (`UBU-D0346`).\n \n Before claiming implementation conformance, require fixtures for complementary scopes, partial supersession at interval boundaries, withdrawal, future/desired declarations, late correction with both historical views, concurrent offline replacements and replay, behavior/affect disagreement, incomplete or denied evidence, and completed/declined transitions without automatic declaration changes. Verify preserved source history, policy-safe views and ordinary review/admission outcomes. History retention follows current policy; authorized redaction/purge removes disallowed dependent content and leaves only permitted gap metadata.\n \n@@ -4377,7 +4377,7 @@ Admit the reciprocal Objective/transition linkage as a coherent batch; stage it\n \n **Relationship reverse history.** Lazily expose `scope_transition_refs` as a policy-filtered index of admitted transitions whose `relationship_ref` names this Relationship. Attach the reverse association at attempt admission, including attempts that produce no scope change. Its source is the admitted transition linkage; a materialized index is rebuildable and carries no independent lifecycle or scope authority. Relationship retains its descriptive Identity, affect, declaration and observation histories; transition intent, criteria, safeguards and scheduling do not move onto Relationship. Concurrent attempts for different contexts may coexist; incompatible admitted changes use ordinary conflict review.\n \n-Retain stable reverse refs through active, completed, abandoned, superseded and invalid Objective states, subject to current retention policy. Lifecycle views follow the owning Objective's \u00a77.3 status and append-only `objective_transitioned` Logs. `declined` is a separate outcome/history filter supported by an admitted scoped response observation, not an Objective status or proof of process failure; it can coexist with a terminal process-successful Objective. Never derive refusal from silence or missing evidence. A superseding attempt records the prior owning Objective's ordinary \u00a77.3 supersession transition and retains both reverse refs. Terminal attempts do not reactivate; reopening uses a new transition and new Objective with lineage, materially new evidence and the existing stronger-review rule. Reject cross-Relationship/Identity lineage and lineage cycles. Detailed criteria and terminal-status mappings remain `UBU-Q0095`.\n+Retain stable reverse refs through active, completed, abandoned, superseded and invalid Objective states, subject to current retention policy. Lifecycle views follow the owning Objective's \u00a77.3 status and append-only `objective_transitioned` Logs. `declined` is a separate outcome/history filter supported by an admitted scoped response observation, not an Objective status or proof of process failure; it can coexist with a terminal process-successful Objective. Never derive refusal from silence or missing evidence. A superseding attempt records the prior owning Objective's ordinary \u00a77.3 supersession transition and retains both reverse refs. Terminal attempts do not reactivate; reopening uses a new transition and new Objective with lineage, materially new evidence and the existing stronger-review rule. Reject cross-Relationship/Identity lineage and lineage cycles. Detailed criteria and terminal-status mappings follow \u00a722.3.2 (`UBU-D0346`).\n \n **Declaration changes.** A transition may propose a \u00a722.1.1 declaration; only a separate explicit user declaration/correction admitted under `UBU-D0344` changes `ownDeclaredPerspectiveHistory`. Bind the new declaration to `transition_ref`, `objective_ref` and permitted review/Log evidence; validate matching Relationship and declaring/acting Identity on those links. Derive the transition's `resulting_declaration_refs` index from those admitted records. Preserve effective/recorded times and scoped supersession/coexistence. Desired scope, Task or Objective completion, abandonment, refusal and transition supersession cannot themselves replace current participation. A completed attempt may have no resulting declaration; a declined attempt may still accompany a separately declared change to the user's own participation.\n \n@@ -4385,10 +4385,48 @@ Retain stable reverse refs through active, completed, abandoned, superseded and\n \n Target links, reverse indexes, Logs, EvidenceRefs, declarations and cached views inherit source restrictions. Recheck current authority, object/source versions and policy before admission, read, sync or export. Partial or denied views cannot prove absence of an attempt or declaration; omit denied identifiers, counts and existence. Authorized redaction/purge removes disallowed dependent content and leaves only permitted gap/causal metadata. Concurrent incompatible revisions or links require ordinary admitted conflict resolution under DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md \u00a7\u00a79 and 17, with no wall-clock, arrival-order or Device winner.\n \n-**Delivery boundary.** MVP hooks are optional typed target/reverse-reference and provenance bindings through ordinary Objective, Task and Log mechanisms. Phase 1's required Relationship payload and maintenance cadence remain under `UBU-D0076`; ordinary Relationships need no transition object or empty history array. A supported Phase 2 attempt must meet this core contract before admission. Dedicated relationship-management UI, automated multi-stage orchestration and personal CRM behavior are post-MVP work. `UBU-Q0095`, `UBU-Q0096`, `UBU-Q0097`, `UBU-Q0098` and `UBU-Q0099` retain their detailed outcome, taxonomy, validation and safeguard scope; typed evidence policies remain `UBU-Q0092`.\n+**Delivery boundary.** MVP hooks are optional typed target/reverse-reference and provenance bindings through ordinary Objective, Task and Log mechanisms. Phase 1's required Relationship payload and maintenance cadence remain under `UBU-D0076`; ordinary Relationships need no transition object or empty history array. A supported Phase 2 attempt must meet this core contract before admission. Dedicated relationship-management UI, automated multi-stage orchestration and personal CRM behavior are post-MVP work. Process/outcome semantics follow \u00a722.3.2 (`UBU-D0346`). `UBU-Q0096`, `UBU-Q0097`, `UBU-Q0098` and `UBU-Q0099` retain their detailed taxonomy, validation and safeguard scope; typed evidence policies remain `UBU-Q0092`.\n \n Before claiming implementation conformance, require fixtures for reciprocal linkage and rejected mismatched owners, reverse-index rebuild/replay without duplicates, all retained lifecycle views including a completed process with a declined outcome and no declaration change, explicit resulting declarations and retrospective correction, stale baselines, concurrent offline revisions, lineage cycles and reopening with a new Objective, Task/Log/EvidenceRef attribution, and denied/partial views plus derivative purge. This accepts the model boundary, not passing fixtures or shipped transition orchestration.\n \n+#### 22.3.2 Process success, response observations and terminal closure\n+\n+**Phase 2 data-model contract (`UBU-D0346`).** Refine `UBU-D0155` within \u00a722.3.1's attempt/Objective bindings. Process success evaluates the user's actions against admitted criteria; response observations describe scoped evidence about an autonomous counterparty. Neither dimension substitutes for the other, and completing the process does not assert that the desired mutual scope was achieved.\n+\n+**Process criteria.** `process_success_criteria` is a nonempty, versioned set of criteria with `criterion_id`, `scope`, a user-controlled `action_or_check`, `applicability_condition`/`closure_branch`, and permitted `evidence_requirements`. Bind criteria and assessments to the attempt's exact baseline and criteria versions. User attestations may supply evidence where ordinary policy permits; Task completion satisfies only criteria supported by its admitted evidence. Distinguish a communication attempt from verified delivery or receipt. A criterion may require checking available consent evidence before acting, but cannot require obtaining assent, a response, a feeling or an Identity change. Such a check supplies no action authority: applicable authorization/policy still governs consent-dependent actions, and an unresolved-outcome closure branch remains available.\n+\n+Each attempt specifies finite closure conditions and an authorized way to stop without claiming unmet criteria were satisfied; where waiting is relevant, bind a user-selected observation window. Define response-dependent branches before relying on them; do not retrospectively waive unfulfilled user actions to award success. Branch selection may depend on admitted response evidence, but every branch's required action remains user-controlled. Behavioral reviews retain \u00a722.4's advisory or user-required policy; this contract creates no new classifier-based hard gate.\n+\n+| Existing transition type | Valid process criteria |\n+| --- | --- |\n+| `unilateral` | Decide and carry out the user's own scoped availability, disclosure, communication or participation change; communicate or record it where the admitted criteria require. Counterparty approval is unnecessary for the user's own participation and supplies no authority over the counterparty. |\n+| `exploratory` | Make the scoped disclosure/proposal, record permitted response evidence or uncertainty, and close the attempt. Preserve \u00a722.3's single proposal and at most one clarification after ambiguity; a refusal branch requires ending pursuit, not obtaining a different answer. |\n+| `mutual` | Check the scope and currency of reported agreement before each consent-dependent action, carry out the user's own coordination commitments where eligible, and record results. Provide a closure branch when agreement is withheld, withdrawn or unresolved; another party's promised performance is never a user completion criterion. |\n+| `retroactive_scope_clarification` | Identify the disputed dimensions and historical interval, make any applicable clarification attempt, and record what remains known or unresolved. A separately chosen declaration/correction follows \u00a722.1.1; agreement with the user's historical interpretation and retrospective authorization are never required or implied. |\n+\n+**Response observation records.** Append `outcome_observations` with stable observation ids, the \u00a722.3.1 transition/Objective/Relationship and source-version bindings, attributed responding Identity, proposal/scope version, domain/context/dimensions and conditions, exact content or protected source refs, evidence and counterevidence refs, effective/observed and recorded times, coverage/uncertainty, and review/admission provenance. Unknown times and uncertain attribution remain explicit. Corrections or scoped replacements name earlier records and preserve them under current retention policy. Distinguish an attributed user report from a direct or authenticated imported statement; a generated interpretation remains candidate and a summary is not independent evidence.\n+\n+The `observation_kind` vocabulary is:\n+\n+- `accepted`: evidence of expressed assent to the identified proposal, scope and conditions at that time; it is neither blanket/continuing consent nor proof that the scope change was implemented;\n+- `declined`: evidence of expressed refusal of that proposal or identified part of it; it does not establish rejection of the user or the whole Relationship;\n+- `withdrawn`: evidence that earlier expressed assent was retracted for identified scope, linking the earlier observation; earlier assent remains historical evidence;\n+- `ambiguous`: available response material supports multiple readings that cannot yet be resolved;\n+- `insufficient_evidence`: permitted evidence cannot support a response classification, including unavailable, unreliable or incomplete coverage;\n+- `no_response`: no response was observed in named channels during a declared finite interval, supported by a known communication attempt and evidenced response-observation coverage. Record delivery/receipt status separately, including unknown; this classification cannot prove the message was read. Incomplete or withheld response coverage requires `insufficient_evidence`.\n+\n+Silence, elapsed time, affect and missing records never establish acceptance, refusal or withdrawal. Split partial/conditional responses into scoped observations rather than labeling an entire proposal accepted. Unilateral attempts may have no applicable response observation; an empty history is not `no_response`. Later responses append evidence without erasing earlier uncertainty or unanswered intervals. Preserve incompatible observations and counterevidence; current scoped interpretations require ordinary review/conflict resolution, never a timestamp, arrival-order or Device winner.\n+\n+**Assessment and Objective status.** A versioned `process_assessment` on the transition records an assessment id, `result` (`met`, `not_met` or `undetermined`), bound criteria/baseline versions, selected closure branch and its basis, per-criterion judgments, permitted evidence refs, coverage/uncertainty, and authority/review/Log provenance. `met` requires evidence for every applicable criterion, including closure. `not_met` requires evidence that at least one applicable user-controlled criterion was unfulfilled. Otherwise, missing evidence for any applicable criterion yields `undetermined`. Inapplicable branches record their scoped reason. Assessments append revisions and cannot silently change the criteria.\n+\n+Use \u00a77.3's existing one-time statuses. Admit `active` \u2192 `completed` with a reviewed `met` assessment, even with `declined`, `withdrawn`, `ambiguous`, `insufficient_evidence` or `no_response` observations. If the user stops before satisfying applicable process criteria, use `abandoned` with the actual assessment and reason; neither label is a judgment of personal failure. `invalid` remains for a malformed/impossible process Objective or mistaken admission, and `superseded` for ordinary replacement. A counterparty refusal alone supplies neither invalidity nor a `task_failed` event.\n+\n+An admitted authentic refusal ends the current exploratory attempt under \u00a722.3: use `completed` when its refusal-closure criteria are met, otherwise `abandoned` with `not_met` or `undetermined`. Retire remaining pursuit Tasks through ordinary admission and invalidate/recalculate affected Plans. Log terminal transitions with the assessment, criteria versions, scoped observations and closure reason under \u00a722.3.1. A graceful nonachievement path records this closure branch and optional later reflection/review; emotional recovery or acceptance of an interpretation is not a completion requirement. Late evidence, including withdrawn assent, may change action eligibility and trigger ordinary Plan invalidation, but cannot reactivate a terminal attempt or rewrite its historical assessment. Renewed pursuit follows \u00a722.3.1's new Objective/transition and lineage rules.\n+\n+**Relationship evidence and hypotheses.** Link admitted observations into the Relationship's permitted evidence history through \u00a722.3.1's associations. They support or challenge only domain-, scope- and time-matched counterparty hypotheses. Propose hypothesis revisions with evidence, counterevidence, confidence/uncertainty and review provenance under `UBU-D0273`; unreviewed interpretations cannot silently become durable Relationship state or planner constraints. An observation establishes what was reported or expressed, not privileged knowledge of feelings or motives. Process success and refusal cannot overwrite affect or declarations. Current participation changes only through \u00a722.1.1's separate explicit user declaration/correction. All observations, assessments, links and derivatives inherit \u00a722.3.1's admission, concurrency, Compartment and purge rules.\n+\n+Before claiming implementation conformance, require fixtures for all four types and rejection of assent-dependent success criteria; completed/met with scoped refusal and no declaration change; abandoned with independently unfulfilled criteria; ambiguous versus insufficient versus covered silence; conditional/partial assent and later withdrawal; retrospective clarification without retrospective consent; late responses without reactivation; stale criteria/evidence, replay and concurrent conflicting observations; and denied coverage plus derivative purge. These are required checks, not passing implementation evidence. `UBU-Q0096`\u2013`UBU-Q0099` retain taxonomy, detailed Step/refusal validation, advisory safeguards and pacing/support policy; typed evidence policies remain `UBU-Q0092`.\n+\n ### 22.4 Advisory safeguards and hard boundaries\n \n Relationship-transition review gates are default-on advisory safeguards unless the user has configured them as self-imposed required gates or an external constraint makes them unavoidable. UbU should recommend pre-action introspection, extrospection, TrustCalibrationAssessment, power/vulnerability review, pacing review, graceful nonachievement planning, and manipulation-risk review where relevant. The user may bypass or disable such safeguards. Bypass decisions are introspection-relevant evidence and may surface as candidate findings about conflicts between revealed behavior and declared values.\ndiff --git a/OPEN_QUESTIONS.md b/OPEN_QUESTIONS.md\nindex 4aac6ce..d3e7aed 100644\n--- a/OPEN_QUESTIONS.md\n+++ b/OPEN_QUESTIONS.md\n@@ -1370,27 +1370,27 @@ Resolved by UBU-D0345. DESIGN.md \u00a7\u00a77.5, 22.1.1 and 22.3.1 define the versioned\n \n ## UBU-Q0095: Process success and outcome observations in RelationshipScopeTransition\n \n-Status: Open Priority: MVP important Phase: Phase 2 Decision type: Data model Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 90 Depends on: UBU-Q0094 Blocks: consent-dependent transitions, Objective status, graceful nonachievement Resolved by: None Last scored: 2026-10-14 Scored from commit: None\n+Status: Solved Priority: MVP important Phase: Phase 2 Decision type: Data model Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 90 Depends on: UBU-Q0094 Blocks: consent-dependent transitions, Objective status, graceful nonachievement Resolved by: UBU-D0346 Last scored: 2026-10-14 Scored from commit: None\n \n ### Question\n \n How should UbU distinguish user-controlled process success from autonomous counterparty outcome observations?\n \n ### Subquestions\n \n 1. What `process_success_criteria` are valid for unilateral, exploratory, mutual, and retroactive clarification transitions?\n 2. What outcome observations should be enumerated: accepted, declined, ambiguous, insufficient evidence, no response, or others?\n 3. How should an Objective be terminal and process-successful when the desired mutual outcome is not achieved?\n 4. How should Objective status avoid treating refusal as user failure?\n 5. How should outcome observations update Relationship evidence and hypotheses?\n \n ### Current direction\n \n Counterparty response is evidence, not user success or failure. Consent-dependent transitions can be process-successful even when declined.\n \n ### Resolution\n \n-Open.\n+Resolved by UBU-D0346. DESIGN.md \u00a722.3.2 defines versioned user-controlled criteria for the four existing transition types, scoped response observations, evidence-bound process assessments and ordinary terminal-status mappings. Completed/met can coexist with refusal or unresolved outcomes; refusal is not user failure. Observations feed reviewed, scoped Relationship hypotheses while declaration changes remain separate explicit admissions. This resolves the Phase 2 data-model contract; implementation conformance, detailed Step/refusal validation, taxonomy, safeguards, pacing/support and typed evidence policies remain separate work.\n \n ---\n \n",
+    "commit_message": "docs: separate relationship transition process success from outcomes",
+    "validation_notes": [
+      "Generated the diff from exact current working-tree baselines and proposed in-memory contents using git diff --no-index; normalized stdin file headers/hash only. No index or HEAD file contents were used as baselines.",
+      "git apply --check --whitespace=error succeeded against the current working tree without --cached or --recount; all unified hunk counts were independently verified.",
+      "OPEN_QUESTIONS.md uses Open. under UBU-Q0095 in this working tree. Its single anchored hunk updates only that question's status, resolving decision and resolution, preserving every other metadata field and all other question blocks.",
+      "Confirmed UBU-D0346 and DESIGN.md \u00a722.3.2 were unused and added exactly once; no new questions were needed.",
+      "Reviewed status mappings against DESIGN.md \u00a77.3 and observation/declaration boundaries against UBU-D0155, UBU-D0273, UBU-D0344 and UBU-D0345. Implementation fixtures are specified, not executed or claimed passing.",
+      "Confirmed all read canonical files and git status remained unchanged; the existing OPEN_QUESTIONS.md working-tree edits are preserved. Human approval is required.",
+      "Verified the proposal has exactly the required JSON fields, expected types, allowed file paths and valid question/decision identifiers."
+    ],
+    "new_questions_added": [],
+    "questions_resolved": [
+      "UBU-Q0095"
+    ],
+    "decisions_added": [
+      "UBU-D0346"
+    ],
+    "requires_human_review": true
+  }
+]
+```
+
+## Mechanical validation results
+
+```json
+[
+  {
+    "proposal_id": "UBU-Q0095-openai-gpt-6-process-outcome-v1",
+    "patch_applies": true,
+    "allowlist_passed": true,
+    "changed_files": [
+      "DECISIONS.md",
+      "DESIGN.md",
+      "OPEN_QUESTIONS.md"
+    ],
+    "question_schema_passed": true,
+    "error": null,
+    "normalized_patch": null,
+    "warnings": [],
+    "ordinary_error": null,
+    "recount_error": null,
+    "normalization_error": null
+  }
+]
+```
+
+## Provider weights
+
+Provider weights are historical diagnostic context only in v0.2. Do not use
+self-trust or author identity as score evidence.
+
+```json
+{}
+```
+
+## JSON Schema
+
+Your output must satisfy this schema:
+
+```json
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "scores",
+    "selected_proposal_id",
+    "selection_rationale"
+  ],
+  "properties": {
+    "scores": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "proposal_id",
+          "score",
+          "patch_applies",
+          "implements_selected_work",
+          "preserves_question_schema",
+          "avoids_unnecessary_scope",
+          "decomposition_quality",
+          "risks",
+          "required_fixes",
+          "rationale"
+        ],
+        "properties": {
+          "proposal_id": {
+            "type": "string"
+          },
+          "score": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "patch_applies": {
+            "type": "boolean"
+          },
+          "implements_selected_work": {
+            "type": "boolean"
+          },
+          "preserves_question_schema": {
+            "type": "boolean"
+          },
+          "avoids_unnecessary_scope": {
+            "type": "boolean"
+          },
+          "decomposition_quality": {
+            "type": "string",
+            "enum": [
+              "none",
+              "good",
+              "bad",
+              "not_applicable"
+            ]
+          },
+          "risks": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "required_fixes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "rationale": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "selected_proposal_id": {
+      "type": "string"
+    },
+    "selection_rationale": {
+      "type": "string"
+    }
+  }
+}
+```
+
+## Scoring requirements
+
+Score each proposal from 0 to 100.
+
+Consider:
+
+- whether the patch applies cleanly;
+- whether it implements the selected work;
+- whether it preserves the question schema;
+- whether it avoids unnecessary scope;
+- whether it modifies only allowed files;
+- whether it creates useful decomposition if decomposition occurs;
+- whether it introduces new risks;
+- whether required fixes remain.
+
+Rules:
+
+- Score every proposal in this prompt.
+- `selected_proposal_id` must refer to one scored proposal from this prompt.
+- Manual override is not allowed in v0.2.
+- Prefer a patch that is valid, minimal, auditable, and directly responsive.
+- Do not select a proposal whose patch failed mechanical validation.
+- Allowed question `Status:` values are `Archived`, `Decomposed`, `Deferred`, `Open`, `Solved`, `Superseded`; a resolved question must use `Status: Solved`.
+- Reject `Status: Resolved` as a question-schema violation. Set `preserves_question_schema` to false and require `Status: Solved` as the fix; `Resolved by:` is a separate metadata field.
+- Do not score your own provider's proposal unless explicitly asked for diagnostic self-score.
+
+Return only JSON.

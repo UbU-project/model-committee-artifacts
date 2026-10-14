@@ -1,0 +1,11 @@
+[
+  {
+    "proposal_id": "UBU-Q0095-openai-gpt-6-process-outcome-v1",
+    "author_provider": "openai",
+    "cross_score_count": 2,
+    "score_mean": 93.5,
+    "score_spread": 7,
+    "frontier_score_gap": 7,
+    "disagreement_flags": []
+  }
+]
