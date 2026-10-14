@@ -1,0 +1,51 @@
+[
+  {
+    "proposal_id": "UBU-Q0128-audio-context-1",
+    "author_provider": "openai",
+    "scorer_provider": "codex",
+    "score": 95,
+    "valid": true,
+    "rationale": "Mechanical validation passes, changes stay within the allowed files, and question metadata remains intact. The proposal directly answers the initial-envelope portion of subquestion 5 with explicit context ceilings, controller-only reads, request bindings, complete-input byte checks and meaningful acceptance fixtures. It preserves existing schemas and action authority, keeps richer work open, and makes no unsupported implementation or safety claim.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [
+      "Excluding persistent details and prior dialogue may increase ambiguity and deferral; the required positive-usefulness fixtures must demonstrate adequate initial capture and media control.",
+      "Runtime isolation and backend context exclusion remain unverified until the specified observed-input/access fixtures pass."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20261014T111617Z-UBU-Q0128/responses/codex_score_ubu-q0128-audio-context-1_response.json",
+      "stderr_path": null
+    }
+  },
+  {
+    "proposal_id": "UBU-Q0128-audio-context-1",
+    "author_provider": "openai",
+    "scorer_provider": "claude",
+    "score": 84,
+    "valid": true,
+    "rationale": "Patch applies cleanly, passes allowlist and question-schema checks, and leaves UBU-Q0128 metadata and Status: Open untouched. It targets subquestion 5, the one envelope slice the prior decisions (D0309\u2013D0311, D0322, D0333, D0359, D0365) left broad, and does so in the established style: a single decision record, a DESIGN.md \u00a721.1.2 block with an allowlist table plus required fixtures, and matching current-direction and resolution updates. It introduces no schema fields, no new action authority, no new questions and no measured claims, and its controller-only reads, no-tools, no-history and no-truncation rules are consistent with D0292's planner-time-semantics principle and D0310's freshness binding. Deductions are for unverifiable decision citations, one unsourced numeric ceiling, and minor integration/ordering polish.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [
+      "Confirm UBU-D0371 is the next unused decision number and that UBU-D0336 exists and covers runtime isolation and prior-job cleanup; adjust IDs or citations if not.",
+      "Mark the four-subject ceiling as provisional pending UBU-D0365-style evidence, or state the rationale for the value.",
+      "Optionally add one clause noting that audio-context/1 refines the Controller-boundary sentence on 'relevant admitted state' for AudioInterpretationV1 invocations."
+    ],
+    "risks": [
+      "Decision ID UBU-D0371 and the cited UBU-D0336 (runtime isolation / prior-job cleanup) cannot be verified from the prompt; a collision or dangling reference would need a renumber or citation fix.",
+      "The 'at most four operator-selected subjects' ceiling is a numeric choice introduced without the calibration evidence UBU-D0365 reserves for quantitative limits; it should be read as a provisional ceiling, not a measured profile.",
+      "The new profile narrows the existing Controller-boundary phrase 'relevant admitted state' to subject aliases only, but does not explicitly say it refines that sentence, leaving two adjacent paragraphs that could be read as slightly different context rules.",
+      "'Operator-selected' subject aliases are underspecified for restricted-attention sessions (when and how selection happens without visual attention), though the default of zero aliases and deferral to ordinary review limits the practical impact.",
+      "Current-direction entry is inserted between D0310 and D0311, breaking the otherwise chronological ordering of that list; cosmetic only."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20261014T111617Z-UBU-Q0128/responses/claude_score_ubu-q0128-audio-context-1_stdout.json",
+      "stderr_path": null
+    }
+  }
+]

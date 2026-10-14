@@ -1,0 +1,274 @@
+# Model-Committee Cross-Scoring Request
+
+You are scoring candidate work proposals for the UbU `model-committee` process.
+
+Return exactly one JSON object. Do not return prose outside the JSON object.
+
+This is a v0.2 cross-score. You are not making the final selection; model-committee
+will aggregate valid cross-scores locally.
+
+Scoring provider: `claude`
+Authoring provider for the candidate proposal(s): `openai`
+
+## Selected question
+
+Question ID: `UBU-Q0128`  
+Question title: `Embodied Audio Interaction`  
+Base commit: `d5c86396de6125e68f5fd2e4fd8b27d1c177396e`
+
+```markdown
+## UBU-Q0128: Embodied Audio Interaction
+
+Status: Open Priority: MVP important Phase: Phase 2 Decision type: Product Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 100 Depends on: None Blocks: Commute Mode, restricted-attention interaction, audio-only task capture, audio-safe messaging, media-state routing, exercise/rest/walking interaction modes Resolved by: None Last scored: 2026-10-14 Scored from commit: None
+
+Depends on unregistered areas: Affect model, Compartment policy, audio I/O policy,
+MCP/tool harness policy, device context model.
+
+### Question
+
+UbU may support Embodied Audio Interaction: audio-first or audio-only interaction for situations where hands, visuals, or intellectual bandwidth are restricted, including driving, bicycling, walking, running, jogging, stationary exercise, physical resting, cooking, housework, and other embodied contexts. What is the interaction model, policy envelope, context-routing architecture, and safety boundary for using UbU as a harness over STT, TTS, MCP-scoped LLM calls, media apps, and structured UbU state during these restricted-attention contexts?
+
+### Subquestions
+
+1. What activity contexts should Embodied Audio Interaction explicitly model: driving, bicycling, walking, running, jogging, stationary exercise, resting, cooking, housework, showering, transit, or user-defined modes?
+2. What input and output constraints should be represented for each mode: hands availability, visual availability, locomotion risk, interruptability, working-memory budget, intellectual bandwidth, emotional bandwidth, maximum prompt length, maximum response length, and maximum number of choices?
+3. How should UbU distinguish interaction mode from Compartment: for example, `Compartment: UbU Project / Public Outreach` and `Mode: Driving`, rather than making driving itself a Compartment?
+4. What deterministic policy layer should sit between audio input, MCP/tool access, LLM interpretation, UbU state, and external actions?
+5. How should UbU package scoped context for an LLM during audio-only use so that the model receives enough context for high performance without overexposing private, irrelevant, or unsafe data?
+6. What structured JSON contract should audio-interaction LLM calls return: intent, entities, confidence, ambiguity, cognitive-load estimate, action risk, proposed action, required confirmation, defer reason, and safe-for-mode flag?
+7. What actions are safe in each embodied mode: idea capture, task creation, message drafting, calendar review, media control, lightweight reflection, exercise coaching, original narration, or external sends?
+8. What actions should be prohibited or deferred in high-risk modes such as driving or bicycling: high-stakes messages, irreversible deletion, financial actions, legal commitments, major scheduling changes, multi-party communication, or visually dependent review?
+9. How should UbU handle speech recognition uncertainty, road noise, breath noise, interruptions, partial utterances, ambiguous references, and false continuity?
+10. What confirmation grammar should UbU require for external actions in restricted-attention contexts, especially where a generic “yes” is too ambiguous?
+11. How should UbU use affect information to decide whether the user is ready for intellectual interaction, should only capture ideas, should defer complex work, or should receive non-intellectual audio instead?
+12. How should UbU detect and model user understandability during embodied contexts, including reduced recall, reduced intelligence-in-the-moment, lower working memory, or increased interruption probability?
+13. How should UbU support audio-safe messaging: relationship-aware drafting, concise readback, wrong-recipient prevention, tone checking, review queues, and defer-until-parked policies?
+14. How should UbU integrate with media apps without replacing them: music playback, podcast resume state, audiobook state, skip/rewind, queue, save, summarize, and “what did I miss?” interactions?
+15. How should UbU interpret vague audio commands such as “go back,” “pause that,” “save this,” “what was that?”, or “remind me about this” based on current activity, media state, recent interruptions, and project context?
+16. Should UbU expose an `InteractionBudget` object, and if so, what fields should it include for input channels, output channels, visual attention, manual control, locomotion risk, intellectual bandwidth, emotional bandwidth, social risk tolerance, max turn length, action permissions, and deferral policy?
+17. How should Embodied Audio Interaction interact with local-first architecture, cross-device sync, car audio systems, headphones, watches, phones, and future wearable devices?
+18. What audit trail should UbU preserve for audio interactions, especially when external actions were proposed, confirmed, deferred, or rejected?
+19. How should UbU avoid becoming an attention-extraction system or productivity grinder, and instead act as an attention steward that sometimes recommends silence, music, rest, or non-intellectual content?
+20. Given the primary camera-and-voice MVP release commitment in `UBU-D0292`, which restricted-attention primitives must be delivered first, and which richer media/narration integrations remain later work? Phase 3 is no longer a gate on the primary surface.
+
+### Current direction
+
+**Architectural answer and MVP scope (`UBU-D0292`, `UBU-D0293`).** The primary surface is local camera-and-voice perception: observation → reviewable candidate state → resolution against permitted persistent context → consequential clarification → CPU semantic/policy/conflict validation → operator admission → planning from admitted state. Model-time evidence never substitutes for planner-time semantics. Voice is ordinary interaction; forms and text remain available for precision, context, preference and accessibility. Capture is mode-bound, visible, source-scoped and pausable; continuous AV requires the existing explicit mode, Compartment review, routing disclosure and user approval. Raw-media minimization/deletion is distinct from append-only correction and evidence metadata. Intent and affect remain user-declared. These answers refine the already-licensed mechanism, rather than making a model the planner.
+
+**Restricted-attention default (`UBU-D0309`).** DESIGN.md §21.1.2 specifies a controller-owned `InteractionBudget`, activity/Compartment separation, candidate capture and scoped media transport, high-risk deferral, interruption invalidation and fresh review after mode/Device changes. Model confidence or spoken confirmation cannot expand these permissions. Quantitative mode profiles, external-action confirmation grammar, richer integrations and naming remain open.
+
+**Initial typed interpretation (`UBU-D0310`).** DESIGN.md §21.1.2 defines `AudioInterpretationV1` for the existing capture/control envelope: closed action shapes, evidence/context aliases, advisory confidence/load/risk/confirmation fields, semantic consistency checks and controller-owned request bindings. Stale, malformed or duplicate model results cannot authorize speech or repeated media transport. This answers the initial-envelope portion of subquestion 6; richer interpretation shapes remain open.
+
+**Serialized budget (`UBU-D0311`).** DESIGN.md §21.1.2 defines the closed controller-issued `InteractionBudgetV1`, including versioned context/authority bindings, declared-or-unknown readiness, channel/attention bounds, finite byte/time/choice caps and fixed review/deferral policies. Semantic checks, monotonic deadlines and turn-owned counters prevent stale snapshots or budget renewal from restoring authority. This answers the initial-envelope serialization portion of subquestions 2 and 16; numerical profile values and richer envelopes remain open.
+
+**Playback referents (`UBU-D0322`).** DESIGN.md §21.1.2 specifies explicit versus session-selected media targets, separation from UbU speech, version-bound dispatch, a vague-command routing table and required stale/replay fixtures. This answers the initial-envelope referent-routing portion of subquestions 9, 14 and 15 without enabling richer media operations. Numerical profiles, richer integrations, external-action confirmation grammar and naming remain open.
+
+**Deferred message confirmation (`UBU-D0333`).** DESIGN.md §21.1.2 specifies `audio-send-review/1`: user-requested ordinary review of one permitted plain-text message, complete recipient/payload presentation, an exact controller-bound single-use send phrase, current authority and interruption/replay checks. This answers only the ordinary-review single-recipient send slice of subquestions 10, 13 and 18. It enables no sending workflow, changes neither v1 audio schema and leaves every initial restricted-attention send deferred. Other external-action grammars and richer messaging remain open.
+
+**Device route boundary (`UBU-D0359`).** DESIGN.md §21.1.2 binds microphone consent separately from a versioned complete speech-output route, requires prevention of automatic input/speaker fallback, and invalidates affected turns on route or audio-focus loss. Reconnection and handoff need explicit resumption and fresh local bindings. This answers the input/output route and handoff subset of subquestion 17; accessory support and numerical/platform qualification remain open.
+
+**Numerical profile evidence (`UBU-D0365`).** DESIGN.md §21.1.2 defines calibration and frozen, condition-specific acceptance for existing budget limits, acknowledgment comprehension, primary-activity performance and session-long burden. Safe simulations include matched baselines, maximum-length speech, noise, interruption and unknown readiness; no productivity or interaction-frequency floor applies. This answers the profile-selection method only; measured values, passing combinations and real driving/bicycling qualification remain open.
+
+**Naming (absorbs delta §17.2).** Embodied Audio Interaction remains the recorded name for the restricted-attention audio subset. No name for the broader camera-and-voice surface has been selected; neither working proposal is adopted. Should this wider interaction model receive a distinct canonical name, or should the existing label remain only the narrower mode? Keep this as an operator naming choice, not a new decision record.
+
+Embodied Audio Interaction is the recorded name for the restricted-attention audio subset. It generalizes the earlier Commute Mode concept beyond driving to any situation where audio interaction is available while hands, visuals, attention, or intellectual bandwidth are constrained. Driving and bicycling are the most safety-critical cases, but walking, running, gym use, physical resting, cooking, housework, and similar contexts share the same architectural pattern. The broader primary camera-and-voice surface is MVP release scope; its naming remains open above.
+
+UbU should not merely provide “ChatGPT in the car” or generic voice chat. UbU should remain the harness, context controller, policy layer, and action authority. STT, TTS, MCP, LLMs, media apps, and device integrations should be subordinate components. UbU should decide what context is exposed, what actions are allowed, how much complexity the user can handle, when confirmation is required, and when work should be deferred.
+
+The feature should distinguish agency audio, media-control audio, and generative-experience audio. UbU may allow complex processes in restricted-attention contexts only by decomposing them into bounded, audio-safe primitives such as capture, triage, short drafting, readback, review-queue creation, and low-risk execution. UbU should be conservative with external messages, irreversible actions, financial/legal commitments, and any action requiring visual review.
+
+Affect and readiness remain user-declared or unknown. UbU may use those declarations to offer silence, rest or user-selected media, without diagnosing reduced intelligence or treating available audio time as an obligation to work. Original Narration remains the separate question `UBU-Q0129`.
+
+### Resolution
+
+Architecture and MVP-release priority are answered by `UBU-D0292` and `UBU-D0293`; the former Phase 3 release gate is superseded. `UBU-D0309` answers the initial restricted-attention permission envelope, controller-owned budget, high-risk deferral and interruption/review boundary. `UBU-D0310` adds the exact initial-envelope LLM-output schema, semantic checks and request/freshness binding. `UBU-D0311` specifies the exact initial-envelope budget serialization, units, revision/freshness checks and turn-owned limits. `UBU-D0322` adds initial-envelope audio-domain/playback referent selection, vague-command routing, control-revision checks and adapter acceptance requirements; it enables no richer action. `UBU-D0333` adds complete ordinary review and a single-use, operation-bound English send phrase for one already-permitted plain-text message to one recipient; it enables no sending workflow or restricted-mode execution. `UBU-D0359` adds qualified input/output route bindings, prevention of automatic audio fallback, route-loss invalidation and fresh reconnection/handoff requirements; it selects no accessory or measured profile. `UBU-D0365` defines numerical-profile selection through comprehension, primary-activity and cumulative-burden trials; it supplies no measured values or passing activity profile. This question remains Open for quantitative mode profiles, richer LLM-output extensions, other external-action confirmation grammars, richer messaging/media/coaching integrations, platform-specific qualification and remaining device behavior, and the naming choice. The capture delivery sequence is `UBU-Q0183`; related evidence, latency, retention and hardware questions remain `UBU-Q0164`–`UBU-Q0182`. No generic voice confirmation authorizes a consequential external action.
+
+---
+
+```
+
+## Candidate proposals
+
+```json
+[
+  {
+    "proposal_id": "UBU-Q0128-audio-context-1",
+    "provider_id": "openai",
+    "model_name": "gpt-6",
+    "question_id": "UBU-Q0128",
+    "base_commit": "d5c86396de6125e68f5fd2e4fd8b27d1c177396e",
+    "summary": "Define an operation-specific context allowlist for initial restricted-attention audio interpretation.",
+    "rationale": "The existing contracts constrain model outputs and action authority but leave relevant-state selection broad. This proposal makes initial interpretation inputs auditable, prevents hidden history or autonomous retrieval from widening scope, and requires positive usefulness and observed-access fixtures while leaving richer profiles and measured qualification open.",
+    "changed_files": [
+      "DECISIONS.md",
+      "DESIGN.md",
+      "OPEN_QUESTIONS.md"
+    ],
+    "patch": "diff --git a/DECISIONS.md b/DECISIONS.md\nindex 2ccc533..e184760 100644\n--- a/DECISIONS.md\n+++ b/DECISIONS.md\n@@ -5760,3 +5760,15 @@ Add shared synthetic representation-boundary fixtures to the existing real-devic\n This specifies candidate implementation evidence without selecting a dtype, compute API or passing configuration. It changes no planning schema, tolerance rule, workload or release/switch criterion. `UBU-Q0160` remains Open pending physically connected device measurements and operator review.\n \n ---\n+\n+## UBU-D0371: Restricted-attention interpretation uses an operation-specific context allowlist\n+\n+**Status:** Accepted \u2192 DESIGN.md \u00a721.1.2. Partially answers `UBU-Q0128` subquestion 5; refines `UBU-D0309`\u2013`UBU-D0311` under \u00a721.3 and the existing runtime-isolation gate.\n+\n+Adopt `audio-context/1` for the model-visible input to initial `AudioInterpretationV1` calls. Supply the effective control envelope, complete permitted current-turn STT evidence, minimal operator-selected subject aliases and only needed scoped playback metadata. Retrieved Task lore, fact values, Calendar/message/relationship content, prior dialogue and media content remain outside this interpretation projection. Ordinary review retains its separate context rules.\n+\n+The controller owns every context read. Expose no callable tools, backend chat history or autonomous retrieval; source text and labels cannot widen instructions, branches or permissions. Bind the exact projection to the immutable ContextBundle and original request, preserve complete text within cumulative byte limits, and defer missing/oversized required inputs without hidden retrieval, truncation or broader retries.\n+\n+Require DESIGN.md \u00a721.1.2's pinned positive, excluded-detail, injection, continuity, byte-boundary and stale-policy fixtures against actual backend inputs and observed access. This specifies assembly behavior, not an implemented adapter, measured quality or safety result. Both v1 schemas, the initial action envelope and MVP-release scope remain unchanged. `UBU-Q0128` stays Open for measured and richer profiles and its other remaining slices.\n+\n+---\ndiff --git a/DESIGN.md b/DESIGN.md\nindex 4b720f3..f4a9bd5 100644\n--- a/DESIGN.md\n+++ b/DESIGN.md\n@@ -3796,6 +3796,30 @@ Driving, bicycling and uncertain high-risk contexts additionally prohibit genera\n \n **Controller boundary.** Consented local STT yields evidence, then the harness assembles a purpose-limited `ContextBundle` under \u00a721.3 and requests an interpretation/candidate through \u00a721.2. Include only the permitted current referents, relevant admitted state and scoped playback/context versions needed for that operation. Model confidence, risk estimates and confirmation suggestions are advisory. Deterministic validation checks schema, semantics, current budget, Compartment route, grants, object versions, ambiguity and idempotency before invoking an allowlisted control or creating a review candidate. Recheck immediately before dispatch and speech output; a local processing route alone does not authorize reading private content aloud on a shared audio endpoint. Raw AV stays local under \u00a712.2; an unavailable local backend never creates cloud-fallback authority.\n \n+**Initial interpretation context (`UBU-D0371`).** Apply the logical assembly profile `audio-context/1` to `AudioInterpretationV1` invocations. Record it through the existing ContextBundle purpose/minimization metadata and source manifest; this adds no canonical object or wire-schema field. The controller assembles the model-visible projection from the following allowlist before invocation. Admission, ordinary review and richer future profiles keep their separate context rules.\n+\n+| Projection | Maximum permitted content for the initial interpretation |\n+|---|---|\n+| Control envelope | Request id, instantiated v1 grammar, effective activity/risk and declared-or-unknown attention bounds, allowed operation branches and remaining turn limits. Keep credentials, full policy/grant records, stored readiness-declaration text and internal Device/Compartment identifiers outside model input. |\n+| Current utterance | Exact permitted local STT text and supplied evidence aliases for this request, with its uncertainty/partial-input flags. Include an original request and its budgeted clarification reply only within the same uninterrupted turn. No raw AV, prior dialogue, archived notes or unrelated evidence. |\n+| Capture subjects | Zero subject aliases by default; at most four operator-selected subjects for this request, with only aliases, object kinds and minimum permitted distinguishing labels. Task lore, fact values, Calendar contents, Relationship/Association evidence and message bodies are excluded. Unselected names remain in the utterance for later resolution; aliases still confer no Identity/ownership resolution or admission. |\n+| Media transport | At most one playback alias resolved under `UBU-D0322`, its minimum permitted distinguishing integration/target label, playing/paused state and allowed bounded operation/step semantics. Keep full item/queue records, media titles/content, transcripts, catalogs and libraries outside the projection; exact revisions and dispatch authority remain in controller request bindings. |\n+\n+These are ceilings, not required disclosures. Include optional subject or playback content only when the current request needs it and policy permits it. An unresolved reference supplies no alias; apply the existing clarification/deferral rules without fetching broader context. Recognized local Pause/Stop/Silence continues through its immediate controller path without a model call. User-dictated content remains scoped STT evidence; mentioning a detail authorizes no lookup of related records. Interpretation-time access to a label or transcript grants no permission to speak it.\n+\n+Keep fixed controller instructions and grammar separate from typed source data. Speech and labels may describe a requested operation, but cannot change instructions, permissions, source scope or available branches. The interpretation invocation exposes no callable MCP tools, search, filesystem/network retrieval or backend chat history. Controller-mediated reads supply all context; enforce runtime isolation and prior-job cleanup under `UBU-D0336`. A model request for more context cannot trigger a read or broader rerun. Persistent matches needing excluded material wait for ordinary review.\n+\n+Bind the exact supplied fields, aliases and source revisions to the immutable ContextBundle and existing request binding. Keep its full policy-filtered audit metadata on the controller; exclusions cannot reveal denied identifiers, counts or existence to the backend or user. Check the complete normalized invocation, including instructions and grammar, against the remaining cumulative model-input byte cap before dispatch. If required text or grammar cannot fit, defer without truncating, summarizing away negation/qualifications or automatically retrying. Recheck source availability, policy and binding freshness immediately before invocation and result release.\n+\n+Before enabling this assembly profile, pin controller/adapter/runtime/template and policy revisions and demonstrate:\n+\n+- Complete note/Task capture with no subject aliases and a permitted scoped media command produce valid v1 outcomes using only the allowlisted projection; capture stays unadmitted and transport uses its bound target.\n+- Synthetic details planted in excluded lore, fact values, messages, denied labels and prior-job context appear in neither actual backend inputs nor observed reads/releases. Include a permitted-detail control; generated omission alone cannot prove isolation.\n+- Hostile transcript/label instructions cause no additional context read, tool access, branch widening or direct speech. Interruption, restart/handoff and prior dialogue cannot restore a missing referent; only an eligible same-turn clarification retains its original budget.\n+- Over-budget complete input and policy/source changes between assembly and invocation withhold dispatch without truncation, hidden retrieval or cloud fallback; delayed results cannot use the invalidated bundle. Immediate local controls and permitted unresolved evidence remain available.\n+\n+This answers the initial-envelope context-selection slice of `UBU-Q0128` subquestion 5. These are required fixtures, not passing results or a performance claim. Both v1 schemas, action permissions and the MVP-release minimum remain unchanged; measured qualification, richer context/action profiles and the question's other remaining slices stay Open.\n+\n **Audio routes and peripherals (`UBU-D0359`).** Bind input and output independently. The existing `InteractionBudgetV1.audio_endpoint` ref/version resolves to a controller-owned output-route record; microphone identity remains in session/source consent and request bindings. These local artifacts add no model-output field or canonical object. A qualified route record must establish:\n \n | Binding | Required content |\ndiff --git a/OPEN_QUESTIONS.md b/OPEN_QUESTIONS.md\nindex 443218f..9b03ec1 100644\n--- a/OPEN_QUESTIONS.md\n+++ b/OPEN_QUESTIONS.md\n@@ -2138,68 +2138,70 @@ ## UBU-Q0127:\n ## UBU-Q0128: Embodied Audio Interaction\n \n Status: Open Priority: MVP important Phase: Phase 2 Decision type: Product Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 100 Depends on: None Blocks: Commute Mode, restricted-attention interaction, audio-only task capture, audio-safe messaging, media-state routing, exercise/rest/walking interaction modes Resolved by: None Last scored: 2026-10-14 Scored from commit: None\n \n Depends on unregistered areas: Affect model, Compartment policy, audio I/O policy,\n MCP/tool harness policy, device context model.\n \n ### Question\n \n UbU may support Embodied Audio Interaction: audio-first or audio-only interaction for situations where hands, visuals, or intellectual bandwidth are restricted, including driving, bicycling, walking, running, jogging, stationary exercise, physical resting, cooking, housework, and other embodied contexts. What is the interaction model, policy envelope, context-routing architecture, and safety boundary for using UbU as a harness over STT, TTS, MCP-scoped LLM calls, media apps, and structured UbU state during these restricted-attention contexts?\n \n ### Subquestions\n \n 1. What activity contexts should Embodied Audio Interaction explicitly model: driving, bicycling, walking, running, jogging, stationary exercise, resting, cooking, housework, showering, transit, or user-defined modes?\n 2. What input and output constraints should be represented for each mode: hands availability, visual availability, locomotion risk, interruptability, working-memory budget, intellectual bandwidth, emotional bandwidth, maximum prompt length, maximum response length, and maximum number of choices?\n 3. How should UbU distinguish interaction mode from Compartment: for example, `Compartment: UbU Project / Public Outreach` and `Mode: Driving`, rather than making driving itself a Compartment?\n 4. What deterministic policy layer should sit between audio input, MCP/tool access, LLM interpretation, UbU state, and external actions?\n 5. How should UbU package scoped context for an LLM during audio-only use so that the model receives enough context for high performance without overexposing private, irrelevant, or unsafe data?\n 6. What structured JSON contract should audio-interaction LLM calls return: intent, entities, confidence, ambiguity, cognitive-load estimate, action risk, proposed action, required confirmation, defer reason, and safe-for-mode flag?\n 7. What actions are safe in each embodied mode: idea capture, task creation, message drafting, calendar review, media control, lightweight reflection, exercise coaching, original narration, or external sends?\n 8. What actions should be prohibited or deferred in high-risk modes such as driving or bicycling: high-stakes messages, irreversible deletion, financial actions, legal commitments, major scheduling changes, multi-party communication, or visually dependent review?\n 9. How should UbU handle speech recognition uncertainty, road noise, breath noise, interruptions, partial utterances, ambiguous references, and false continuity?\n 10. What confirmation grammar should UbU require for external actions in restricted-attention contexts, especially where a generic \u201cyes\u201d is too ambiguous?\n 11. How should UbU use affect information to decide whether the user is ready for intellectual interaction, should only capture ideas, should defer complex work, or should receive non-intellectual audio instead?\n 12. How should UbU detect and model user understandability during embodied contexts, including reduced recall, reduced intelligence-in-the-moment, lower working memory, or increased interruption probability?\n 13. How should UbU support audio-safe messaging: relationship-aware drafting, concise readback, wrong-recipient prevention, tone checking, review queues, and defer-until-parked policies?\n 14. How should UbU integrate with media apps without replacing them: music playback, podcast resume state, audiobook state, skip/rewind, queue, save, summarize, and \u201cwhat did I miss?\u201d interactions?\n 15. How should UbU interpret vague audio commands such as \u201cgo back,\u201d \u201cpause that,\u201d \u201csave this,\u201d \u201cwhat was that?\u201d, or \u201cremind me about this\u201d based on current activity, media state, recent interruptions, and project context?\n 16. Should UbU expose an `InteractionBudget` object, and if so, what fields should it include for input channels, output channels, visual attention, manual control, locomotion risk, intellectual bandwidth, emotional bandwidth, social risk tolerance, max turn length, action permissions, and deferral policy?\n 17. How should Embodied Audio Interaction interact with local-first architecture, cross-device sync, car audio systems, headphones, watches, phones, and future wearable devices?\n 18. What audit trail should UbU preserve for audio interactions, especially when external actions were proposed, confirmed, deferred, or rejected?\n 19. How should UbU avoid becoming an attention-extraction system or productivity grinder, and instead act as an attention steward that sometimes recommends silence, music, rest, or non-intellectual content?\n 20. Given the primary camera-and-voice MVP release commitment in `UBU-D0292`, which restricted-attention primitives must be delivered first, and which richer media/narration integrations remain later work? Phase 3 is no longer a gate on the primary surface.\n \n ### Current direction\n \n **Architectural answer and MVP scope (`UBU-D0292`, `UBU-D0293`).** The primary surface is local camera-and-voice perception: observation \u2192 reviewable candidate state \u2192 resolution against permitted persistent context \u2192 consequential clarification \u2192 CPU semantic/policy/conflict validation \u2192 operator admission \u2192 planning from admitted state. Model-time evidence never substitutes for planner-time semantics. Voice is ordinary interaction; forms and text remain available for precision, context, preference and accessibility. Capture is mode-bound, visible, source-scoped and pausable; continuous AV requires the existing explicit mode, Compartment review, routing disclosure and user approval. Raw-media minimization/deletion is distinct from append-only correction and evidence metadata. Intent and affect remain user-declared. These answers refine the already-licensed mechanism, rather than making a model the planner.\n \n **Restricted-attention default (`UBU-D0309`).** DESIGN.md \u00a721.1.2 specifies a controller-owned `InteractionBudget`, activity/Compartment separation, candidate capture and scoped media transport, high-risk deferral, interruption invalidation and fresh review after mode/Device changes. Model confidence or spoken confirmation cannot expand these permissions. Quantitative mode profiles, external-action confirmation grammar, richer integrations and naming remain open.\n \n **Initial typed interpretation (`UBU-D0310`).** DESIGN.md \u00a721.1.2 defines `AudioInterpretationV1` for the existing capture/control envelope: closed action shapes, evidence/context aliases, advisory confidence/load/risk/confirmation fields, semantic consistency checks and controller-owned request bindings. Stale, malformed or duplicate model results cannot authorize speech or repeated media transport. This answers the initial-envelope portion of subquestion 6; richer interpretation shapes remain open.\n \n+**Interpretation context (`UBU-D0371`).** DESIGN.md \u00a721.1.2 specifies `audio-context/1`: an operation-specific allowlist for current-turn STT evidence, minimal explicit subject aliases and scoped playback metadata. The controller owns reads; prior dialogue, broader private state and backend tools remain outside the initial interpretation. This answers the initial-envelope context-selection slice of subquestion 5; measured quality and richer context profiles remain open.\n+\n **Serialized budget (`UBU-D0311`).** DESIGN.md \u00a721.1.2 defines the closed controller-issued `InteractionBudgetV1`, including versioned context/authority bindings, declared-or-unknown readiness, channel/attention bounds, finite byte/time/choice caps and fixed review/deferral policies. Semantic checks, monotonic deadlines and turn-owned counters prevent stale snapshots or budget renewal from restoring authority. This answers the initial-envelope serialization portion of subquestions 2 and 16; numerical profile values and richer envelopes remain open.\n \n **Playback referents (`UBU-D0322`).** DESIGN.md \u00a721.1.2 specifies explicit versus session-selected media targets, separation from UbU speech, version-bound dispatch, a vague-command routing table and required stale/replay fixtures. This answers the initial-envelope referent-routing portion of subquestions 9, 14 and 15 without enabling richer media operations. Numerical profiles, richer integrations, external-action confirmation grammar and naming remain open.\n \n **Deferred message confirmation (`UBU-D0333`).** DESIGN.md \u00a721.1.2 specifies `audio-send-review/1`: user-requested ordinary review of one permitted plain-text message, complete recipient/payload presentation, an exact controller-bound single-use send phrase, current authority and interruption/replay checks. This answers only the ordinary-review single-recipient send slice of subquestions 10, 13 and 18. It enables no sending workflow, changes neither v1 audio schema and leaves every initial restricted-attention send deferred. Other external-action grammars and richer messaging remain open.\n \n **Device route boundary (`UBU-D0359`).** DESIGN.md \u00a721.1.2 binds microphone consent separately from a versioned complete speech-output route, requires prevention of automatic input/speaker fallback, and invalidates affected turns on route or audio-focus loss. Reconnection and handoff need explicit resumption and fresh local bindings. This answers the input/output route and handoff subset of subquestion 17; accessory support and numerical/platform qualification remain open.\n \n **Numerical profile evidence (`UBU-D0365`).** DESIGN.md \u00a721.1.2 defines calibration and frozen, condition-specific acceptance for existing budget limits, acknowledgment comprehension, primary-activity performance and session-long burden. Safe simulations include matched baselines, maximum-length speech, noise, interruption and unknown readiness; no productivity or interaction-frequency floor applies. This answers the profile-selection method only; measured values, passing combinations and real driving/bicycling qualification remain open.\n \n **Naming (absorbs delta \u00a717.2).** Embodied Audio Interaction remains the recorded name for the restricted-attention audio subset. No name for the broader camera-and-voice surface has been selected; neither working proposal is adopted. Should this wider interaction model receive a distinct canonical name, or should the existing label remain only the narrower mode? Keep this as an operator naming choice, not a new decision record.\n \n Embodied Audio Interaction is the recorded name for the restricted-attention audio subset. It generalizes the earlier Commute Mode concept beyond driving to any situation where audio interaction is available while hands, visuals, attention, or intellectual bandwidth are constrained. Driving and bicycling are the most safety-critical cases, but walking, running, gym use, physical resting, cooking, housework, and similar contexts share the same architectural pattern. The broader primary camera-and-voice surface is MVP release scope; its naming remains open above.\n \n UbU should not merely provide \u201cChatGPT in the car\u201d or generic voice chat. UbU should remain the harness, context controller, policy layer, and action authority. STT, TTS, MCP, LLMs, media apps, and device integrations should be subordinate components. UbU should decide what context is exposed, what actions are allowed, how much complexity the user can handle, when confirmation is required, and when work should be deferred.\n \n The feature should distinguish agency audio, media-control audio, and generative-experience audio. UbU may allow complex processes in restricted-attention contexts only by decomposing them into bounded, audio-safe primitives such as capture, triage, short drafting, readback, review-queue creation, and low-risk execution. UbU should be conservative with external messages, irreversible actions, financial/legal commitments, and any action requiring visual review.\n \n Affect and readiness remain user-declared or unknown. UbU may use those declarations to offer silence, rest or user-selected media, without diagnosing reduced intelligence or treating available audio time as an obligation to work. Original Narration remains the separate question `UBU-Q0129`.\n \n ### Resolution\n \n-Architecture and MVP-release priority are answered by `UBU-D0292` and `UBU-D0293`; the former Phase 3 release gate is superseded. `UBU-D0309` answers the initial restricted-attention permission envelope, controller-owned budget, high-risk deferral and interruption/review boundary. `UBU-D0310` adds the exact initial-envelope LLM-output schema, semantic checks and request/freshness binding. `UBU-D0311` specifies the exact initial-envelope budget serialization, units, revision/freshness checks and turn-owned limits. `UBU-D0322` adds initial-envelope audio-domain/playback referent selection, vague-command routing, control-revision checks and adapter acceptance requirements; it enables no richer action. `UBU-D0333` adds complete ordinary review and a single-use, operation-bound English send phrase for one already-permitted plain-text message to one recipient; it enables no sending workflow or restricted-mode execution. `UBU-D0359` adds qualified input/output route bindings, prevention of automatic audio fallback, route-loss invalidation and fresh reconnection/handoff requirements; it selects no accessory or measured profile. `UBU-D0365` defines numerical-profile selection through comprehension, primary-activity and cumulative-burden trials; it supplies no measured values or passing activity profile. This question remains Open for quantitative mode profiles, richer LLM-output extensions, other external-action confirmation grammars, richer messaging/media/coaching integrations, platform-specific qualification and remaining device behavior, and the naming choice. The capture delivery sequence is `UBU-Q0183`; related evidence, latency, retention and hardware questions remain `UBU-Q0164`\u2013`UBU-Q0182`. No generic voice confirmation authorizes a consequential external action.\n+Architecture and MVP-release priority are answered by `UBU-D0292` and `UBU-D0293`; the former Phase 3 release gate is superseded. `UBU-D0309` answers the initial restricted-attention permission envelope, controller-owned budget, high-risk deferral and interruption/review boundary. `UBU-D0310` adds the exact initial-envelope LLM-output schema, semantic checks and request/freshness binding. `UBU-D0311` specifies the exact initial-envelope budget serialization, units, revision/freshness checks and turn-owned limits. `UBU-D0322` adds initial-envelope audio-domain/playback referent selection, vague-command routing, control-revision checks and adapter acceptance requirements; it enables no richer action. `UBU-D0333` adds complete ordinary review and a single-use, operation-bound English send phrase for one already-permitted plain-text message to one recipient; it enables no sending workflow or restricted-mode execution. `UBU-D0359` adds qualified input/output route bindings, prevention of automatic audio fallback, route-loss invalidation and fresh reconnection/handoff requirements; it selects no accessory or measured profile. `UBU-D0365` defines numerical-profile selection through comprehension, primary-activity and cumulative-burden trials; it supplies no measured values or passing activity profile. `UBU-D0371` bounds initial interpretation context with an operation-specific allowlist, controller-only reads and required input/access fixtures; it supplies no measured quality or richer profile. This question remains Open for quantitative mode profiles, richer LLM-output extensions, other external-action confirmation grammars, richer messaging/media/coaching integrations, platform-specific qualification and remaining device behavior, and the naming choice. The capture delivery sequence is `UBU-Q0183`; related evidence, latency, retention and hardware questions remain `UBU-Q0164`\u2013`UBU-Q0182`. No generic voice confirmation authorizes a consequential external action.\n \n ---\n \n",
+    "commit_message": "design: bound restricted-attention interpretation context",
+    "validation_notes": [
+      "Generated git diff from disposable copies of current working-tree files; repository files remain unchanged.",
+      "git apply --check and git apply --check --whitespace=error-all passed against the current working tree.",
+      "The question hunk contains UBU-Q0128's heading and its own Resolution; its single-line metadata and all other question blocks are unchanged.",
+      "Existing JSON schema blocks, action permissions and MVP-release scope remain unchanged.",
+      "Required backend fixtures are specified, not executed; no measured performance or safety result is claimed."
+    ],
+    "new_questions_added": [],
+    "questions_resolved": [],
+    "decisions_added": [
+      "UBU-D0371"
+    ],
+    "requires_human_review": true
+  }
+]
+```
+
+## Mechanical validation results
+
+```json
+[
+  {
+    "proposal_id": "UBU-Q0128-audio-context-1",
+    "patch_applies": true,
+    "allowlist_passed": true,
+    "changed_files": [
+      "DECISIONS.md",
+      "DESIGN.md",
+      "OPEN_QUESTIONS.md"
+    ],
+    "question_schema_passed": true,
+    "error": null,
+    "normalized_patch": null,
+    "warnings": [],
+    "ordinary_error": null,
+    "recount_error": null,
+    "normalization_error": null
+  }
+]
+```
+
+## Provider weights
+
+Provider weights are historical diagnostic context only in v0.2. Do not use
+self-trust or author identity as score evidence.
+
+```json
+{}
+```
+
+## JSON Schema
+
+Your output must satisfy this schema:
+
+```json
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "scores",
+    "selected_proposal_id",
+    "selection_rationale"
+  ],
+  "properties": {
+    "scores": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "proposal_id",
+          "score",
+          "patch_applies",
+          "implements_selected_work",
+          "preserves_question_schema",
+          "avoids_unnecessary_scope",
+          "decomposition_quality",
+          "risks",
+          "required_fixes",
+          "rationale"
+        ],
+        "properties": {
+          "proposal_id": {
+            "type": "string"
+          },
+          "score": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "patch_applies": {
+            "type": "boolean"
+          },
+          "implements_selected_work": {
+            "type": "boolean"
+          },
+          "preserves_question_schema": {
+            "type": "boolean"
+          },
+          "avoids_unnecessary_scope": {
+            "type": "boolean"
+          },
+          "decomposition_quality": {
+            "type": "string",
+            "enum": [
+              "none",
+              "good",
+              "bad",
+              "not_applicable"
+            ]
+          },
+          "risks": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "required_fixes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "rationale": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "selected_proposal_id": {
+      "type": "string"
+    },
+    "selection_rationale": {
+      "type": "string"
+    }
+  }
+}
+```
+
+## Scoring requirements
+
+Score each proposal from 0 to 100.
+
+Consider:
+
+- whether the patch applies cleanly;
+- whether it implements the selected work;
+- whether it preserves the question schema;
+- whether it avoids unnecessary scope;
+- whether it modifies only allowed files;
+- whether it creates useful decomposition if decomposition occurs;
+- whether it introduces new risks;
+- whether required fixes remain.
+
+Rules:
+
+- Score every proposal in this prompt.
+- `selected_proposal_id` must refer to one scored proposal from this prompt.
+- Manual override is not allowed in v0.2.
+- Prefer a patch that is valid, minimal, auditable, and directly responsive.
+- Do not select a proposal whose patch failed mechanical validation.
+- Allowed question `Status:` values are `Archived`, `Decomposed`, `Deferred`, `Open`, `Solved`, `Superseded`; a resolved question must use `Status: Solved`.
+- Reject `Status: Resolved` as a question-schema violation. Set `preserves_question_schema` to false and require `Status: Solved` as the fix; `Resolved by:` is a separate metadata field.
+- Do not score your own provider's proposal unless explicitly asked for diagnostic self-score.
+
+Return only JSON.

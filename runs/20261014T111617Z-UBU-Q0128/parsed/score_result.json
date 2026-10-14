@@ -1,0 +1,30 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0128-audio-context-1",
+      "score": 90,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "'Operator-selected' subject aliases are underspecified for restricted-attention sessions (when and how selection happens without visual attention), though the default of zero aliases and deferral to ordinary review limits the practical impact.",
+        "Current-direction entry is inserted between D0310 and D0311, breaking the otherwise chronological ordering of that list; cosmetic only.",
+        "Decision ID UBU-D0371 and the cited UBU-D0336 (runtime isolation / prior-job cleanup) cannot be verified from the prompt; a collision or dangling reference would need a renumber or citation fix.",
+        "Excluding persistent details and prior dialogue may increase ambiguity and deferral; the required positive-usefulness fixtures must demonstrate adequate initial capture and media control.",
+        "Runtime isolation and backend context exclusion remain unverified until the specified observed-input/access fixtures pass.",
+        "The 'at most four operator-selected subjects' ceiling is a numeric choice introduced without the calibration evidence UBU-D0365 reserves for quantitative limits; it should be read as a provisional ceiling, not a measured profile.",
+        "The new profile narrows the existing Controller-boundary phrase 'relevant admitted state' to subject aliases only, but does not explicitly say it refines that sentence, leaving two adjacent paragraphs that could be read as slightly different context rules."
+      ],
+      "required_fixes": [
+        "Confirm UBU-D0371 is the next unused decision number and that UBU-D0336 exists and covers runtime isolation and prior-job cleanup; adjust IDs or citations if not.",
+        "Mark the four-subject ceiling as provisional pending UBU-D0365-style evidence, or state the rationale for the value.",
+        "Optionally add one clause noting that audio-context/1 refines the Controller-boundary sentence on 'relevant admitted state' for AudioInterpretationV1 invocations."
+      ],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0128-audio-context-1",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}

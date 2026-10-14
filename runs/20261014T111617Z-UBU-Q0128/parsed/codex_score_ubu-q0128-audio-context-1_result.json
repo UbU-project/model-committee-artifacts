@@ -1,0 +1,21 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0128-audio-context-1",
+      "score": 95,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Excluding persistent details and prior dialogue may increase ambiguity and deferral; the required positive-usefulness fixtures must demonstrate adequate initial capture and media control.",
+        "Runtime isolation and backend context exclusion remain unverified until the specified observed-input/access fixtures pass."
+      ],
+      "required_fixes": [],
+      "rationale": "Mechanical validation passes, changes stay within the allowed files, and question metadata remains intact. The proposal directly answers the initial-envelope portion of subquestion 5 with explicit context ceilings, controller-only reads, request bindings, complete-input byte checks and meaningful acceptance fixtures. It preserves existing schemas and action authority, keeps richer work open, and makes no unsupported implementation or safety claim."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0128-audio-context-1",
+  "selection_rationale": "The sole candidate is mechanically valid, focused and auditable, with no required fixes identified. Its narrow context-selection specification merits a strong cross-score; final selection remains with model-committee."
+}
