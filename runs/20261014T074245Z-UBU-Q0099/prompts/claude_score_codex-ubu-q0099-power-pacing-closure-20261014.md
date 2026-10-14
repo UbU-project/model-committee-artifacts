@@ -1,0 +1,234 @@
+# Model-Committee Cross-Scoring Request
+
+You are scoring candidate work proposals for the UbU `model-committee` process.
+
+Return exactly one JSON object. Do not return prose outside the JSON object.
+
+This is a v0.2 cross-score. You are not making the final selection; model-committee
+will aggregate valid cross-scores locally.
+
+Scoring provider: `claude`
+Authoring provider for the candidate proposal(s): `codex`
+
+## Selected question
+
+Question ID: `UBU-Q0099`  
+Question title: `Power, vulnerability, pacing, and graceful nonachievement`  
+Base commit: `7daa94a8481df68b0247eed13897ab9842531f1d`
+
+```markdown
+## UBU-Q0099: Power, vulnerability, pacing, and graceful nonachievement
+
+Status: Open Priority: MVP important Phase: Phase 2 Decision type: Product Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 90 Depends on: UBU-Q0094, UBU-Q0098 Blocks: romantic transitions, professional transitions, dependency-heavy transitions, graceful failure UX Resolved by: None Last scored: 2026-10-14 Scored from commit: None
+
+### Question
+
+How should UbU model power asymmetry, vulnerability asymmetry, pacing constraints, cooling periods, and graceful nonachievement paths?
+
+### Subquestions
+
+1. What values belong in `power_asymmetry` and `power_asymmetry_basis`?
+2. How should romantic vulnerability, financial dependence, employment authority, housing dependence, caregiving dependence, emotional dependence, social status, age, and platform power be represented?
+3. When should power asymmetry make a transition delayed, require stronger advisory review, or require external review?
+4. What pacing constraints are needed: minimum time between Steps, observation periods, cooling periods, evidence requirements, and maximum prompt frequency?
+5. What belongs in a graceful nonachievement path: terminal state, model update options, introspection handoff, affective support, and delayed review?
+
+### Current direction
+
+The model should include power/vulnerability fields and pacing constraints. Desired mutual outcome nonachievement is not user failure.
+
+### Resolution
+
+Open.
+
+---
+
+```
+
+## Candidate proposals
+
+```json
+[
+  {
+    "proposal_id": "codex-UBU-Q0099-power-pacing-closure-20261014",
+    "provider_id": "codex",
+    "model_name": "gpt-6",
+    "question_id": "UBU-Q0099",
+    "base_commit": "7daa94a8481df68b0247eed13897ab9842531f1d",
+    "summary": "Define scoped power and vulnerability records, advisory escalation, explicit finite pacing, and graceful nonachievement; resolve UBU-Q0099 through UBU-D0355.",
+    "rationale": "Separating practical leverage from per-party exposure avoids unsupported risk rankings. Explicit user-required or source-bound external rules govern compulsory delays and consultation, while refusal closes pursuit without waiting for reflection or recovery. Finite pacing, attention budgets and optional support preserve autonomy and existing consent, privacy and planning boundaries.",
+    "changed_files": [
+      "DESIGN.md",
+      "DECISIONS.md",
+      "OPEN_QUESTIONS.md"
+    ],
+    "patch": "diff --git a/DESIGN.md b/DESIGN.md\n--- a/DESIGN.md\n+++ b/DESIGN.md\n@@ -1446,7 +1446,7 @@ A user may create an Objective to change the user's participation in a Relations\n \n A Relationship scope transition Objective must target user-controlled behavior: disclosures, invitations, boundary-setting, availability changes, communication changes, clarification attempts, and accepted model updates. It must model counterparty response as uncertain and autonomous. For consent-dependent transitions, counterparty response is `outcome_observations`, not user success or failure.\n \n-`RelationshipScopeTransition` is a semantic target/reference for such Objectives. Identity, ownership and history bindings follow \u00a722.3.1 (`UBU-D0345`); process criteria, observations and closure follow \u00a722.3.2 (`UBU-D0346`); Step validation and autonomy acknowledgment follow \u00a722.3.3 (`UBU-D0347`); strategy review, affect use and transparency follow \u00a722.3.4 (`UBU-D0348`); transition types and review gates follow \u00a722.3.5 (`UBU-D0354`). Additional review fields remain provisional where noted:\n+`RelationshipScopeTransition` is a semantic target/reference for such Objectives. Identity, ownership and history bindings follow \u00a722.3.1 (`UBU-D0345`); process criteria, observations and closure follow \u00a722.3.2 (`UBU-D0346`); Step validation and autonomy acknowledgment follow \u00a722.3.3 (`UBU-D0347`); strategy review, affect use and transparency follow \u00a722.3.4 (`UBU-D0348`); transition types and review gates follow \u00a722.3.5 (`UBU-D0354`); power, vulnerability, pacing and graceful nonachievement follow \u00a722.3.6 (`UBU-D0355`). Additional review fields remain provisional where noted:\n \n - `relationship_ref`;\n - `transition_type`: `unilateral`, `exploratory`, `mutual`, or `retroactive_scope_clarification`;\n@@ -4608,7 +4608,7 @@ Retain stable reverse refs through active, completed, abandoned, superseded and\n \n Target links, reverse indexes, Logs, EvidenceRefs, declarations and cached views inherit source restrictions. Recheck current authority, object/source versions and policy before admission, read, sync or export. Partial or denied views cannot prove absence of an attempt or declaration; omit denied identifiers, counts and existence. Authorized redaction/purge removes disallowed dependent content and leaves only permitted gap/causal metadata. Concurrent incompatible revisions or links require ordinary admitted conflict resolution under DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md \u00a7\u00a79 and 17, with no wall-clock, arrival-order or Device winner.\n \n-**Delivery boundary.** MVP hooks are optional typed target/reverse-reference and provenance bindings through ordinary Objective, Task and Log mechanisms. Phase 1's required Relationship payload and maintenance cadence remain under `UBU-D0076`; ordinary Relationships need no transition object or empty history array. A supported Phase 2 attempt must meet this core contract before admission. Dedicated relationship-management UI, automated multi-stage orchestration and personal CRM behavior are post-MVP work. Process/outcome semantics follow \u00a722.3.2 (`UBU-D0346`). Step validation and autonomy follow \u00a722.3.3 (`UBU-D0347`). Manipulation taxonomy, affect use and transparency follow \u00a722.3.4 (`UBU-D0348`). Transition types and review gates follow \u00a722.3.5 (`UBU-D0354`); `UBU-Q0099` retains pacing/support scope; typed evidence policies remain `UBU-Q0092`.\n+**Delivery boundary.** MVP hooks are optional typed target/reverse-reference and provenance bindings through ordinary Objective, Task and Log mechanisms. Phase 1's required Relationship payload and maintenance cadence remain under `UBU-D0076`; ordinary Relationships need no transition object or empty history array. A supported Phase 2 attempt must meet this core contract before admission. Dedicated relationship-management UI, automated multi-stage orchestration and personal CRM behavior are post-MVP work. Process/outcome semantics follow \u00a722.3.2 (`UBU-D0346`). Step validation and autonomy follow \u00a722.3.3 (`UBU-D0347`). Manipulation taxonomy, affect use and transparency follow \u00a722.3.4 (`UBU-D0348`). Transition types and review gates follow \u00a722.3.5 (`UBU-D0354`); power, pacing and support follow \u00a722.3.6 (`UBU-D0355`); typed evidence policies remain `UBU-Q0092`.\n \n Before claiming implementation conformance, require fixtures for reciprocal linkage and rejected mismatched owners, reverse-index rebuild/replay without duplicates, all retained lifecycle views including a completed process with a declined outcome and no declaration change, explicit resulting declarations and retrospective correction, stale baselines, concurrent offline revisions, lineage cycles and reopening with a new Objective, Task/Log/EvidenceRef attribution, and denied/partial views plus derivative purge. This accepts the model boundary, not passing fixtures or shipped transition orchestration.\n \n@@ -4648,7 +4648,7 @@ An admitted authentic refusal ends the current exploratory attempt under \u00a722.3:\n \n **Relationship evidence and hypotheses.** Link admitted observations into the Relationship's permitted evidence history through \u00a722.3.1's associations. They support or challenge only domain-, scope- and time-matched counterparty hypotheses. Propose hypothesis revisions with evidence, counterevidence, confidence/uncertainty and review provenance under `UBU-D0273`; unreviewed interpretations cannot silently become durable Relationship state or planner constraints. An observation establishes what was reported or expressed, not privileged knowledge of feelings or motives. Process success and refusal cannot overwrite affect or declarations. Current participation changes only through \u00a722.1.1's separate explicit user declaration/correction. All observations, assessments, links and derivatives inherit \u00a722.3.1's admission, concurrency, Compartment and purge rules.\n \n-Before claiming implementation conformance, require fixtures for all four types and rejection of assent-dependent success criteria; completed/met with scoped refusal and no declaration change; abandoned with independently unfulfilled criteria; ambiguous versus insufficient versus covered silence; conditional/partial assent and later withdrawal; retrospective clarification without retrospective consent; late responses without reactivation; stale criteria/evidence, replay and concurrent conflicting observations; and denied coverage plus derivative purge. These are required checks, not passing implementation evidence. Detailed Step/refusal validation follows \u00a722.3.3 (`UBU-D0347`); manipulation taxonomy, affect use and transparency follow \u00a722.3.4 (`UBU-D0348`); transition types and review gates follow \u00a722.3.5 (`UBU-D0354`); `UBU-Q0099` retains pacing/support policy; typed evidence policies remain `UBU-Q0092`.\n+Before claiming implementation conformance, require fixtures for all four types and rejection of assent-dependent success criteria; completed/met with scoped refusal and no declaration change; abandoned with independently unfulfilled criteria; ambiguous versus insufficient versus covered silence; conditional/partial assent and later withdrawal; retrospective clarification without retrospective consent; late responses without reactivation; stale criteria/evidence, replay and concurrent conflicting observations; and denied coverage plus derivative purge. These are required checks, not passing implementation evidence. Detailed Step/refusal validation follows \u00a722.3.3 (`UBU-D0347`); manipulation taxonomy, affect use and transparency follow \u00a722.3.4 (`UBU-D0348`); transition types and review gates follow \u00a722.3.5 (`UBU-D0354`); power, pacing and support follow \u00a722.3.6 (`UBU-D0355`); typed evidence policies remain `UBU-Q0092`.\n \n #### 22.3.3 Step validation and counterparty autonomy\n \n@@ -4685,7 +4685,7 @@ Track communication attempts with stable ids, purpose (`proposal` or `clarificat\n \n **Reopening after refusal.** Use a new transition and new one-time Objective with \u00a722.3.1's same-Relationship/Identity lineage and a versioned `reopening_basis`: prior terminal attempt and refusal refs, permitted new evidence/source versions, affected scope, comparison with the earlier basis, why it materially changes willingness or a stated condition, current contact boundaries, and fresh explicit user-review provenance. An unsolicited, scope-matched counterparty invitation or an independently evidenced change to a condition the counterparty expressly identified may support review. Elapsed time, a cooling period, renewed user desire, inferred feelings, rewording, duplicate evidence or a new model interpretation alone cannot. Changed circumstances supply no consent and cannot override a continuing no-contact boundary.\n \n-Stronger review explicitly revisits the refusal, evidence materiality, scope, permitted contact, renewed criteria/acknowledgment and closure path; it is not ordinary continuation of the old plan. Use \u00a722.4's stronger default advisory safeguards, with additional blocking gates only where user-required policy or an applicable hard/external boundary supplies them. Unresolved evidence remains a candidate basis; no automatic reopening or pursuit Task generation follows. Pacing durations and support policy remain `UBU-Q0099`; manipulation taxonomy/firewall follow \u00a722.3.4 (`UBU-D0348`) and general review UX remains `UBU-Q0101`.\n+Stronger review explicitly revisits the refusal, evidence materiality, scope, permitted contact, renewed criteria/acknowledgment and closure path; it is not ordinary continuation of the old plan. Use \u00a722.4's stronger default advisory safeguards, with additional blocking gates only where user-required policy or an applicable hard/external boundary supplies them. Unresolved evidence remains a candidate basis; no automatic reopening or pursuit Task generation follows. Power, pacing and support follow \u00a722.3.6 (`UBU-D0355`); manipulation taxonomy/firewall follow \u00a722.3.4 (`UBU-D0348`) and general review UX remains `UBU-Q0101`.\n \n All bindings, acknowledgments, communication histories, reopening records and derivatives inherit \u00a722.3.1's version, replay, conflict, Compartment and purge rules. Before claiming implementation conformance, require fixtures for indirect/nested assent requirements; all four transition types with finite unresolved closure; false claims of receipt or understanding; missing/stale/generated-only acknowledgment; polite, conditional, partial and reported refusal with attribution uncertainty; refusal closure without reflection; one clarification versus repeated persuasion or silence-based resend; Task copies, replay and concurrent Device dispatch without budget reset; idempotent versus uncertain transport retry; new-attempt reopening with qualifying evidence versus elapsed time/desire/reinterpretation; continuing no-contact boundaries; advisory bypass without false conformance; and partial/denied history plus derivative purge. This accepts the model contract, not passing fixtures or shipped orchestration.\n \n@@ -4737,7 +4737,7 @@ All assessments, manifests, cautions, drafts and derivatives inherit \u00a722.3.1's\n \n **Delivery and conformance.** MVP reserves optional transition-scoped taxonomy, assessment, purpose/provenance and transparency hooks through ordinary Techniques, Tasks and Logs, validating their structured bindings when used; Phase 1's required Relationship payload stays under `UBU-D0076`. Before enabling transition-specific generation or claiming a supported Phase 2 attempt, require the applicable contract and fixtures below. Full graph/semantic validation, dedicated UI and richer orchestration remain post-MVP.\n \n-Require paired concerning and legitimate-context fixtures for all 13 types, multi-type findings, unknown enums, incomplete scans, uncertain attribution and false-positive/false-negative review; faithful accessible expression versus acceptance-ranked variants and invented user feelings; accurate material terms versus omissions, uncertainty and protected-content disclosure; permitted harm-avoidance deferral versus persuasion timing using raw, summarized, cached and restated affect; and context/tool/output inspection with authorized controls, denied routes and derivatives, policy revocation and purge. Exercise stale/concurrent bindings, bypass without false conformance or expanded access, and \u00a722.3.3's refusal, bounded clarification and cross-Device communication fixtures. Inspect actual supplied inputs and releases; plausible prose or model assurances alone cannot pass the firewall. These are required checks, not passing implementation evidence. Transition-type gate selection follows \u00a722.3.5 (`UBU-D0354`); pacing/support and typed evidence-policy vocabulary remain `UBU-Q0099` and `UBU-Q0092`.\n+Require paired concerning and legitimate-context fixtures for all 13 types, multi-type findings, unknown enums, incomplete scans, uncertain attribution and false-positive/false-negative review; faithful accessible expression versus acceptance-ranked variants and invented user feelings; accurate material terms versus omissions, uncertainty and protected-content disclosure; permitted harm-avoidance deferral versus persuasion timing using raw, summarized, cached and restated affect; and context/tool/output inspection with authorized controls, denied routes and derivatives, policy revocation and purge. Exercise stale/concurrent bindings, bypass without false conformance or expanded access, and \u00a722.3.3's refusal, bounded clarification and cross-Device communication fixtures. Inspect actual supplied inputs and releases; plausible prose or model assurances alone cannot pass the firewall. These are required checks, not passing implementation evidence. Transition-type gate selection follows \u00a722.3.5 (`UBU-D0354`); power, pacing and support follow \u00a722.3.6 (`UBU-D0355`); typed evidence-policy vocabulary remains `UBU-Q0092`.\n \n #### 22.3.5 Transition types and pre-action review gates\n \n@@ -4765,7 +4765,7 @@ Recommend the applicable checks before the first communication or participation\n - Dependency-heavy: financial, housing, caregiving or other essential reliance; effects of proposed changes on alternatives and continuity of support, without manufacturing dependency or making assent the price of support.\n - Power-asymmetric: the evidenced basis of influence, practical freedom to decline, retaliation/leverage concerns and whether a less pressured route or independently chosen consultation would help.\n \n-Combine overlays by union of applicable checks and scoped review depth. Greater review depth remains advisory; a context label or classifier score cannot impose a delay, external reviewer or execution veto. Recommend pacing and optional consultation without selecting moments or wording to exploit affect. Review must preserve the user's ability to set boundaries or disengage, including promptly when needed. Detailed power/vulnerability values, pacing durations, support and external-review conditions remain `UBU-Q0099`.\n+Combine overlays by union of applicable checks and scoped review depth. Greater review depth remains advisory; a context label or classifier score cannot impose a delay, external reviewer or execution veto. Recommend pacing and optional consultation without selecting moments or wording to exploit affect. Review must preserve the user's ability to set boundaries or disengage, including promptly when needed. Power/vulnerability values, pacing, support and external-review conditions follow \u00a722.3.6 (`UBU-D0355`).\n \n **Versioned checkpoints and self-imposed requirements.** `review_checkpoints` carries stable checkpoint ids/schema version; check code, applicability condition/basis, action/Step/Task scope; transition/Objective/Relationship/acting-Identity refs; exact baseline, type, proposal/Technique, evidence and safeguard-policy versions; review/evidence refs, coverage/uncertainty and ordinary actor/Device/admission/Log provenance. `review_status` is `pending`, `reviewed`, `bypassed` or `not_applicable`. Generated reviews remain candidates until user confirmation; reviewed concerns can remain unresolved. Inapplicability must satisfy the bound applicability condition, not merely reflect unavailable evidence. Safeguard review cannot delay permitted factual logging, refusal closure or abandonment; those retain ordinary admission and authorization requirements.\n \n@@ -4781,6 +4781,66 @@ Keep permitted decisions discoverable in transition history and user-requested i\n \n **Delivery and conformance.** Phase 1's minimal Relationship payload remains under `UBU-D0076`; MVP reserves optional typed review/policy/Log hooks. Supported Phase 2 attempts require this contract; dedicated UI and richer orchestration remain post-MVP. Before claiming conformance, require fixtures for all four default matrices and composed overlays; type revision without budget reset or retrospective consent; inapplicable versus unknown coverage; advisory continuation versus required review/authorized exception/disablement; manual review with models unavailable; stale/materially changed and concurrent bindings; refusal closure without delaying for review; independent hard/evidence-use denials after bypass; optional reasons and policy-safe Log attribution/replay; and values-linked candidate introspection without automatic changes, including denied evidence and derivative purge. These are required checks, not passing implementation evidence.\n \n+#### 22.3.6 Power, vulnerability, pacing and graceful nonachievement\n+\n+**Phase 2 product contract (`UBU-D0355`).** Refine \u00a7\u00a722.3.1\u201322.3.5 without changing \u00a722.4's advisory boundary. Assess practical influence and exposure for this attempt's scope and interval, separately for each party; a context label or vulnerability is neither a diagnosis nor proof of coercion or consent.\n+\n+**Power and vulnerability records.** `power_asymmetry` uses `not_assessed`, `unknown`, `none_identified`, `user_advantaged`, `counterparty_advantaged` or `mixed`. `not_assessed` means no applicable assessment was performed; `unknown` means coverage or conflicting evidence prevents a directional judgment; `none_identified` means no difference was identified within explicitly reviewed coverage, never proven equality. Direction identifies practical leverage over the proposed scope or the cost of declining, not personal worth. `mixed` preserves opposing advantages in different dimensions without netting them into a score. The summary names the exact basis-record versions; missing basis cannot be presented as `none_identified`.\n+\n+`power_asymmetry_basis` is a set of versioned records, not a free-text verdict. Each records a stable id, basis code, holder/affected Identity refs (including an external actor or explicit unknown where applicable), scoped mechanism of influence, directional assessment, consequences of decline/withdrawal, alternatives or their unknown availability, permitted evidence/counterevidence, effective interval, coverage/uncertainty and user-review provenance. Generated assessments remain candidates. The basis vocabulary and corresponding vulnerability dimensions are:\n+\n+| Code | Review focus |\n+| --- | --- |\n+| `romantic_exposure` | Unequal disclosure, intimacy, rejection or outing exposure; romantic interest or disappointment alone establishes no leverage. |\n+| `financial_dependence` | Control of income, debt or essential funding and practical alternatives. |\n+| `employment_authority` | Hiring, pay, evaluation, assignments, dismissal or professional opportunity. |\n+| `housing_dependence` | Control of accommodation, tenancy or access to a home. |\n+| `caregiving_dependence` | Reliance on care, assistance or access to essential services; assess both recipient and caregiver burdens. |\n+| `emotional_dependence` | Reported reliance on emotional support or isolation; do not diagnose dependency or infer inner states. |\n+| `social_status` | Reputation, network access, group influence or exclusion with an evidenced mechanism. |\n+| `age_or_life_stage` | Relevant experience, developmental context or authority; age difference alone proves no incapacity, consent or prohibition. |\n+| `platform_control` | Account, moderation, visibility, audience, data or access control. |\n+| `other_declared` | An explicitly described additional mechanism; extensions retain version and review bindings. |\n+\n+`vulnerability_profile` contains separate versioned entries with stable entry ids/schema version, subject Identity, dimension code, `exposure_status` (`not_assessed`, `unknown`, `none_identified` or `present`), exposed interest, possible consequences, dependencies, available alternatives/support or explicit unknowns, and permitted evidence/counterevidence. Vulnerability can be present for both parties without a power advantage. Each profile and power assessment binds transition/Objective/Relationship, proposal/baseline, source and policy versions, effective/recorded times and ordinary admission provenance. Preserve corrections and prior assessments. Collect only purpose-needed information; missing, withheld or disputed evidence remains unknown. Do not demand private financial details, exact ages or counterparty disclosures to fill a profile. Counterparty vulnerability and affect derivatives retain \u00a722.3.4's harm-avoidance firewall; no susceptibility score or persuasion timing follows.\n+\n+**Review, deferral and consultation.** Compose \u00a722.3.5's overlays and checkpoints using these defaults:\n+\n+| Scoped finding | Default advisory response |\n+| --- | --- |\n+| Relevant context with unknown or disputed power/exposure | Stronger review of missing coverage, freedom to decline and the closure path; uncertainty is not evidence of safety or wrongdoing. |\n+| Evidenced leverage or unequal exposure | Stronger power/vulnerability, trust, transparency and pacing review; consider a less pressured route and optional deferral. |\n+| Essential income, housing or care at stake, direct authority, threatened retaliation or serious disclosure consequences | Strongly recommend independent consultation and deferring the affected proposal while reviewing alternatives and continuity of support. Review removing the user's own leverage without making support conditional on assent. |\n+| A user-required rule or evidenced applicable external constraint requires waiting or reviewer attestation | Hold only the covered action under that rule's authority, satisfaction and exception terms; preserve independent hard denials. |\n+\n+No finding automatically imposes a delay or external reviewer. Consultation is chosen by the user and may involve a trusted advocate, qualified adviser or mediator; no third party is contacted automatically. Required external review exists only through an explicitly admitted self-imposed rule or applicable external constraint, not a model severity threshold. Bind the reviewer/role, independence or conflict limits, review scope, required attestation, currency and authority to current versions. External constraints additionally record source, scope and enforcement path under \u00a722.4; this contract asserts no particular legal or institutional rule. Reviewer approval supplies no counterparty consent and cannot authorize prohibited disclosure. Lack of an available reviewer leaves a genuinely required action pending, with cancel or authorized policy-change routes; optional consultation does not block it.\n+\n+**Pacing records and defaults.** `pacing_constraints` contains versioned rules with stable ids, `kind`, affected Step/Task/action scope, anchor refs and observed versions, parameters, finite stop/closure conditions, rationale, coverage/uncertainty, and \u00a722.3.5 safeguard-policy/checkpoint refs. Identify whether a recommendation, admitted user-required policy or independent external constraint supplies enforcement authority. Use these kinds:\n+\n+- `minimum_step_gap`: a finite nonnegative `duration_seconds` after a named admitted action completion; zero requires an explicit no-gap choice. Apply to identified later actions, not every Step.\n+- `observation_window`: named channels/evidence coverage, communication-attempt anchor and finite positive `duration_seconds`; expiry selects the admitted unresolved closure branch subject to ordinary assessment/admission, never assent. `no_response` still requires \u00a722.3.2's coverage evidence.\n+- `cooling_period`: finite nonnegative `duration_seconds`, a named interaction/terminal-closure anchor and the particular later review or independently eligible new attempt it concerns. Expiry only removes that time condition.\n+- `evidence_before_action`: named criterion/source requirements, scope/currency and a finite deadline with a stop alternative. It checks permitted evidence, never requires persuading the counterparty or collecting additional private material.\n+- `prompt_budget`: an explicitly enabled UbU reminder rule with finite positive `window_seconds`, positive integer `max_prompts`, channels, quiet periods, suppression and budget scope. It governs prompts to the user, not permission to contact the counterparty.\n+\n+No universal waiting duration is asserted. Before relying on a timed rule, the user chooses its finite parameters and anchor, or reviews a source-bound external requirement. Unchosen durations stay unset, not silently zero; advisory review may continue with that uncertainty. Recommend deferral of deeper interpretation until the interaction concludes. Essential-reliance and power findings may justify recommending a longer user-chosen interval, never a window selected for receptivity. Immediate permitted factual logging, refusal closure, abandonment and the user's prompt boundary-setting/disengagement are outside these pacing holds; independent authority and external constraints still apply.\n+\n+A recommendation becomes a planner restriction only through explicit authorized admission of the corresponding Task input or required rule. Resolve admitted temporal anchors to absolute UTC lower bounds and existing Task `allowed_time_range`/`TaskSpec.window` inputs on the CPU/controller side, intersecting other admitted limits. Required unresolved anchors or evidence leave only affected actions pending; empty windows leave them unplaced. Do not add fake waiting Tasks, lag fields or relationship-risk scores to the kernel. Recheck eligibility before execution and invalidate/recalculate affected Plans on material changes. Elapsed-time checks require a trustworthy elapsed/UTC basis; clock uncertainty cannot establish that a required interval passed. Causal admission, not wall-clock time, orders concurrent revisions.\n+\n+Transition reminders default off; enabling them requires explicit finite attention limits. Count automatic prompts across Tasks, channels and Devices within the admitted budget scope; copies/restarts do not reset it. Reserve slots through serialized ordinary admission with stable prompt ids/idempotency before delivery. An incomplete view cannot establish an unused slot; unavailable budget history withholds automatic prompts while requested inspection remains available. Honor dismissal, snooze and disablement without escalation for silence; a behavioral-review bypass cannot expand an attention budget. General safeguard repetition/UX remains `UBU-Q0101`. Pacing, observation and cooling never add to \u00a722.3.3's one proposal/one eligible ambiguity clarification, authorize silence-based resends, erase refusal or provide materially new evidence for reopening.\n+\n+**Graceful nonachievement.** `graceful_nonachievement_path` is a versioned closure plan bound to the attempt, criteria/branch, proposal/baseline and review/policy versions. Record triggering scoped observations or unresolved deadline, terminal mapping and assessment requirements, remaining pursuit-Task retirement/Plan invalidation, permitted model-update options, optional introspection/support choices and optional delayed-review timing/suppression.\n+\n+Reuse \u00a722.3.2: `completed` requires `met`; stopping with `not_met` or `undetermined` uses `abandoned`. Authentic refusal closes exploration immediately through ordinary admission, including partial refusal, without waiting for cooling, support, reflection or emotional recovery. Preserve scoped assent/uncertainty separately. Desired mutual outcome nonachievement is not user failure; no personal-failure score or refusal-derived `task_failed` follows.\n+\n+Offer keeping the current model, recording permitted observations, reviewing scoped hypotheses with counterevidence, or separately declaring a change in the user's own participation under \u00a722.1.1. None is automatic; refusal cannot overwrite affect, current scope or counterparty feelings. An introspection handoff uses \u00a72.10.1.1's optional linked candidate and current purpose-specific authority; accepting the handoff admits no interpretation or blame. Optional affective support may acknowledge user-reported disappointment and offer rest, ordinary practical work or user-chosen support without diagnosis, mandatory counselling or another persuasion plan. Support and deeper review may be declined independently with no explanation.\n+\n+Delayed review is opt-in at a finite user-selected time or on user request, with a cooling rule only if chosen. It reviews permitted evidence/model questions, does not reactivate the terminal Objective or generate pursuit Tasks, and may be cancelled or deferred. A new attempt still requires \u00a722.3.3's materially new evidence, lineage, current contact boundaries and stronger fresh review; elapsed time and feeling better are insufficient.\n+\n+**Delivery and conformance.** Phase 1 payload/maintenance remain unchanged; MVP reserves optional typed assessment, pacing, closure and Log hooks. Supported Phase 2 attempts require applicable records and finite closure; eligible manual review remains available with models absent, and dedicated orchestration remains post-MVP. All records, consultation packets, Logs and derivatives inherit \u00a7\u00a722.3.1 and 22.2.1 version, conflict, purpose, Compartment and purge rules; consultation and introspection require separate current disclosure/use authority.\n+\n+Before claiming conformance, require fixtures for every basis code, both advantage directions, mixed and two-sided vulnerability, unknown/denied coverage and corrections; age or romantic context without automatic incapacity/prohibition; advisory deferral versus explicit required/external review and unavailable reviewers; unauthorized consultation disclosure; finite gaps/windows/cooling with stale or uncertain clocks, unmet evidence and empty Task windows; immediate boundary-setting and refusal closure despite pacing holds; prompt budgets across copies/Devices and suppression; completed/met with declined outcome versus abandoned/unassessable process; optional support/introspection and delayed review without forced recovery or reopening; materially new-evidence reopening versus elapsed time; and denied existence plus derivative purge. These are required enablement checks, not passing implementation evidence or a claim that UbU prevents coercion.\n+\n ### 22.4 Advisory safeguards and hard boundaries\n \n Relationship-transition review gates are default-on advisory safeguards unless the user has configured them as self-imposed required gates or an external constraint makes them unavoidable. UbU should recommend pre-action introspection, extrospection, TrustCalibrationAssessment, power/vulnerability review, pacing review, graceful nonachievement planning, and manipulation-risk review where relevant. The user may bypass or disable such safeguards. Bypass decisions are introspection-relevant evidence and may surface as candidate findings about conflicts between revealed behavior and declared values.\ndiff --git a/DECISIONS.md b/DECISIONS.md\n--- a/DECISIONS.md\n+++ b/DECISIONS.md\n@@ -5560,3 +5560,19 @@ Record bypass-once, authorized required-gate exceptions and explicit disablement\n Phase 1 payload and maintenance stay unchanged. DESIGN.md \u00a722.3.5 specifies model and enablement fixtures, not passing implementation evidence. Detailed power/pacing/support and general safeguard repetition/UX remain `UBU-Q0099` and `UBU-Q0101`.\n \n ---\n+\n+## UBU-D0355: Transition power and vulnerability guide scoped pacing and graceful closure\n+\n+**Status:** Accepted \u2192 DESIGN.md \u00a7\u00a77.5 and 22.3.6. Resolves `UBU-Q0099`; refines `UBU-D0155` within `UBU-D0345`\u2013`UBU-D0348` and `UBU-D0354`, preserving \u00a722.4.\n+\n+Represent power as a coverage-bound directional assessment with typed, evidenced mechanisms, and vulnerability as separate per-party exposure entries. Preserve unknowns, conflicting dimensions and history; do not rank people or infer incapacity from age, romantic context or dependence. Counterparty exposure inherits the harm-avoidance firewall and ordinary evidence-use restrictions.\n+\n+Compose stronger advisory review, optional deferral and independent consultation for evidenced leverage, essential reliance or serious consequences of decline. Mandatory delays or reviewer attestations require an explicitly admitted user-required rule or applicable source-bound external constraint. No classifier threshold creates an execution veto, and reviewer approval supplies neither consent nor disclosure authority.\n+\n+Version minimum Step gaps, finite observation windows, cooling periods, evidence-before-action requirements and explicitly enabled prompt budgets. Users select finite durations rather than receiving a universal relationship clock. Admit planner restrictions explicitly through existing Task/controller mechanisms, preserving required-rule authority, uncertain anchors, attention limits and ordinary recalculation without kernel changes. Refusal closure and prompt user boundary-setting are outside transition pacing holds. Waiting never resets communication limits or establishes consent or reopening evidence.\n+\n+Bind a graceful nonachievement plan to actual process criteria and terminal mappings. Completed/met may coexist with refusal; abandonment reflects unmet or unassessable criteria without personal-failure framing. Retire pursuit promptly and offer separately reviewed model updates, optional authorized introspection, affective support and opt-in delayed review. Emotional recovery and interpretation are never completion requirements; later review cannot reactivate the attempt.\n+\n+Phase 1 maintenance is unchanged. DESIGN.md \u00a722.3.6 specifies required model/enablement fixtures, not passing implementation evidence; richer orchestration and general safeguard UX retain their existing delivery boundaries.\n+\n+---\ndiff --git a/OPEN_QUESTIONS.md b/OPEN_QUESTIONS.md\n--- a/OPEN_QUESTIONS.md\n+++ b/OPEN_QUESTIONS.md\n@@ -1474,27 +1474,27 @@ Resolved by UBU-D0348. DESIGN.md \u00a7\u00a77.5 and 22.3.4 refine the existing 13-type\n \n ## UBU-Q0099: Power, vulnerability, pacing, and graceful nonachievement\n \n-Status: Open Priority: MVP important Phase: Phase 2 Decision type: Product Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 90 Depends on: UBU-Q0094, UBU-Q0098 Blocks: romantic transitions, professional transitions, dependency-heavy transitions, graceful failure UX Resolved by: None Last scored: 2026-10-14 Scored from commit: None\n+Status: Solved Priority: MVP important Phase: Phase 2 Decision type: Product Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 90 Depends on: UBU-Q0094, UBU-Q0098 Blocks: romantic transitions, professional transitions, dependency-heavy transitions, graceful failure UX Resolved by: UBU-D0355 Last scored: 2026-10-14 Scored from commit: None\n \n ### Question\n \n How should UbU model power asymmetry, vulnerability asymmetry, pacing constraints, cooling periods, and graceful nonachievement paths?\n \n ### Subquestions\n \n 1. What values belong in `power_asymmetry` and `power_asymmetry_basis`?\n 2. How should romantic vulnerability, financial dependence, employment authority, housing dependence, caregiving dependence, emotional dependence, social status, age, and platform power be represented?\n 3. When should power asymmetry make a transition delayed, require stronger advisory review, or require external review?\n 4. What pacing constraints are needed: minimum time between Steps, observation periods, cooling periods, evidence requirements, and maximum prompt frequency?\n 5. What belongs in a graceful nonachievement path: terminal state, model update options, introspection handoff, affective support, and delayed review?\n \n ### Current direction\n \n The model should include power/vulnerability fields and pacing constraints. Desired mutual outcome nonachievement is not user failure.\n \n ### Resolution\n \n-Open.\n+Resolved by UBU-D0355. DESIGN.md \u00a722.3.6 defines scoped directional power assessments, typed basis and per-party vulnerability records, stronger advisory review versus explicit required/external review, versioned finite pacing and prompt budgets, and graceful terminal closure with optional model review, authorized introspection, support and delayed review. Refusal is not user failure; cooling cannot delay closure or authorize renewed pursuit. This resolves the Phase 2 product contract; implementation conformance, richer orchestration and general safeguard UX remain separate work.\n \n ---\n \n",
+    "commit_message": "Define transition power, pacing, and graceful nonachievement",
+    "validation_notes": [
+      "Generated Git unified diffs from exact current working-tree contents and proposed in-memory contents; base_commit is provenance only.",
+      "git apply --check --whitespace=error passed against the current working tree; no cached/index-only check was used.",
+      "Verified one OPEN_QUESTIONS.md hunk includes UBU-Q0099's heading, metadata and own Resolution; preserved ranking metadata and all other question blocks.",
+      "Verified allowed paths, required JSON fields/types, fresh UBU-D0355 and DESIGN.md \u00a722.3.6, and unchanged repository file bytes.",
+      "Implementation conformance fixtures are specified, not reported as passing. Product-policy adoption requires human approval."
+    ],
+    "new_questions_added": [],
+    "questions_resolved": [
+      "UBU-Q0099"
+    ],
+    "decisions_added": [
+      "UBU-D0355"
+    ],
+    "requires_human_review": true
+  }
+]
+```
+
+## Mechanical validation results
+
+```json
+[
+  {
+    "proposal_id": "codex-UBU-Q0099-power-pacing-closure-20261014",
+    "patch_applies": true,
+    "allowlist_passed": true,
+    "changed_files": [
+      "DECISIONS.md",
+      "DESIGN.md",
+      "OPEN_QUESTIONS.md"
+    ],
+    "question_schema_passed": true,
+    "error": null,
+    "normalized_patch": null,
+    "warnings": [],
+    "ordinary_error": null,
+    "recount_error": null,
+    "normalization_error": null
+  }
+]
+```
+
+## Provider weights
+
+Provider weights are historical diagnostic context only in v0.2. Do not use
+self-trust or author identity as score evidence.
+
+```json
+{}
+```
+
+## JSON Schema
+
+Your output must satisfy this schema:
+
+```json
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "scores",
+    "selected_proposal_id",
+    "selection_rationale"
+  ],
+  "properties": {
+    "scores": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "proposal_id",
+          "score",
+          "patch_applies",
+          "implements_selected_work",
+          "preserves_question_schema",
+          "avoids_unnecessary_scope",
+          "decomposition_quality",
+          "risks",
+          "required_fixes",
+          "rationale"
+        ],
+        "properties": {
+          "proposal_id": {
+            "type": "string"
+          },
+          "score": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "patch_applies": {
+            "type": "boolean"
+          },
+          "implements_selected_work": {
+            "type": "boolean"
+          },
+          "preserves_question_schema": {
+            "type": "boolean"
+          },
+          "avoids_unnecessary_scope": {
+            "type": "boolean"
+          },
+          "decomposition_quality": {
+            "type": "string",
+            "enum": [
+              "none",
+              "good",
+              "bad",
+              "not_applicable"
+            ]
+          },
+          "risks": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "required_fixes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "rationale": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "selected_proposal_id": {
+      "type": "string"
+    },
+    "selection_rationale": {
+      "type": "string"
+    }
+  }
+}
+```
+
+## Scoring requirements
+
+Score each proposal from 0 to 100.
+
+Consider:
+
+- whether the patch applies cleanly;
+- whether it implements the selected work;
+- whether it preserves the question schema;
+- whether it avoids unnecessary scope;
+- whether it modifies only allowed files;
+- whether it creates useful decomposition if decomposition occurs;
+- whether it introduces new risks;
+- whether required fixes remain.
+
+Rules:
+
+- Score every proposal in this prompt.
+- `selected_proposal_id` must refer to one scored proposal from this prompt.
+- Manual override is not allowed in v0.2.
+- Prefer a patch that is valid, minimal, auditable, and directly responsive.
+- Do not select a proposal whose patch failed mechanical validation.
+- Allowed question `Status:` values are `Archived`, `Decomposed`, `Deferred`, `Open`, `Solved`, `Superseded`; a resolved question must use `Status: Solved`.
+- Reject `Status: Resolved` as a question-schema violation. Set `preserves_question_schema` to false and require `Status: Solved` as the fix; `Resolved by:` is a separate metadata field.
+- Do not score your own provider's proposal unless explicitly asked for diagnostic self-score.
+
+Return only JSON.

@@ -1,0 +1,25 @@
+[
+  {
+    "proposal_id": "codex-UBU-Q0099-power-pacing-closure-20261014",
+    "author_provider": "codex",
+    "scorer_provider": "claude",
+    "score": 88,
+    "valid": true,
+    "rationale": "Mechanical validation passed (applies, allowlist, question schema). The question block moves to `Status: Solved` with `Resolved by: UBU-D0355`, keeps all ranking metadata, and the Resolution paragraph accurately summarizes the decision. All five subquestions are answered concretely: an explicit `power_asymmetry` enum with coverage-aware values; a versioned `power_asymmetry_basis` record and a ten-code vocabulary covering every dimension listed in subquestion 2 plus per-party `vulnerability_profile`; a default advisory-response table that distinguishes stronger review, optional deferral/consultation, and user-required or source-bound external review while preserving \u00a722.4's no-classifier-veto boundary; five finite pacing kinds (step gap, observation window, cooling, evidence-before-action, prompt budget) with CPU/controller-side anchoring and no kernel changes; and a `graceful_nonachievement_path` that reuses \u00a722.3.2 terminal mappings, closes on refusal without waiting for recovery, and offers model update, introspection handoff, affective support and opt-in delayed review. The stated current direction (nonachievement is not user failure) is encoded explicitly. Cross-reference hygiene is good: every prior 'remains UBU-Q0099' pointer in \u00a7\u00a77.5 and 22.3.1\u201322.3.5 is redirected to \u00a722.3.6, and the new decision is sequentially numbered after UBU-D0354 and appended cleanly. Scope stays within the three allowed files with no new questions. Deductions are for unverifiable section/decision references, the untouched \u00a77.5 field annotations, and the density that makes human review costly; none are blocking.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [
+      "Cross-references that cannot be checked from the prompt alone: DESIGN.md \u00a72.10.1.1 (introspection handoff), `UBU-D0155` (named as the refined decision), and Task `allowed_time_range`/`TaskSpec.window` as existing controller inputs. A dangling reference would be a documentation defect, not a semantic one.",
+      "The \u00a77.5 `RelationshipScopeTransition` field list is only touched on its lead-in sentence; if `power_asymmetry`, `power_asymmetry_basis`, `vulnerability_profile`, `pacing_constraints` or `graceful_nonachievement_path` are still annotated as provisional in that list, the annotation now contradicts \u00a722.3.6.",
+      "The new section is very dense (ten basis codes, two policy tables, five pacing kinds, closure plan, conformance list) and introduces several new typed records in one step; auditing it against \u00a7\u00a722.3.1\u201322.3.5 for subtle conflicts (e.g., `cooling_period` versus \u00a722.3.3's reopening rules, `prompt_budget` versus general reminder policy under `UBU-Q0101`) requires careful human reading.",
+      "`transition reminders default off` is asserted as a product default; it should be confirmed not to conflict with existing Relationship maintenance-cadence behavior under `UBU-D0076`."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20261014T074245Z-UBU-Q0099/responses/claude_score_codex-ubu-q0099-power-pacing-closure-20261014_stdout.json",
+      "stderr_path": null
+    }
+  }
+]

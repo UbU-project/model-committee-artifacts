@@ -1,0 +1,1 @@
+UMC: Define transition power, pacing, and graceful nonachievement

@@ -1,0 +1,23 @@
+{
+  "scores": [
+    {
+      "proposal_id": "codex-UBU-Q0099-power-pacing-closure-20261014",
+      "score": 88,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Cross-references that cannot be checked from the prompt alone: DESIGN.md \u00a72.10.1.1 (introspection handoff), `UBU-D0155` (named as the refined decision), and Task `allowed_time_range`/`TaskSpec.window` as existing controller inputs. A dangling reference would be a documentation defect, not a semantic one.",
+        "The new section is very dense (ten basis codes, two policy tables, five pacing kinds, closure plan, conformance list) and introduces several new typed records in one step; auditing it against \u00a7\u00a722.3.1\u201322.3.5 for subtle conflicts (e.g., `cooling_period` versus \u00a722.3.3's reopening rules, `prompt_budget` versus general reminder policy under `UBU-Q0101`) requires careful human reading.",
+        "The \u00a77.5 `RelationshipScopeTransition` field list is only touched on its lead-in sentence; if `power_asymmetry`, `power_asymmetry_basis`, `vulnerability_profile`, `pacing_constraints` or `graceful_nonachievement_path` are still annotated as provisional in that list, the annotation now contradicts \u00a722.3.6.",
+        "`transition reminders default off` is asserted as a product default; it should be confirmed not to conflict with existing Relationship maintenance-cadence behavior under `UBU-D0076`."
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 1 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "codex-UBU-Q0099-power-pacing-closure-20261014",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}
