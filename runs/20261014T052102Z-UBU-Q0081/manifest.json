@@ -1,0 +1,173 @@
+{
+  "schema_version": "0.4",
+  "run_id": "20261014T052102Z-UBU-Q0081",
+  "created_at_utc": "2026-10-14T05:21:02Z",
+  "repo_path": "../ubu-design",
+  "base_commit": "76924af8ea2b9372beccd59e9d68bedfcb0d6129",
+  "selected_question_id": "UBU-Q0081",
+  "phase": "work-select",
+  "config_path": "config/models.json",
+  "status": "selected",
+  "commands": [
+    "model-committee run-loop"
+  ],
+  "providers_attempted": [
+    "codex",
+    "claude"
+  ],
+  "providers_succeeded": [
+    "codex",
+    "claude"
+  ],
+  "providers_failed": [],
+  "provider_attempts": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "codex-UBU-Q0081-bounded-coordination-mandates",
+      "response_path": "runs/20261014T052102Z-UBU-Q0081/responses/claude_score_codex-ubu-q0081-bounded-coordination-mandates_stdout.json",
+      "stderr_path": null
+    }
+  ],
+  "provider_successes": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20261014T052102Z-UBU-Q0081/parsed/codex_work_proposal.json"
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "codex-UBU-Q0081-bounded-coordination-mandates",
+      "response_path": "runs/20261014T052102Z-UBU-Q0081/responses/claude_score_codex-ubu-q0081-bounded-coordination-mandates_stdout.json",
+      "parsed_path": "runs/20261014T052102Z-UBU-Q0081/parsed/claude_score_codex-ubu-q0081-bounded-coordination-mandates_result.json"
+    }
+  ],
+  "provider_failures": [],
+  "score_matrix": [
+    {
+      "proposal_id": "codex-UBU-Q0081-bounded-coordination-mandates",
+      "author_provider": "codex",
+      "scorer_provider": "claude",
+      "score": 86,
+      "valid": true,
+      "rationale": "Mechanical validation passed (patch applies, allowlist passed, question schema passed). The OPEN_QUESTIONS.md hunk changes only Status to Solved and Resolved by to UBU-D0343 while preserving every other metadata field and the question body, which matches the required schema. DECISIONS.md appends a single new decision UBU-D0343 in the established format, and DESIGN.md replaces the one-line 'Open details include...' placeholder in \u00a721.6 with subsections that directly answer all five subquestions: receivable/subdelegable authority (21.6.1\u201321.6.2, default-denied attenuating delegation with intersection semantics), subordinate Task/executor/evidence/report linkage (SubdelegationLink and status-report records), retained originator/Association review rights (21.6.4), propagation of budget/privacy/Compartment/tool/settlement constraints (21.6.3), and bounding against unbounded agentic authority (finite depth, cumulative counters, transitive invalidation, no self-renewal). Scope is confined to the three ordinary design-resolution files, no canonical files are touched, no new questions are minted, and the enablement boundary explicitly leaves Phase 1 unchanged and claims no runtime conformance. Deductions reflect unverifiable cross-references and the heaviness of the specification rather than any identified defect.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "DESIGN.md text cross-references \u00a7\u00a72.11, 19.1, 21.3\u201321.5, 25.1.2, 26.3 and decisions UBU-D0138/UBU-D0268/UBU-D0342; these could not be independently verified from the prompt, so any mismatch would leave a dangling reference in the design.",
+        "The new \u00a721.6 is very dense normative prose with a large required-field table for a Post-MVP Phase 2 data model; it may over-constrain the schema ahead of implementation experience and is harder to audit than a lighter contract.",
+        "Settlement propagation is answered by denying payment authority and deferring marketplace/settlement workflows to UBU-Q0065; this is a reasonable boundary but leaves part of subquestion 4 dependent on a separate open question.",
+        "Human-approval-required question is marked Solved in the same patch; acceptance depends on the human reviewer the proposal correctly flags via requires_human_review."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261014T052102Z-UBU-Q0081/responses/claude_score_codex-ubu-q0081-bounded-coordination-mandates_stdout.json",
+        "stderr_path": null
+      }
+    }
+  ],
+  "score_aggregates": [
+    {
+      "proposal_id": "codex-UBU-Q0081-bounded-coordination-mandates",
+      "author_provider": "codex",
+      "cross_score_count": 1,
+      "score_mean": 86.0,
+      "score_spread": 0,
+      "frontier_score_gap": 0,
+      "disagreement_flags": []
+    }
+  ],
+  "cross_score_count": 1,
+  "score_mean": 86.0,
+  "score_spread": 0,
+  "frontier_score_gap": 0,
+  "disagreement_flags": [],
+  "quorum_result": {
+    "valid": true,
+    "human_review_required": false,
+    "selected_proposal_id": "codex-UBU-Q0081-bounded-coordination-mandates",
+    "selected_score": 86.0,
+    "selected_cross_score_count": 1,
+    "blocked_reasons": [],
+    "manual_override": false
+  },
+  "selected_proposal_id": "codex-UBU-Q0081-bounded-coordination-mandates",
+  "automated_selection_valid": true,
+  "human_review_required": false,
+  "artifact_publication_status": "operator_pending",
+  "prompt_size_warning": true,
+  "prompt_context": {
+    "question_ids": [
+      "UBU-Q0025",
+      "UBU-Q0028",
+      "UBU-Q0032",
+      "UBU-Q0054",
+      "UBU-Q0055",
+      "UBU-Q0056",
+      "UBU-Q0060",
+      "UBU-Q0061",
+      "UBU-Q0079",
+      "UBU-Q0080",
+      "UBU-Q0081"
+    ],
+    "decision_ids": [
+      "UBU-D0057",
+      "UBU-D0058",
+      "UBU-D0059",
+      "UBU-D0060",
+      "UBU-D0065",
+      "UBU-D0069",
+      "UBU-D0070",
+      "UBU-D0074",
+      "UBU-D0100",
+      "UBU-D0150",
+      "UBU-D0157",
+      "UBU-D0177",
+      "UBU-D0265",
+      "UBU-D0266",
+      "UBU-D0267",
+      "UBU-D0268",
+      "UBU-D0342"
+    ],
+    "sections": {
+      "DESIGN.md": [
+        "2.11",
+        "3",
+        "12",
+        "18.1",
+        "19.1",
+        "21.4",
+        "21.5",
+        "26.3",
+        "26.4"
+      ]
+    },
+    "core_sections": {
+      "DESIGN.md": [
+        "1"
+      ],
+      "DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md": [
+        "4"
+      ]
+    },
+    "missing_refs": {},
+    "context_chars": 159514,
+    "prompt_chars": 167899
+  }
+}

@@ -1,0 +1,25 @@
+[
+  {
+    "proposal_id": "codex-UBU-Q0081-bounded-coordination-mandates",
+    "author_provider": "codex",
+    "scorer_provider": "claude",
+    "score": 86,
+    "valid": true,
+    "rationale": "Mechanical validation passed (patch applies, allowlist passed, question schema passed). The OPEN_QUESTIONS.md hunk changes only Status to Solved and Resolved by to UBU-D0343 while preserving every other metadata field and the question body, which matches the required schema. DECISIONS.md appends a single new decision UBU-D0343 in the established format, and DESIGN.md replaces the one-line 'Open details include...' placeholder in \u00a721.6 with subsections that directly answer all five subquestions: receivable/subdelegable authority (21.6.1\u201321.6.2, default-denied attenuating delegation with intersection semantics), subordinate Task/executor/evidence/report linkage (SubdelegationLink and status-report records), retained originator/Association review rights (21.6.4), propagation of budget/privacy/Compartment/tool/settlement constraints (21.6.3), and bounding against unbounded agentic authority (finite depth, cumulative counters, transitive invalidation, no self-renewal). Scope is confined to the three ordinary design-resolution files, no canonical files are touched, no new questions are minted, and the enablement boundary explicitly leaves Phase 1 unchanged and claims no runtime conformance. Deductions reflect unverifiable cross-references and the heaviness of the specification rather than any identified defect.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [
+      "DESIGN.md text cross-references \u00a7\u00a72.11, 19.1, 21.3\u201321.5, 25.1.2, 26.3 and decisions UBU-D0138/UBU-D0268/UBU-D0342; these could not be independently verified from the prompt, so any mismatch would leave a dangling reference in the design.",
+      "The new \u00a721.6 is very dense normative prose with a large required-field table for a Post-MVP Phase 2 data model; it may over-constrain the schema ahead of implementation experience and is harder to audit than a lighter contract.",
+      "Settlement propagation is answered by denying payment authority and deferring marketplace/settlement workflows to UBU-Q0065; this is a reasonable boundary but leaves part of subquestion 4 dependent on a separate open question.",
+      "Human-approval-required question is marked Solved in the same patch; acceptance depends on the human reviewer the proposal correctly flags via requires_human_review."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20261014T052102Z-UBU-Q0081/responses/claude_score_codex-ubu-q0081-bounded-coordination-mandates_stdout.json",
+      "stderr_path": null
+    }
+  }
+]

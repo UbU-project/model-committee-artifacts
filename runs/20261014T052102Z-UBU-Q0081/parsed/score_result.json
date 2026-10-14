@@ -1,0 +1,23 @@
+{
+  "scores": [
+    {
+      "proposal_id": "codex-UBU-Q0081-bounded-coordination-mandates",
+      "score": 86,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "DESIGN.md text cross-references \u00a7\u00a72.11, 19.1, 21.3\u201321.5, 25.1.2, 26.3 and decisions UBU-D0138/UBU-D0268/UBU-D0342; these could not be independently verified from the prompt, so any mismatch would leave a dangling reference in the design.",
+        "Human-approval-required question is marked Solved in the same patch; acceptance depends on the human reviewer the proposal correctly flags via requires_human_review.",
+        "Settlement propagation is answered by denying payment authority and deferring marketplace/settlement workflows to UBU-Q0065; this is a reasonable boundary but leaves part of subquestion 4 dependent on a separate open question.",
+        "The new \u00a721.6 is very dense normative prose with a large required-field table for a Post-MVP Phase 2 data model; it may over-constrain the schema ahead of implementation experience and is harder to audit than a lighter contract."
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 1 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "codex-UBU-Q0081-bounded-coordination-mandates",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}
