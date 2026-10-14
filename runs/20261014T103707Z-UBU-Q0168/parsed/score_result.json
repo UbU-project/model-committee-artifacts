@@ -1,0 +1,29 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-ubu-q0168-clock-qualification",
+      "score": 84,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Adds a further qualification gate (pinned deployment suspension/return evidence, worker-route timing) to a question that already states a parameterized contract alone cannot close it. Marginal value toward closure is limited and the acceptance bar rises again.",
+        "Cross-reference to DESIGN.md \u00a721.1.5 for source-to-controller and inter-Device clock mappings is unverified from the supplied context; if that section does not govern clock mappings the new text has a dangling anchor.",
+        "Dense phrasing such as 'retain elapsed-expiry equality' depends on an existing rule not shown here; readers may not be able to locate the referenced comparator.",
+        "Existing text already says 'Restart or clock discontinuity invalidates active jobs rather than extending their deadlines.' The new text treats suspension as consuming budgets with a recheck on return rather than invalidating jobs. Whether suspension counts as a 'discontinuity' is left ambiguous, so the two rules can be read as conflicting.",
+        "New decision is marked 'Status: Accepted' while the proposal flags requires_human_review; if repository convention expects a Proposed state pending review, the status should be adjusted.",
+        "Rewords the accepted UBU-D0325 Freshness paragraph from 'unknown or uncertain age cannot establish freshness' to permit bounded uncertainty within the ceiling. This is a deliberate semantic shift that other sections referring to 'uncertain age' may not reflect.",
+        "Suspension enforcement and finite clock-mapping error bounds still require implementation and deployment evidence; this amendment alone cannot qualify a mode."
+      ],
+      "required_fixes": [
+        "Add one clause clarifying whether Device sleep/controller suspension is a 'clock discontinuity' under the existing invalidation sentence, or a budget-consuming pause under UBU-D0367, so the two rules do not conflict.",
+        "Confirm DESIGN.md \u00a721.1.5 actually covers source/inter-Device clock mappings, or cite the correct section."
+      ],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "openai-ubu-q0168-clock-qualification",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}

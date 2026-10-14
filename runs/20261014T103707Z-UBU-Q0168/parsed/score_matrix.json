@@ -1,0 +1,50 @@
+[
+  {
+    "proposal_id": "openai-ubu-q0168-clock-qualification",
+    "author_provider": "openai",
+    "scorer_provider": "codex",
+    "score": 94,
+    "valid": true,
+    "rationale": "Mechanical validation passes, and repository inspection confirms consistency with the existing latency contract. The amendment addresses a concrete gap in suspension accounting and mapped-time freshness, preserves deadline equality and separate fallback/quiescence/release bounds, and adds auditable qualification cases. Changes stay within allowed documentation files, preserve question metadata and Open status, and introduce no unsupported performance claims. It advances the architecture without supplying the numerical profiles or measured acceptance still required for closure.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [
+      "Suspension enforcement and finite clock-mapping error bounds still require implementation and deployment evidence; this amendment alone cannot qualify a mode."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20261014T103707Z-UBU-Q0168/responses/codex_score_openai-ubu-q0168-clock-qualification_response.json",
+      "stderr_path": null
+    }
+  },
+  {
+    "proposal_id": "openai-ubu-q0168-clock-qualification",
+    "author_provider": "openai",
+    "scorer_provider": "claude",
+    "score": 74,
+    "valid": true,
+    "rationale": "Patch applies cleanly, touches only DECISIONS.md, DESIGN.md and the UBU-Q0168 block, and preserves the question metadata line with Status: Open and Resolved by: None. Hunk line counts are internally consistent. The amendment addresses a genuine gap: monotonic clocks on common platforms pause during suspend, so the existing contract could let delayed callbacks appear timely, and nominal source timestamps can understate evidence age. The proposal specifies enforcement, conservative upper-bound comparisons and fixture extensions without inventing numerical values, hardware claims or closing the question, which matches the question's stated residual. It is a legitimate narrowing of the degradation architecture. Deductions reflect that it is a fourth incremental contract amendment to a question whose remaining work is real-device evidence that no documentation patch can supply, an unverified \u00a721.1.5 cross-reference, a subtle rewording of accepted UBU-D0325 text, and an unresolved ambiguity with the existing clock-discontinuity invalidation rule.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [
+      "Confirm DESIGN.md \u00a721.1.5 actually covers source/inter-Device clock mappings, or cite the correct section.",
+      "Add one clause clarifying whether Device sleep/controller suspension is a 'clock discontinuity' under the existing invalidation sentence, or a budget-consuming pause under UBU-D0367, so the two rules do not conflict."
+    ],
+    "risks": [
+      "Cross-reference to DESIGN.md \u00a721.1.5 for source-to-controller and inter-Device clock mappings is unverified from the supplied context; if that section does not govern clock mappings the new text has a dangling anchor.",
+      "Rewords the accepted UBU-D0325 Freshness paragraph from 'unknown or uncertain age cannot establish freshness' to permit bounded uncertainty within the ceiling. This is a deliberate semantic shift that other sections referring to 'uncertain age' may not reflect.",
+      "Existing text already says 'Restart or clock discontinuity invalidates active jobs rather than extending their deadlines.' The new text treats suspension as consuming budgets with a recheck on return rather than invalidating jobs. Whether suspension counts as a 'discontinuity' is left ambiguous, so the two rules can be read as conflicting.",
+      "Adds a further qualification gate (pinned deployment suspension/return evidence, worker-route timing) to a question that already states a parameterized contract alone cannot close it. Marginal value toward closure is limited and the acceptance bar rises again.",
+      "New decision is marked 'Status: Accepted' while the proposal flags requires_human_review; if repository convention expects a Proposed state pending review, the status should be adjusted.",
+      "Dense phrasing such as 'retain elapsed-expiry equality' depends on an existing rule not shown here; readers may not be able to locate the referenced comparator."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20261014T103707Z-UBU-Q0168/responses/claude_score_openai-ubu-q0168-clock-qualification_stdout.json",
+      "stderr_path": null
+    }
+  }
+]

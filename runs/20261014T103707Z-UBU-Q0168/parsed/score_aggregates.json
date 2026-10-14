@@ -1,0 +1,11 @@
+[
+  {
+    "proposal_id": "openai-ubu-q0168-clock-qualification",
+    "author_provider": "openai",
+    "cross_score_count": 2,
+    "score_mean": 84.0,
+    "score_spread": 20,
+    "frontier_score_gap": 20,
+    "disagreement_flags": []
+  }
+]

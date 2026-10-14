@@ -1,0 +1,20 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-ubu-q0168-clock-qualification",
+      "score": 94,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Suspension enforcement and finite clock-mapping error bounds still require implementation and deployment evidence; this amendment alone cannot qualify a mode."
+      ],
+      "required_fixes": [],
+      "rationale": "Mechanical validation passes, and repository inspection confirms consistency with the existing latency contract. The amendment addresses a concrete gap in suspension accounting and mapped-time freshness, preserves deadline equality and separate fallback/quiescence/release bounds, and adds auditable qualification cases. Changes stay within allowed documentation files, preserve question metadata and Open status, and introduce no unsupported performance claims. It advances the architecture without supplying the numerical profiles or measured acceptance still required for closure."
+    }
+  ],
+  "selected_proposal_id": "openai-ubu-q0168-clock-qualification",
+  "selection_rationale": "The sole candidate is mechanically valid and provides a focused, internally consistent qualification amendment. This cross-score supports it while leaving final selection to model-committee aggregation."
+}
