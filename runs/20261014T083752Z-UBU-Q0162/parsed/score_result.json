@@ -1,0 +1,27 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0162-codex-legacy-log-identity-20261014",
+      "score": 72,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Requiring rejection 'independently of the origin Device or idempotency key' while 'preserving ordinary successful Log replay' depends on the replay-target check running before the new writer guard; the text does not spell out that ordering, leaving room for an implementation that rejects legitimate same-key replays.",
+        "The identity-collision guard is adjacent to, not identical with, the question's core concern (in-place editing of admitted Log history); it widens the remediation ticket and test matrix for a question block that is already long.",
+        "The new 2026-10-14 finding (separate primary keys in migrations/0001_initial.sql, no objects-row absence check in append_prepared_log, replay-target check only covering reused keys) is unverified by this scorer; if log ids are server-generated or a cross-table uniqueness check already exists, the paragraph documents a non-reachable path.",
+        "The patch does not advance any of the three outstanding closure items (runtime reproduction, filed remediation ticket, passing checks); it adds further static-audit text to a question whose own Resolution says those items are what remain."
+      ],
+      "required_fixes": [
+        "Before merging, verify the cited symbols and behavior at 83a099f55220b1286ffb2dee3c9d19006e2090b5: that migrations/0001_initial.sql is the schema file, that logs.id is client-supplied, and that append_prepared_log and prepare_mutation perform no objects-table absence check.",
+        "Reword the sentence 'The replay-target check in prepare_mutation and tests/append_log.rs::cross_writer_key_is_global_per_device cover reused keys, leaving a fresh key able to claim a legacy LogEntry id in logs' so the subject and claim are unambiguous.",
+        "State explicitly that same-key replay of an already-admitted Log entry still returns the existing receipt and that the new objects-collision guard applies only to fresh admissions, so the two requirements cannot be read as conflicting."
+      ],
+      "rationale": "Aggregate cross-score mean from 1 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0162-codex-legacy-log-identity-20261014",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}
