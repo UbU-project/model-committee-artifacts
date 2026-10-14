@@ -1,0 +1,21 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0163-google-cancellation-delivery-20261014",
+      "score": 94,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Cancellation delivery and ordering remain unverified behaviorally; this documentation cannot establish safe blocker retirement.",
+        "Cursor recovery must remain conditional on selecting incremental sync."
+      ],
+      "required_fixes": [],
+      "rationale": "Mechanical validation passes and changes only the allowed OPEN_QUESTIONS.md. Local inspection confirms the request and cursor gaps at the cited implementation revision. Provider claims agree with Google's [list reference](https://developers.google.com/workspace/calendar/api/v3/reference/events/list), [event reference](https://developers.google.com/workspace/calendar/api/v3/reference/events) and [sync guide](https://developers.google.com/workspace/calendar/api/guides/sync). The patch adds useful sparse-cancellation, delayed-read and recovery controls while preserving Open status, admission safeguards, historical records and operator approval. It advances the bounded remediation specification without claiming implementation success."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0163-google-cancellation-delivery-20261014",
+  "selection_rationale": "The sole candidate is mechanically valid, auditable and directly strengthens the existing cancellation remediation. This cross-score leaves final selection to model-committee and does not authorize blocker retirement."
+}

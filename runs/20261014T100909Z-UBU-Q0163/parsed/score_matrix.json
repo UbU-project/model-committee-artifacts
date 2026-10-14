@@ -1,0 +1,50 @@
+[
+  {
+    "proposal_id": "UBU-Q0163-google-cancellation-delivery-20261014",
+    "author_provider": "openai",
+    "scorer_provider": "codex",
+    "score": 94,
+    "valid": true,
+    "rationale": "Mechanical validation passes and changes only the allowed OPEN_QUESTIONS.md. Local inspection confirms the request and cursor gaps at the cited implementation revision. Provider claims agree with Google's [list reference](https://developers.google.com/workspace/calendar/api/v3/reference/events/list), [event reference](https://developers.google.com/workspace/calendar/api/v3/reference/events) and [sync guide](https://developers.google.com/workspace/calendar/api/guides/sync). The patch adds useful sparse-cancellation, delayed-read and recovery controls while preserving Open status, admission safeguards, historical records and operator approval. It advances the bounded remediation specification without claiming implementation success.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [
+      "Cancellation delivery and ordering remain unverified behaviorally; this documentation cannot establish safe blocker retirement.",
+      "Cursor recovery must remain conditional on selecting incremental sync."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20261014T100909Z-UBU-Q0163/responses/codex_score_ubu-q0163-google-cancellation-delivery-20261014_response.json",
+      "stderr_path": null
+    }
+  },
+  {
+    "proposal_id": "UBU-Q0163-google-cancellation-delivery-20261014",
+    "author_provider": "openai",
+    "scorer_provider": "claude",
+    "score": 74,
+    "valid": true,
+    "rationale": "The patch applies cleanly, touches only UBU-Q0163 in OPEN_QUESTIONS.md, keeps the single-line metadata intact with Status: Open and Resolved by: None, and adds no questions or decisions. Substantively it is directly responsive: the existing 'Read boundary' bullet requires exercising production cancellation delivery, and the proposal identifies that the bounded Google read never requests showDeleted, so cancelled instances would not be delivered at all. That is a real prerequisite for the proposed remediation ticket, and the sparse-exception fields (id, recurringEventId, originalStartTime only) and the syncToken/timeMin incompatibility and HTTP 410 reset behavior match Google's published API semantics. The modified replay row and the new sparse-cancellation row integrate consistently with the existing acceptance slice, and the Resolution paragraph correctly keeps the question Open and removes no blocker. Deductions are for unverifiable repository claims, the conditional cursor row that edges beyond the ticket's stated scope, and continued growth of an already long question without any executed evidence.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [
+      "Before merge, confirm against the pinned 9fddef16 checkout that list_request omits showDeleted and that the cited tests/calendar_wire.rs test name exists as written.",
+      "Consider reducing the optional cursor path to a one-sentence pointer (or a separate note) so the bounded slice stays focused on explicit cancellation of an already captured occurrence."
+    ],
+    "risks": [
+      "Source claims about ubu-orchestrator at 9fddef16 (no showDeleted/syncToken/updatedMin in list_request, nextSyncToken not retained, the named tests/calendar_wire.rs assertion) cannot be verified from this repository; if any are inaccurate the ticket inherits a wrong prerequisite.",
+      "The optional cursor/syncToken path and its conditional acceptance row broaden the bounded explicit-cancellation ticket toward incremental sync, which is a different mechanism and may distract from the narrower repair.",
+      "UBU-Q0163 is already very long; this adds roughly twelve more lines of dense static-audit prose with no passing result, increasing prompt size and making the question harder to audit without moving it toward resolution.",
+      "External documentation links are embedded in the question body; the document otherwise relies on revision-pinned local evidence, and link content can drift after the 2026-10-14 check date.",
+      "The showDeleted/singleEvents summary omits the documented nuance that cancelled recurring instances are returned when both flags are false; the inference that the current singleEvents=true read drops them is reasonable but not stated as an inference."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20261014T100909Z-UBU-Q0163/responses/claude_score_ubu-q0163-google-cancellation-delivery-20261014_stdout.json",
+      "stderr_path": null
+    }
+  }
+]

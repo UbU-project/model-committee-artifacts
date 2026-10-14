@@ -1,0 +1,27 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0163-google-cancellation-delivery-20261014",
+      "score": 74,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "none",
+      "risks": [
+        "Source claims about ubu-orchestrator at 9fddef16 (no showDeleted/syncToken/updatedMin in list_request, nextSyncToken not retained, the named tests/calendar_wire.rs assertion) cannot be verified from this repository; if any are inaccurate the ticket inherits a wrong prerequisite.",
+        "The optional cursor/syncToken path and its conditional acceptance row broaden the bounded explicit-cancellation ticket toward incremental sync, which is a different mechanism and may distract from the narrower repair.",
+        "UBU-Q0163 is already very long; this adds roughly twelve more lines of dense static-audit prose with no passing result, increasing prompt size and making the question harder to audit without moving it toward resolution.",
+        "External documentation links are embedded in the question body; the document otherwise relies on revision-pinned local evidence, and link content can drift after the 2026-10-14 check date.",
+        "The showDeleted/singleEvents summary omits the documented nuance that cancelled recurring instances are returned when both flags are false; the inference that the current singleEvents=true read drops them is reasonable but not stated as an inference."
+      ],
+      "required_fixes": [
+        "Before merge, confirm against the pinned 9fddef16 checkout that list_request omits showDeleted and that the cited tests/calendar_wire.rs test name exists as written.",
+        "Consider reducing the optional cursor path to a one-sentence pointer (or a separate note) so the bounded slice stays focused on explicit cancellation of an already captured occurrence."
+      ],
+      "rationale": "The patch applies cleanly, touches only UBU-Q0163 in OPEN_QUESTIONS.md, keeps the single-line metadata intact with Status: Open and Resolved by: None, and adds no questions or decisions. Substantively it is directly responsive: the existing 'Read boundary' bullet requires exercising production cancellation delivery, and the proposal identifies that the bounded Google read never requests showDeleted, so cancelled instances would not be delivered at all. That is a real prerequisite for the proposed remediation ticket, and the sparse-exception fields (id, recurringEventId, originalStartTime only) and the syncToken/timeMin incompatibility and HTTP 410 reset behavior match Google's published API semantics. The modified replay row and the new sparse-cancellation row integrate consistently with the existing acceptance slice, and the Resolution paragraph correctly keeps the question Open and removes no blocker. Deductions are for unverifiable repository claims, the conditional cursor row that edges beyond the ticket's stated scope, and continued growth of an already long question without any executed evidence."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0163-google-cancellation-delivery-20261014",
+  "selection_rationale": "Only one proposal was submitted and it passed mechanical validation, the file allowlist and the question-schema check. It makes a bounded, auditable, technically sound addition that identifies a concrete delivery prerequisite (showDeleted) for the already-proposed cancellation ticket while keeping the question Open and the blocker in place. Residual concerns are verification of the cited source details and minor scope breadth from the optional cursor path, neither of which invalidates the patch."
+}

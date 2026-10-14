@@ -1,0 +1,29 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0163-google-cancellation-delivery-20261014",
+      "score": 84,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Cancellation delivery and ordering remain unverified behaviorally; this documentation cannot establish safe blocker retirement.",
+        "Cursor recovery must remain conditional on selecting incremental sync.",
+        "External documentation links are embedded in the question body; the document otherwise relies on revision-pinned local evidence, and link content can drift after the 2026-10-14 check date.",
+        "Source claims about ubu-orchestrator at 9fddef16 (no showDeleted/syncToken/updatedMin in list_request, nextSyncToken not retained, the named tests/calendar_wire.rs assertion) cannot be verified from this repository; if any are inaccurate the ticket inherits a wrong prerequisite.",
+        "The optional cursor/syncToken path and its conditional acceptance row broaden the bounded explicit-cancellation ticket toward incremental sync, which is a different mechanism and may distract from the narrower repair.",
+        "The showDeleted/singleEvents summary omits the documented nuance that cancelled recurring instances are returned when both flags are false; the inference that the current singleEvents=true read drops them is reasonable but not stated as an inference.",
+        "UBU-Q0163 is already very long; this adds roughly twelve more lines of dense static-audit prose with no passing result, increasing prompt size and making the question harder to audit without moving it toward resolution."
+      ],
+      "required_fixes": [
+        "Before merge, confirm against the pinned 9fddef16 checkout that list_request omits showDeleted and that the cited tests/calendar_wire.rs test name exists as written.",
+        "Consider reducing the optional cursor path to a one-sentence pointer (or a separate note) so the bounded slice stays focused on explicit cancellation of an already captured occurrence."
+      ],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0163-google-cancellation-delivery-20261014",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}
