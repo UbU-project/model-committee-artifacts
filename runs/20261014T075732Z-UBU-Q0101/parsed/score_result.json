@@ -1,0 +1,28 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-ubu-q0101-advisory-safeguard-contract",
+      "score": 90,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "The decision and design text are extremely compressed, with many capitalized domain nouns and long enumerations; this matches the surrounding repository style but raises the chance that a later reader misreads a clause (for example the distinction between Continue once, required-gate exception, and disablement).",
+        "The detailed contract requires coordinated policy, notification, audit, and evidence-use enforcement; the specified fixtures are requirements, not demonstrated implementation conformance.",
+        "The new DESIGN.md text cites specific Log codes and fields (`safeguard_advisory_bypassed`, `alert_dismissed_or_ignored`, `authority_source: user_override`, `preference_inference_allowed: false`, `none_given`) and section anchors (\u00a717.0, \u00a721.1.7, \u00a721.2.1, \u00a72.10.1.1, \u00a722.3.5, \u00a722.3.6) as already existing; these cannot be verified from the prompt and would dangle if any name differs at the base commit.",
+        "The proposal shifts the question's 'Current direction' ('introspection-relevant when bypassed') toward 'optional, authorized introspection review'; this is responsive to the anti-coercion framing of the question but is a substantive product stance that the human approver should consciously ratify.",
+        "The unchanged final paragraph of \u00a722.4 still says UbU 'records bypasses as introspection-relevant evidence', which is slightly out of step with the softened wording the patch introduces two paragraphs earlier ('bypass alone establishes no conflict'); readers could see a residual tension about whether bypass is evidence by default.",
+        "UBU-D0356 is assumed to be the next free decision ID; the patch applies at end of DECISIONS.md, which supports this, but ID uniqueness is not independently confirmed here."
+      ],
+      "required_fixes": [
+        "Align the last paragraph of the pre-existing \u00a722.4 prose ('records bypasses as introspection-relevant evidence') with the new 22.4.3 language, e.g. 'records bypasses in decision Logs that may contribute to optional, authorized introspection review', so the section is internally consistent.",
+        "Confirm at base commit 4ceb0ef that the cited Log codes/fields and section anchors exist with those exact names; if any do not, either rename to the existing ones or introduce them explicitly in \u00a717.0 rather than referencing them as given."
+      ],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "openai-ubu-q0101-advisory-safeguard-contract",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}

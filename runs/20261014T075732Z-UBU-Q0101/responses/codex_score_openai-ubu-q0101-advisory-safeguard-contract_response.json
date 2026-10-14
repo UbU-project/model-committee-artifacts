@@ -1,0 +1,20 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-ubu-q0101-advisory-safeguard-contract",
+      "score": 96,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "The detailed contract requires coordinated policy, notification, audit, and evidence-use enforcement; the specified fixtures are requirements, not demonstrated implementation conformance."
+      ],
+      "required_fixes": [],
+      "rationale": "Reported mechanical validation passes, with changes confined to the three allowed documentation files. The proposal addresses all five subquestions through uncertainty disclosure, scoped controls, separately authorized introspection, preservation of declared values, and bounded opt-in reminders. It prevents bypass alone from establishing misconduct or values conflict and preserves independent hard boundaries. The question correctly uses Status: Solved and retains scoring metadata. Implementation validation and broader extrospection thresholds remain explicitly separate. No blocking defect is evident in the supplied patch."
+    }
+  ],
+  "selected_proposal_id": "openai-ubu-q0101-advisory-safeguard-contract",
+  "selection_rationale": "The sole candidate is mechanically eligible, auditable, and directly responsive. This nomination supports local cross-score aggregation; adoption still requires human approval."
+}

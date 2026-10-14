@@ -1,0 +1,189 @@
+{
+  "schema_version": "0.4",
+  "run_id": "20261014T075732Z-UBU-Q0101",
+  "created_at_utc": "2026-10-14T07:57:32Z",
+  "repo_path": "../ubu-design",
+  "base_commit": "4ceb0ef3797c1cbf3e7a7edd33835404105037e1",
+  "selected_question_id": "UBU-Q0101",
+  "phase": "work-select",
+  "config_path": "config/models.json",
+  "status": "selected",
+  "commands": [
+    "model-committee run-loop"
+  ],
+  "providers_attempted": [
+    "codex",
+    "claude"
+  ],
+  "providers_succeeded": [
+    "codex",
+    "claude"
+  ],
+  "providers_failed": [],
+  "provider_attempts": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "openai-ubu-q0101-advisory-safeguard-contract",
+      "response_path": "runs/20261014T075732Z-UBU-Q0101/responses/codex_score_openai-ubu-q0101-advisory-safeguard-contract_response.json",
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "openai-ubu-q0101-advisory-safeguard-contract",
+      "response_path": "runs/20261014T075732Z-UBU-Q0101/responses/claude_score_openai-ubu-q0101-advisory-safeguard-contract_stdout.json",
+      "stderr_path": null
+    }
+  ],
+  "provider_successes": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20261014T075732Z-UBU-Q0101/parsed/codex_work_proposal.json"
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "openai-ubu-q0101-advisory-safeguard-contract",
+      "response_path": "runs/20261014T075732Z-UBU-Q0101/responses/codex_score_openai-ubu-q0101-advisory-safeguard-contract_response.json",
+      "parsed_path": "runs/20261014T075732Z-UBU-Q0101/parsed/codex_score_openai-ubu-q0101-advisory-safeguard-contract_result.json"
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "openai-ubu-q0101-advisory-safeguard-contract",
+      "response_path": "runs/20261014T075732Z-UBU-Q0101/responses/claude_score_openai-ubu-q0101-advisory-safeguard-contract_stdout.json",
+      "parsed_path": "runs/20261014T075732Z-UBU-Q0101/parsed/claude_score_openai-ubu-q0101-advisory-safeguard-contract_result.json"
+    }
+  ],
+  "provider_failures": [],
+  "score_matrix": [
+    {
+      "proposal_id": "openai-ubu-q0101-advisory-safeguard-contract",
+      "author_provider": "openai",
+      "scorer_provider": "codex",
+      "score": 96,
+      "valid": true,
+      "rationale": "Reported mechanical validation passes, with changes confined to the three allowed documentation files. The proposal addresses all five subquestions through uncertainty disclosure, scoped controls, separately authorized introspection, preservation of declared values, and bounded opt-in reminders. It prevents bypass alone from establishing misconduct or values conflict and preserves independent hard boundaries. The question correctly uses Status: Solved and retains scoring metadata. Implementation validation and broader extrospection thresholds remain explicitly separate. No blocking defect is evident in the supplied patch.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "The detailed contract requires coordinated policy, notification, audit, and evidence-use enforcement; the specified fixtures are requirements, not demonstrated implementation conformance."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261014T075732Z-UBU-Q0101/responses/codex_score_openai-ubu-q0101-advisory-safeguard-contract_response.json",
+        "stderr_path": null
+      }
+    },
+    {
+      "proposal_id": "openai-ubu-q0101-advisory-safeguard-contract",
+      "author_provider": "openai",
+      "scorer_provider": "claude",
+      "score": 84,
+      "valid": true,
+      "rationale": "Mechanical validation passed: patch applies, allowlist OK, question schema OK. The proposal is directly responsive to all five subquestions: 22.4.1 covers uncertainty and false-positive/false-negative disclosure (subq 1); 22.4.2 defines a concrete control table for review/revise, Continue once, disable, self-imposed required review, and dismiss/snooze (subq 2); 22.4.3 sets evidence, authority, and no-coercion rules for introspection candidates (subq 3) and decouples disablement from declared values (subq 4); 22.4.4 bounds repeated-bypass review to user-requested or opt-in finite reminders (subq 5). OPEN_QUESTIONS.md uses Status: Solved with Resolved by: UBU-D0356 and keeps all other metadata fields intact. Scope is limited to the three expected files, with two small consistency edits to existing \u00a722.4 text and an explicit deferral of broader proactive thresholds to UBU-Q0089. It adds a new accepted decision and sets requires_human_review, consistent with the question's human-approval eligibility. Deductions are for unverifiable cross-references, one residual inconsistent sentence in existing \u00a722.4, and the very dense prose; none of these block adoption.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [
+        "Align the last paragraph of the pre-existing \u00a722.4 prose ('records bypasses as introspection-relevant evidence') with the new 22.4.3 language, e.g. 'records bypasses in decision Logs that may contribute to optional, authorized introspection review', so the section is internally consistent.",
+        "Confirm at base commit 4ceb0ef that the cited Log codes/fields and section anchors exist with those exact names; if any do not, either rename to the existing ones or introduce them explicitly in \u00a717.0 rather than referencing them as given."
+      ],
+      "risks": [
+        "The new DESIGN.md text cites specific Log codes and fields (`safeguard_advisory_bypassed`, `alert_dismissed_or_ignored`, `authority_source: user_override`, `preference_inference_allowed: false`, `none_given`) and section anchors (\u00a717.0, \u00a721.1.7, \u00a721.2.1, \u00a72.10.1.1, \u00a722.3.5, \u00a722.3.6) as already existing; these cannot be verified from the prompt and would dangle if any name differs at the base commit.",
+        "The unchanged final paragraph of \u00a722.4 still says UbU 'records bypasses as introspection-relevant evidence', which is slightly out of step with the softened wording the patch introduces two paragraphs earlier ('bypass alone establishes no conflict'); readers could see a residual tension about whether bypass is evidence by default.",
+        "The decision and design text are extremely compressed, with many capitalized domain nouns and long enumerations; this matches the surrounding repository style but raises the chance that a later reader misreads a clause (for example the distinction between Continue once, required-gate exception, and disablement).",
+        "The proposal shifts the question's 'Current direction' ('introspection-relevant when bypassed') toward 'optional, authorized introspection review'; this is responsive to the anti-coercion framing of the question but is a substantive product stance that the human approver should consciously ratify.",
+        "UBU-D0356 is assumed to be the next free decision ID; the patch applies at end of DECISIONS.md, which supports this, but ID uniqueness is not independently confirmed here."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261014T075732Z-UBU-Q0101/responses/claude_score_openai-ubu-q0101-advisory-safeguard-contract_stdout.json",
+        "stderr_path": null
+      }
+    }
+  ],
+  "score_aggregates": [
+    {
+      "proposal_id": "openai-ubu-q0101-advisory-safeguard-contract",
+      "author_provider": "openai",
+      "cross_score_count": 2,
+      "score_mean": 90.0,
+      "score_spread": 12,
+      "frontier_score_gap": 12,
+      "disagreement_flags": []
+    }
+  ],
+  "cross_score_count": 2,
+  "score_mean": 90.0,
+  "score_spread": 12,
+  "frontier_score_gap": 12,
+  "disagreement_flags": [],
+  "quorum_result": {
+    "valid": true,
+    "human_review_required": false,
+    "selected_proposal_id": "openai-ubu-q0101-advisory-safeguard-contract",
+    "selected_score": 90.0,
+    "selected_cross_score_count": 2,
+    "blocked_reasons": [],
+    "manual_override": false
+  },
+  "selected_proposal_id": "openai-ubu-q0101-advisory-safeguard-contract",
+  "automated_selection_valid": true,
+  "human_review_required": false,
+  "artifact_publication_status": "operator_pending",
+  "prompt_size_warning": false,
+  "prompt_context": {
+    "question_ids": [
+      "UBU-Q0028",
+      "UBU-Q0060",
+      "UBU-Q0083",
+      "UBU-Q0100",
+      "UBU-Q0101"
+    ],
+    "decision_ids": [
+      "UBU-D0074",
+      "UBU-D0157",
+      "UBU-D0162",
+      "UBU-D0165"
+    ],
+    "sections": {
+      "DESIGN.md": [
+        "2.10.2",
+        "2.11",
+        "21.3",
+        "22.4"
+      ]
+    },
+    "core_sections": {
+      "DESIGN.md": [
+        "1"
+      ],
+      "DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md": [
+        "4"
+      ]
+    },
+    "missing_refs": {},
+    "context_chars": 64393,
+    "prompt_chars": 71868
+  }
+}
