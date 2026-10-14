@@ -1,0 +1,11 @@
+[
+  {
+    "proposal_id": "UBU-Q0078-openai-gpt-6-20261014-interruption-consent",
+    "author_provider": "openai",
+    "cross_score_count": 2,
+    "score_mean": 90.0,
+    "score_spread": 12,
+    "frontier_score_gap": 12,
+    "disagreement_flags": []
+  }
+]

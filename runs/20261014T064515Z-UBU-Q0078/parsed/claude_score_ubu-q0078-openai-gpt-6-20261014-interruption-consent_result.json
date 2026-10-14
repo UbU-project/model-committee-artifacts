@@ -1,0 +1,27 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0078-openai-gpt-6-20261014-interruption-consent",
+      "score": 84,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "none",
+      "risks": [
+        "Heavy reliance on cross-references that cannot be verified from the prompt alone (UBU-D0201/D0272, D0309-D0311, D0325-D0328, D0330, D0339, sections 4.2, 12.2, 17.0, 21.1.2-21.1.6, 21.2.1, and questions Q0128/Q0168/Q0174). Any stale or incorrect reference weakens the decision's consolidation claim.",
+        "The override-recording text names specific event and field identifiers (decision_recorded, alert_dismissed_or_ignored, authority_source = user_override, preference_inference_allowed = false) as already existing in section 17.0 while also asserting the policy adds no kernel field or Log event type. If any identifier does not already exist, that assertion is false and the patch silently introduces schema.",
+        "The mode table presents snake_case identifiers (off, text_only, voice_session, discovery_mode, meeting_logging, local_only_realtime, cloud_assisted_realtime) as 'the existing mode vocabulary'. If these names are new rather than inherited from UBU-D0272's RealtimeSession, the decision introduces identifiers without saying so.",
+        "The DESIGN section is very dense; many distinct normative constraints are packed into long paragraphs, which reduces auditability and raises the chance of subtle conflicts with the prior consent, silence, pause and restricted-attention contracts it claims to consolidate.",
+        "Decision type is Product with human approval required, so this cross-score cannot substitute for the required human sign-off on the policy content."
+      ],
+      "required_fixes": [
+        "Before merge, confirm that every referenced decision ID, section number, event name and field name exists at the base commit; in particular confirm alert_dismissed_or_ignored, authority_source = user_override and preference_inference_allowed are already defined in section 17.0, or amend the 'adds no Log event type' sentence.",
+        "Confirm the seven mode identifiers match the vocabulary already established by UBU-D0272; if they are new, state that explicitly in UBU-D0350."
+      ],
+      "rationale": "Mechanical validation passed on all checks: the patch applies, only the three allowlisted files change, and the question schema is preserved with Status: Solved and Resolved by: UBU-D0350 while all other metadata fields are untouched. The work is directly responsive to the selected question: the new DESIGN.md section 21.1.7 answers all five subquestions with a mode/consent table, a condition/response table, explicit anti-nagging and anti-surveillance rules (opt-in alert rules, aggregate budgets, coalescing, nonresponse never escalates, affect inference alone never triggers), an override-recording and calibration contract, and a visible-status specification. The DECISIONS.md entry is appended once and summarises the policy without over-claiming implementation. Scope is appropriate: no new questions, no other question entries touched, and the decision explicitly defers numerical profiles and release gates to their existing questions. Points are withheld for auditability (dense prose) and for unverifiable claims that named identifiers and cross-references already exist, which the validation notes assert but which cannot be confirmed from the prompt."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0078-openai-gpt-6-20261014-interruption-consent",
+  "selection_rationale": "It is the only proposal and it passed mechanical validation. It resolves UBU-Q0078 with Status: Solved, addresses every subquestion, modifies only allowlisted files, adds exactly one decision and no new questions, and correctly flags human review as required. Remaining concerns are verification of cross-references and identifier names, not defects in responsiveness or schema."
+}

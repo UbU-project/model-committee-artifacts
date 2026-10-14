@@ -1,0 +1,234 @@
+# Model-Committee Cross-Scoring Request
+
+You are scoring candidate work proposals for the UbU `model-committee` process.
+
+Return exactly one JSON object. Do not return prose outside the JSON object.
+
+This is a v0.2 cross-score. You are not making the final selection; model-committee
+will aggregate valid cross-scores locally.
+
+Scoring provider: `codex`
+Authoring provider for the candidate proposal(s): `openai`
+
+## Selected question
+
+Question ID: `UBU-Q0078`  
+Question title: `Interruption, escalation, and discovery-mode consent policy`  
+Base commit: `469480860e389949428ceafe5d7ea07a825cbe9e`
+
+```markdown
+## UBU-Q0078: Interruption, escalation, and discovery-mode consent policy
+
+Status: Open Priority: MVP important Phase: Phase 2 Decision type: Product Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 90 Depends on: UBU-Q0052, UBU-Q0077 Blocks: realtime UX, discovery mode, short-horizon reactive repair Resolved by: None Last scored: 2026-10-14 Scored from commit: None
+
+### Question
+
+When may UbU interrupt, pause, escalate, or ask for clarification based on realtime or inferred conditions?
+
+### Subquestions
+
+1. What user-visible modes are required: off, text-only, voice session, discovery mode, meeting/logging mode, local-only mode, cloud-assisted mode?
+2. What conditions justify interruption: imminent deadline failure, blocked Task, safety issue, unexpected external event, significant affect shift, or user-requested monitoring?
+3. How should interruption policy avoid becoming surveillance, nagging, or emotional paternalism?
+4. How should UbU record user overrides of interruptions and use them for future calibration?
+5. What UI indicators must show active capture, routing, retention, and review status?
+
+### Current direction
+
+Realtime and discovery modes must be explicit and bounded. Interruption should preserve user sovereignty and Plan legitimacy rather than maximizing engagement or compliance.
+
+### Resolution
+
+Open.
+
+---
+
+```
+
+## Candidate proposals
+
+```json
+[
+  {
+    "proposal_id": "UBU-Q0078-openai-gpt-6-20261014-interruption-consent",
+    "provider_id": "openai",
+    "model_name": "gpt-6",
+    "question_id": "UBU-Q0078",
+    "base_commit": "469480860e389949428ceafe5d7ea07a825cbe9e",
+    "summary": "Resolve the remaining interruption policy with explicit session consent, opt-in alert rules, mandatory service stops, durable prompt suppression and user-approved calibration.",
+    "rationale": "Existing decisions already govern realtime candidates, retention, cancellation, restricted attention and professional escalation. This proposal consolidates those boundaries and supplies the missing conditions for user-visible interruption, finite alert budgets, affect and nonresponse limits, override recording and status indicators without adding capture authority or reopening release scope.",
+    "changed_files": [
+      "DECISIONS.md",
+      "DESIGN.md",
+      "OPEN_QUESTIONS.md"
+    ],
+    "patch": "diff --git a/DECISIONS.md b/DECISIONS.md\n--- a/DECISIONS.md\n+++ b/DECISIONS.md\n@@ -5486,3 +5486,19 @@ Additional temporal discounting defaults to zero within seven days. Explicit acc\n Wider detailed scopes require explicit overrides, finite budgets and CPU certification. Local desktop, user-owned worker and later premium/provider paths share the existing authority and privacy boundary; long-term speculative temporal-value planning remains research. The design specifies required enablement fixtures, not implemented support or passing evidence, and does not reopen Phase 1 scope.\n \n ---\n+\n+## UBU-D0350: Interruptions require scoped permission while service stops preserve eligibility\n+\n+**Status:** Accepted \u2192 DESIGN.md \u00a721.1.7. Resolves `UBU-Q0078`; consolidates `UBU-D0201`/`UBU-D0272` with `UBU-D0309`\u2013`UBU-D0311`, `UBU-D0325`\u2013`UBU-D0328`, `UBU-D0330` and `UBU-D0339`.\n+\n+For Phase 2, distinguish interaction mode, processing route, attention and Compartment. Capture is explicit, finite, source/purpose/Device-bound and independently controllable from speech. Meeting/cloud selections remain unavailable until their separate gates pass; restart, sync and handoff convey no live consent.\n+\n+Unsolicited realtime/discovery alerts default off. User-enabled rules bind conditions, permitted evidence, freshness, channels, quiet/suppression behavior and finite aggregate limits. Deadline risk, current-work blockers, material external events and requested monitoring may prompt under those rules; affect inference alone cannot. Clarification stays within the current request or enabled rule and remaining budget.\n+\n+Invalid eligibility stops the affected UbU service regardless of alert settings. Professional/urgent guidance stops retain \u00a721.1.6's allowed output and authority limits. Notices and repair proposals admit no state or external action and cannot override silence, privacy or restricted attention.\n+\n+Coalesce condition episodes, persist dismissal/snooze/disable choices and never escalate from nonresponse. Record minimized overrides through existing counterfactual decision events with optional reasons and no Preference inference. Calibration proposes explicitly accepted interaction-setting changes without expanding capture or optimizing compliance.\n+\n+DESIGN.md \u00a721.1.7 specifies visible status and behavioral enablement fixtures. This resolves the product policy, not implementation acceptance, numerical attention/timing profiles or additional capture scope.\n+\n+---\ndiff --git a/DESIGN.md b/DESIGN.md\n--- a/DESIGN.md\n+++ b/DESIGN.md\n@@ -3932,6 +3932,65 @@ Before enabling a guidance workflow, pin controller/backend/model, envelope and\n \n These are required behavioral gates, not passing results or guarantees of safety. `UBU-Q0174` is answered as a process contract; measured timing, host fidelity, expert packets and release sequencing retain their existing questions and gates.\n \n+#### 21.1.7 Interruption, escalation and session consent\n+\n+**Product contract (`UBU-D0350`, Phase 2).** Apply this policy to realtime/discovery notices, clarification and short-horizon repair alongside `UBU-D0201`/`UBU-D0272` and \u00a7\u00a721.1.2\u201321.1.6. A model may propose an interruption; the controller decides whether to queue it, present it, ask a bounded question or stop an affected service. Presentation permission grants no canonical mutation, Plan adoption, external action, disclosure or additional capture authority.\n+\n+**Modes and consent.** Display interaction mode separately from processing route, activity/attention and Compartment. The existing mode vocabulary has these operational meanings:\n+\n+| Selection | Consent boundary |\n+|---|---|\n+| `off` | Realtime/discovery acquisition, model interaction and unsolicited interaction output are off. Manual planning/review and required inline operation checks remain available. |\n+| `text_only` | Use intentionally submitted text/forms; microphone, camera and sensor acquisition remain disabled. |\n+| `voice_session` | Explicitly start a finite session with named sources and independently selected speech output. The name enables neither camera nor background microphone capture. |\n+| `discovery_mode` | Explicitly select a Task/workflow purpose, finite duration and permitted sources; observations remain reviewable evidence under \u00a712.2. |\n+| `meeting_logging` | Show as unavailable until separately released participant-consent, source, retention and disclosure gates pass. One operator's consent cannot authorize other participants or cross-user projection. |\n+| `local_only_realtime` | Show the named qualified endpoint and eligible local route. Another execution-enclave Device requires its own trust, authenticated route and source-policy checks; ownership alone grants no access. |\n+| `cloud_assisted_realtime` | Show as unavailable until separately qualified for the exact policy-approved input and destination. No implicit cloud fallback or raw-AV export follows; MVP raw AV remains local. |\n+\n+Before acquisition, bind explicit consent to actor, capture Device, source selectors, session/source epoch, Task/workflow purpose, Compartment and policy versions, named processing endpoints/route, retention limits and a finite session deadline. Hardware permission, opening a surface, remembered settings and silence are insufficient. Adding a source, widening purpose or changing Identity, Compartment, Device or route requires fresh permitted review/consent; policy tightening invalidates affected work immediately. Resume is explicit and starts a fresh source epoch. Restart, handoff, recovered connectivity and synchronized records never restore live consent. Delivery sequence and qualification remain \u00a74.2 (`UBU-D0339`).\n+\n+Pause stops affected acquisition, analysis and output; Stop ends the session. Silence stops speech immediately without implying that capture has stopped: show any sources still active and keep Pause/Stop reachable. These controls operate locally without a model, network or valid interaction budget. Pending review may remain after capture ends, within its own retention authority.\n+\n+**Interruption permission.** Unsolicited realtime/discovery alerts are off by default. A user may enable a versioned local rule for a named condition and scope. Bind the rule to actor/Device, Task/Objective/workflow, permitted evidence/source refs, trigger predicate and uncertainty treatment, freshness limit, allowed presentation channel/endpoint, quiet periods, finite aggregate alert/clarification ceilings, a finite response window when recording nonresponse, cooldown, expiry and allowed resurfacing conditions. Include a finite session/work-window cap across producers, not just a cap per detector. Missing limits or authority permits only policy-allowed review queuing. Capture consent and a sender's interrupt recommendation supply no such rule. Models cannot change these bindings or urgency.\n+\n+A response/clarification within the current explicit user request uses its remaining interaction budget. Unsolicited delivery additionally needs the rule above. In both cases recheck current consent where relevant, permitted evidence and policy versions, target/context bindings, freshness, attention budget, output privacy, suppression and remaining limits immediately before presentation. Unknown attention uses \u00a721.1.2's conservative envelope; an interruption category cannot widen it.\n+\n+| Condition | Permitted response |\n+|---|---|\n+| Imminent deadline failure | An enabled rule may notify when permitted current admitted Task/commitment data and a labelled risk calculation cross its reviewed lead-time/slack threshold. Explain the threatened outcome, uncertainty and remaining repair option; lateness or Plan deviation alone does not justify repeated prompting. |\n+| Blocked Task or loss of Plan legitimacy | For the current/selected work, show the failed precondition or relevant blocker and offer review/repair. Withhold an ineligible recommendation or dispatch regardless of alert settings; unrelated blocked Tasks stay in ordinary review unless separately monitored. |\n+| Unexpected external event | An enabled rule may notify of an evidenced material change to selected work or commitments. Imported/inferred claims retain their candidate/uncertainty labels; notifying never admits the claimed event or changes the Plan. |\n+| Significant inferred affect shift | Affect inference alone justifies no unsolicited interruption, emotional label or capacity/Preference change. A separately requested, scoped check-in may ask for a user declaration within its finite budget; declining or leaving state unknown ends that prompt. |\n+| User-requested monitoring | Evaluate only the named predicate, sources, interval and delivery rule. Show freshness and gaps; absence of an alert proves neither coverage nor safety. No safety-critical monitoring guarantee or broader surveillance follows. |\n+| Clarification | Ask only for a decision-relevant missing detail in the current request or an enabled monitored condition, within the remaining finite clarification allowance. Offer unknown/private, defer or manual entry; unanswered or ambiguous input never becomes consent. |\n+| Guidance hazard or professional stop | Apply \u00a721.1.6: stop affected procedural guidance and route unresolved hazardous prerequisites to qualified review. Possible immediate serious harm in a permitted active workflow receives its concise emergency-assistance notice only through a currently allowed output/attention envelope. It starts no monitoring, contact, export or additional acquisition. |\n+\n+A stop explanation within a currently requested workflow is a service response, not permission for background alerts. Required controller/service stops do not wait for an alert grant: invalid consent, policy, bindings, freshness, evidence prerequisites or resource limits stop the affected processing/guidance under \u00a7\u00a721.1.2\u201321.1.6. Quiet/silence and dismissal cannot permit an otherwise forbidden operation. Keep its policy-safe inline status discoverable without recurring speech or modal prompts; no urgent label overrides revoked output, silence, denied disclosure or unavailable attention. A stop constrains UbU's service, not the user's physical actions or Task lifecycle.\n+\n+A notice offers an explanation and a next choice, not a command. Repair candidates stay outside admitted state; recalculation uses admitted inputs and CPU certification, and relying on a replacement default Plan follows ordinary Plan/Calendar review. Neither an interruption nor failure to respond authorizes Task completion/failure, Calendar changes, automatic Plan switching or external escalation.\n+\n+**Delivery and suppression.** Prefer review queuing, then an allowed turn/Task boundary and the least disruptive enabled channel. Immediate service invalidation remains independent. Coalesce notices by Device, permitted scope, condition episode and materially relevant evidence; new model/template versions, rewritten wording, age, restart and repeated observations do not create a new episode. A resolved condition must have permitted evidence before a later recurrence can form a new episode. Aggregate budgets also limit genuinely new conditions.\n+\n+Offer Dismiss until material change, Snooze until a user-selected time/condition, Disable this rule and Review later, without a compulsory reason. Persist minimized local suppression across views/restart under retention policy, alongside ordinary candidate rejection/deferral under \u00a721.2.1. Material change can reopen a dismissal only within the existing rule and limits; snooze follows the user's selected reopening condition. Expiry, unavailable evidence or exhausted budgets never create retry prompts or new capture. Nonresponse never increases frequency, urgency, volume, channel or audience. Mandatory eligibility/conflict checks remain visible at the affected operation; dismissing their notice does not resolve the blocker.\n+\n+**Overrides and calibration.** Record a presented notice's dismissal, snooze, disablement or nonresponse through \u00a717.0's existing `decision_recorded`/`alert_dismissed_or_ignored` path; a bypass or changed action uses its existing applicable decision kind. Link the permitted notice/candidate/version, trigger/evidence and policy versions, presentation time/channel, selected control, suppression scope/deadline and any separately admitted change. Explicit override records identify the actor and `authority_source = user_override`. Reasons remain optional with `none_given` when absent; `preference_inference_allowed = false` for these records. Record nonresponse only after established presentation and the rule's finite response window, distinguishing it from unknown delivery; it proves no attention, assent or rejection of the underlying claim.\n+\n+During user-requested review, permitted minimized history may support proposals to reduce false positives, improve timing or revise explicit monitoring rules. Show uncertainty, corrections, unanswered notices and user-reported burden; do not optimize compliance, engagement, inferred emotional susceptibility or surveillance. Calibration cannot silently expand sources, channels, thresholds, frequency or authority. Policy changes need explicit acceptance as interaction settings; planner Preferences still require their separate accepted statements. Monitoring/override history grants no training or secondary-use consent.\n+\n+**Visible status.** Keep a compact, accessible indicator of actual session/source state and pending review, with details on demand: active Identity/visible Compartment, each enabled source and capture Device, named processing endpoint/route, session expiry, effective raw-buffer/artifact retention deadlines and cleanup state, current delayed/paused coverage, enabled alert rule/quiet state and remaining limits. Distinguish transient capture, authorized saved evidence, unresolved candidates and admitted updates; show receipt/saving/admission separately. Policy-filter counts, labels, reasons and even existence. Pause/Stop/Silence, switch to text, inspect permitted evidence and reject/defer controls remain usable independently of processing; retention/deletion actions follow \u00a712.2.\n+\n+**Enablement evidence.** Before exposing interruption behavior, pin controller/adapter, Device/mode, policy/rule and finite profile revisions. Exercise:\n+\n+- Opt-in deadline/blocker/event rules with current versus stale/denied evidence; absent consent, missing limits and affect-only inference produce no unsolicited delivery, mutation or capture.\n+- Repeated/rewritten candidates, many distinct detectors, unanswered notices, dismiss/snooze/disable and restart respect coalescing, aggregate ceilings and durable suppression; a permitted material change or chosen snooze deadline reopens only under the current rule.\n+- Stop/Silence/revocation and deadline expiry racing with queued speech/results, source changes and Device handoff invalidate locally; late callbacks cannot speak, resume capture, reuse approval or overwrite corrections.\n+- Restricted attention and private-output denial defer unavailable prompts; an active-workflow professional/urgent stop supplies no automatic call, upload, diagnosis, Task update or expanded monitoring.\n+- Overrides require no reason and create only the correct minimized decision/suppression records; nonresponse/unknown delivery stays distinct, and calibration creates no inferred Preference or silently broader policy.\n+- Disabled alerts preserve required operation checks and useful manual review/repair; displayed capture, route, retention, review and pause/silence state match actual behavior without denied-context leakage.\n+\n+These are acceptance requirements, not passing implementation or safety evidence. `UBU-Q0128` retains numerical restricted-attention profiles; `UBU-Q0168` retains measured timing/resource ceilings. Existing host, retention, endpoint and mode-release gates remain required; this policy adds no kernel field, Log event type or capture-release commitment.\n+\n ### 21.2 Structured-output admission pipeline\n \n LLM, parser, worker, and agent outputs should follow an admission pipeline:\ndiff --git a/OPEN_QUESTIONS.md b/OPEN_QUESTIONS.md\n--- a/OPEN_QUESTIONS.md\n+++ b/OPEN_QUESTIONS.md\n@@ -960,27 +960,27 @@ Resolved by `UBU-D0272`: realtime interaction is represented by a lightweight `R\n \n ## UBU-Q0078: Interruption, escalation, and discovery-mode consent policy\n \n-Status: Open Priority: MVP important Phase: Phase 2 Decision type: Product Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 90 Depends on: UBU-Q0052, UBU-Q0077 Blocks: realtime UX, discovery mode, short-horizon reactive repair Resolved by: None Last scored: 2026-10-14 Scored from commit: None\n+Status: Solved Priority: MVP important Phase: Phase 2 Decision type: Product Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 90 Depends on: UBU-Q0052, UBU-Q0077 Blocks: realtime UX, discovery mode, short-horizon reactive repair Resolved by: UBU-D0350 Last scored: 2026-10-14 Scored from commit: None\n \n ### Question\n \n When may UbU interrupt, pause, escalate, or ask for clarification based on realtime or inferred conditions?\n \n ### Subquestions\n \n 1. What user-visible modes are required: off, text-only, voice session, discovery mode, meeting/logging mode, local-only mode, cloud-assisted mode?\n 2. What conditions justify interruption: imminent deadline failure, blocked Task, safety issue, unexpected external event, significant affect shift, or user-requested monitoring?\n 3. How should interruption policy avoid becoming surveillance, nagging, or emotional paternalism?\n 4. How should UbU record user overrides of interruptions and use them for future calibration?\n 5. What UI indicators must show active capture, routing, retention, and review status?\n \n ### Current direction\n \n Realtime and discovery modes must be explicit and bounded. Interruption should preserve user sovereignty and Plan legitimacy rather than maximizing engagement or compliance.\n \n ### Resolution\n \n-Open.\n+Resolved by `UBU-D0350`: DESIGN.md \u00a721.1.7 consolidates explicit bounded session consent, separate interaction/routing/attention controls, opt-in evidence-backed interruption rules, mandatory service stops, finite clarification and aggregate alert budgets, durable suppression, optional-reason override records and user-approved calibration. Affect inference and nonresponse grant no escalation or Preference authority. Visible capture/routing/retention/review status and behavioral enablement fixtures are required; existing restricted-attention, retention, professional-review and release gates remain binding. This resolves the product policy without claiming implemented enforcement or numerical profile qualification.\n \n ---\n \n",
+    "commit_message": "design: resolve UBU-Q0078 interruption and consent policy",
+    "validation_notes": [
+      "Generated native git diff hunks from current working-tree originals and proposed contents supplied through stdin; normalized file headers and omitted index lines. Repository files were not modified.",
+      "git apply --check --whitespace=error - passed against the current working tree, without --cached or --recount.",
+      "Verified that only UBU-Q0078 changed in OPEN_QUESTIONS.md, its heading and own Resolution share one hunk, and all ranking/scoring metadata remains unchanged.",
+      "Verified UBU-D0350 was unused and appended once; the patch modifies only the three declared allowlisted files and adds no question IDs.",
+      "Reviewed consistency with existing consent, candidate/admission, retention, restricted-attention, professional-stop and capture-delivery contracts. Implementation fixtures and numerical qualification remain required; no runtime conformance is claimed."
+    ],
+    "new_questions_added": [],
+    "questions_resolved": [
+      "UBU-Q0078"
+    ],
+    "decisions_added": [
+      "UBU-D0350"
+    ],
+    "requires_human_review": true
+  }
+]
+```
+
+## Mechanical validation results
+
+```json
+[
+  {
+    "proposal_id": "UBU-Q0078-openai-gpt-6-20261014-interruption-consent",
+    "patch_applies": true,
+    "allowlist_passed": true,
+    "changed_files": [
+      "DECISIONS.md",
+      "DESIGN.md",
+      "OPEN_QUESTIONS.md"
+    ],
+    "question_schema_passed": true,
+    "error": null,
+    "normalized_patch": null,
+    "warnings": [],
+    "ordinary_error": null,
+    "recount_error": null,
+    "normalization_error": null
+  }
+]
+```
+
+## Provider weights
+
+Provider weights are historical diagnostic context only in v0.2. Do not use
+self-trust or author identity as score evidence.
+
+```json
+{}
+```
+
+## JSON Schema
+
+Your output must satisfy this schema:
+
+```json
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "scores",
+    "selected_proposal_id",
+    "selection_rationale"
+  ],
+  "properties": {
+    "scores": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "proposal_id",
+          "score",
+          "patch_applies",
+          "implements_selected_work",
+          "preserves_question_schema",
+          "avoids_unnecessary_scope",
+          "decomposition_quality",
+          "risks",
+          "required_fixes",
+          "rationale"
+        ],
+        "properties": {
+          "proposal_id": {
+            "type": "string"
+          },
+          "score": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "patch_applies": {
+            "type": "boolean"
+          },
+          "implements_selected_work": {
+            "type": "boolean"
+          },
+          "preserves_question_schema": {
+            "type": "boolean"
+          },
+          "avoids_unnecessary_scope": {
+            "type": "boolean"
+          },
+          "decomposition_quality": {
+            "type": "string",
+            "enum": [
+              "none",
+              "good",
+              "bad",
+              "not_applicable"
+            ]
+          },
+          "risks": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "required_fixes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "rationale": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "selected_proposal_id": {
+      "type": "string"
+    },
+    "selection_rationale": {
+      "type": "string"
+    }
+  }
+}
+```
+
+## Scoring requirements
+
+Score each proposal from 0 to 100.
+
+Consider:
+
+- whether the patch applies cleanly;
+- whether it implements the selected work;
+- whether it preserves the question schema;
+- whether it avoids unnecessary scope;
+- whether it modifies only allowed files;
+- whether it creates useful decomposition if decomposition occurs;
+- whether it introduces new risks;
+- whether required fixes remain.
+
+Rules:
+
+- Score every proposal in this prompt.
+- `selected_proposal_id` must refer to one scored proposal from this prompt.
+- Manual override is not allowed in v0.2.
+- Prefer a patch that is valid, minimal, auditable, and directly responsive.
+- Do not select a proposal whose patch failed mechanical validation.
+- Allowed question `Status:` values are `Archived`, `Decomposed`, `Deferred`, `Open`, `Solved`, `Superseded`; a resolved question must use `Status: Solved`.
+- Reject `Status: Resolved` as a question-schema violation. Set `preserves_question_schema` to false and require `Status: Solved` as the fix; `Resolved by:` is a separate metadata field.
+- Do not score your own provider's proposal unless explicitly asked for diagnostic self-score.
+
+Return only JSON.

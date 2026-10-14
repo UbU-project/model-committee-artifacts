@@ -1,0 +1,1 @@
+UMC: design: resolve UBU-Q0078 interruption and consent policy
