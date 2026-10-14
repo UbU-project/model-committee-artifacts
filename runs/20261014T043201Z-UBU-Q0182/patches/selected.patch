@@ -1,0 +1,89 @@
+diff --git a/DECISIONS.md b/DECISIONS.md
+index c16db5b..5a2dd93 100644
+--- a/DECISIONS.md
++++ b/DECISIONS.md
+@@ -5316,3 +5316,15 @@ Extend `UBU-D0332` with explicit Device-only and Device-plus-existing-worker own
+ Report run-related cash, energy and active operator effort across all attempts and retries, plus each total per useful camera-and-voice outcome under the frozen rubric. Separate successful and successfully corrected counts; manual-only fallback cannot inflate the denominator, and zero useful outcomes yields undefined per-outcome values and no qualified workload. Keep fixed costs in whole-route totals and observed failure/correction burdens in period estimates.
+ 
+ Publish scenario-specific payment schedules, outcome denominators and budget/gate results in the cost/support matrix. Selection requires operator-reviewed evidence with `UBU-D0331` and `UBU-D0336` protections active and applies only to the qualifying ownership/budget scenarios. This adds accounting requirements, not passing trials, prices, population reach or a selected path. `UBU-Q0178` remains Open; existing hardware, numeric-profile, mobile-planning and release-allocation questions retain their scope.
++
++---
++
++## UBU-D0338: Guided acquisition and channel alternatives serve ordinary life logistics
++
++**Status:** Accepted → DESIGN.md §1 and §21.1.3. Resolves `UBU-Q0182`'s product contract; extends `UBU-D0319` without claiming implementation acceptance.
++
++Keep UbU's primary identity as a privacy-first life-logistics system. Offer guided camera acquisition and voice/text/form choices to all users without a disability label. Describe specific tested access benefits and limitations rather than inferring accessibility from camera availability.
++
++Adopt optional, target-specific guidance with one usable instruction at a time, explicit uncertainty, exact correction, finite retry/time limits and a reachable exit or manual route. Support nonvisual acquisition and the declared assistive-technology routes through the same candidate review and admission surface. Channel and assistance choices grant no capture, disclosure, retention, planner-Preference or external-action authority; current privacy and restricted-attention rules govern every route.
++
++Require DESIGN.md §21.1.3's consented user trials and condition-specific outcomes before enabling or claiming the affected workflows. Publish tested combinations, correction/assistance burdens, failures, fallbacks and gaps; a manual fallback cannot prove guided-camera access. This resolves product positioning and the guidance/access acceptance contract, not measured accessibility or universal coverage. `UBU-Q0177`, `UBU-Q0168` and `UBU-Q0183` retain hardware, numerical-profile and release-allocation scope.
+diff --git a/DESIGN.md b/DESIGN.md
+index 99961cc..55af48b 100644
+--- a/DESIGN.md
++++ b/DESIGN.md
+@@ -22,6 +22,8 @@ The canonical use-case statement: UbU helps an individual user solve everyday li
+ 
+ The deeper purpose is to help people build the capabilities, resources, routines, and relationships needed to actually live the life they choose — not just to schedule it.
+ 
++**Access within ordinary life logistics (`UBU-D0338`).** Present guided camera acquisition and voice/text/form choices as ordinary ways to capture concerns, review proposals and act on Plans. Keep UbU's primary identity as a privacy-first life-logistics system; access features are available without a disability label or special onboarding category. Describe concrete benefits and limitations for tested workflows and Device/assistive-technology combinations. Camera availability alone establishes no accessibility claim.
++
+ The first MVP is designed around **dogfooding**: using UbU to coordinate the design, development, release, and maintenance of UbU itself.
+ 
+ Recent LLM and agentic-AI changes reinforce UbU's core boundary: realtime, multimodal, tool-using, memory-bearing models are valuable interaction and extraction backends, but UbU remains the user-sovereign state-transition, planning, logging, privacy, and review layer.
+@@ -3742,6 +3744,10 @@ Audit records link the session, evidence/candidate, budget and policy versions,
+ 
+ **Source choice.** Camera, microphone and speech output are independently selectable; opening the surface starts none of them. Before acquisition, disclose purpose, active Identity/Compartment, enabled sources, local route and effective retention limits. Keep capture state, pause/stop, silence and switch-to-text controls available during capture and processing. Permission to use hardware is not session consent. A remembered surface choice is a user-controlled UI setting, not an inferred planner Preference; declining capture must not cause recurring permission prompts. Guided acquisition explains the missing information, offers another view, and allows stop or an alternative.
+ 
++**Guided acquisition (`UBU-D0338`).** Offer optional help for a user-selected target, such as acquiring a label. Explain the detail needed and give one short positioning or lighting instruction at a time through the user's selected usable output: text, optional speech or supported assistive technology. Make direction references explicit and let the user repeat or skip a cue. Nonvisual use must not require interpreting the preview. Distinguish an observed framing problem from a suggestion; use only current permitted source evidence and keep uncertain or unreadable details explicit. Present extracted names and values for exact correction during ordinary candidate review; framing success and model confidence cannot establish factual correctness. Each enabled profile declares finite guidance-time and retry limits. Stop immediately on request; at its limit or when useful feedback is unavailable, offer another eligible view, manual entry or deferral without restarting capture. Guidance starts no source, renews no consent and extends no media deadline.
++
++**Access across routes.** Make source controls, guidance, exact-value correction, uncertainty, candidate diffs and accept/reject/defer actions usable through the supported keyboard, screen-reader and switch-access routes. Expose control names, roles, state, focus and errors; no essential action depends solely on color, a pointer gesture, speech or seeing the preview. Apply the continuity rules below when changing channels. Permit text/forms with camera, microphone and speech output disabled and models unavailable. Let users choose channels and assistance without disclosing a diagnosis or inferring disability, intent or planner Preferences. Speak private source details only through a currently permitted user-selected output route; otherwise offer private text or defer. Apply §21.1.2's attention budget to guidance and review: unavailable safe attention or output defers affected interaction, and an access setting cannot widen action permissions.
++
+ **Ordinary-attention coverage.** All routes use the same admitted-state operations, validation and review authority; provenance follows the actual source. Camera input is useful where observation is relevant, rather than required for every operation.
+ 
+ | Workflow | Camera/voice route | Text/form route |
+@@ -3764,6 +3770,10 @@ Audit records link the session, evidence/candidate, budget and policy versions,
+ - Switching surfaces during a delayed interpretation, duplicate submission/replay, and material context, policy or Device change cause neither stale admission nor duplicate mutations. Preserved candidates carry no live capture consent or pending execution approval across Devices.
+ - Ambiguous objects, high-confidence interpretations and apparent completion remain unresolved/candidate evidence until required review and validation. Unknown/private intervals and channel choices create no inferred intent, affect, Preference, habit or completion claim. Restricted attention obeys §21.1.2: defer unavailable review rather than demand visual/form interaction or widen permissions.
+ 
++**User-tested access evidence (`UBU-D0338`).** Before enabling or claiming these guided-access workflows, extend the acceptance evidence with consented user sessions involving people who use the proposed access routes and experience the relevant vision, hearing, speech or dexterity constraints; developer simulations alone are insufficient. Predeclare participant/condition coverage, tasks, Device/software/assistive-technology versions, finite time/attempt and assistance-burden limits, and useful-outcome criteria. Include label framing with blur, glare and cropping; guidance without visual preview; unavailable speech or hearing; limited camera handling; keyboard, screen-reader and switch access; capture declined for privacy; and restricted attention in safe simulations. Use matched tasks to compare guidance, unguided capture and the user's preferred alternative where usable; report unavailable routes and user-reported burden without forcing capture. Repeat entry, exact correction and review with capture and speech output disabled. Exercise private-output denial, stop, retry exhaustion and switching during a delayed interpretation.
++
++Report completion, correction, unresolved, rejected and failed outcomes, time, retries and required assistance by tested condition and route; distinguish useful manual fallback from successful guided acquisition. Require reachable source controls and exit, preserved permitted drafts, faithful uncertainty/review, ordinary admission and no unauthorized acquisition or disclosure. A failed mandatory access/privacy gate or missed declared usefulness limit withholds the affected workflow for that combination; keep its fallback and remaining gap visible. Publish policy-safe results and limitations alongside the support matrix, with explicit participant consent for research retention separate from capture permission and no compulsory diagnosis or raw-media retention. Public access claims name only the tested workflows and combinations; passing one route or population sample cannot establish universal accessibility. These are release evidence requirements, not passing results; hardware qualification, numerical profiles and delivery allocation retain their existing questions.
++
+ This resolves interaction coverage and acceptance, not implementation. `UBU-Q0183` retains capture-mode/device allocation and delivery sequence; `UBU-Q0160` retains the mobile workload/API choice; `UBU-Q0128` retains numeric restricted-attention profiles and richer actions; `UBU-Q0166`–`UBU-Q0172` retain exact evidence, corroboration, latency, segmentation and retention contracts. Apply the existing evidence, policy and attention gates to each enabled slice. No particular backend, hardware support, latency target or later-phase planning object is established here.
+ 
+ #### 21.1.4 Latency classes, freshness and interruption
+diff --git a/OPEN_QUESTIONS.md b/OPEN_QUESTIONS.md
+index dd5acfd..3b2adf3 100644
+--- a/OPEN_QUESTIONS.md
++++ b/OPEN_QUESTIONS.md
+@@ -3468,27 +3468,27 @@ Delta §17.19 and baseline D5. Decide consent/revocation, minimization, validity
+ 
+ Open.
+ 
+ ---
+ 
+ ## UBU-Q0182: Guided camera accessibility without a narrow product category
+ 
+-Status: Open Priority: MVP important Phase: Phase 2 Decision type: Product Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 100 Depends on: None Blocks: None Resolved by: None Last scored: 2026-10-14 Scored from commit: None
++Status: Solved Priority: MVP important Phase: Phase 2 Decision type: Product Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 100 Depends on: None Blocks: None Resolved by: UBU-D0338 Last scored: 2026-10-14 Scored from commit: None
+ 
+ ### Question
+ 
+ How should camera-positioning guidance and voice/text/form alternatives improve accessibility without positioning UbU primarily as an accessibility product?
+ 
+ ### Current direction
+ 
+ Delta §17.20. Test framing/label acquisition, unavailable vision or speech, restricted attention, assistive technologies and privacy constraints with users. Describe access benefits as part of ordinary life logistics; do not infer universal accessibility from having a camera.
+ 
+ ### Resolution
+ 
+-Open.
++Resolved by `UBU-D0338`: DESIGN.md §1 and §21.1.3 keep access benefits within UbU's ordinary life-logistics purpose and specify optional bounded camera guidance, nonvisual feedback, exact correction, useful voice/text/form and assistive-technology routes, private output and restricted-attention limits. Consented user trials must establish workflow-specific usefulness, control, review and privacy before delivery claims; failures and fallback gaps remain visible. This resolves the product contract, not implementation or measured accessibility. Hardware, numerical profiles and delivery allocation remain under `UBU-Q0177`, `UBU-Q0168` and `UBU-Q0183`; no universal-access claim is established.
+ 
+ ---
+ 
+ ## UBU-Q0183: Full realtime capture phase and MVP delivery sequence
+ 
+ Status: Open Priority: MVP important Phase: Phase 2 Decision type: Scope Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 100 Depends on: None Blocks: None Resolved by: None Last scored: 2026-10-14 Scored from commit: None
+ 

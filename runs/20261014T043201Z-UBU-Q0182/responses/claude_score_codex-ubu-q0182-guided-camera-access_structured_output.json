@@ -1,0 +1,24 @@
+{
+  "scores": [
+    {
+      "proposal_id": "codex-UBU-Q0182-guided-camera-access",
+      "score": 84,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "none",
+      "risks": [
+        "Cross-references to UBU-Q0177 and UBU-Q0168 as the hardware and numerical-profile owners are unverified from the diff; the surrounding \u00a721.1.3 text attributes numeric restricted-attention profiles to UBU-Q0128, so a scope-attribution mismatch is possible if Q0168 covers something else.",
+        "The DESIGN.md \u00a721.1.3 additions are four dense paragraphs that introduce several new normative requirements (per-profile guidance-time and retry limits, text/form operation with models unavailable, switch-access support, matched-task user trials). Each is responsive to the question's current direction, but the volume raises the chance of unnoticed conflict with other \u00a721 contracts and makes the acceptance bar heavy for a Phase 2 MVP-important item.",
+        "Decision type is Product with human approval required; the proposal correctly flags requires_human_review, but the question cannot be considered closed until that approval occurs.",
+        "Adds a paragraph to DESIGN.md \u00a71 (core purpose section). It is short and directly addresses the 'not primarily an accessibility product' framing, but edits to the purpose statement carry higher visibility than \u00a721 detail changes.",
+        "References to '\u00a721.1.2's attention budget' and 'the continuity rules below' depend on existing structure that the diff context only partially shows; mechanical application passed, so the anchors exist, but semantic fit is assumed."
+      ],
+      "required_fixes": [],
+      "rationale": "Patch applies, stays within the allowlist, and the OPEN_QUESTIONS.md hunk correctly moves UBU-Q0182 to Status: Solved with Resolved by: UBU-D0338 while preserving all other metadata. The content directly answers the question: it keeps UbU positioned as a life-logistics system (\u00a71 paragraph), specifies bounded optional camera guidance with nonvisual feedback and exact correction, extends voice/text/form and assistive-technology routes through the same review surface, binds channel choice to existing privacy and restricted-attention rules without widening permissions, and requires consented user trials covering every condition the current direction names (framing/label acquisition, unavailable vision or speech, restricted attention, assistive technologies, privacy-declined capture). It explicitly forbids inferring accessibility from camera availability and forbids manual fallback from counting as guided-camera success, matching the question's guardrails. It defers hardware, numeric profiles and delivery allocation to existing questions and adds no new questions, so no decomposition occurred. Deductions are for unverified cross-question scope attributions, the heaviness of the new acceptance requirements, and the dependence on human product approval."
+    }
+  ],
+  "selected_proposal_id": "codex-UBU-Q0182-guided-camera-access",
+  "selection_rationale": "Only one proposal was submitted and it passed mechanical validation, preserves the question schema with Status: Solved, modifies only allowed files, and is directly responsive to every element of UBU-Q0182's question and current direction without introducing new questions or out-of-scope changes. Remaining concerns are review-level (unverified cross-references, dense new requirements, pending human product approval) rather than blocking defects."
+}
