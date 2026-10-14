@@ -1,0 +1,186 @@
+{
+  "schema_version": "0.4",
+  "run_id": "20261014T085913Z-UBU-Q0166",
+  "created_at_utc": "2026-10-14T08:59:13Z",
+  "repo_path": "../ubu-design",
+  "base_commit": "37e41e0e0bc060d7b5eaed151d4459c13f57432f",
+  "selected_question_id": "UBU-Q0166",
+  "phase": "work-select",
+  "config_path": "config/models.json",
+  "status": "selected",
+  "commands": [
+    "model-committee run-loop"
+  ],
+  "providers_attempted": [
+    "codex",
+    "claude"
+  ],
+  "providers_succeeded": [
+    "codex",
+    "claude"
+  ],
+  "providers_failed": [],
+  "provider_attempts": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0166-openai-reference-carriers-20261014",
+      "response_path": "runs/20261014T085913Z-UBU-Q0166/responses/codex_score_ubu-q0166-openai-reference-carriers-20261014_response.json",
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0166-openai-reference-carriers-20261014",
+      "response_path": "runs/20261014T085913Z-UBU-Q0166/responses/claude_score_ubu-q0166-openai-reference-carriers-20261014_stdout.json",
+      "stderr_path": null
+    }
+  ],
+  "provider_successes": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20261014T085913Z-UBU-Q0166/parsed/codex_work_proposal.json"
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0166-openai-reference-carriers-20261014",
+      "response_path": "runs/20261014T085913Z-UBU-Q0166/responses/codex_score_ubu-q0166-openai-reference-carriers-20261014_response.json",
+      "parsed_path": "runs/20261014T085913Z-UBU-Q0166/parsed/codex_score_ubu-q0166-openai-reference-carriers-20261014_result.json"
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0166-openai-reference-carriers-20261014",
+      "response_path": "runs/20261014T085913Z-UBU-Q0166/responses/claude_score_ubu-q0166-openai-reference-carriers-20261014_stdout.json",
+      "parsed_path": "runs/20261014T085913Z-UBU-Q0166/parsed/claude_score_ubu-q0166-openai-reference-carriers-20261014_result.json"
+    }
+  ],
+  "provider_failures": [],
+  "score_matrix": [
+    {
+      "proposal_id": "UBU-Q0166-openai-reference-carriers-20261014",
+      "author_provider": "openai",
+      "scorer_provider": "codex",
+      "score": 85,
+      "valid": true,
+      "rationale": "Mechanically valid and confined to allowed documentation files. It advances the selected investigation with bounded normalization and persistence controls, identifies unresolved-reference acceptance, and clearly distinguishes carrier retention from semantic fidelity. Keeping the question Open and preserving existing enablement gates is appropriate. The score reflects useful partial evidence rather than completion of the full host-mapping work.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "Opaque string retention does not demonstrate preservation of resolved claims, qualifiers, field bindings or evidence revisions.",
+        "Results rely on a retained harness without a fresh locked build or canonical schema-validator invocation.",
+        "Rendered review, admission and policy-authorized exchange remain untested; the prior inline qualifier loss remains unrepaired."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261014T085913Z-UBU-Q0166/responses/codex_score_ubu-q0166-openai-reference-carriers-20261014_response.json",
+        "stderr_path": null
+      }
+    },
+    {
+      "proposal_id": "UBU-Q0166-openai-reference-carriers-20261014",
+      "author_provider": "openai",
+      "scorer_provider": "claude",
+      "score": 76,
+      "valid": true,
+      "rationale": "The patch applies cleanly, touches only the three allowlisted docs, leaves all question metadata intact and keeps UBU-Q0166 at Status: Open with Resolved by: None, which matches the question's own closure condition. It is directly responsive to the current direction, which asks for round-trip evidence through actual normalization, store/replay and review paths: it records a bounded reference-carrier alternative to the inline-payload mapping that UBU-D0334 showed to lose qualifiers, and it adds a useful negative control (an unresolved token also receives native ok), which correctly supports the conclusion that this branch cannot certify adapter resolution. Claims are carefully bounded: no manifest resolution, no qualifier content, no rendered review, no schema or pin change, and no assertion of a passing adapter or a governing schema gap. Deductions are for auditability (reliance on a retained harness with no fresh build and no in-repo fixture), the asymmetric coverage between the two tokens, and the fact that the work advances the inventory without materially narrowing the enablement gate. No schema or scope violations were found.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [
+        "State where the retained harness source and binary are kept (path or artifact location) so the recorded SHA-256 identities can be verified rather than only asserted.",
+        "Either run the missing-revision token through the same storage/reload/replay and API controls or make the table explicit that those rows cover the first token only."
+      ],
+      "risks": [
+        "Evidence is bound to a retained out-of-tree harness executable identified only by SHA-256; no fresh locked build, in-repo fixture or canonical schema-validator run backs the recorded outcomes, so the results are not independently reproducible from the patch alone.",
+        "The persistence/replay and review API controls were run only on the first (resolvable-looking) token; the 'missing' token was tested through normalization only, so the negative control is narrower than the table layout suggests.",
+        "Using field_provenance.preconditions as a string carrier could be misread later as an approved semantic binding despite the explicit disclaimer; the carrier choice is not grounded in any host field contract.",
+        "Recorded hashes (harness, suppression key) and the exact serialized outcomes cannot be checked by a reviewer without access to the retained artifacts referenced in UBU-D0334.",
+        "UBU-D0360 occupies a decision number for what is essentially evidence recording; this follows the D0323/D0334 convention but continues to grow DESIGN.md \u00a721.1.1 with probe logs rather than contract text."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261014T085913Z-UBU-Q0166/responses/claude_score_ubu-q0166-openai-reference-carriers-20261014_stdout.json",
+        "stderr_path": null
+      }
+    }
+  ],
+  "score_aggregates": [
+    {
+      "proposal_id": "UBU-Q0166-openai-reference-carriers-20261014",
+      "author_provider": "openai",
+      "cross_score_count": 2,
+      "score_mean": 80.5,
+      "score_spread": 9,
+      "frontier_score_gap": 9,
+      "disagreement_flags": []
+    }
+  ],
+  "cross_score_count": 2,
+  "score_mean": 80.5,
+  "score_spread": 9,
+  "frontier_score_gap": 9,
+  "disagreement_flags": [],
+  "quorum_result": {
+    "valid": true,
+    "human_review_required": false,
+    "selected_proposal_id": "UBU-Q0166-openai-reference-carriers-20261014",
+    "selected_score": 80.5,
+    "selected_cross_score_count": 2,
+    "blocked_reasons": [],
+    "manual_override": false
+  },
+  "selected_proposal_id": "UBU-Q0166-openai-reference-carriers-20261014",
+  "automated_selection_valid": true,
+  "human_review_required": false,
+  "artifact_publication_status": "operator_pending",
+  "prompt_size_warning": true,
+  "prompt_context": {
+    "question_ids": [
+      "UBU-Q0166"
+    ],
+    "decision_ids": [
+      "UBU-D0293",
+      "UBU-D0320",
+      "UBU-D0321",
+      "UBU-D0323",
+      "UBU-D0334"
+    ],
+    "sections": {
+      "DESIGN.md": [
+        "11.2",
+        "21.1"
+      ]
+    },
+    "core_sections": {
+      "DESIGN.md": [
+        "1"
+      ],
+      "DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md": [
+        "4"
+      ]
+    },
+    "missing_refs": {},
+    "context_chars": 203814,
+    "prompt_chars": 211018
+  }
+}

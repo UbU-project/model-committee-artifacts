@@ -1,0 +1,30 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0166-openai-reference-carriers-20261014",
+      "score": 80,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Evidence is bound to a retained out-of-tree harness executable identified only by SHA-256; no fresh locked build, in-repo fixture or canonical schema-validator run backs the recorded outcomes, so the results are not independently reproducible from the patch alone.",
+        "Opaque string retention does not demonstrate preservation of resolved claims, qualifiers, field bindings or evidence revisions.",
+        "Recorded hashes (harness, suppression key) and the exact serialized outcomes cannot be checked by a reviewer without access to the retained artifacts referenced in UBU-D0334.",
+        "Rendered review, admission and policy-authorized exchange remain untested; the prior inline qualifier loss remains unrepaired.",
+        "Results rely on a retained harness without a fresh locked build or canonical schema-validator invocation.",
+        "The persistence/replay and review API controls were run only on the first (resolvable-looking) token; the 'missing' token was tested through normalization only, so the negative control is narrower than the table layout suggests.",
+        "UBU-D0360 occupies a decision number for what is essentially evidence recording; this follows the D0323/D0334 convention but continues to grow DESIGN.md \u00a721.1.1 with probe logs rather than contract text.",
+        "Using field_provenance.preconditions as a string carrier could be misread later as an approved semantic binding despite the explicit disclaimer; the carrier choice is not grounded in any host field contract."
+      ],
+      "required_fixes": [
+        "Either run the missing-revision token through the same storage/reload/replay and API controls or make the table explicit that those rows cover the first token only.",
+        "State where the retained harness source and binary are kept (path or artifact location) so the recorded SHA-256 identities can be verified rather than only asserted."
+      ],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0166-openai-reference-carriers-20261014",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}

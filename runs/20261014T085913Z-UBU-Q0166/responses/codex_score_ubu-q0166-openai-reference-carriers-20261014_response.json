@@ -1,0 +1,22 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0166-openai-reference-carriers-20261014",
+      "score": 85,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Opaque string retention does not demonstrate preservation of resolved claims, qualifiers, field bindings or evidence revisions.",
+        "Results rely on a retained harness without a fresh locked build or canonical schema-validator invocation.",
+        "Rendered review, admission and policy-authorized exchange remain untested; the prior inline qualifier loss remains unrepaired."
+      ],
+      "required_fixes": [],
+      "rationale": "Mechanically valid and confined to allowed documentation files. It advances the selected investigation with bounded normalization and persistence controls, identifies unresolved-reference acceptance, and clearly distinguishes carrier retention from semantic fidelity. Keeping the question Open and preserving existing enablement gates is appropriate. The score reflects useful partial evidence rather than completion of the full host-mapping work."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0166-openai-reference-carriers-20261014",
+  "selection_rationale": "The sole candidate provides auditable, narrowly scoped progress without claiming a passing adapter or schema gap. This cross-score leaves final selection to local aggregation."
+}
