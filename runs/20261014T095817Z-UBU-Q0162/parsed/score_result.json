@@ -1,0 +1,27 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-gpt-6-UBU-Q0162-log-link-validation",
+      "score": 88,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Enforcement remains unimplemented; the reported-operation reproduction, filed remediation ticket and passing behavioral evidence remain outstanding.",
+        "Link validation is adjacent to, not identical with, the reported in-place-edit defect; the UBU-Q0162 block is now carrying four distinct audit findings and is growing large, which raises prompt-size and readability cost for future rounds.",
+        "The new static-audit claims (that `src/models/log_record.rs::NewLogRecord` accepts a free-form `event_type` and JSON `payload`, and that `append_prepared_log` applies event-specific validation only to `recalculation_requested`) could not be verified by this scorer against revision 83a099f; if inaccurate, the handoff misdirects the implementer.",
+        "The proposal advances none of the three outstanding closure gates (revision-pinned reproduction, filed remediation ticket, passing behavioral evidence); it only enlarges the required-check inventory.",
+        "The remediation paragraph asserts that 'missing required imported history remains staged under existing dependency rules', which presumes an import-staging rule that is not cited; an implementer may not find a matching documented rule."
+      ],
+      "required_fixes": [
+        "Before merge, confirm the cited symbols and the `recalculation_requested`-only validation claim against the pinned `ubu-store` revision 83a099f55220b1286ffb2dee3c9d19006e2090b5, since the question text attaches them as file/symbol references for the remediation ticket.",
+        "Either cite the existing dependency/staging rule referenced for imported history or soften that sentence to avoid implying a rule that may not be documented."
+      ],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "openai-gpt-6-UBU-Q0162-log-link-validation",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}
