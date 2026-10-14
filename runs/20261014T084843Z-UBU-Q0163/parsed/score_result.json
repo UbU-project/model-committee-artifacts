@@ -1,0 +1,28 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-UBU-Q0163-cancellation-remediation-2026-10-14",
+      "score": 82,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Minor overlap between the new 'Extend the bounded slice' paragraph and the existing acceptance table (negative controls restated in prose) could drift out of sync on later edits.",
+        "The new 2026-10-14 static-inspection claims (CalendarApi::list_events returning only Vec<DesiredEvent>, DesiredEvent lacking account/calendar scope and ordering, by_source keyed on bare source_id) could not be independently verified in this scoring pass; if any path or type name is wrong the question would carry an incorrect source citation.",
+        "The proposal adds roughly a dozen dense lines to an already very long question, deepening an unfiled 'proposed ticket' layer rather than executing any check; repeated rounds of specification-only edits risk the question accumulating requirements nobody runs.",
+        "The remediation section cross-references UBU-D0258/UBU-D0259 as the mutation-envelope and lifecycle paths; if those decision IDs do not exist or do not cover admission as described, the handoff points implementers at the wrong policy.",
+        "The remediation ticket remains unfiled, and no behavioral evidence advances blocker-retirement eligibility."
+      ],
+      "required_fixes": [
+        "Confirm against the pinned 9fddef16 checkout that calendar_client.rs::CalendarApi::list_events, calendar_google::GoogleCalendarApi::list_events and calendar_projection::DesiredEvent match the described signatures and fields before merging the citation.",
+        "Consider folding the added negative controls (duplicate occurrence ids across accounts, unbound legacy Task, missing ordering evidence) into the acceptance table as rows rather than a separate prose paragraph to keep one authoritative checklist.",
+        "Verify that UBU-D0258 and UBU-D0259 exist in DECISIONS.md and actually specify the mutation-envelope and lifecycle paths the section relies on; otherwise replace or drop the reference."
+      ],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "openai-UBU-Q0163-cancellation-remediation-2026-10-14",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}

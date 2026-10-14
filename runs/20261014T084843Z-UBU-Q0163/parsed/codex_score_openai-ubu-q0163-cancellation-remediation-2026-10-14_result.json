@@ -1,0 +1,20 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-UBU-Q0163-cancellation-remediation-2026-10-14",
+      "score": 90,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "good",
+      "risks": [
+        "The remediation ticket remains unfiled, and no behavioral evidence advances blocker-retirement eligibility."
+      ],
+      "required_fixes": [],
+      "rationale": "Mechanical validation confirms applicability, allowed-file scope and schema preservation. The documentation provides an actionable cancellation repair handoff covering transport, durable bindings, admission and replay safety. It preserves protection, operator approval and remaining retirement gates. Its contribution is implementation planning; verification remains outstanding."
+    }
+  ],
+  "selected_proposal_id": "openai-UBU-Q0163-cancellation-remediation-2026-10-14",
+  "selection_rationale": "The sole candidate is mechanically valid and directly advances the remediation handoff without claiming implementation success or authorizing blocker removal."
+}

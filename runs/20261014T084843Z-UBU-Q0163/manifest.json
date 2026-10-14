@@ -1,0 +1,176 @@
+{
+  "schema_version": "0.4",
+  "run_id": "20261014T084843Z-UBU-Q0163",
+  "created_at_utc": "2026-10-14T08:48:43Z",
+  "repo_path": "../ubu-design",
+  "base_commit": "42f89707c3213bb8599ad62dfa9f9a5fd0c6953c",
+  "selected_question_id": "UBU-Q0163",
+  "phase": "work-select",
+  "config_path": "config/models.json",
+  "status": "selected",
+  "commands": [
+    "model-committee run-loop"
+  ],
+  "providers_attempted": [
+    "codex",
+    "claude"
+  ],
+  "providers_succeeded": [
+    "codex",
+    "claude"
+  ],
+  "providers_failed": [],
+  "provider_attempts": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "openai-UBU-Q0163-cancellation-remediation-2026-10-14",
+      "response_path": "runs/20261014T084843Z-UBU-Q0163/responses/codex_score_openai-ubu-q0163-cancellation-remediation-2026-10-14_response.json",
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "openai-UBU-Q0163-cancellation-remediation-2026-10-14",
+      "response_path": "runs/20261014T084843Z-UBU-Q0163/responses/claude_score_openai-ubu-q0163-cancellation-remediation-2026-10-14_stdout.json",
+      "stderr_path": null
+    }
+  ],
+  "provider_successes": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20261014T084843Z-UBU-Q0163/parsed/codex_work_proposal.json"
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "openai-UBU-Q0163-cancellation-remediation-2026-10-14",
+      "response_path": "runs/20261014T084843Z-UBU-Q0163/responses/codex_score_openai-ubu-q0163-cancellation-remediation-2026-10-14_response.json",
+      "parsed_path": "runs/20261014T084843Z-UBU-Q0163/parsed/codex_score_openai-ubu-q0163-cancellation-remediation-2026-10-14_result.json"
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "openai-UBU-Q0163-cancellation-remediation-2026-10-14",
+      "response_path": "runs/20261014T084843Z-UBU-Q0163/responses/claude_score_openai-ubu-q0163-cancellation-remediation-2026-10-14_stdout.json",
+      "parsed_path": "runs/20261014T084843Z-UBU-Q0163/parsed/claude_score_openai-ubu-q0163-cancellation-remediation-2026-10-14_result.json"
+    }
+  ],
+  "provider_failures": [],
+  "score_matrix": [
+    {
+      "proposal_id": "openai-UBU-Q0163-cancellation-remediation-2026-10-14",
+      "author_provider": "openai",
+      "scorer_provider": "codex",
+      "score": 90,
+      "valid": true,
+      "rationale": "Mechanical validation confirms applicability, allowed-file scope and schema preservation. The documentation provides an actionable cancellation repair handoff covering transport, durable bindings, admission and replay safety. It preserves protection, operator approval and remaining retirement gates. Its contribution is implementation planning; verification remains outstanding.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "The remediation ticket remains unfiled, and no behavioral evidence advances blocker-retirement eligibility."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261014T084843Z-UBU-Q0163/responses/codex_score_openai-ubu-q0163-cancellation-remediation-2026-10-14_response.json",
+        "stderr_path": null
+      }
+    },
+    {
+      "proposal_id": "openai-UBU-Q0163-cancellation-remediation-2026-10-14",
+      "author_provider": "openai",
+      "scorer_provider": "claude",
+      "score": 74,
+      "valid": true,
+      "rationale": "The patch applies cleanly, touches only the UBU-Q0163 section of OPEN_QUESTIONS.md, keeps Status: Open and all metadata intact, adds no decisions or questions, and claims no results it did not obtain. It is directly responsive to the question's own current direction, which asked for the missing production path to be recorded in a remediation ticket; the proposal narrows that ticket to explicit occurrence cancellation, names the transport and binding seams that would need to change, and ties acceptance back to the existing slice. The prose matches the house style and preserves the key safety invariants (absence is not cancellation, no external deletion, no Log rewriting, ordinary admission only). It is docked for relying on new source-path and decision-ID claims that this scorer could not verify, for being specification-only on a question that now needs executed evidence more than more requirements, and for adding length to an already oversized entry.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [
+        "Confirm against the pinned 9fddef16 checkout that calendar_client.rs::CalendarApi::list_events, calendar_google::GoogleCalendarApi::list_events and calendar_projection::DesiredEvent match the described signatures and fields before merging the citation.",
+        "Verify that UBU-D0258 and UBU-D0259 exist in DECISIONS.md and actually specify the mutation-envelope and lifecycle paths the section relies on; otherwise replace or drop the reference.",
+        "Consider folding the added negative controls (duplicate occurrence ids across accounts, unbound legacy Task, missing ordering evidence) into the acceptance table as rows rather than a separate prose paragraph to keep one authoritative checklist."
+      ],
+      "risks": [
+        "The new 2026-10-14 static-inspection claims (CalendarApi::list_events returning only Vec<DesiredEvent>, DesiredEvent lacking account/calendar scope and ordering, by_source keyed on bare source_id) could not be independently verified in this scoring pass; if any path or type name is wrong the question would carry an incorrect source citation.",
+        "The remediation section cross-references UBU-D0258/UBU-D0259 as the mutation-envelope and lifecycle paths; if those decision IDs do not exist or do not cover admission as described, the handoff points implementers at the wrong policy.",
+        "The proposal adds roughly a dozen dense lines to an already very long question, deepening an unfiled 'proposed ticket' layer rather than executing any check; repeated rounds of specification-only edits risk the question accumulating requirements nobody runs.",
+        "Minor overlap between the new 'Extend the bounded slice' paragraph and the existing acceptance table (negative controls restated in prose) could drift out of sync on later edits."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261014T084843Z-UBU-Q0163/responses/claude_score_openai-ubu-q0163-cancellation-remediation-2026-10-14_stdout.json",
+        "stderr_path": null
+      }
+    }
+  ],
+  "score_aggregates": [
+    {
+      "proposal_id": "openai-UBU-Q0163-cancellation-remediation-2026-10-14",
+      "author_provider": "openai",
+      "cross_score_count": 2,
+      "score_mean": 82.0,
+      "score_spread": 16,
+      "frontier_score_gap": 16,
+      "disagreement_flags": []
+    }
+  ],
+  "cross_score_count": 2,
+  "score_mean": 82.0,
+  "score_spread": 16,
+  "frontier_score_gap": 16,
+  "disagreement_flags": [],
+  "quorum_result": {
+    "valid": true,
+    "human_review_required": false,
+    "selected_proposal_id": "openai-UBU-Q0163-cancellation-remediation-2026-10-14",
+    "selected_score": 82.0,
+    "selected_cross_score_count": 2,
+    "blocked_reasons": [],
+    "manual_override": false
+  },
+  "selected_proposal_id": "openai-UBU-Q0163-cancellation-remediation-2026-10-14",
+  "automated_selection_valid": true,
+  "human_review_required": false,
+  "artifact_publication_status": "operator_pending",
+  "prompt_size_warning": false,
+  "prompt_context": {
+    "question_ids": [
+      "UBU-Q0163"
+    ],
+    "decision_ids": [
+      "UBU-D0318"
+    ],
+    "sections": {
+      "DESIGN.md": [
+        "1"
+      ]
+    },
+    "core_sections": {
+      "DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md": [
+        "4"
+      ]
+    },
+    "missing_refs": {},
+    "context_chars": 50072,
+    "prompt_chars": 56967
+  }
+}
