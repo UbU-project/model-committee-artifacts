@@ -1,0 +1,24 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0113-friction-annotation-v1",
+      "score": 82,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "none",
+      "risks": [
+        "Several cross-references cannot be verified from the prompt alone: UBU-D0198, UBU-Q0116 being post-MVP, DESIGN.md \u00a717.0, and the event/field names task_completed, task_failed, plan_realized, log_annotation_added, log_correction_added, annotation_of, correction_of, decision_kind: alert_dismissed_or_ignored, preference_inference_allowed. If any of these do not exist as named, the new section would dangle.",
+        "The proposal reframes the existing DESIGN.md sentence 'Friction notes feed the Bayesian duration learning system' into 'friction is qualitative review context that cannot alter distributions' and pushes all update mechanics to UBU-Q0116. This is a defensible answer to subquestion 3, but it partially defers the 'how does it interact with Bayesian learning' half of the question rather than answering it; if UBU-Q0116 is actually Phase 2 rather than post-MVP, the phase labelling in D0357 is wrong.",
+        "Section is considerably more prescriptive than a 'minimum' schema: fixed 2048-char cap, eight-ref cap, sync coalescing, restart persistence, per-skip decision_recorded entries, and a fixtures paragraph. Numbers are arbitrary but bounded; the per-skip Log entry could add noise to the counterfactual log.",
+        "New heading '### 17.8.1' uses the same level as '### 17.9', which may be inconsistent with how sub-subsections are numbered elsewhere in DESIGN.md.",
+        "Decision number UBU-D0357 is asserted unique by the author but sequence correctness relative to the latest existing decision is not independently verified here."
+      ],
+      "required_fixes": [],
+      "rationale": "Patch passed mechanical validation and touches only the three allowlisted docs. OPEN_QUESTIONS.md keeps the full metadata line, sets Status: Solved and Resolved by: UBU-D0357, and leaves other question blocks untouched. All six subquestions get concrete answers: free-text only with taxonomy deferred (matching the stated current direction), supported event types enumerated, a clear non-override boundary for duration learning, a specified review report surface, an explicit and testable overrun threshold (1.5x and +300s with waiting/deferred time excluded), and linkage to decision_recorded for user-choice friction without replacing the Q0107 counterfactual record. Append-only correction semantics and once-per-completion counting are sound. Deductions are for unverifiable cross-references, the partial deferral of Bayesian interaction to UBU-Q0116, and a level of prescriptive detail beyond the minimum the question asked for."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0113-friction-annotation-v1",
+  "selection_rationale": "Only one proposal was submitted and it passed mechanical validation, preserves the question schema with Status: Solved, stays within the allowlisted files, and directly answers every subquestion in line with the question's stated current direction. Residual concerns are verification items on cross-references and the choice to defer Bayesian update mechanics to UBU-Q0116, none of which block selection."
+}

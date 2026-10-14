@@ -1,0 +1,178 @@
+{
+  "schema_version": "0.4",
+  "run_id": "20261014T080833Z-UBU-Q0113",
+  "created_at_utc": "2026-10-14T08:08:33Z",
+  "repo_path": "../ubu-design",
+  "base_commit": "33f0d132cde965e0237f7224edb0bc89c9c95605",
+  "selected_question_id": "UBU-Q0113",
+  "phase": "work-select",
+  "config_path": "config/models.json",
+  "status": "selected",
+  "commands": [
+    "model-committee run-loop"
+  ],
+  "providers_attempted": [
+    "codex",
+    "claude"
+  ],
+  "providers_succeeded": [
+    "codex",
+    "claude"
+  ],
+  "providers_failed": [],
+  "provider_attempts": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0113-friction-annotation-v1",
+      "response_path": "runs/20261014T080833Z-UBU-Q0113/responses/codex_score_ubu-q0113-friction-annotation-v1_response.json",
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0113-friction-annotation-v1",
+      "response_path": "runs/20261014T080833Z-UBU-Q0113/responses/claude_score_ubu-q0113-friction-annotation-v1_stdout.json",
+      "stderr_path": null
+    }
+  ],
+  "provider_successes": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20261014T080833Z-UBU-Q0113/parsed/codex_work_proposal.json"
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0113-friction-annotation-v1",
+      "response_path": "runs/20261014T080833Z-UBU-Q0113/responses/codex_score_ubu-q0113-friction-annotation-v1_response.json",
+      "parsed_path": "runs/20261014T080833Z-UBU-Q0113/parsed/codex_score_ubu-q0113-friction-annotation-v1_result.json"
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0113-friction-annotation-v1",
+      "response_path": "runs/20261014T080833Z-UBU-Q0113/responses/claude_score_ubu-q0113-friction-annotation-v1_stdout.json",
+      "parsed_path": "runs/20261014T080833Z-UBU-Q0113/parsed/claude_score_ubu-q0113-friction-annotation-v1_result.json"
+    }
+  ],
+  "provider_failures": [],
+  "score_matrix": [
+    {
+      "proposal_id": "UBU-Q0113-friction-annotation-v1",
+      "author_provider": "openai",
+      "scorer_provider": "codex",
+      "score": 95,
+      "valid": true,
+      "rationale": "Supplied mechanical validation confirms clean application, allowed files and preserved question schema, including Status: Solved. The proposal answers all six subquestions with a bounded optional schema, supported event types, append-only corrections, durable prompt suppression, review presentation and counterfactual links. It preserves duration evidence and clearly distinguishes qualitative friction context from statistical updates. Leaving Bayesian mathematics with existing UBU-Q0116 matches the stated post-MVP boundary. The detailed safeguards remain relevant to the selected work; no blocking fixes are evident.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "The fixed overrun thresholds and schema limits may need adjustment after practical use.",
+        "Concurrent offline devices may display duplicate prompts before suppression state synchronizes."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261014T080833Z-UBU-Q0113/responses/codex_score_ubu-q0113-friction-annotation-v1_response.json",
+        "stderr_path": null
+      }
+    },
+    {
+      "proposal_id": "UBU-Q0113-friction-annotation-v1",
+      "author_provider": "openai",
+      "scorer_provider": "claude",
+      "score": 82,
+      "valid": true,
+      "rationale": "Patch passed mechanical validation and touches only the three allowlisted docs. OPEN_QUESTIONS.md keeps the full metadata line, sets Status: Solved and Resolved by: UBU-D0357, and leaves other question blocks untouched. All six subquestions get concrete answers: free-text only with taxonomy deferred (matching the stated current direction), supported event types enumerated, a clear non-override boundary for duration learning, a specified review report surface, an explicit and testable overrun threshold (1.5x and +300s with waiting/deferred time excluded), and linkage to decision_recorded for user-choice friction without replacing the Q0107 counterfactual record. Append-only correction semantics and once-per-completion counting are sound. Deductions are for unverifiable cross-references, the partial deferral of Bayesian interaction to UBU-Q0116, and a level of prescriptive detail beyond the minimum the question asked for.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "Several cross-references cannot be verified from the prompt alone: UBU-D0198, UBU-Q0116 being post-MVP, DESIGN.md \u00a717.0, and the event/field names task_completed, task_failed, plan_realized, log_annotation_added, log_correction_added, annotation_of, correction_of, decision_kind: alert_dismissed_or_ignored, preference_inference_allowed. If any of these do not exist as named, the new section would dangle.",
+        "The proposal reframes the existing DESIGN.md sentence 'Friction notes feed the Bayesian duration learning system' into 'friction is qualitative review context that cannot alter distributions' and pushes all update mechanics to UBU-Q0116. This is a defensible answer to subquestion 3, but it partially defers the 'how does it interact with Bayesian learning' half of the question rather than answering it; if UBU-Q0116 is actually Phase 2 rather than post-MVP, the phase labelling in D0357 is wrong.",
+        "Section is considerably more prescriptive than a 'minimum' schema: fixed 2048-char cap, eight-ref cap, sync coalescing, restart persistence, per-skip decision_recorded entries, and a fixtures paragraph. Numbers are arbitrary but bounded; the per-skip Log entry could add noise to the counterfactual log.",
+        "New heading '### 17.8.1' uses the same level as '### 17.9', which may be inconsistent with how sub-subsections are numbered elsewhere in DESIGN.md.",
+        "Decision number UBU-D0357 is asserted unique by the author but sequence correctness relative to the latest existing decision is not independently verified here."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261014T080833Z-UBU-Q0113/responses/claude_score_ubu-q0113-friction-annotation-v1_stdout.json",
+        "stderr_path": null
+      }
+    }
+  ],
+  "score_aggregates": [
+    {
+      "proposal_id": "UBU-Q0113-friction-annotation-v1",
+      "author_provider": "openai",
+      "cross_score_count": 2,
+      "score_mean": 88.5,
+      "score_spread": 13,
+      "frontier_score_gap": 13,
+      "disagreement_flags": []
+    }
+  ],
+  "cross_score_count": 2,
+  "score_mean": 88.5,
+  "score_spread": 13,
+  "frontier_score_gap": 13,
+  "disagreement_flags": [],
+  "quorum_result": {
+    "valid": true,
+    "human_review_required": false,
+    "selected_proposal_id": "UBU-Q0113-friction-annotation-v1",
+    "selected_score": 88.5,
+    "selected_cross_score_count": 2,
+    "blocked_reasons": [],
+    "manual_override": false
+  },
+  "selected_proposal_id": "UBU-Q0113-friction-annotation-v1",
+  "automated_selection_valid": true,
+  "human_review_required": false,
+  "artifact_publication_status": "operator_pending",
+  "prompt_size_warning": false,
+  "prompt_context": {
+    "question_ids": [
+      "UBU-Q0107",
+      "UBU-Q0113"
+    ],
+    "decision_ids": [
+      "UBU-D0198"
+    ],
+    "sections": {
+      "DESIGN.md": [
+        "17.0"
+      ]
+    },
+    "core_sections": {
+      "DESIGN.md": [
+        "1"
+      ],
+      "DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md": [
+        "4"
+      ]
+    },
+    "missing_refs": {},
+    "context_chars": 45361,
+    "prompt_chars": 52364
+  }
+}

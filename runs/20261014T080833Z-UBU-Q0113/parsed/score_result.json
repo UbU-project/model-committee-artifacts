@@ -1,0 +1,26 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0113-friction-annotation-v1",
+      "score": 88,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Concurrent offline devices may display duplicate prompts before suppression state synchronizes.",
+        "Decision number UBU-D0357 is asserted unique by the author but sequence correctness relative to the latest existing decision is not independently verified here.",
+        "New heading '### 17.8.1' uses the same level as '### 17.9', which may be inconsistent with how sub-subsections are numbered elsewhere in DESIGN.md.",
+        "Section is considerably more prescriptive than a 'minimum' schema: fixed 2048-char cap, eight-ref cap, sync coalescing, restart persistence, per-skip decision_recorded entries, and a fixtures paragraph. Numbers are arbitrary but bounded; the per-skip Log entry could add noise to the counterfactual log.",
+        "Several cross-references cannot be verified from the prompt alone: UBU-D0198, UBU-Q0116 being post-MVP, DESIGN.md \u00a717.0, and the event/field names task_completed, task_failed, plan_realized, log_annotation_added, log_correction_added, annotation_of, correction_of, decision_kind: alert_dismissed_or_ignored, preference_inference_allowed. If any of these do not exist as named, the new section would dangle.",
+        "The fixed overrun thresholds and schema limits may need adjustment after practical use.",
+        "The proposal reframes the existing DESIGN.md sentence 'Friction notes feed the Bayesian duration learning system' into 'friction is qualitative review context that cannot alter distributions' and pushes all update mechanics to UBU-Q0116. This is a defensible answer to subquestion 3, but it partially defers the 'how does it interact with Bayesian learning' half of the question rather than answering it; if UBU-Q0116 is actually Phase 2 rather than post-MVP, the phase labelling in D0357 is wrong."
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0113-friction-annotation-v1",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}

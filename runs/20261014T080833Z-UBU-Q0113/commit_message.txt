@@ -1,0 +1,1 @@
+UMC: docs: resolve UBU-Q0113 friction annotations and duration review boundary
