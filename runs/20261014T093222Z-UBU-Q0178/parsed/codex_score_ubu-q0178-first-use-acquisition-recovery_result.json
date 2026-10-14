@@ -1,0 +1,21 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0178-first-use-acquisition-recovery",
+      "score": 88,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Adds an evidence requirement without supplying comparative real-device results or selecting an accessible multimodal path.",
+        "One interrupted-acquisition trial provides limited evidence about recovery costs across varying connectivity conditions."
+      ],
+      "required_fixes": [],
+      "rationale": "Mechanical validation confirms clean application, allowed files and preserved question schema. The patch addresses a concrete affordability barrier: obtaining and installing models within declared budgets. Starting-state distinctions, helper costs, integrity checks and installation storage measurements are relevant and auditable. It consistently retains Open status and human review without inventing results. Its limitation is incremental protocol expansion rather than measured progress toward selecting a lower-cost path."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0178-first-use-acquisition-recovery",
+  "selection_rationale": "The sole candidate is mechanically valid and provides a focused, useful extension to the existing affordability evidence contract. It merits consideration as partial progress, while the question remains dependent on operator-reviewed comparative measurements."
+}

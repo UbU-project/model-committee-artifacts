@@ -1,0 +1,226 @@
+# Model-Committee Cross-Scoring Request
+
+You are scoring candidate work proposals for the UbU `model-committee` process.
+
+Return exactly one JSON object. Do not return prose outside the JSON object.
+
+This is a v0.2 cross-score. You are not making the final selection; model-committee
+will aggregate valid cross-scores locally.
+
+Scoring provider: `claude`
+Authoring provider for the candidate proposal(s): `openai`
+
+## Selected question
+
+Question ID: `UBU-Q0178`  
+Question title: `Economically accessible local compute paths`  
+Base commit: `71ce3e69c21b2d015e8baae67fb825d5103242c6`
+
+```markdown
+## UBU-Q0178: Economically accessible local compute paths
+
+Status: Open Priority: MVP important Phase: Phase 2 Decision type: Product Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 100 Depends on: None Blocks: None Resolved by: None Last scored: 2026-10-14 Scored from commit: None
+
+### Question
+
+Which lower-cost local compute paths prevent economically precarious users from being excluded from the multimodal experience?
+
+### Current direction
+
+Delta §17.16. Consider smaller local models, bounded snapshots, CPU fallback, reduced latency classes and operator-controlled trusted hardware without a hidden hosted-model dependency. Measure the useful tradeoffs before claiming reach or costs. Compute accessibility is part of the mission, not a promised device minimum.
+
+`UBU-D0332` specifies a comparison of bounded CPU-capable single-Device inference and an existing personal worker, with whole-route cost/effort budgets and the qualification gates in DESIGN.md §1. Actual useful lower-cost profiles and cost envelopes remain unselected. `UBU-D0337` adds explicit ownership scenarios, entry/period cash limits and all-attempt accounting per useful multimodal outcome; the no-worker scenario and any remaining gap must stay visible.
+
+### Resolution
+
+Open. `UBU-D0332` answers the candidate-path and cost-evidence contract; `UBU-D0337` adds entry/period cash and useful-outcome accounting only. Close after operator-reviewed comparative real-device results select at least one qualified lower-cost camera-and-voice path for explicit ownership scenarios within declared entry, period and total cash, effort, energy and storage budgets, with useful end-to-end outcomes and mandatory security/retention gates met. Keep unqualified ownership scenarios and any no-worker gap explicit. A protocol, smaller model or text-only fallback cannot establish economically accessible multimodal reach.
+
+---
+
+```
+
+## Candidate proposals
+
+```json
+[
+  {
+    "proposal_id": "UBU-Q0178-first-use-acquisition-recovery",
+    "provider_id": "openai",
+    "model_name": "gpt-6",
+    "question_id": "UBU-Q0178",
+    "base_commit": "71ce3e69c21b2d015e8baae67fb825d5103242c6",
+    "summary": "Require measured first-use installation and interrupted package/model acquisition recovery before selecting a lower-cost route for an explicit starting-state and ownership scenario.",
+    "rationale": "UBU-D0332 and UBU-D0337 already require setup costs, entry-cash limits and secure local operation, but prepared inference trials do not demonstrate that users can obtain and install the required packages within those budgets. One setup trial and one acquisition-recovery trial expose transferred data, helper resources, effort and temporary storage without inventing prices or supported hardware. Keep UBU-Q0178 Open until comparative real-device evidence supports an operator-approved selection.",
+    "changed_files": [
+      "DECISIONS.md",
+      "DESIGN.md",
+      "OPEN_QUESTIONS.md"
+    ],
+    "patch": "diff --git a/DECISIONS.md b/DECISIONS.md\nindex 877b6d3..39baf8d 100644\n--- a/DECISIONS.md\n+++ b/DECISIONS.md\n@@ -5666,3 +5666,15 @@ Operator-approved passing configurations may establish scoped partial support. K\n This clarifies completeness within the existing release scope. It supplies no measured result, supported minimum or mobile planner/API selection and changes no switch or release commitment.\n \n ---\n+\n+## UBU-D0363: Lower-cost paths require first-use setup and acquisition-recovery evidence\n+\n+**Status:** Accepted \u2192 DESIGN.md \u00a71. Narrows `UBU-Q0178`; measured lower-cost selection remains Open.\n+\n+Extend `UBU-D0332`/`UBU-D0337` with one first-use setup trial and one interrupted package/model acquisition followed by recovery for each eligible candidate route on its exact hardware. Freeze the starting inventory, installation path, connectivity/data allowance, required helper resources and finite data, elapsed-time and active-effort limits. Measure through the first useful camera-and-voice outcome under the existing frozen rubric. Keep already-installed and packages/models-absent starting states distinct; a prepared inference trial cannot establish access from absent packages.\n+\n+Report all transferred bytes and retries, operator/helper effort, energy and peak download/unpacking/installation/recovery storage. Apply existing installation/model-integrity gates before activation. Include helper and connectivity costs in the applicable entry/period totals; show recovery cost separately and disclose its assumed frequency and uncertainty in period estimates. Publish setup-limit results and evidence in the existing cost/support matrix; failed or unknown required setup limits prevent selection for the affected starting-state/ownership scenario.\n+\n+This adds evidence for the existing setup-cost obligation, not a provisioning or maintenance-automation architecture, passing result, price or selected configuration. Preserve `UBU-D0331`/`UBU-D0336`, useful-outcome accounting and the explicit no-worker gap. `UBU-Q0178` remains Open pending operator-reviewed comparative results.\n+\n+---\ndiff --git a/DESIGN.md b/DESIGN.md\nindex c5ae5d7..cde39e0 100644\n--- a/DESIGN.md\n+++ b/DESIGN.md\n@@ -129,6 +129,12 @@ For each measured workload, report all-attempt totals for run-related cash, ener\n \n Add ownership prerequisites, entry/period payment schedules and ceilings, all-attempt totals, outcome denominators and per-outcome values to the cost/support matrix, with evidence links and pass/fail/unknown for each budget and mandatory gate. Select only for scenarios whose whole-route budgets and `UBU-D0331`/`UBU-D0336` qualification gates pass. Keep any no-worker multimodal gap visible. This extension selects no measured configuration or cost envelope; `UBU-Q0178` stays Open pending operator-reviewed results.\n \n+**First-use setup and acquisition recovery (`UBU-D0363`).** For each eligible route in `UBU-D0332`/`UBU-D0337`'s comparison, add one first-use setup trial and one interrupted package/model acquisition followed by its documented recovery on the exact candidate hardware. Before trials, freeze the starting OS/security state, available storage and package/model inventory, installation path, connectivity/data allowance and any required helper Device or human assistance. Declare finite transferred-byte, first-use elapsed-time and active-effort limits alongside the existing cash, energy and storage budgets. Distinguish already-installed and packages/models-absent starting states; preinstalled trial artifacts cannot establish the latter's entry budget.\n+\n+Run setup through the first useful camera-and-voice outcome under the frozen rubric. Measure all transferred bytes including failed transfers and retries, operator/helper effort, wall time, energy and peak storage including downloads, unpacking, installed packages/weights and recovery copies. Bind results to package digests and the exercised instructions. Apply `UBU-D0331`'s installation/model-integrity checks before activation; incomplete or unverified acquisitions cannot become usable profiles. Record the interrupted-acquisition recovery separately; a supported full re-download is permissible when its measured costs and limits pass.\n+\n+Include mandatory helper resources and connectivity payments in the applicable entry/period totals, with recovery cost and its assumed frequency and uncertainty explicit in period estimates. Keep setup costs separate from `UBU-D0337`'s run-related totals and count only rubric-qualified multimodal outcomes. Publish evidence and pass/fail/unknown for each setup limit in the existing cost/support matrix. Failed or unknown required setup limits prevent selection for the affected starting-state/ownership scenario; passing setup alone cannot qualify inference or close `UBU-Q0178`. This specifies evidence collection without selecting a provisioning or maintenance-automation architecture.\n+\n ---\n \n ## 2. Core Principles\ndiff --git a/OPEN_QUESTIONS.md b/OPEN_QUESTIONS.md\nindex 08b157c..8e1a181 100644\n--- a/OPEN_QUESTIONS.md\n+++ b/OPEN_QUESTIONS.md\n@@ -3420,33 +3420,33 @@ Open. `UBU-D0331` answers the qualification protocol only. Close after actual re\n ---\n \n ## UBU-Q0178: Economically accessible local compute paths\n \n Status: Open Priority: MVP important Phase: Phase 2 Decision type: Product Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 100 Depends on: None Blocks: None Resolved by: None Last scored: 2026-10-14 Scored from commit: None\n \n ### Question\n \n Which lower-cost local compute paths prevent economically precarious users from being excluded from the multimodal experience?\n \n ### Current direction\n \n Delta \u00a717.16. Consider smaller local models, bounded snapshots, CPU fallback, reduced latency classes and operator-controlled trusted hardware without a hidden hosted-model dependency. Measure the useful tradeoffs before claiming reach or costs. Compute accessibility is part of the mission, not a promised device minimum.\n \n-`UBU-D0332` specifies a comparison of bounded CPU-capable single-Device inference and an existing personal worker, with whole-route cost/effort budgets and the qualification gates in DESIGN.md \u00a71. Actual useful lower-cost profiles and cost envelopes remain unselected. `UBU-D0337` adds explicit ownership scenarios, entry/period cash limits and all-attempt accounting per useful multimodal outcome; the no-worker scenario and any remaining gap must stay visible.\n+`UBU-D0332` specifies a comparison of bounded CPU-capable single-Device inference and an existing personal worker, with whole-route cost/effort budgets and the qualification gates in DESIGN.md \u00a71. Actual useful lower-cost profiles and cost envelopes remain unselected. `UBU-D0337` adds explicit ownership scenarios, entry/period cash limits and all-attempt accounting per useful multimodal outcome; the no-worker scenario and any remaining gap must stay visible. `UBU-D0363` adds first-use setup and interrupted package/model acquisition trials, accounting for transferred data, helper resources and peak installation/recovery storage by starting-state/ownership scenario.\n \n ### Resolution\n \n-Open. `UBU-D0332` answers the candidate-path and cost-evidence contract; `UBU-D0337` adds entry/period cash and useful-outcome accounting only. Close after operator-reviewed comparative real-device results select at least one qualified lower-cost camera-and-voice path for explicit ownership scenarios within declared entry, period and total cash, effort, energy and storage budgets, with useful end-to-end outcomes and mandatory security/retention gates met. Keep unqualified ownership scenarios and any no-worker gap explicit. A protocol, smaller model or text-only fallback cannot establish economically accessible multimodal reach.\n+Open. `UBU-D0332` answers the candidate-path and cost-evidence contract; `UBU-D0337` adds entry/period cash and useful-outcome accounting only. `UBU-D0363` adds setup and acquisition-recovery evidence; no measured path is selected. Close after operator-reviewed comparative real-device results select at least one qualified lower-cost camera-and-voice path for explicit ownership scenarios within declared entry, period and total cash, effort, energy and storage budgets, with useful end-to-end outcomes and mandatory security/retention gates met. Keep unqualified ownership scenarios and any no-worker gap explicit. A protocol, smaller model or text-only fallback cannot establish economically accessible multimodal reach.\n \n ---\n \n ## UBU-Q0179: Audience routing for the social-impact thesis\n \n Status: Open Priority: Post-MVP Phase: Post-MVP Decision type: Product Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: TBD Depends on: None Blocks: None Resolved by: None Last scored: Never Scored from commit: None\n \n ### Question\n \n Which additional parts of the social-impact thesis belong in public overview, funder, nonprofit/government outreach and canonical design material?\n \n ### Current direction\n \n Delta \u00a717.17. Initial routing is carried by P1B-75; later claims need evidence labels, dependency scope and operator review. Keep the scenario library held, unverified statistics embargoed, and private material excluded. General user-authorized records for professional preparation are distinct from monitoring or diagnosis claims.\n",
+    "commit_message": "docs: require first-use setup evidence for lower-cost local paths",
+    "validation_notes": [
+      "Generated unified hunks with git diff --no-index against unchanged working-tree files and proposed contents supplied through stdin; normalized destination filenames and proposed blob hashes.",
+      "git apply --check against the current working tree succeeded without --cached or --recount.",
+      "JSON fields and types validated. The OPEN_QUESTIONS.md hunk includes the selected UBU-Q0178 heading and its own Resolution section; its single-line metadata, Open status and existing scores are unchanged.",
+      "UBU-D0363 was unused in the working-tree decision log. Only DECISIONS.md, DESIGN.md and the selected OPEN_QUESTIONS.md block change; no repository files were written.",
+      "No real-device trials, prices, budget passes or supported configurations are claimed. UBU-Q0178 remains Open and the product decision requires human review."
+    ],
+    "new_questions_added": [],
+    "questions_resolved": [],
+    "decisions_added": [
+      "UBU-D0363"
+    ],
+    "requires_human_review": true
+  }
+]
+```
+
+## Mechanical validation results
+
+```json
+[
+  {
+    "proposal_id": "UBU-Q0178-first-use-acquisition-recovery",
+    "patch_applies": true,
+    "allowlist_passed": true,
+    "changed_files": [
+      "DECISIONS.md",
+      "DESIGN.md",
+      "OPEN_QUESTIONS.md"
+    ],
+    "question_schema_passed": true,
+    "error": null,
+    "normalized_patch": null,
+    "warnings": [],
+    "ordinary_error": null,
+    "recount_error": null,
+    "normalization_error": null
+  }
+]
+```
+
+## Provider weights
+
+Provider weights are historical diagnostic context only in v0.2. Do not use
+self-trust or author identity as score evidence.
+
+```json
+{}
+```
+
+## JSON Schema
+
+Your output must satisfy this schema:
+
+```json
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "scores",
+    "selected_proposal_id",
+    "selection_rationale"
+  ],
+  "properties": {
+    "scores": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "proposal_id",
+          "score",
+          "patch_applies",
+          "implements_selected_work",
+          "preserves_question_schema",
+          "avoids_unnecessary_scope",
+          "decomposition_quality",
+          "risks",
+          "required_fixes",
+          "rationale"
+        ],
+        "properties": {
+          "proposal_id": {
+            "type": "string"
+          },
+          "score": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "patch_applies": {
+            "type": "boolean"
+          },
+          "implements_selected_work": {
+            "type": "boolean"
+          },
+          "preserves_question_schema": {
+            "type": "boolean"
+          },
+          "avoids_unnecessary_scope": {
+            "type": "boolean"
+          },
+          "decomposition_quality": {
+            "type": "string",
+            "enum": [
+              "none",
+              "good",
+              "bad",
+              "not_applicable"
+            ]
+          },
+          "risks": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "required_fixes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "rationale": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "selected_proposal_id": {
+      "type": "string"
+    },
+    "selection_rationale": {
+      "type": "string"
+    }
+  }
+}
+```
+
+## Scoring requirements
+
+Score each proposal from 0 to 100.
+
+Consider:
+
+- whether the patch applies cleanly;
+- whether it implements the selected work;
+- whether it preserves the question schema;
+- whether it avoids unnecessary scope;
+- whether it modifies only allowed files;
+- whether it creates useful decomposition if decomposition occurs;
+- whether it introduces new risks;
+- whether required fixes remain.
+
+Rules:
+
+- Score every proposal in this prompt.
+- `selected_proposal_id` must refer to one scored proposal from this prompt.
+- Manual override is not allowed in v0.2.
+- Prefer a patch that is valid, minimal, auditable, and directly responsive.
+- Do not select a proposal whose patch failed mechanical validation.
+- Allowed question `Status:` values are `Archived`, `Decomposed`, `Deferred`, `Open`, `Solved`, `Superseded`; a resolved question must use `Status: Solved`.
+- Reject `Status: Resolved` as a question-schema violation. Set `preserves_question_schema` to false and require `Status: Solved` as the fix; `Resolved by:` is a separate metadata field.
+- Do not score your own provider's proposal unless explicitly asked for diagnostic self-score.
+
+Return only JSON.

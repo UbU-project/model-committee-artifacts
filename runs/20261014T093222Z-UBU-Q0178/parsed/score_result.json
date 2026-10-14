@@ -1,0 +1,26 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0178-first-use-acquisition-recovery",
+      "score": 81,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Adds an evidence requirement without supplying comparative real-device results or selecting an accessible multimodal path.",
+        "Decision ID UBU-D0363 uniqueness is asserted only by the author's validation notes; not independently verified here.",
+        "Introduces 'helper Device or human assistance' as a frozen trial input without defining how helper availability is scoped for the no-worker ownership scenario.",
+        "One interrupted-acquisition trial provides limited evidence about recovery costs across varying connectivity conditions.",
+        "Per-route interrupted-acquisition trial plus first-use setup trial materially increases measurement burden on the comparison; cost of running the evidence program itself is not bounded.",
+        "Period estimates now depend on an 'assumed frequency' of recovery events, an unverifiable assumption that can be tuned to make a route pass or fail.",
+        "Third consecutive evidence-contract extension (after UBU-D0332 and UBU-D0337) with no measured result; risk of indefinite deferral by accumulating trial obligations rather than moving toward operator-reviewed real-device data."
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0178-first-use-acquisition-recovery",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}

@@ -1,0 +1,175 @@
+{
+  "schema_version": "0.4",
+  "run_id": "20261014T093222Z-UBU-Q0178",
+  "created_at_utc": "2026-10-14T09:32:22Z",
+  "repo_path": "../ubu-design",
+  "base_commit": "71ce3e69c21b2d015e8baae67fb825d5103242c6",
+  "selected_question_id": "UBU-Q0178",
+  "phase": "work-select",
+  "config_path": "config/models.json",
+  "status": "selected",
+  "commands": [
+    "model-committee run-loop"
+  ],
+  "providers_attempted": [
+    "codex",
+    "claude"
+  ],
+  "providers_succeeded": [
+    "codex",
+    "claude"
+  ],
+  "providers_failed": [],
+  "provider_attempts": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0178-first-use-acquisition-recovery",
+      "response_path": "runs/20261014T093222Z-UBU-Q0178/responses/codex_score_ubu-q0178-first-use-acquisition-recovery_response.json",
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0178-first-use-acquisition-recovery",
+      "response_path": "runs/20261014T093222Z-UBU-Q0178/responses/claude_score_ubu-q0178-first-use-acquisition-recovery_stdout.json",
+      "stderr_path": null
+    }
+  ],
+  "provider_successes": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20261014T093222Z-UBU-Q0178/parsed/codex_work_proposal.json"
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0178-first-use-acquisition-recovery",
+      "response_path": "runs/20261014T093222Z-UBU-Q0178/responses/codex_score_ubu-q0178-first-use-acquisition-recovery_response.json",
+      "parsed_path": "runs/20261014T093222Z-UBU-Q0178/parsed/codex_score_ubu-q0178-first-use-acquisition-recovery_result.json"
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0178-first-use-acquisition-recovery",
+      "response_path": "runs/20261014T093222Z-UBU-Q0178/responses/claude_score_ubu-q0178-first-use-acquisition-recovery_stdout.json",
+      "parsed_path": "runs/20261014T093222Z-UBU-Q0178/parsed/claude_score_ubu-q0178-first-use-acquisition-recovery_result.json"
+    }
+  ],
+  "provider_failures": [],
+  "score_matrix": [
+    {
+      "proposal_id": "UBU-Q0178-first-use-acquisition-recovery",
+      "author_provider": "openai",
+      "scorer_provider": "codex",
+      "score": 88,
+      "valid": true,
+      "rationale": "Mechanical validation confirms clean application, allowed files and preserved question schema. The patch addresses a concrete affordability barrier: obtaining and installing models within declared budgets. Starting-state distinctions, helper costs, integrity checks and installation storage measurements are relevant and auditable. It consistently retains Open status and human review without inventing results. Its limitation is incremental protocol expansion rather than measured progress toward selecting a lower-cost path.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "Adds an evidence requirement without supplying comparative real-device results or selecting an accessible multimodal path.",
+        "One interrupted-acquisition trial provides limited evidence about recovery costs across varying connectivity conditions."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261014T093222Z-UBU-Q0178/responses/codex_score_ubu-q0178-first-use-acquisition-recovery_response.json",
+        "stderr_path": null
+      }
+    },
+    {
+      "proposal_id": "UBU-Q0178-first-use-acquisition-recovery",
+      "author_provider": "openai",
+      "scorer_provider": "claude",
+      "score": 74,
+      "valid": true,
+      "rationale": "Patch applies cleanly, touches only DECISIONS.md, DESIGN.md and the selected question block, and keeps Status: Open with the metadata line unchanged. The gap it closes is real for the target population: UBU-D0337's entry-cash limits do not capture data-transfer, temporary storage or helper costs of obtaining packages and weights from an absent starting state, and a prepared inference trial cannot stand in for that. The DESIGN.md text is auditable, ties to existing gates (UBU-D0331 integrity checks, frozen rubric, cost/support matrix) and explicitly refuses to select a configuration, price or architecture. Deductions: the question can only close on measured results, so this is another narrowing step whose marginal value is moderate; the DESIGN.md addition is dense and adds nontrivial trial burden; the recovery-frequency assumption weakens period estimates. No blocking fixes.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "Third consecutive evidence-contract extension (after UBU-D0332 and UBU-D0337) with no measured result; risk of indefinite deferral by accumulating trial obligations rather than moving toward operator-reviewed real-device data.",
+        "Per-route interrupted-acquisition trial plus first-use setup trial materially increases measurement burden on the comparison; cost of running the evidence program itself is not bounded.",
+        "Period estimates now depend on an 'assumed frequency' of recovery events, an unverifiable assumption that can be tuned to make a route pass or fail.",
+        "Introduces 'helper Device or human assistance' as a frozen trial input without defining how helper availability is scoped for the no-worker ownership scenario.",
+        "Decision ID UBU-D0363 uniqueness is asserted only by the author's validation notes; not independently verified here."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261014T093222Z-UBU-Q0178/responses/claude_score_ubu-q0178-first-use-acquisition-recovery_stdout.json",
+        "stderr_path": null
+      }
+    }
+  ],
+  "score_aggregates": [
+    {
+      "proposal_id": "UBU-Q0178-first-use-acquisition-recovery",
+      "author_provider": "openai",
+      "cross_score_count": 2,
+      "score_mean": 81.0,
+      "score_spread": 14,
+      "frontier_score_gap": 14,
+      "disagreement_flags": []
+    }
+  ],
+  "cross_score_count": 2,
+  "score_mean": 81.0,
+  "score_spread": 14,
+  "frontier_score_gap": 14,
+  "disagreement_flags": [],
+  "quorum_result": {
+    "valid": true,
+    "human_review_required": false,
+    "selected_proposal_id": "UBU-Q0178-first-use-acquisition-recovery",
+    "selected_score": 81.0,
+    "selected_cross_score_count": 2,
+    "blocked_reasons": [],
+    "manual_override": false
+  },
+  "selected_proposal_id": "UBU-Q0178-first-use-acquisition-recovery",
+  "automated_selection_valid": true,
+  "human_review_required": false,
+  "artifact_publication_status": "operator_pending",
+  "prompt_size_warning": false,
+  "prompt_context": {
+    "question_ids": [
+      "UBU-Q0178"
+    ],
+    "decision_ids": [
+      "UBU-D0332",
+      "UBU-D0337"
+    ],
+    "sections": {
+      "DESIGN.md": [
+        "1"
+      ]
+    },
+    "core_sections": {
+      "DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md": [
+        "4"
+      ]
+    },
+    "missing_refs": {},
+    "context_chars": 44695,
+    "prompt_chars": 51597
+  }
+}
