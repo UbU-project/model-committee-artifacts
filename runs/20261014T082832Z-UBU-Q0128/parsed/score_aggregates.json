@@ -1,0 +1,11 @@
+[
+  {
+    "proposal_id": "UBU-Q0128-qualified-audio-routes-20261014",
+    "author_provider": "openai",
+    "cross_score_count": 2,
+    "score_mean": 87.5,
+    "score_spread": 15,
+    "frontier_score_gap": 15,
+    "disagreement_flags": []
+  }
+]

@@ -1,0 +1,29 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0128-qualified-audio-routes-20261014",
+      "score": 88,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Complete sink observability, fallback prevention and bounded quiescence require platform qualification; these requirements may leave some audio profiles unavailable.",
+        "Decision ID UBU-D0359 cannot be confirmed as the next unused ID from the DECISIONS.md hunk context; a collision would require renumbering across all three files.",
+        "New normative text cites \u00a7\u00a721.1.4\u201321.1.5 for stop-to-quiescence and resource-release ceilings and relies on an existing `InteractionBudgetV1.audio_endpoint` ref/version field; neither is visible in the prompt, so dangling references are possible.",
+        "Route qualification and peripheral/Device trust overlap thematically with the hardware questions UBU-Q0164\u2013UBU-Q0182; the proposal does not cross-reference them, risking split ownership of accessory qualification.",
+        "The DESIGN.md addition is a single dense block of many stacked requirements, which is harder to audit and test-map than the table-plus-fixtures style used by UBU-D0322.",
+        "The Resolution paragraph is rewritten as one long line, raising merge-conflict risk with any concurrent proposal touching the same question.",
+        "The enforceability bar (disable speech acquisition if silent microphone fallback cannot be prevented; withhold speech output if queued audio cannot be kept off unreviewed sinks) may make audio unavailable on common mobile/car platforms where OS-controlled routing cannot be pinned, which could narrow the MVP voice surface in practice."
+      ],
+      "required_fixes": [
+        "Verify UBU-D0359 is the next unused decision number before merge; renumber consistently in DECISIONS.md, DESIGN.md and OPEN_QUESTIONS.md if not.",
+        "Verify that \u00a7\u00a721.1.4\u201321.1.5 exist and define the quiescence/resource-release ceilings referenced, and that `InteractionBudgetV1.audio_endpoint` exists as a ref/version field; adjust the references if either is absent."
+      ],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0128-qualified-audio-routes-20261014",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}

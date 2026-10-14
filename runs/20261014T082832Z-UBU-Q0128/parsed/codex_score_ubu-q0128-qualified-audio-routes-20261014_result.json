@@ -1,0 +1,20 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0128-qualified-audio-routes-20261014",
+      "score": 95,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Complete sink observability, fallback prevention and bounded quiescence require platform qualification; these requirements may leave some audio profiles unavailable."
+      ],
+      "required_fixes": [],
+      "rationale": "Mechanical validation confirms clean application, allowed files and preserved question schema. The patch directly answers the route and handoff slice of subquestion 17 with independent input/output bindings, disclosure checks, interruption invalidation and explicit fresh resumption. It supplies useful qualification cases without claiming passing results, expanding action permissions, changing either v1 schema or closing the broader question. No blocking defect is evident."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0128-qualified-audio-routes-20261014",
+  "selection_rationale": "The sole candidate is mechanically valid, scoped and auditable. Its route controls address a concrete privacy and continuity gap while leaving platform qualification and remaining question areas open. This cross-score leaves final selection to local aggregation and human review."
+}

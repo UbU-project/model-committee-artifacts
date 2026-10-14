@@ -1,0 +1,190 @@
+{
+  "schema_version": "0.4",
+  "run_id": "20261014T082832Z-UBU-Q0128",
+  "created_at_utc": "2026-10-14T08:28:32Z",
+  "repo_path": "../ubu-design",
+  "base_commit": "e15976f11e23c35956dfca51163f6623dcd8012d",
+  "selected_question_id": "UBU-Q0128",
+  "phase": "work-select",
+  "config_path": "config/models.json",
+  "status": "selected",
+  "commands": [
+    "model-committee run-loop"
+  ],
+  "providers_attempted": [
+    "codex",
+    "claude"
+  ],
+  "providers_succeeded": [
+    "codex",
+    "claude"
+  ],
+  "providers_failed": [],
+  "provider_attempts": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0128-qualified-audio-routes-20261014",
+      "response_path": "runs/20261014T082832Z-UBU-Q0128/responses/codex_score_ubu-q0128-qualified-audio-routes-20261014_response.json",
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0128-qualified-audio-routes-20261014",
+      "response_path": "runs/20261014T082832Z-UBU-Q0128/responses/claude_score_ubu-q0128-qualified-audio-routes-20261014_stdout.json",
+      "stderr_path": null
+    }
+  ],
+  "provider_successes": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20261014T082832Z-UBU-Q0128/parsed/codex_work_proposal.json"
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0128-qualified-audio-routes-20261014",
+      "response_path": "runs/20261014T082832Z-UBU-Q0128/responses/codex_score_ubu-q0128-qualified-audio-routes-20261014_response.json",
+      "parsed_path": "runs/20261014T082832Z-UBU-Q0128/parsed/codex_score_ubu-q0128-qualified-audio-routes-20261014_result.json"
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0128-qualified-audio-routes-20261014",
+      "response_path": "runs/20261014T082832Z-UBU-Q0128/responses/claude_score_ubu-q0128-qualified-audio-routes-20261014_stdout.json",
+      "parsed_path": "runs/20261014T082832Z-UBU-Q0128/parsed/claude_score_ubu-q0128-qualified-audio-routes-20261014_result.json"
+    }
+  ],
+  "provider_failures": [],
+  "score_matrix": [
+    {
+      "proposal_id": "UBU-Q0128-qualified-audio-routes-20261014",
+      "author_provider": "openai",
+      "scorer_provider": "codex",
+      "score": 95,
+      "valid": true,
+      "rationale": "Mechanical validation confirms clean application, allowed files and preserved question schema. The patch directly answers the route and handoff slice of subquestion 17 with independent input/output bindings, disclosure checks, interruption invalidation and explicit fresh resumption. It supplies useful qualification cases without claiming passing results, expanding action permissions, changing either v1 schema or closing the broader question. No blocking defect is evident.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "Complete sink observability, fallback prevention and bounded quiescence require platform qualification; these requirements may leave some audio profiles unavailable."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261014T082832Z-UBU-Q0128/responses/codex_score_ubu-q0128-qualified-audio-routes-20261014_response.json",
+        "stderr_path": null
+      }
+    },
+    {
+      "proposal_id": "UBU-Q0128-qualified-audio-routes-20261014",
+      "author_provider": "openai",
+      "scorer_provider": "claude",
+      "score": 80,
+      "valid": true,
+      "rationale": "Patch applies cleanly, passes allowlist and question-schema checks, and keeps UBU-Q0128 Open with its metadata line untouched. It answers a real open slice (subquestion 17: headsets, car audio, phones/watches, handoff) in the same decision-per-slice pattern as UBU-D0309\u2013D0333, adds no schema changes, no new actions, no MVP commitment and no new questions. The DESIGN.md text is coherent with the existing controller-boundary and playback-referent sections and includes explicit negative qualification cases. Deductions are for unverifiable cross-references (decision ID, \u00a721.1.4\u201321.1.5, audio_endpoint field), the density of the normative block, lack of cross-reference to the hardware question range, and the practical risk that the fallback-prevention bar leaves audio unavailable on common platforms.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [
+        "Verify UBU-D0359 is the next unused decision number before merge; renumber consistently in DECISIONS.md, DESIGN.md and OPEN_QUESTIONS.md if not.",
+        "Verify that \u00a7\u00a721.1.4\u201321.1.5 exist and define the quiescence/resource-release ceilings referenced, and that `InteractionBudgetV1.audio_endpoint` exists as a ref/version field; adjust the references if either is absent."
+      ],
+      "risks": [
+        "Decision ID UBU-D0359 cannot be confirmed as the next unused ID from the DECISIONS.md hunk context; a collision would require renumbering across all three files.",
+        "New normative text cites \u00a7\u00a721.1.4\u201321.1.5 for stop-to-quiescence and resource-release ceilings and relies on an existing `InteractionBudgetV1.audio_endpoint` ref/version field; neither is visible in the prompt, so dangling references are possible.",
+        "The enforceability bar (disable speech acquisition if silent microphone fallback cannot be prevented; withhold speech output if queued audio cannot be kept off unreviewed sinks) may make audio unavailable on common mobile/car platforms where OS-controlled routing cannot be pinned, which could narrow the MVP voice surface in practice.",
+        "Route qualification and peripheral/Device trust overlap thematically with the hardware questions UBU-Q0164\u2013UBU-Q0182; the proposal does not cross-reference them, risking split ownership of accessory qualification.",
+        "The DESIGN.md addition is a single dense block of many stacked requirements, which is harder to audit and test-map than the table-plus-fixtures style used by UBU-D0322.",
+        "The Resolution paragraph is rewritten as one long line, raising merge-conflict risk with any concurrent proposal touching the same question."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261014T082832Z-UBU-Q0128/responses/claude_score_ubu-q0128-qualified-audio-routes-20261014_stdout.json",
+        "stderr_path": null
+      }
+    }
+  ],
+  "score_aggregates": [
+    {
+      "proposal_id": "UBU-Q0128-qualified-audio-routes-20261014",
+      "author_provider": "openai",
+      "cross_score_count": 2,
+      "score_mean": 87.5,
+      "score_spread": 15,
+      "frontier_score_gap": 15,
+      "disagreement_flags": []
+    }
+  ],
+  "cross_score_count": 2,
+  "score_mean": 87.5,
+  "score_spread": 15,
+  "frontier_score_gap": 15,
+  "disagreement_flags": [],
+  "quorum_result": {
+    "valid": true,
+    "human_review_required": false,
+    "selected_proposal_id": "UBU-Q0128-qualified-audio-routes-20261014",
+    "selected_score": 87.5,
+    "selected_cross_score_count": 2,
+    "blocked_reasons": [],
+    "manual_override": false
+  },
+  "selected_proposal_id": "UBU-Q0128-qualified-audio-routes-20261014",
+  "automated_selection_valid": true,
+  "human_review_required": false,
+  "artifact_publication_status": "operator_pending",
+  "prompt_size_warning": true,
+  "prompt_context": {
+    "question_ids": [
+      "UBU-Q0128"
+    ],
+    "decision_ids": [
+      "UBU-D0292",
+      "UBU-D0293",
+      "UBU-D0309",
+      "UBU-D0310",
+      "UBU-D0311",
+      "UBU-D0322",
+      "UBU-D0333"
+    ],
+    "sections": {
+      "DESIGN.md": [
+        "2.13",
+        "4.2",
+        "11.2",
+        "12.2",
+        "21"
+      ]
+    },
+    "core_sections": {
+      "DESIGN.md": [
+        "1"
+      ],
+      "DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md": [
+        "4"
+      ]
+    },
+    "missing_refs": {},
+    "context_chars": 301896,
+    "prompt_chars": 309296
+  }
+}
