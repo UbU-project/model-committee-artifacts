@@ -1,0 +1,28 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-ubu-q0166-d0334-normalization-evidence",
+      "score": 70,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "none",
+      "risks": [
+        "The central evidence (vet_result dropping the inline qualifier member while returning ok, SQLite close/reopen/replay controls, direct API handler reads) comes from a temporary harness that is not committed anywhere. The record is therefore prose-only and cannot be re-run from the repository, which sits uneasily with the question's own instruction not to infer host behaviour from prose.",
+        "None of the runtime claims (specific suppression_key sha256, dependency versions, the exact assignment line in src/services/precondition_review.rs) can be verified from the patch itself; if any detail is wrong it becomes a permanent incorrect entry in DECISIONS.md/DESIGN.md.",
+        "D0334 identifies a concrete implementation defect (normalization silently discards companion content and unknown profiles, with no diagnostic) but only adds a 'repair or validate that branch' directive in prose with no tracked owner, question or ticket, so the finding may stall.",
+        "The DESIGN.md \u00a721.1.1 addition is long and dense (table plus several paragraphs) and references an implementation code path that can drift from the design text over time.",
+        "Pinned checkout revisions are referenced only indirectly ('reused the revisions pinned in UBU-D0323') rather than restated, so D0334 is not self-contained for later audit."
+      ],
+      "required_fixes": [
+        "Preserve the probe harness and the four specimen fixtures (plus the two schema controls) at a pinned revision, or at minimum cite the exact commit SHAs of the schema/core/store/orchestrator checkouts inside D0334, so the vet_result loss and store/API controls are reproducible rather than asserted.",
+        "Route the reproduced normalization loss (ok status with dropped companion member and swallowed unknown profile) to a tracked follow-up: either a new open question or an explicit implementation-defect reference, so the 'repair or validate that branch' directive has an owner.",
+        "Trim the DESIGN.md addition: keep the minimal specimen, the table and the limitations paragraph, and move build/dependency version detail into D0334 or a fixture README to reduce drift between design prose and code internals."
+      ],
+      "rationale": "Mechanical validation passed: patch applies, allowlist and question schema pass, only DECISIONS.md, DESIGN.md and the UBU-Q0166 block change. The question metadata line is untouched, Status stays Open and Resolved by stays None, which is the honest outcome given the proposal establishes neither a full pinned mapping nor a host-contract gap. The work is directly responsive to the Current direction, which asked for round-trip evidence from actual validators, serializers, store/review paths; it adds a minimal failing specimen through precondition_review::vet_result, direct storage/reload/replay controls and direct API controls, and carefully distinguishes an implementation loss from a schema gap without overclaiming. It makes no schema, pin, enum or migration change and does not enable an adapter. The main weakness is auditability: the harness was temporary and uncommitted, so every runtime result (including an exact sha256 and a specific source line) is unverifiable from the repo and cannot be re-run. The proposal also surfaces a real defect without creating any tracked follow-up, and the DESIGN prose is heavier than needed. Partial progress with good discipline, held back by non-reproducible evidence."
+    }
+  ],
+  "selected_proposal_id": "openai-ubu-q0166-d0334-normalization-evidence",
+  "selection_rationale": "Only one proposal was submitted and it passed mechanical validation. It applies cleanly, preserves the UBU-Q0166 metadata and Open status, stays within the allowed files, and records bounded runtime evidence that narrows the question without asserting a schema gap or enabling an adapter. It is selected as the valid, directly responsive candidate, with the required fixes noting that the probe harness and pinned revisions must be preserved for the evidence to be auditable and that the reproduced normalization defect needs a tracked follow-up."
+}

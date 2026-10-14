@@ -1,0 +1,11 @@
+[
+  {
+    "proposal_id": "openai-ubu-q0166-d0334-normalization-evidence",
+    "author_provider": "openai",
+    "cross_score_count": 2,
+    "score_mean": 80.0,
+    "score_spread": 20,
+    "frontier_score_gap": 20,
+    "disagreement_flags": []
+  }
+]

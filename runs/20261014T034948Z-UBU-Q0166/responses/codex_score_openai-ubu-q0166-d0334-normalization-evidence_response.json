@@ -1,0 +1,21 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-ubu-q0166-d0334-normalization-evidence",
+      "score": 90,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Synthetic unresolved claim links and storage/API controls that bypass normalization do not establish complete qualifier preservation, rendered review, admission or authorized exchange.",
+        "The executable harness and retrieved outputs remain temporary artifacts, limiting durable reproducibility."
+      ],
+      "required_fixes": [],
+      "rationale": "The patch applies cleanly, changes only allowed documentation and preserves question metadata. Inspected pinned source, harness assertions and saved outputs corroborate qualifier loss during normalization and preservation in direct storage/API controls. It appropriately distinguishes an implementation failure from a governing schema gap and keeps Q0166 Open without expanding schema or authority. This substantively advances the selected evidence work, while the complete mapping and downstream fidelity gates remain outstanding."
+    }
+  ],
+  "selected_proposal_id": "openai-ubu-q0166-d0334-normalization-evidence",
+  "selection_rationale": "The sole candidate passes mechanical validation and provides corroborated, narrowly scoped evidence responsive to Q0166. This cross-score nomination leaves final selection to local committee aggregation."
+}
