@@ -1,0 +1,189 @@
+{
+  "schema_version": "0.4",
+  "run_id": "20261014T031712Z-UBU-Q0128",
+  "created_at_utc": "2026-10-14T03:17:12Z",
+  "repo_path": "../ubu-design",
+  "base_commit": "fb4f778d677fe28219379aabd6f35c07e6f447c8",
+  "selected_question_id": "UBU-Q0128",
+  "phase": "work-select",
+  "config_path": "config/models.json",
+  "status": "selected",
+  "commands": [
+    "model-committee run-loop"
+  ],
+  "providers_attempted": [
+    "codex",
+    "claude"
+  ],
+  "providers_succeeded": [
+    "codex",
+    "claude"
+  ],
+  "providers_failed": [],
+  "provider_attempts": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0128-openai-audio-send-review-1",
+      "response_path": "runs/20261014T031712Z-UBU-Q0128/responses/codex_score_ubu-q0128-openai-audio-send-review-1_response.json",
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0128-openai-audio-send-review-1",
+      "response_path": "runs/20261014T031712Z-UBU-Q0128/responses/claude_score_ubu-q0128-openai-audio-send-review-1_stdout.json",
+      "stderr_path": null
+    }
+  ],
+  "provider_successes": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20261014T031712Z-UBU-Q0128/parsed/codex_work_proposal.json"
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0128-openai-audio-send-review-1",
+      "response_path": "runs/20261014T031712Z-UBU-Q0128/responses/codex_score_ubu-q0128-openai-audio-send-review-1_response.json",
+      "parsed_path": "runs/20261014T031712Z-UBU-Q0128/parsed/codex_score_ubu-q0128-openai-audio-send-review-1_result.json"
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0128-openai-audio-send-review-1",
+      "response_path": "runs/20261014T031712Z-UBU-Q0128/responses/claude_score_ubu-q0128-openai-audio-send-review-1_stdout.json",
+      "parsed_path": "runs/20261014T031712Z-UBU-Q0128/parsed/claude_score_ubu-q0128-openai-audio-send-review-1_result.json"
+    }
+  ],
+  "provider_failures": [],
+  "score_matrix": [
+    {
+      "proposal_id": "UBU-Q0128-openai-audio-send-review-1",
+      "author_provider": "openai",
+      "scorer_provider": "codex",
+      "score": 93,
+      "valid": true,
+      "rationale": "Mechanical validation passes, changes stay within allowed files, and the question remains Open with its metadata intact. The proposal directly advances a clearly identified confirmation and messaging slice while preserving restricted-mode deferral and controller authority. Complete review, operation binding, replay prevention, minimized audit evidence and explicit enablement fixtures make the documentation auditable. Remaining implementation dependencies are accurately disclosed.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "Deployment depends on separately defined finite review profiles and demonstrated input ownership, rendering fidelity, cancellation and delivery reconciliation.",
+        "Exact spelled-out digit matching may reject common STT output formats; adapter qualification must establish usability without weakening confirmation requirements."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261014T031712Z-UBU-Q0128/responses/codex_score_ubu-q0128-openai-audio-send-review-1_response.json",
+        "stderr_path": null
+      }
+    },
+    {
+      "proposal_id": "UBU-Q0128-openai-audio-send-review-1",
+      "author_provider": "openai",
+      "scorer_provider": "claude",
+      "score": 84,
+      "valid": true,
+      "rationale": "Mechanical validation passed on all checks and only the three allowed files change. The patch fills the exact gap the existing DESIGN.md text names ('the detailed audio confirmation grammar remains open') by adding UBU-D0333 and a matching \u00a721.1.2 section, following the same slice-at-a-time pattern as D0309\u2013D0322. Status stays Open, the metadata line is untouched, the Resolution paragraph is updated coherently, and the modified interruption/deferral sentence now points to the new slice while keeping other grammars open. The design is conservative and auditable: controller-generated phrase, single live challenge, binding to review/recipient/payload/route/deadline/idempotency key, serialized consume-then-dispatch, explicit invalidation triggers, no new operation in either v1 schema, restricted modes still defer, and revision-pinned negative/replay fixtures before enablement. Honest limits are stated (code is not authentication, English-only, single plain-text recipient). Deductions are for practical risks the text does not acknowledge (STT numeral normalization, ASCII-only folding, unspecified input-ownership mechanism), a few now-stale unchanged sentences claiming the grammar remains fully open, an unverifiable \u00a721.8 cross-reference, and one grammatical defect in the new current-direction paragraph. No decomposition occurs and none was needed.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [
+        "Fix the ungrammatical sentence in the new OPEN_QUESTIONS.md current-direction paragraph: 'It enables no sending workflow, changes neither v1 audio schema and leaves ...' should read 'changes neither v1 audio schema nor ...' or 'changes no v1 audio schema'."
+      ],
+      "risks": [
+        "The exact-match rule requires spelled-out digit words and forbids repairing numerals; many STT engines normalize spoken numbers to digits, so the route may be practically unavailable unless verbatim STT output is configured. It fails closed, but the proposal does not acknowledge this usability dependency.",
+        "Only ASCII case-folding is applied to the recipient phrase, so recipients with non-ASCII names may never match if STT emits different diacritics. Again fails closed, but narrows the profile more than stated.",
+        "The route depends on input ownership being established independently of phrase matching, a mechanism not specified anywhere in the patch; until it exists the route is unavailable by its own rule.",
+        "Unchanged sentences elsewhere still say external-action confirmation grammar remains open without qualification: the AudioInterpretationV1 paragraph in DESIGN.md and the D0309/D0311/D0322 current-direction paragraphs in OPEN_QUESTIONS.md. The new paragraph and the updated Resolution clarify, but a reader of those sentences alone would miss D0333.",
+        "References to \u00a721.8 outcome reconciliation/idempotency rules could not be verified from the prompt; if that section does not cover unknown-delivery reconciliation the decision has a dangling dependency.",
+        "Subquestion 10 asks about grammar in restricted-attention contexts; the proposal answers only the post-deferral ordinary-attention case. This is the slice the existing text left open, but it advances restricted-mode confirmation not at all, which should be understood when crediting subquestion 10."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261014T031712Z-UBU-Q0128/responses/claude_score_ubu-q0128-openai-audio-send-review-1_stdout.json",
+        "stderr_path": null
+      }
+    }
+  ],
+  "score_aggregates": [
+    {
+      "proposal_id": "UBU-Q0128-openai-audio-send-review-1",
+      "author_provider": "openai",
+      "cross_score_count": 2,
+      "score_mean": 88.5,
+      "score_spread": 9,
+      "frontier_score_gap": 9,
+      "disagreement_flags": []
+    }
+  ],
+  "cross_score_count": 2,
+  "score_mean": 88.5,
+  "score_spread": 9,
+  "frontier_score_gap": 9,
+  "disagreement_flags": [],
+  "quorum_result": {
+    "valid": true,
+    "human_review_required": false,
+    "selected_proposal_id": "UBU-Q0128-openai-audio-send-review-1",
+    "selected_score": 88.5,
+    "selected_cross_score_count": 2,
+    "blocked_reasons": [],
+    "manual_override": false
+  },
+  "selected_proposal_id": "UBU-Q0128-openai-audio-send-review-1",
+  "automated_selection_valid": true,
+  "human_review_required": false,
+  "artifact_publication_status": "operator_pending",
+  "prompt_size_warning": true,
+  "prompt_context": {
+    "question_ids": [
+      "UBU-Q0128"
+    ],
+    "decision_ids": [
+      "UBU-D0292",
+      "UBU-D0293",
+      "UBU-D0309",
+      "UBU-D0310",
+      "UBU-D0311",
+      "UBU-D0322"
+    ],
+    "sections": {
+      "DESIGN.md": [
+        "2.13",
+        "4.2",
+        "11.2",
+        "12.2",
+        "21"
+      ]
+    },
+    "core_sections": {
+      "DESIGN.md": [
+        "1"
+      ],
+      "DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md": [
+        "4"
+      ]
+    },
+    "missing_refs": {},
+    "context_chars": 217268,
+    "prompt_chars": 224635
+  }
+}
