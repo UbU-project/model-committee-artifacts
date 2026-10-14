@@ -1,0 +1,144 @@
+diff --git a/DESIGN.md b/DESIGN.md
+index e8a0acc..0358e65 100644
+--- a/DESIGN.md
++++ b/DESIGN.md
+@@ -4292,6 +4292,83 @@ The long-term UX should present the current state transition and its evidence, c
+ 
+ Phase 1 proves this through one recommended next Task and an inspectable explanation. Later cockpit surfaces may include message triage, Log review, Plan repair, Delegation Substrate packets, agent approvals, AssociationAttestation review, organizational introspection, and projection publication.
+ 
++#### 21.9.1 First-person frame and shared inspector
++
++**Product contract (`UBU-D0351`, Phase 2).** Keep one current choice as the default surface, phrased around the user's purpose: what I am moving forward, why now, and what this choice would change. Open a focused review surface from a Task, message, review item or user request; keep the next Task and full Plan reachable without requiring a dashboard tour. Use the same summary, inspector and action area across workflows. Chat, voice and forms reach these same controls and admission paths.
++
++Show the acting Identity, current Device/local Replica scope, permitted Compartment or `security_level: low` label, and relevant freshness or incomplete-view limits. Link to the existing sync/session indicators; opening review starts no capture. Filter the entire surface before display or model context assembly, including counts, badges, evidence selectors, labels and notifications. If existence is denied, omit the item rather than showing a revealing placeholder. A visible unavailable/redacted indicator is allowed only when policy permits it.
++
++The compact summary states the purpose, current state, proposed change, main constraint or uncertainty, expected consequence and exact decision requested. Expand these inspection groups on demand, with decision-critical denials, uncertainty and irreversible effects visible before approval:
++
++| Inspector group | Required presentation |
++| --- | --- |
++| Current and proposed state | Read-only current admitted values beside the exact proposed field/artifact diff, affected scope and versions. Omission proposes no change; unknown and private stay explicit. Distinguish a derived Plan preview from a proposal to mutate its input objects. |
++| Evidence | Source links/selectors, observation and recording times, attribution, explicit assertion versus inference, per-field qualifiers/confidence when supplied, contradictions and permitted evidence gaps. Model prose, repetition and confidence confer no authority. Apply §21.1.1's corroboration rules where relevant. |
++| Constraints | Relevant dependencies, preconditions, timing, availability, affect/staleness, risk findings and policy limits, with their source and whether they are hard checks or advisory findings. Show the reason a recommendation or action is unavailable. |
++| Expected effects | Separate the immediate admitted change, predicted planning consequences and any external action. Label assumptions and uncertain outcomes; Task/worker completion or an accepted recommendation does not prove a modeled effect occurred. |
++| Authority and disclosure | Who proposes, who reviews and who executes; applicable authority/grants and current denials; recipient, provider/route, exposed data and relevant cost/retention limits. Acceptance of a claim, Plan choice, packet preparation and external-action authorization remain separately identified decisions. |
++| Recovery | What can be cancelled before dispatch, what can be corrected afterward, mitigation owner/path and any irreversible or unknown effect. Local repair appends a correction, supersession or compensating mutation; external mitigation is a separately authorized action. Never promise erasure, recall or restoration that the adapter cannot establish. |
++
++This is a presentation contract over existing records, review events and operation bindings, not a new canonical transition object, lifecycle enum or planning-kernel input.
++
++#### 21.9.2 Candidate and admitted state
++
++Use explicit text and structural separation: `Current (admitted on this Device)` and `Proposed (not applied)`, with a labelled diff region. A draft or candidate can be displayed beside current state but cannot replace its values in the ordinary Task, Calendar or Objective view. Previews remain labelled through drawers, timelines, search and reports. Use redundant text, icons/borders and accessible state descriptions; color alone cannot distinguish state.
++
++Display each record's actual lifecycle from §21.2.1 or its native contract, including deferred, rejected, disputed, superseded or revoked states. Queue order, confidence, age and an uncontested appearance never change state category. Pending/conflicted sync material is not admitted input. Admitted state is this Replica's policy-scoped view, not a claim that all Devices agree or that an accepted social claim is universal truth.
++
++Keep saving, admission and execution outcomes separate: `Draft saved`, `Accepted update`, `Awaiting review`, `Delivery unconfirmed` and a verified external outcome appear only when the corresponding durable/result evidence exists. A CPU-certified Plan preview is still a recommendation, not a commitment or proof of execution. Show the resulting diff and linked review/Log outcome after success; on failure or uncertainty preserve permitted drafts and report the actual outcome without a success badge.
++
++Offer Inspect, Edit/resolve, Accept the displayed change, Reject, Defer and Cancel where supported. Name consequential controls for their operation, such as `Accept Task changes`, `Use reviewed Plan` or `Approve this send`; avoid a generic approval that hides multiple effects. A permitted batch lists every included change and dependency, with nothing preselected for unrelated admission. Partial acceptance requires a coherent separately bound subset. Rejection/deferral needs no compulsory explanation and creates no inferred Preference.
++
++Edits produce a new bound proposal revision and renewed review. Immediately before admission or dispatch, the controller rechecks candidate, target, evidence/context, dependency and relevant policy/grant versions, current authority, Device eligibility, native semantics and idempotency. Material changes invalidate approval; show the changed scope for fresh review rather than silently rebasing. Reviewing retained candidates after restart or Device handoff conveys no live capture consent or execution approval. Cancel invalidates pending approval/unsent work; already-dispatched effects follow their actual reconciliation and mitigation path.
++
++#### 21.9.3 Core workflow surfaces
++
++All surfaces use the shared inspector, with the workflow-specific decision below. Unsupported operations remain visibly unavailable or evidence-only; a polished screen cannot enable them.
++
++| Surface | Focus and decision boundary |
++| --- | --- |
++| Next Task | One legitimate recommended Task, served Objective, why now, duration, readiness and risk; preserve §4.1.2's start/done/snooze/reject/decompose/override controls and full-Plan inspection. Starting is distinct from completion and verified effects. |
++| Message reply | Incoming source and explicit/inferred metadata beside the exact reply, sending Identity/account, recipient/destination and disclosed fields. Saving or accepting a local Task/draft never authorizes send; external send uses its own released workflow and operation-bound approval. |
++| Log review | Planned versus observed intervals and original entries beside proposed annotations/corrections, including unknown/private time. Accept an explicit correction or separately reviewed Snapshot/Task change; preserve original history and avoid inferred Preferences or blame. |
++| Plan repair | Failed assumptions/blockers, current Plan legitimacy and candidate repair with changed ordering, placements, omissions and risks. Review input corrections separately from choosing a CPU-certified replacement Plan; no silent default switching or external dispatch. |
++| Delegation packet | Show the Task brief as `For me` or the frozen packet/version, executor, output/evidence requirements, limits and failure path. Preparing/saving grants no handoff; assignment, delivery and output admission remain distinct under §21.5. |
++| Agent action approval | Exact target, operation/payload, grant, route, prompt-injection exposure, cost and side-effect/recovery class. Bind authorization to that action and current versions; show attempted, confirmed, failed or unknown outcomes without treating output as admitted state. |
++| AssociationAttestation review | Scoped claim, perspective, attribution, evidence/counterclaims, confidence versus authority, and disclosure policy. Accept, narrow, dispute or supersede through §19.2; acceptance grants no capability or publication authority. |
++| Organizational introspection | Reviewed mission/commitment evidence versus observed behavior, dissent, uncertainty and gaps. Findings and suggested follow-up Tasks are separate candidates; approval cannot synthesize collective Preferences, settle disputed authority or publish the report. |
++| Projection publication | Exact final payload/artifacts and metadata, audience/destination, managed scope, source/input versions and redactions. Preview/export review, operation approval, dispatch and verified reconciliation are distinct; §1's stale-view choice and §27.3's managed-write rules still apply. |
++
++The Phase 2 shell extends available Task, Log, candidate, Plan, worker and projection workflows. Message/Identity coordination, full Association/governance/introspection and other richer surfaces retain their existing Phase 3+ or separately released gates. Phase 1's manual/fixture-backed outreach review remains possible without full Association automation. This decision enables no new ingestion, capture, executor, sending or publication route.
++
++#### 21.9.4 Bounded generative presentation
++
++Generation may supply candidate explanations, evidence summaries, clarification wording, checklists and comparisons, or suggest an arrangement of known inspector widgets. Use a versioned, closed declarative widget vocabulary with finite layout/content limits and deterministic validation. Generated content is labelled with source/model provenance and remains inspectable against the permitted underlying records; an explanation cannot invent evidence or promote a candidate.
++
++The controller owns navigation, state labels, exact diffs, authority/denial text and approval/reject/cancel controls. Generated layouts cannot hide or reorder these required review elements, change their meaning, preselect admission, create executable controls, call tools or supply scripts/HTML. Unknown widgets, invalid references, lost qualifiers or ungrounded summaries fall back to the fixed inspector with original permitted content. Generative presentation uses the same ContextBundle, provider routing and Compartment gates as other advisory output.
++
++Keep the fixed text/form inspector usable with models, camera, microphone and speech output disabled. Preserve permitted drafts, exact corrections and version links when changing surfaces; late generation cannot overwrite user edits. Support keyboard and screen-reader inspection and controls, predictable focus and accessible errors. Apply §21.1.2's attention envelope: defer unavailable review rather than compressing consequential approval into a generic spoken assent.
++
++#### 21.9.5 Phase 1 minimum
++
++The Phase 1 cockpit seed is the already frozen §4.1.2 loop: one Task with title, Objective, duration/work window, status and provenance; a compact why-now explanation covering timing, dependency/blocker, affect/staleness and top risk/opportunity; visible worker/projection state where relevant; and one-action access to the full Plan, considered alternatives/constraints and permitted evidence. Explain what each control records, distinguish recommendation from commitment and predicted effects from observed outcomes, and expose the existing review/correction and projection-preview paths. Label fixture/mock behavior explicitly.
++
++The richer inspector, generative layout and later workflow inventory do not add a Phase 1 blocker, require a new bootstrap interview or reopen the frozen feature set. Broader cockpit implementation proceeds only for supported slices under their existing release gates.
++
++#### 21.9.6 Acceptance evidence
++
++Before claiming a cockpit slice delivered, pin UI/controller, schema/adapter and policy revisions and exercise these cases through the real supported review/admission paths:
++
++- From one next Task, reach its Plan, constraints, evidence and proposed change, then return without losing context. In user review, ask what is current, what is proposed, who acts, what approval changes and what recovery is possible; report comprehension gaps and tested scope.
++- Preview, edit, reject, defer and cancel admit none of the proposed world-state effects. Exact bound acceptance produces only the displayed coherent changes and linked review/Log outcomes once; duplicate submission/replay adds no effect.
++- Target/evidence/policy changes, revocation, delayed model results, restart and Device handoff cannot use stale approval or overwrite corrections. Current partial/stale Replica limits stay visible without implying global agreement.
++- A denied-existence item leaks no count, label, identifier, notification or generated context. An allowed evidence gap stays explicitly unavailable; confidence and repeated claims bypass no gate.
++- Log repair preserves the original entry; packet preparation dispatches nothing; delivery does not admit output or complete a Task; publication preview causes no external write. Unknown external outcomes remain unknown and follow reconciliation rather than blind retry.
++- Invalid/generated layouts cannot hide diffs, uncertainty, denials or action scope. Model/capture failure and keyboard/screen-reader use preserve useful fixed review, exact editing and cancellation; restricted attention defers prohibited review.
++- Cancellation before dispatch prevents unsent work; after dispatch the UI reports remaining effects and the actual compensating/irreversible limits rather than claiming undo.
++
++These are product acceptance requirements, not passing implementation evidence. Existing per-operation corroboration, host fidelity, sync, access, retention and release requirements continue to govern each slice.
++
+ ## 22. Relationships
+ 
+ A **Relationship** is structured UniverseState data representing the relationship between Identities as modeled by a particular UbU instance. Relationships are not globally objective social truth. They are perspective-bound, Compartment-governed, evidence-backed models that help the user reason about communication, obligations, trust, scope, boundaries, and maintenance.
+diff --git a/DECISIONS.md b/DECISIONS.md
+index 696659b..4217073 100644
+--- a/DECISIONS.md
++++ b/DECISIONS.md
+@@ -5502,3 +5502,17 @@ Coalesce condition episodes, persist dismissal/snooze/disable choices and never
+ DESIGN.md §21.1.7 specifies visible status and behavioral enablement fixtures. This resolves the product policy, not implementation acceptance, numerical attention/timing profiles or additional capture scope.
+ 
+ ---
++
++## UBU-D0351: State-transition cockpit keeps one first-person choice and explicit review boundaries
++
++**Status:** Accepted → DESIGN.md §21.9. Resolves `UBU-Q0085`; refines `UBU-D0142` within `UBU-D0129`, `UBU-D0272`, `UBU-D0342` and existing admission, Compartment, sync and external-action boundaries.
++
++Use one current choice as the default, with a shared summary, inspector and action area across next Task, message reply, Log review, Plan repair, DelegationPacket, AgentAction, AssociationAttestation, organizational introspection and projection-publication surfaces. Inspect current/proposed values, evidence and qualifiers, constraints, expected effects, authority/disclosure and recovery without requiring a dashboard tour.
++
++Separate current admitted Replica state from labelled proposed diffs, drafts, contested sync material and derived Plan previews using text and accessible structure, not color alone. Saving, admission, Plan choice, assignment, external authorization, delivery and verified effects remain separate outcomes. Approval binds the exact change and current versions; edits or material changes require fresh review, and cancellation cannot promise reversal of dispatched effects.
++
++Generative presentation is optional advisory content or validated composition of known widgets. The controller owns navigation, exact diffs, state/authority labels and decision controls. Generated layouts cannot execute code/tools, hide required review content or widen authority; fixed text/forms remain useful with models and capture disabled.
++
++Phase 1 retains its frozen one-next-Task explanation and inspection loop. Phase 2 extends supported review surfaces; richer communication, Association/governance and publication routes keep their existing release gates. This selects the UX contract, adds no canonical transition object or kernel field, and grants no new execution or capture authority. DESIGN.md §21.9 specifies behavioral acceptance evidence; implementation conformance remains to be demonstrated.
++
++---
+diff --git a/OPEN_QUESTIONS.md b/OPEN_QUESTIONS.md
+index a37f0b3..676b4ce 100644
+--- a/OPEN_QUESTIONS.md
++++ b/OPEN_QUESTIONS.md
+@@ -1108,27 +1108,27 @@ Resolved. See UBU-D0263.
+ 
+ ## UBU-Q0085: State-transition cockpit UX model
+ 
+-Status: Open Priority: Post-MVP Phase: Phase 2 Decision type: Product Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 90 Depends on: UBU-Q0050, UBU-Q0077, UBU-Q0080 Blocks: post-MVP UX, generative UI, review workflows, candidate/canonical distinction Resolved by: None Last scored: 2026-10-14 Scored from commit: None
++Status: Solved Priority: Post-MVP Phase: Phase 2 Decision type: Product Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 90 Depends on: UBU-Q0050, UBU-Q0077, UBU-Q0080 Blocks: post-MVP UX, generative UI, review workflows, candidate/canonical distinction Resolved by: UBU-D0351 Last scored: 2026-10-14 Scored from commit: None
+ 
+ ### Question
+ 
+ How should UbU evolve from Phase 1 one-next-Task focus into a state-transition cockpit without losing first-person legibility?
+ 
+ ### Subquestions
+ 
+ 1. What are the core state-transition screens: next Task, message reply, Log review, Plan repair, Delegation Substrate packet, agent action approval, AssociationAttestation review, organizational introspection, and projection publication?
+ 2. How should candidate state differ visually from canonical state?
+ 3. Where can generative UI be useful without becoming opaque or inconsistent?
+ 4. What minimum cockpit elements should appear in Phase 1 explanations?
+ 5. How should users inspect evidence, constraints, expected effects, authority, and rollback paths?
+ 
+ ### Current direction
+ 
+ UbU should become a state-transition cockpit over time. Phase 1 remains the narrow one-next-Task proof.
+ 
+ ### Resolution
+ 
+-Open.
++Resolved by `UBU-D0351`: DESIGN.md §21.9 defines a shared first-person summary, inspector and operation-specific controls for nine cockpit surfaces, explicit candidate/admitted and saving/admission/execution distinctions, bounded optional generative presentation, the frozen Phase 1 explanation minimum, and version-bound review with evidence, authority, disclosure and append-only recovery. This resolves the product UX contract, not implementation acceptance or the later workflows' separate release gates.
+ 
+ ---
+ 

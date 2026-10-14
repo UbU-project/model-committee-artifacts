@@ -1,0 +1,23 @@
+{
+  "scores": [
+    {
+      "proposal_id": "codex-UBU-Q0085-cockpit-v1",
+      "score": 84,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Dense cross-referencing to DESIGN.md sections (\u00a74.1.2, \u00a719.2, \u00a721.1.1, \u00a721.1.2, \u00a721.2.1, \u00a721.5, \u00a727.3, \u00a71) and decisions (UBU-D0129, UBU-D0142, UBU-D0272, UBU-D0342) that cannot be verified from this prompt; a wrong anchor would leave dangling references in a canonical doc.",
+        "The proposal uses 'admitted' where the question asks about the candidate/canonical distinction. The intent is clear and deliberately nuanced (Replica-scoped, not global agreement), but the term mapping is never stated explicitly, which could cause terminology drift in later decisions.",
+        "\u00a721.9 grows by roughly 75 very prescriptive lines for a Post-MVP Phase 2 product question. The level of operational detail (recheck lists, batch rules, widget vocabulary constraints) risks over-constraining implementation before any cockpit slice exists, though the text repeatedly scopes itself as a presentation contract rather than a kernel or schema change.",
+        "\u00a721.9.6 adds acceptance-evidence requirements beyond the five subquestions. This matches the pattern visible in adjacent DECISIONS.md entries, but it widens what a future 'delivered' claim must satisfy."
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 1 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "codex-UBU-Q0085-cockpit-v1",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}

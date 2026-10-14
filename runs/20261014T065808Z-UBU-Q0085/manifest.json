@@ -1,0 +1,190 @@
+{
+  "schema_version": "0.4",
+  "run_id": "20261014T065808Z-UBU-Q0085",
+  "created_at_utc": "2026-10-14T06:58:08Z",
+  "repo_path": "../ubu-design",
+  "base_commit": "71f15e29d6f35d6cc7e8bd23fe23e74580c2ace1",
+  "selected_question_id": "UBU-Q0085",
+  "phase": "work-select",
+  "config_path": "config/models.json",
+  "status": "selected",
+  "commands": [
+    "model-committee run-loop"
+  ],
+  "providers_attempted": [
+    "codex",
+    "claude"
+  ],
+  "providers_succeeded": [
+    "codex",
+    "claude"
+  ],
+  "providers_failed": [],
+  "provider_attempts": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "codex-UBU-Q0085-cockpit-v1",
+      "response_path": "runs/20261014T065808Z-UBU-Q0085/responses/claude_score_codex-ubu-q0085-cockpit-v1_stdout.json",
+      "stderr_path": null
+    }
+  ],
+  "provider_successes": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20261014T065808Z-UBU-Q0085/parsed/codex_work_proposal.json"
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "codex-UBU-Q0085-cockpit-v1",
+      "response_path": "runs/20261014T065808Z-UBU-Q0085/responses/claude_score_codex-ubu-q0085-cockpit-v1_stdout.json",
+      "parsed_path": "runs/20261014T065808Z-UBU-Q0085/parsed/claude_score_codex-ubu-q0085-cockpit-v1_result.json"
+    }
+  ],
+  "provider_failures": [],
+  "score_matrix": [
+    {
+      "proposal_id": "codex-UBU-Q0085-cockpit-v1",
+      "author_provider": "codex",
+      "scorer_provider": "claude",
+      "score": 84,
+      "valid": true,
+      "rationale": "Mechanical validation passed: the patch applies, touches only the three allowlisted files, and the question metadata changes exactly Status (Open \u2192 Solved) and Resolved by (None \u2192 UBU-D0351) while preserving every other field. All five subquestions are answered in a traceable way: \u00a721.9.3 enumerates the nine requested surfaces with per-surface decision boundaries, \u00a721.9.2 covers candidate vs admitted presentation with non-color-only cues and separated saving/admission/execution outcomes, \u00a721.9.4 bounds generative UI to a closed validated widget vocabulary with controller-owned diffs and controls, \u00a721.9.5 pins the Phase 1 minimum to the frozen \u00a74.1.2 loop without new blockers, and the \u00a721.9.1 inspector table addresses evidence, constraints, expected effects, authority/disclosure and recovery. The DECISIONS.md entry follows the existing format and explicitly disclaims new canonical objects, kernel fields or execution/capture authority, and requires_human_review is set, which fits the question's 'Human approval required' eligibility. Deductions are for unverifiable section and decision anchors, the implicit admitted/canonical terminology mapping, and the sheer density of prescriptive text for a Phase 2 product decision.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "Dense cross-referencing to DESIGN.md sections (\u00a74.1.2, \u00a719.2, \u00a721.1.1, \u00a721.1.2, \u00a721.2.1, \u00a721.5, \u00a727.3, \u00a71) and decisions (UBU-D0129, UBU-D0142, UBU-D0272, UBU-D0342) that cannot be verified from this prompt; a wrong anchor would leave dangling references in a canonical doc.",
+        "The proposal uses 'admitted' where the question asks about the candidate/canonical distinction. The intent is clear and deliberately nuanced (Replica-scoped, not global agreement), but the term mapping is never stated explicitly, which could cause terminology drift in later decisions.",
+        "\u00a721.9 grows by roughly 75 very prescriptive lines for a Post-MVP Phase 2 product question. The level of operational detail (recheck lists, batch rules, widget vocabulary constraints) risks over-constraining implementation before any cockpit slice exists, though the text repeatedly scopes itself as a presentation contract rather than a kernel or schema change.",
+        "\u00a721.9.6 adds acceptance-evidence requirements beyond the five subquestions. This matches the pattern visible in adjacent DECISIONS.md entries, but it widens what a future 'delivered' claim must satisfy."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261014T065808Z-UBU-Q0085/responses/claude_score_codex-ubu-q0085-cockpit-v1_stdout.json",
+        "stderr_path": null
+      }
+    }
+  ],
+  "score_aggregates": [
+    {
+      "proposal_id": "codex-UBU-Q0085-cockpit-v1",
+      "author_provider": "codex",
+      "cross_score_count": 1,
+      "score_mean": 84.0,
+      "score_spread": 0,
+      "frontier_score_gap": 0,
+      "disagreement_flags": []
+    }
+  ],
+  "cross_score_count": 1,
+  "score_mean": 84.0,
+  "score_spread": 0,
+  "frontier_score_gap": 0,
+  "disagreement_flags": [],
+  "quorum_result": {
+    "valid": true,
+    "human_review_required": false,
+    "selected_proposal_id": "codex-UBU-Q0085-cockpit-v1",
+    "selected_score": 84.0,
+    "selected_cross_score_count": 1,
+    "blocked_reasons": [],
+    "manual_override": false
+  },
+  "selected_proposal_id": "codex-UBU-Q0085-cockpit-v1",
+  "automated_selection_valid": true,
+  "human_review_required": false,
+  "artifact_publication_status": "operator_pending",
+  "prompt_size_warning": true,
+  "prompt_context": {
+    "question_ids": [
+      "UBU-Q0025",
+      "UBU-Q0028",
+      "UBU-Q0031",
+      "UBU-Q0032",
+      "UBU-Q0050",
+      "UBU-Q0054",
+      "UBU-Q0055",
+      "UBU-Q0056",
+      "UBU-Q0060",
+      "UBU-Q0061",
+      "UBU-Q0062",
+      "UBU-Q0066",
+      "UBU-Q0068",
+      "UBU-Q0077",
+      "UBU-Q0079",
+      "UBU-Q0080",
+      "UBU-Q0085"
+    ],
+    "decision_ids": [
+      "UBU-D0057",
+      "UBU-D0058",
+      "UBU-D0059",
+      "UBU-D0060",
+      "UBU-D0065",
+      "UBU-D0069",
+      "UBU-D0070",
+      "UBU-D0071",
+      "UBU-D0074",
+      "UBU-D0100",
+      "UBU-D0129",
+      "UBU-D0150",
+      "UBU-D0157",
+      "UBU-D0177",
+      "UBU-D0265",
+      "UBU-D0266",
+      "UBU-D0267",
+      "UBU-D0268",
+      "UBU-D0269",
+      "UBU-D0270",
+      "UBU-D0271",
+      "UBU-D0272",
+      "UBU-D0342"
+    ],
+    "sections": {
+      "DESIGN.md": [
+        "2.11",
+        "3",
+        "4",
+        "12",
+        "18.1",
+        "19.1",
+        "19.2",
+        "20.1",
+        "20.4",
+        "21.1",
+        "21.4",
+        "21.5",
+        "26.3",
+        "26.4"
+      ]
+    },
+    "core_sections": {
+      "DESIGN.md": [
+        "1"
+      ],
+      "DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md": [
+        "4"
+      ]
+    },
+    "missing_refs": {},
+    "context_chars": 382280,
+    "prompt_chars": 391369
+  }
+}

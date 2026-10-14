@@ -1,0 +1,23 @@
+{
+  "scores": [
+    {
+      "proposal_id": "codex-UBU-Q0085-cockpit-v1",
+      "score": 84,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "none",
+      "risks": [
+        "Dense cross-referencing to DESIGN.md sections (\u00a74.1.2, \u00a719.2, \u00a721.1.1, \u00a721.1.2, \u00a721.2.1, \u00a721.5, \u00a727.3, \u00a71) and decisions (UBU-D0129, UBU-D0142, UBU-D0272, UBU-D0342) that cannot be verified from this prompt; a wrong anchor would leave dangling references in a canonical doc.",
+        "The proposal uses 'admitted' where the question asks about the candidate/canonical distinction. The intent is clear and deliberately nuanced (Replica-scoped, not global agreement), but the term mapping is never stated explicitly, which could cause terminology drift in later decisions.",
+        "\u00a721.9 grows by roughly 75 very prescriptive lines for a Post-MVP Phase 2 product question. The level of operational detail (recheck lists, batch rules, widget vocabulary constraints) risks over-constraining implementation before any cockpit slice exists, though the text repeatedly scopes itself as a presentation contract rather than a kernel or schema change.",
+        "\u00a721.9.6 adds acceptance-evidence requirements beyond the five subquestions. This matches the pattern visible in adjacent DECISIONS.md entries, but it widens what a future 'delivered' claim must satisfy."
+      ],
+      "required_fixes": [],
+      "rationale": "Mechanical validation passed: the patch applies, touches only the three allowlisted files, and the question metadata changes exactly Status (Open \u2192 Solved) and Resolved by (None \u2192 UBU-D0351) while preserving every other field. All five subquestions are answered in a traceable way: \u00a721.9.3 enumerates the nine requested surfaces with per-surface decision boundaries, \u00a721.9.2 covers candidate vs admitted presentation with non-color-only cues and separated saving/admission/execution outcomes, \u00a721.9.4 bounds generative UI to a closed validated widget vocabulary with controller-owned diffs and controls, \u00a721.9.5 pins the Phase 1 minimum to the frozen \u00a74.1.2 loop without new blockers, and the \u00a721.9.1 inspector table addresses evidence, constraints, expected effects, authority/disclosure and recovery. The DECISIONS.md entry follows the existing format and explicitly disclaims new canonical objects, kernel fields or execution/capture authority, and requires_human_review is set, which fits the question's 'Human approval required' eligibility. Deductions are for unverifiable section and decision anchors, the implicit admitted/canonical terminology mapping, and the sheer density of prescriptive text for a Phase 2 product decision."
+    }
+  ],
+  "selected_proposal_id": "codex-UBU-Q0085-cockpit-v1",
+  "selection_rationale": "Only one proposal was submitted and it passed mechanical validation. It directly resolves all five subquestions of UBU-Q0085, uses the correct Status: Solved and Resolved by: UBU-D0351 metadata, stays within the allowlisted files, preserves the frozen Phase 1 scope, and flags itself for human review. Remaining concerns are verification of cross-references and over-specification, neither of which blocks selection in a cross-score."
+}
