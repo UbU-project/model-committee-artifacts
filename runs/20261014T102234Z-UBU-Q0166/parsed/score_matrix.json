@@ -1,0 +1,48 @@
+[
+  {
+    "proposal_id": "UBU-Q0166-native-admission-20261014",
+    "author_provider": "openai",
+    "scorer_provider": "codex",
+    "score": 89,
+    "valid": true,
+    "rationale": "Provides useful bounded progress on Q0166's admission evidence. Independent checks confirmed clean patch application, unchanged question metadata, matching host revisions and artifact hashes, and the recorded candidate and decision comparisons. Changes remain within the three allowed documentation files. The proposal accurately distinguishes native admission success from qualifier preservation, retains the enablement gates and makes no unsupported schema-gap or resolution claim.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [
+      "Harness and result artifacts remain temporary; hashes identify them but provide limited durable auditability.",
+      "Evidence covers synthetic native admission controls. Complete qualifier mappings, evidence resolution, rendered review, policy validation and authorized exchange remain unproven; inline qualifier loss remains unrepaired."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20261014T102234Z-UBU-Q0166/responses/codex_score_ubu-q0166-native-admission-20261014_response.json",
+      "stderr_path": null
+    }
+  },
+  {
+    "proposal_id": "UBU-Q0166-native-admission-20261014",
+    "author_provider": "openai",
+    "scorer_provider": "claude",
+    "score": 72,
+    "valid": true,
+    "rationale": "Patch applies cleanly, passes allowlist and question-schema checks, and touches only DECISIONS.md, DESIGN.md and OPEN_QUESTIONS.md. It is directly responsive to the question's stated remaining work (round-trip evidence through actual store/review/admission paths) and follows the established incremental pattern of D0323/D0334/D0360: adds one decision, appends one Current-direction paragraph and one Resolution paragraph, keeps Status: Open and Resolved by: None, and makes no schema, pin, migration or adapter claim. Internal counts are consistent (6 inputs + 6 enqueued + 5 admitted = 17; sixth control is the stale rejection). The new finding, that native enqueue and admission neither restore the lost inline qualifiers nor validate unresolved reference tokens, is genuinely new and correctly scoped as a service-enforcement limitation rather than a governing gap. Score is held below the high range because the evidence is unreproducible from the repo (scratch harness, non-deterministic admission envelopes), the proposal explicitly repairs nothing despite the question's direction to repair or validate the vet_result branch before relying on it, and the series is now accumulating decisions without converging on closure. No fixes are required for acceptance; committing the harness as a test or a regeneration recipe would materially improve auditability and is recommended for the next step in this chain.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [
+      "All runtime evidence rests on an uncommitted scratch harness identified only by SHA-256 hashes; reviewers cannot reproduce the six controls from the repository, and the text itself concedes these are not committed host tests.",
+      "This is the fourth consecutive evidence-only decision on UBU-Q0166 (D0323, D0334, D0360, now D0366). It repairs nothing and establishes no schema gap, so the question is no closer to its stated close condition; DESIGN.md \u00a721.1.1 is accumulating lab-notebook detail that may belong in a test log rather than the design contract.",
+      "Controls call advisory_service::run_advisory and admit_candidate directly, bypassing authenticated HTTP and rendered operator review, so the admission-path finding is bounded to the service layer (acknowledged in the text, but easy to over-read).",
+      "Native admission uses non-deterministic UTC envelope times and generated actor/Device/key refs, so the recorded results-JSON hash is not a reproducibility anchor.",
+      "The decision adds normative language ('A future adapter must preserve and validate ... then recheck ... at admission') inside what is framed as an evidence record; this is consistent with existing D0320/D0321 gates but slightly expands the decision's stated purpose.",
+      "Claims about run outcomes (17 accepted fixtures, two expected rejections, stale-control rejection message) cannot be independently verified from the patch alone."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20261014T102234Z-UBU-Q0166/responses/claude_score_ubu-q0166-native-admission-20261014_stdout.json",
+      "stderr_path": null
+    }
+  }
+]

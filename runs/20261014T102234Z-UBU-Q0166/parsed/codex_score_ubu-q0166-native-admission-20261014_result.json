@@ -1,0 +1,21 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0166-native-admission-20261014",
+      "score": 89,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "none",
+      "risks": [
+        "Harness and result artifacts remain temporary; hashes identify them but provide limited durable auditability.",
+        "Evidence covers synthetic native admission controls. Complete qualifier mappings, evidence resolution, rendered review, policy validation and authorized exchange remain unproven; inline qualifier loss remains unrepaired."
+      ],
+      "required_fixes": [],
+      "rationale": "Provides useful bounded progress on Q0166's admission evidence. Independent checks confirmed clean patch application, unchanged question metadata, matching host revisions and artifact hashes, and the recorded candidate and decision comparisons. Changes remain within the three allowed documentation files. The proposal accurately distinguishes native admission success from qualifier preservation, retains the enablement gates and makes no unsupported schema-gap or resolution claim."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0166-native-admission-20261014",
+  "selection_rationale": "The sole candidate passes mechanical validation and substantiates a relevant admission limitation while keeping Q0166 open. Its bounded scope and temporary evidence artifacts limit the score; final selection remains with committee aggregation."
+}

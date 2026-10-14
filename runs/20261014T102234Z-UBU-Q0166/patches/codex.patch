@@ -1,0 +1,101 @@
+diff --git a/DECISIONS.md b/DECISIONS.md
+index bee75b5..9605eb8 100644
+--- a/DECISIONS.md
++++ b/DECISIONS.md
+@@ -5702,3 +5702,15 @@ Predeclare useful-outcome, correction/burden and primary-activity error/delay li
+ Withhold failed or unmeasured combinations. Passing simulations establish only their tested scope; real driving/bicycling support still needs a use-specific human-factors assessment and operator release review. DESIGN.md §21.1.2 supplies the acceptance requirements. This selects no numeric default, passing profile or safety result, changes neither v1 schema nor action permissions, and adds no MVP-release requirement. `UBU-Q0128` remains Open.
+ 
+ ---
++
++## UBU-D0366: Native enqueue and admission do not validate perceptual qualifier bindings
++
++**Status:** Accepted → DESIGN.md §21.1.1. Narrows `UBU-Q0166`; extends `UBU-D0334`/`UBU-D0360` with bounded synthetic service evidence without enabling an adapter.
++
++Record the pinned fixtures and actual `advisory_service::run_advisory` enqueue followed by `admit_candidate` outcomes in DESIGN.md §21.1.1. The known and unknown inline companion specimens are discarded before enqueue, and their native precondition removals can subsequently be admitted. Both unresolved reference tokens survive enqueue and admission while the native operation clears the synthetic Task's precondition. A changed-precondition control rejects without an admission effect.
++
++These results demonstrate that native result validation, candidate retention and successful native admission do not supply the companion profile's claim/evidence resolution or fidelity checks. The admitted candidate and decision links preserve the native outcome, not a verified qualifier manifest. Neither token's revision suffix gains host semantics, and the field-provenance carrier control remains unapproved as an adapter mapping.
++
++A future adapter must preserve and validate permitted companion content and exact claim/evidence/field revisions before executable review, then recheck its bound content and current policy at admission under the existing gates. The first inline loss remains the normalization assignment recorded by `UBU-D0334`; this follow-up repairs nothing and establishes no governing schema gap. `UBU-Q0166` stays Open for complete mappings, qualifier-aware review/admission and authorized exchange. No schema, enum, FactProvenance field, pin, migration or producer authority changes here; `UniverseTarget` remains name-only.
++
++---
+diff --git a/DESIGN.md b/DESIGN.md
+index 40a05b6..2deabeb 100644
+--- a/DESIGN.md
++++ b/DESIGN.md
+@@ -3576,6 +3576,27 @@ Normalization leaves the mutation ledger and non-candidate tables unchanged; dir
+ 
+ Next, map a controller-resolved, policy-permitted manifest and all claim/evidence revisions to exact host paths, including candidate field bindings; validate and present that resolved content before relying on a reference mapping. Full Discovery claims/qualifications, adapter profile/ref/policy validation, rendered review, admission, process/crash recovery, corrections/partial acceptance/retention and authorized exchange remain untested in this follow-up and retain the existing host-mapping gate. `UBU-Q0166` remains Open; no passing mapping or governing schema gap is established.
+ 
++**Native enqueue/admission follow-up (`UBU-D0366`; 2026-10-14).** The schema/core/store/orchestrator revisions in `UBU-D0323` remained unchanged and their tracked files clean. Reverified the orchestrator library with `cargo build --locked --offline --lib` and the canonical validator with `cargo build --locked --offline -p validate-fixtures`; both exited successfully. Used the same rustc and orchestrator-lockfile dependency versions recorded by `UBU-D0334`. A new synthetic harness linked those libraries: source SHA-256 `19355fe62853767ddc7cb302e035aea8cee00a78245afdde15aef095d1332ea0`, executable SHA-256 `afdb551e19628e917a30c6e2f4a982c2df8c38e97a542deabb4a3777affd80c5`, retrieved-results JSON SHA-256 `ade139cd8e0d4f98eb5fe3484eac92abd8ecfb787a64839983b440100c01803e`. These identify retained scratch artifacts, not new dependency pins or committed host tests.
++
++**Specimens and exercised route.** Reuse `UBU-D0334`'s exact baseline, `N` and `P`: candidate confidence absent, native proposal and inline payload initially `N`. Test the baseline, inline `P`, inline `P` with only its profile changed to `perceptual-qualifiers/unknown`, and each exact `UBU-D0360` reference specimen (`synthetic:qualifier-manifest@v1` and `synthetic:qualifier-manifest@missing`). A sixth, stale control starts with the missing-token specimen. No manifest, evidence revision or claim content is stored or resolved in any state.
++
++For each input, create a separate in-memory `AppState::in_memory(ServerConfig::from_env())` using `UBU-D0334`'s fixed selection/normalization clock, admitted synthetic Task at version 1, matching Context and empty targets, with no UniverseState. Obtain the actual `precondition_review::submission`. A local `AdvisoryTransport` stub returns one specimen in an `ok` result echoing each actual child submission's authority, provider, policy and digest bindings. Call `advisory_service::run_advisory`, exercising review eligibility, `submit_reviews`, child/aggregate `validate_against`, `vet_result` and ordinary candidate enqueue. Retrieve the stored candidate, then call `advisory_service::admit_candidate(state, candidate_id, 1)`. There is no model/backend invocation. These are actual controller services, invoked directly rather than through authenticated HTTP or rendered operator review. Native admission uses its own current UTC envelope times and generated actor/Device/key refs; the fixed clock does not make those deterministic.
++
++All six inputs passed actual core deserialization, `validate` and structured serialize/deserialize/reserialize comparison. The canonical `tools/validate-fixtures` accepted 17 valid fixtures: six inputs, six retrieved enqueued candidates and five retrieved admitted candidates. It rejected the two existing controls placing structured `P` in string-valued `field_provenance.preconditions` or adding `P` to the closed native `normalized_proposal`; neither rejection establishes a schema gap. Fixture names retain the input labels and `-enqueued`/`-admitted` suffixes, with separate retrieved `-task` and `-decision` outputs for successful admissions.
++
++| Actual service control | Retrieved outcome and comparison |
++|---|---|
++| Baseline → enqueue → native admission | Run report `status: ok`, one stored candidate, zero rejected/suppressed, null validation error; the only diagnostic is `precondition_review_sound` with `1 preconditions examined; 0 judged sound.` Enqueued content equals the baseline with `blocked_now: true`, matching rebuilt inline payload and the suppression key recorded by `UBU-D0334`. Native admission clears the precondition. |
++| Known and unknown inline `P` → same route | Both enqueued candidates equal the normalized baseline exactly: `payload.value.perceptual_qualifiers` is absent. The same report and native admission succeed, without a companion-profile rejection. The first observed loss remains `precondition_review::vet_result` rebuilding the inline payload; enqueue and admission do not restore it. |
++| Each unresolved reference token → same route | Both reports and native admissions succeed. Retrieved enqueued/admitted `evidence_refs` and `field_provenance` equal their respective inputs exactly, while the Task precondition is cleared. No dereference, missing-evidence-revision rejection or claim/qualifier validation is demonstrated. |
++| All five successful admissions | Task payload equals the seeded payload with only `preconditions` removed; its current record is version 2. Candidate content equals its enqueued version with only lifecycle `admitted`, version 2 and `links.admission_ref` set to the exact Task id. One `candidate_decision_events` row binds observed candidate version 1, `proposed` → `admitted` and that resulting Task id. Its user-authority envelope's `observed_versions` contains only the Task at `v1`, with no evidence/manifest revision. Admission adds one mutation-ledger row; the only changed non-candidate/non-ledger tables are `objects` and `candidate_decision_events`; Logs remain zero. This is a native outcome link, not the full perceptual review/evidence/Log binding contract. |
++| Repeat each successful service call with observed candidate version 1 | Rejects with `precondition failed` (expected `v1`, actual `v2`); no additional candidate decision, canonical change or ledger row. This checks old-version rejection, not exact-envelope replay or crash recovery. |
++| Stale control: after enqueue, ordinarily change the Task's precondition threshold from 25 to 26, then request admission | Rejects with `The Task's precondition changed since this review; ask for a fresh review`. Candidate remains proposed at version 1; canonical rows and ledger remain unchanged from immediately before the failed call, with no candidate decision event. Native stale-value checking works independently of the unresolved token. |
++
++Enqueue changes only candidate storage and its single ledger row, leaving every non-candidate/non-ledger table unchanged in all six states. Successful native admission after silent qualifier loss, or with unresolved retained references, cannot qualify perceptual admission under `UBU-D0320`/`UBU-D0321`. The reference strings still define no manifest grammar or approved field-provenance meaning. Require a pinned adapter to resolve permitted content, reject unknown/dangling bindings and preserve the reviewed qualifier content through both enqueue and admission; native `ok` and a canonical effect cannot substitute for that gate.
++
++This follow-up demonstrates a native-service enforcement limitation, not failure of every compliant existing payload/ref mapping or a governing schema gap. Full Discovery claims/qualifications, evidence resolution, policy-bound adapter validation, rendered review, qualifier-aware admission links, process/crash recovery, corrections/partial acceptance/retention and authorized exchange remain outstanding. No producer/adapter or policy-authorized exchange configuration is qualified; `UBU-Q0166` stays Open and `UBU-D0334`'s inline loss remains unrepaired.
++
+ **Supported operations.** Validate the native proposal against an already-supported candidate kind and ordinary admission operation before enqueueing an executable review proposal. Unresolved targets, unsupported object kinds and perceptual values without a supported adapter remain Discovery review evidence with the limitation visible; they cannot fall through to a generic mutation executor. `UniverseTarget` advice remains name-only under `UBU-D0296`: it cannot carry, default or admit a perceptual value. The operator may author a value through the ordinary assertion/measurement form linked to the evidence. Future perceptual value-candidate support requires its separately reviewed versioned adapter; this contract does not enable it. Intent, affect, Preferences, completion/effect claims and later-phase Resources/Skills/Techniques retain their existing source and admission gates.
+ 
+ **Disclosure and session scope.** Evidence, candidates, alternatives, selectors, hashes and derivative review material inherit all supporting sources' disclosure/routing/retention restrictions; reference-only payloads do not waive them. Denied matches cannot leak identifiers, labels or existence through alternatives or counts. Reviewing permitted retained evidence is allowed after its capture session is paused/ended; it neither restarts capture nor transfers source consent or pending approval to another Device.
+diff --git a/OPEN_QUESTIONS.md b/OPEN_QUESTIONS.md
+index 6df3e19..5d933c1 100644
+--- a/OPEN_QUESTIONS.md
++++ b/OPEN_QUESTIONS.md
+@@ -3216,40 +3216,44 @@ Resolved by `UBU-D0320`: DESIGN.md §21.1.1 defines the `observation-admission/1
+ ---
+ 
+ ## UBU-Q0166: Preserve perceptual qualifiers alongside the closed provenance enum
+ 
+ Status: Open Priority: MVP important Phase: Phase 2 Decision type: Data model Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 100 Depends on: None Blocks: None Resolved by: None Last scored: 2026-10-14 Scored from commit: None
+ 
+ ### Question
+ 
+ Which revision-pinned host mappings preserve the claim-level qualifications specified by `UBU-D0321` through validation, serialization, storage, review and authorized exchange, and does a failed mapping demonstrate a schema gap requiring separate versioned review?
+ 
+ ### Current direction
+ 
+ Delta §17.4. `UBU-D0293` decides kind mapping; `UBU-D0320` decides observation/admission bindings; `UBU-D0321` specifies claim-level qualifier content, field/evidence links and fidelity fixtures. The remaining work is a revision-pinned host field/payload mapping and round-trip evidence from the actual validators, serializers, store/review and exchange paths. Measured remains an instrument/reading, derived a computation from facts, and proposed an unconfirmed candidate. Do not infer host compatibility from prose payload slots. A demonstrated gap requires separate versioned chain review; no schema, pin or migration change is made here. `UBU-D0323` records bounded candidate link-carrier checks and source-inspected downstream limitations. Full claims/qualifiers and resolved evidence revisions still need fixtures through the actual Discovery, normalization, store/review, admission and authorized-exchange paths. A rejected direct field mapping alone does not establish a schema gap.
+ 
+ `UBU-D0334` extends those probes to actual persistence/reload/replay and direct review API reads, with a minimal runtime reproduction of inline qualifier loss in `precondition_review::vet_result`. The rejected normalized-proposal alternative and this implementation loss do not establish that all compliant existing payload/ref mappings fail. Repair or validate that branch before relying on it; the full qualifier/evidence and policy-authorized paths remain the enablement gate.
+ 
+ `UBU-D0360` adds opaque string-reference controls that survive core round trips and the tested normalization branch. The first token's normalized output also survives direct storage/replay/API reads. The unresolved alternate token also receives native `ok`; no manifest or evidence revision is resolved. Treat these as carrier evidence only, not an approved field-provenance mapping or qualifier-preservation result. The inline loss remains unrepaired.
+ 
++`UBU-D0366` exercises actual native enqueue and admission services. Both unresolved tokens can accompany an admitted synthetic precondition removal; known and unknown inline profiles are discarded before enqueue and their native removals also admit. The changed-precondition control rejects without an effect. These controls establish native behavior, not qualifier-aware admission: resolved content, profile/ref/policy validation and complete reviewed evidence links remain required.
++
+ ### Resolution
+ 
+ Open. `UBU-D0321` answers preservation requirements; `UBU-D0323` records the initial synthetic carrier probes. `UBU-D0334` adds actual direct SQLite close/reopen/replay and review API controls, and reproduces qualifier loss in the tested precondition-review normalization branch despite a native `ok` result. This disqualifies that mapping through that branch, without establishing a governing schema gap. `UBU-D0360` additionally records retention of opaque reference strings through normalization and, for the first specimen, direct persistence/API controls. The alternate token remains unresolved; no manifest or qualifier content is resolved. Complete Discovery claim/qualifier mappings, adapter profile/ref validation, faithful normalization and rendered review, admission and authorized-exchange fixtures remain outstanding. Close only with the full pinned mapping and fixture evidence, or a minimally reproduced host-contract gap routed to a separate versioned change. No passing adapter or actual schema gap is established.
+ 
++`UBU-D0366` adds actual controller enqueue/native-admission controls and native stale-value/old-candidate-version rejection. It demonstrates no resolved manifest or qualifier-preserving admission, and makes no repair or schema-gap claim. The full existing enablement gate remains outstanding; this question stays Open.
++
+ ---
+ 
+ ## UBU-Q0167: Consequence-sensitive corroboration before planning influence
+ 
+ Status: Solved Priority: MVP important Phase: Phase 2 Decision type: Process Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 100 Depends on: None Blocks: None Resolved by: UBU-D0324 Last scored: 2026-10-12 Scored from commit: None
+ 
+ ### Question
+ 
+ How should consequence and uncertainty determine corroboration and human review before a visual interpretation can influence planning or execution?
+ 
+ ### Current direction
+ 
+ Delta §17.5. `UBU-D0324` specifies consequence-sensitive evidence sufficiency and review in DESIGN.md §21.1.1 over `UBU-D0320`/`UBU-D0321` bindings and source lineage. Bounded ordinary changes remain proportionate; consequential uses require independent evidence and scoped human review. No automatic confidence threshold is selected. `UBU-Q0166` retains host-mapping/implementation evidence and `UBU-Q0172` retains proof-of-effect semantics.
+ 
+ ### Resolution
+ 
+ Resolved by `UBU-D0324`: DESIGN.md §21.1.1 defines clarification, bounded ordinary and consequential use rules; independent corroboration and explicit human review; unresolved/conflicting evidence and operator authoring/correction; scope/version-bound reassessment; and separate external-action authorization. Required behavioral fixtures gate enablement. This resolves the process contract, not implemented support, host fidelity or proof of an effect; `UBU-Q0166` and `UBU-Q0172` remain open.
+ 

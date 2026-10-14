@@ -1,0 +1,11 @@
+[
+  {
+    "proposal_id": "UBU-Q0166-native-admission-20261014",
+    "author_provider": "openai",
+    "cross_score_count": 2,
+    "score_mean": 80.5,
+    "score_spread": 17,
+    "frontier_score_gap": 17,
+    "disagreement_flags": []
+  }
+]
