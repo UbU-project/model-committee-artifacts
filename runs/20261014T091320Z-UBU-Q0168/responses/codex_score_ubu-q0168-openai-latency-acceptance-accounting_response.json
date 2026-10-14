@@ -1,0 +1,20 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0168-openai-latency-acceptance-accounting",
+      "score": 95,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Usefulness rubrics and minimum proportions remain unselected; operator review must prevent trivially permissive acceptance thresholds."
+      ],
+      "required_fixes": [],
+      "rationale": "Mechanical validation confirms clean application, allowed files and preserved question schema. The patch directly strengthens latency qualification through frozen trials, complete request accounting, explicit stream coverage denominators and per-condition acceptance gates. It correctly retains Open status without claiming numerical profiles, measured performance or supported hardware."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0168-openai-latency-acceptance-accounting",
+  "selection_rationale": "The sole candidate is mechanically valid, focused and auditable, with no blocking fixes identified. It strengthens the unresolved evidence requirements while preserving the question's closure conditions."
+}

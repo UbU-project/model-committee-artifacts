@@ -1,0 +1,48 @@
+[
+  {
+    "proposal_id": "UBU-Q0168-openai-latency-acceptance-accounting",
+    "author_provider": "openai",
+    "scorer_provider": "codex",
+    "score": 95,
+    "valid": true,
+    "rationale": "Mechanical validation confirms clean application, allowed files and preserved question schema. The patch directly strengthens latency qualification through frozen trials, complete request accounting, explicit stream coverage denominators and per-condition acceptance gates. It correctly retains Open status without claiming numerical profiles, measured performance or supported hardware.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [
+      "Usefulness rubrics and minimum proportions remain unselected; operator review must prevent trivially permissive acceptance thresholds."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20261014T091320Z-UBU-Q0168/responses/codex_score_ubu-q0168-openai-latency-acceptance-accounting_response.json",
+      "stderr_path": null
+    }
+  },
+  {
+    "proposal_id": "UBU-Q0168-openai-latency-acceptance-accounting",
+    "author_provider": "openai",
+    "scorer_provider": "claude",
+    "score": 74,
+    "valid": true,
+    "rationale": "Patch applies cleanly, touches only DECISIONS.md, DESIGN.md and OPEN_QUESTIONS.md, and keeps UBU-Q0168 single-line metadata with Status: Open and Resolved by: None. The content is directly responsive to the question's remaining gap (measured acceptance): it separates calibration from frozen acceptance trials, forbids post-hoc widening of ceilings, requires complete denominators including refusals and timeouts, and requires stream coverage over declared active time rather than cherry-picked windows. Those are genuine auditability improvements that prevent favorable completion-only percentiles from qualifying a profile. The proposal honestly claims no numbers, hardware or implementation and does not attempt to close the question. It loses points because it does not move toward the numerical profiles and real-device evidence the question actually needs, it adds considerable length to an already long \u00a721.1.4, and some of its cross-references cannot be verified here.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [
+      "Confirm UBU-D0331 and UBU-D0336 exist at the base commit and actually establish minimum trials/durations and deployed isolation costs as paraphrased; adjust wording if not.",
+      "Confirm UBU-D0361 is unused in DECISIONS.md at the base commit."
+    ],
+    "risks": [
+      "Contract accretion: UBU-Q0168 already states that a parameterized contract alone cannot close it, and this adds a fifth methodology layer (after UBU-D0325, UBU-D0331, UBU-D0335, UBU-D0336) without any real-device evidence or numerical profile; repeated proposals of this kind leave the actual blocker untouched.",
+      "Cross-references to UBU-D0331 ('minimum trials/durations') and UBU-D0336 ('deployed isolation costs') and the UBU-D0361 identifier are asserted by the author's validation notes but not independently verifiable from this prompt; a wrong paraphrase or ID collision would propagate into DESIGN.md.",
+      "The new DESIGN.md \u00a721.1.4 block is four dense paragraphs of accounting rules (retry budgeting, cohort immutability, independent-session coverage, time-denominator rules) that may be over-specified for a design contract and hard to apply consistently before any profile exists.",
+      "Adds an operator-review-before-enablement process requirement that is not obviously anchored to an existing operator-review mechanism elsewhere in DESIGN.md."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20261014T091320Z-UBU-Q0168/responses/claude_score_ubu-q0168-openai-latency-acceptance-accounting_stdout.json",
+      "stderr_path": null
+    }
+  }
+]

@@ -1,0 +1,1 @@
+UMC: docs: require frozen latency acceptance and complete outcome accounting
