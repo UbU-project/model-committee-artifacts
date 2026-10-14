@@ -1,0 +1,49 @@
+[
+  {
+    "proposal_id": "UBU-Q0098-openai-gpt-6-20261014",
+    "author_provider": "openai",
+    "scorer_provider": "codex",
+    "score": 96,
+    "valid": true,
+    "rationale": "Supplied mechanical validation confirms clean application, allowed files and preserved question schema. The proposal answers all five subquestions with 13 typed strategies, version-bound assessments, authentic-expression criteria, purpose-limited affect routing, privacy-preserving transparency and uncertainty-aware warnings. It correctly reuses UBU-D0347's communication limits and distinguishes enforceable authorization restrictions from advisory behavioral judgments. Adjacent policy questions remain open. The patch is detailed and somewhat repetitive, but directly scoped and auditable; no blocking defect was identified.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [
+      "Minimized harm-avoidance cautions could still influence persuasion indirectly; semantic exploitation judgments remain fallible.",
+      "The specified conformance fixtures have not been executed, so this establishes a product contract without implementation assurance."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20261014T061717Z-UBU-Q0098/responses/codex_score_ubu-q0098-openai-gpt-6-20261014_response.json",
+      "stderr_path": null
+    }
+  },
+  {
+    "proposal_id": "UBU-Q0098-openai-gpt-6-20261014",
+    "author_provider": "openai",
+    "scorer_provider": "claude",
+    "score": 86,
+    "valid": true,
+    "rationale": "Mechanical validation passed: the patch applies, touches only DECISIONS.md, DESIGN.md and OPEN_QUESTIONS.md, and the question block uses `Status: Solved` with `Resolved by: UBU-D0348` while leaving all other metadata and the question/subquestion text intact. The work is directly responsive: it answers all five subquestions (typed 13-code taxonomy with versioned per-type findings and review provenance; authentic-expression criteria that exclude assent prediction, susceptibility and simulated reactions as optimization targets; a purpose-limited affect firewall that permits deferral cautions but not receptive-moment or framing selection, with anti-laundering and context-routing enforcement; an epistemic transparency rule bound to choice-material assertions while protecting private notes; and uncertainty-aware advisory warnings with a concrete example) and it supplies the single-iteration policy by reusing UBU-D0347's communication ledger rather than duplicating it. It honours the question's current direction (harm avoidance yes, persuasion optimization no, advisory by default) and draws a useful line between enforced data-use restrictions and fallible semantic judgements. Cross-reference updates in \u00a77.5, \u00a722.3.1, \u00a722.3.2 and \u00a722.3.3 are the minimum needed to retire stale 'remains UBU-Q0098' pointers. Scope is correctly held: transition-type gates, pacing/support, general review UX and typed evidence policy are explicitly left with Q0096/Q0099/Q0101/Q0092, no new questions are opened, and requires_human_review is set to match the question's human-approval requirement. Deductions are for unverifiable alignment with the existing enum and referenced sections, the extension of the firewall to user-supplied affect data, and the density and fixture burden of the new section.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [
+      "Before merge, confirm that the 13 codes in the new \u00a722.3.4 table match the existing `prohibited_strategy_types` vocabulary in DESIGN.md \u00a77.5 / UBU-D0155 name-for-name, or add a one-line note that the table is the canonical versioned list and the \u00a77.5 enum defers to it."
+    ],
+    "risks": [
+      "The decision asserts that UBU-D0155 and DESIGN.md \u00a77.5 already define exactly these 13 strategy codes with these names; the diff does not touch the existing enum, so any mismatch between the new \u00a722.3.4 table and the existing vocabulary would leave two divergent lists.",
+      "The firewall extends the harm-avoidance-only purpose limit to equivalent counterparty affect data supplied directly by the user or imports, which goes beyond the question's stated extrospection-derived scope and may be read as constraining the user's own notes; defensible as anti-laundering, but it is a product judgement that human review should confirm.",
+      "References to \u00a717.0 log events (`decision_recorded`, `safeguard_advisory_bypassed`), \u00a722.4 bypass semantics, and UBU-D0273 review flow are not verified in this score; a stale reference would weaken the contract's enforceability.",
+      "The new \u00a722.3.4 is long and very dense, and the conformance paragraph demands paired fixtures for all 13 types plus firewall inspection; this is consistent with neighbouring \u00a722.3.1\u201322.3.3 style but raises implementation cost and reading burden.",
+      "Clarifying that `prohibited_strategy_types` records applicable policy rather than detected strategies may subtly reinterpret the existing \u00a77.5 field semantics if the current text implies detection."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20261014T061717Z-UBU-Q0098/responses/claude_score_ubu-q0098-openai-gpt-6-20261014_stdout.json",
+      "stderr_path": null
+    }
+  }
+]

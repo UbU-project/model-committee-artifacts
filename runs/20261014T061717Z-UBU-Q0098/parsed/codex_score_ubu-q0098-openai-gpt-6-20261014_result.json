@@ -1,0 +1,21 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0098-openai-gpt-6-20261014",
+      "score": 96,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Minimized harm-avoidance cautions could still influence persuasion indirectly; semantic exploitation judgments remain fallible.",
+        "The specified conformance fixtures have not been executed, so this establishes a product contract without implementation assurance."
+      ],
+      "required_fixes": [],
+      "rationale": "Supplied mechanical validation confirms clean application, allowed files and preserved question schema. The proposal answers all five subquestions with 13 typed strategies, version-bound assessments, authentic-expression criteria, purpose-limited affect routing, privacy-preserving transparency and uncertainty-aware warnings. It correctly reuses UBU-D0347's communication limits and distinguishes enforceable authorization restrictions from advisory behavioral judgments. Adjacent policy questions remain open. The patch is detailed and somewhat repetitive, but directly scoped and auditable; no blocking defect was identified."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0098-openai-gpt-6-20261014",
+  "selection_rationale": "The sole candidate passes mechanical validation and comprehensively resolves the selected product question while preserving existing autonomy, privacy and advisory-safeguard contracts. This preference is a cross-score input for local aggregation, not final approval."
+}

@@ -1,0 +1,28 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0098-openai-gpt-6-20261014",
+      "score": 91,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Clarifying that `prohibited_strategy_types` records applicable policy rather than detected strategies may subtly reinterpret the existing \u00a77.5 field semantics if the current text implies detection.",
+        "Minimized harm-avoidance cautions could still influence persuasion indirectly; semantic exploitation judgments remain fallible.",
+        "References to \u00a717.0 log events (`decision_recorded`, `safeguard_advisory_bypassed`), \u00a722.4 bypass semantics, and UBU-D0273 review flow are not verified in this score; a stale reference would weaken the contract's enforceability.",
+        "The decision asserts that UBU-D0155 and DESIGN.md \u00a77.5 already define exactly these 13 strategy codes with these names; the diff does not touch the existing enum, so any mismatch between the new \u00a722.3.4 table and the existing vocabulary would leave two divergent lists.",
+        "The firewall extends the harm-avoidance-only purpose limit to equivalent counterparty affect data supplied directly by the user or imports, which goes beyond the question's stated extrospection-derived scope and may be read as constraining the user's own notes; defensible as anti-laundering, but it is a product judgement that human review should confirm.",
+        "The new \u00a722.3.4 is long and very dense, and the conformance paragraph demands paired fixtures for all 13 types plus firewall inspection; this is consistent with neighbouring \u00a722.3.1\u201322.3.3 style but raises implementation cost and reading burden.",
+        "The specified conformance fixtures have not been executed, so this establishes a product contract without implementation assurance."
+      ],
+      "required_fixes": [
+        "Before merge, confirm that the 13 codes in the new \u00a722.3.4 table match the existing `prohibited_strategy_types` vocabulary in DESIGN.md \u00a77.5 / UBU-D0155 name-for-name, or add a one-line note that the table is the canonical versioned list and the \u00a77.5 enum defers to it."
+      ],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0098-openai-gpt-6-20261014",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}
