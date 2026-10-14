@@ -1,0 +1,20 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-gpt-6-UBU-Q0183-D0339",
+      "score": 95,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "none",
+      "risks": [
+        "Mandatory phone capture and desktop streaming make release dependent on outstanding host-mapping, hardware, latency, retention and cost qualification."
+      ],
+      "required_fixes": [],
+      "rationale": "Mechanical validation passes and changes stay within allowed files. The proposal explicitly orders mandatory desktop, phone and genuine streaming slices, preserves consent and retention gates, and coordinates release with Phase 2 and the deferred switch. It correctly uses Status: Solved while preserving scoring metadata. Mobile stewardship, switch criteria and unresolved measured qualification remain intact; no blocking fixes were found."
+    }
+  ],
+  "selected_proposal_id": "openai-gpt-6-UBU-Q0183-D0339",
+  "selection_rationale": "The sole candidate is valid, auditable and directly resolves the selected scope question. This cross-score supports consideration through local aggregation; operator approval remains required."
+}

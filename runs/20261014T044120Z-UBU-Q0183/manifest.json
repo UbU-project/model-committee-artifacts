@@ -1,0 +1,185 @@
+{
+  "schema_version": "0.4",
+  "run_id": "20261014T044120Z-UBU-Q0183",
+  "created_at_utc": "2026-10-14T04:41:20Z",
+  "repo_path": "../ubu-design",
+  "base_commit": "f4f9136498666249e8f78c7c1ffb410fce4eb69b",
+  "selected_question_id": "UBU-Q0183",
+  "phase": "work-select",
+  "config_path": "config/models.json",
+  "status": "selected",
+  "commands": [
+    "model-committee run-loop"
+  ],
+  "providers_attempted": [
+    "codex",
+    "claude"
+  ],
+  "providers_succeeded": [
+    "codex",
+    "claude"
+  ],
+  "providers_failed": [],
+  "provider_attempts": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "openai-gpt-6-UBU-Q0183-D0339",
+      "response_path": "runs/20261014T044120Z-UBU-Q0183/responses/codex_score_openai-gpt-6-ubu-q0183-d0339_response.json",
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "openai-gpt-6-UBU-Q0183-D0339",
+      "response_path": "runs/20261014T044120Z-UBU-Q0183/responses/claude_score_openai-gpt-6-ubu-q0183-d0339_stdout.json",
+      "stderr_path": null
+    }
+  ],
+  "provider_successes": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20261014T044120Z-UBU-Q0183/parsed/codex_work_proposal.json"
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "openai-gpt-6-UBU-Q0183-D0339",
+      "response_path": "runs/20261014T044120Z-UBU-Q0183/responses/codex_score_openai-gpt-6-ubu-q0183-d0339_response.json",
+      "parsed_path": "runs/20261014T044120Z-UBU-Q0183/parsed/codex_score_openai-gpt-6-ubu-q0183-d0339_result.json"
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "openai-gpt-6-UBU-Q0183-D0339",
+      "response_path": "runs/20261014T044120Z-UBU-Q0183/responses/claude_score_openai-gpt-6-ubu-q0183-d0339_stdout.json",
+      "parsed_path": "runs/20261014T044120Z-UBU-Q0183/parsed/claude_score_openai-gpt-6-ubu-q0183-d0339_result.json"
+    }
+  ],
+  "provider_failures": [],
+  "score_matrix": [
+    {
+      "proposal_id": "openai-gpt-6-UBU-Q0183-D0339",
+      "author_provider": "openai",
+      "scorer_provider": "codex",
+      "score": 95,
+      "valid": true,
+      "rationale": "Mechanical validation passes and changes stay within allowed files. The proposal explicitly orders mandatory desktop, phone and genuine streaming slices, preserves consent and retention gates, and coordinates release with Phase 2 and the deferred switch. It correctly uses Status: Solved while preserving scoring metadata. Mobile stewardship, switch criteria and unresolved measured qualification remain intact; no blocking fixes were found.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "Mandatory phone capture and desktop streaming make release dependent on outstanding host-mapping, hardware, latency, retention and cost qualification."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261014T044120Z-UBU-Q0183/responses/codex_score_openai-gpt-6-ubu-q0183-d0339_response.json",
+        "stderr_path": null
+      }
+    },
+    {
+      "proposal_id": "openai-gpt-6-UBU-Q0183-D0339",
+      "author_provider": "openai",
+      "scorer_provider": "claude",
+      "score": 80,
+      "valid": true,
+      "rationale": "Patch applies cleanly, touches only allowlisted files, and passes question-schema checks (Status: Solved, Resolved by: UBU-D0339, remaining metadata preserved). It answers exactly what UBU-Q0183 asks: an ordered set of mandatory mode/device slices (bounded desktop snapshot+PTT voice, bounded phone capture/review, consented finite desktop streaming), explicit evidence and retention gates before each enablement, coordination with Phase 2 and the deferred switch, and a clear list of what is excluded (phone streaming, always-on, Phase 3 gate). It honors the stated constraints: no Phase 3 release gate restored, always-on consent never inferred, mobile stewardship left to UBU-Q0160, switch criteria unchanged, no implementation or hardware-support claim. Cross-references in DESIGN.md \u00a71 and \u00a721.1.3 are updated coherently. Deductions are for unverifiable specific citations (IDs and the 60-second figure), the unreconciled change to the UBU-Q0128 phase statement, assumptions about Phase 1b closure, and the substantial length/duplication of gate text in \u00a74.2. These are auditable fixes rather than structural flaws.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [
+        "Verify every cited decision/question ID and the 60-second \u00a712.2 raw-buffer figure exist at base commit f4f9136; remove or correct any that do not.",
+        "Confirm UBU-Q0128's current Phase tag and either keep the original 're-tagged Phase 1b' wording or update UBU-Q0128 consistently (outside this proposal if the allowlist forbids it).",
+        "Confirm that Phase 1b closure and the deferred switch are already recorded under UBU-D0305/UBU-D0291; otherwise soften the closure/reopening language to match the recorded roadmap state.",
+        "Operator must explicitly approve the mandatory phone slice (row 2) as a release prerequisite, since it binds MVP release to Phase 2 route qualification."
+      ],
+      "risks": [
+        "The DESIGN.md \u00a74.2 text cites many specific prior artifacts (UBU-D0326, D0327\u2013D0328, D0331, D0332, D0336, D0337, UBU-Q0178) and a concrete '60 seconds' raw-buffer ceiling attributed to \u00a712.2. None of these can be verified from the diff context; a wrong ID or number would introduce a false cross-reference into canonical design text.",
+        "The rewritten amendment paragraph changes the statement about UBU-Q0128 from 're-tagged Phase 1b' to 'Phase 1b-origin work now tracked in Phase 2' without touching UBU-Q0128's own metadata. If UBU-Q0128 is still tagged Phase 1b in OPEN_QUESTIONS.md, this creates an inconsistency the patch does not reconcile.",
+        "The decision repeatedly assumes Phase 1b is closed ('reopening Phase 1b', 'reversing Phase 1b closure', 'the deferred switch'). If the base commit does not record Phase 1b closure or a deferred switch, the sequencing language asserts roadmap state that was not decided here.",
+        "Mandating a qualified phone capture/review profile (row 2) before MVP release is a material scope choice that depends on Phase 2 personal-worker/cross-Device route gates; it enlarges release risk relative to a desktop-only minimum and should be an explicit operator call.",
+        "Mode/class identifiers (off/text_only, snapshot_capture, conversational, streamed_supervision, voice_session, discovery_mode, local_only_realtime) are used as if they are existing enumerations; if any is not defined in \u00a721.1.x, the table introduces undefined terms.",
+        "The added \u00a74.2 block is long and dense; it duplicates gate language already present in \u00a721.1.1\u201321.1.5 and \u00a712.2 rather than cross-referencing, increasing drift risk between sections."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261014T044120Z-UBU-Q0183/responses/claude_score_openai-gpt-6-ubu-q0183-d0339_stdout.json",
+        "stderr_path": null
+      }
+    }
+  ],
+  "score_aggregates": [
+    {
+      "proposal_id": "openai-gpt-6-UBU-Q0183-D0339",
+      "author_provider": "openai",
+      "cross_score_count": 2,
+      "score_mean": 87.5,
+      "score_spread": 15,
+      "frontier_score_gap": 15,
+      "disagreement_flags": []
+    }
+  ],
+  "cross_score_count": 2,
+  "score_mean": 87.5,
+  "score_spread": 15,
+  "frontier_score_gap": 15,
+  "disagreement_flags": [],
+  "quorum_result": {
+    "valid": true,
+    "human_review_required": false,
+    "selected_proposal_id": "openai-gpt-6-UBU-Q0183-D0339",
+    "selected_score": 87.5,
+    "selected_cross_score_count": 2,
+    "blocked_reasons": [],
+    "manual_override": false
+  },
+  "selected_proposal_id": "openai-gpt-6-UBU-Q0183-D0339",
+  "automated_selection_valid": true,
+  "human_review_required": false,
+  "artifact_publication_status": "operator_pending",
+  "prompt_size_warning": true,
+  "prompt_context": {
+    "question_ids": [
+      "UBU-Q0183"
+    ],
+    "decision_ids": [
+      "UBU-D0292"
+    ],
+    "sections": {
+      "DESIGN.md": [
+        "2.13",
+        "4.2",
+        "12.2",
+        "21"
+      ]
+    },
+    "core_sections": {
+      "DESIGN.md": [
+        "1"
+      ],
+      "DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md": [
+        "4"
+      ]
+    },
+    "missing_refs": {},
+    "context_chars": 221242,
+    "prompt_chars": 228436
+  }
+}

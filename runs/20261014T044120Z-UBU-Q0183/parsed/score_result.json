@@ -1,0 +1,31 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-gpt-6-UBU-Q0183-D0339",
+      "score": 88,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Mandating a qualified phone capture/review profile (row 2) before MVP release is a material scope choice that depends on Phase 2 personal-worker/cross-Device route gates; it enlarges release risk relative to a desktop-only minimum and should be an explicit operator call.",
+        "Mandatory phone capture and desktop streaming make release dependent on outstanding host-mapping, hardware, latency, retention and cost qualification.",
+        "Mode/class identifiers (off/text_only, snapshot_capture, conversational, streamed_supervision, voice_session, discovery_mode, local_only_realtime) are used as if they are existing enumerations; if any is not defined in \u00a721.1.x, the table introduces undefined terms.",
+        "The DESIGN.md \u00a74.2 text cites many specific prior artifacts (UBU-D0326, D0327\u2013D0328, D0331, D0332, D0336, D0337, UBU-Q0178) and a concrete '60 seconds' raw-buffer ceiling attributed to \u00a712.2. None of these can be verified from the diff context; a wrong ID or number would introduce a false cross-reference into canonical design text.",
+        "The added \u00a74.2 block is long and dense; it duplicates gate language already present in \u00a721.1.1\u201321.1.5 and \u00a712.2 rather than cross-referencing, increasing drift risk between sections.",
+        "The decision repeatedly assumes Phase 1b is closed ('reopening Phase 1b', 'reversing Phase 1b closure', 'the deferred switch'). If the base commit does not record Phase 1b closure or a deferred switch, the sequencing language asserts roadmap state that was not decided here.",
+        "The rewritten amendment paragraph changes the statement about UBU-Q0128 from 're-tagged Phase 1b' to 'Phase 1b-origin work now tracked in Phase 2' without touching UBU-Q0128's own metadata. If UBU-Q0128 is still tagged Phase 1b in OPEN_QUESTIONS.md, this creates an inconsistency the patch does not reconcile."
+      ],
+      "required_fixes": [
+        "Confirm UBU-Q0128's current Phase tag and either keep the original 're-tagged Phase 1b' wording or update UBU-Q0128 consistently (outside this proposal if the allowlist forbids it).",
+        "Confirm that Phase 1b closure and the deferred switch are already recorded under UBU-D0305/UBU-D0291; otherwise soften the closure/reopening language to match the recorded roadmap state.",
+        "Operator must explicitly approve the mandatory phone slice (row 2) as a release prerequisite, since it binds MVP release to Phase 2 route qualification.",
+        "Verify every cited decision/question ID and the 60-second \u00a712.2 raw-buffer figure exist at base commit f4f9136; remove or correct any that do not."
+      ],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "openai-gpt-6-UBU-Q0183-D0339",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}

@@ -1,0 +1,30 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-gpt-6-UBU-Q0183-D0339",
+      "score": 80,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "none",
+      "risks": [
+        "The DESIGN.md \u00a74.2 text cites many specific prior artifacts (UBU-D0326, D0327\u2013D0328, D0331, D0332, D0336, D0337, UBU-Q0178) and a concrete '60 seconds' raw-buffer ceiling attributed to \u00a712.2. None of these can be verified from the diff context; a wrong ID or number would introduce a false cross-reference into canonical design text.",
+        "The rewritten amendment paragraph changes the statement about UBU-Q0128 from 're-tagged Phase 1b' to 'Phase 1b-origin work now tracked in Phase 2' without touching UBU-Q0128's own metadata. If UBU-Q0128 is still tagged Phase 1b in OPEN_QUESTIONS.md, this creates an inconsistency the patch does not reconcile.",
+        "The decision repeatedly assumes Phase 1b is closed ('reopening Phase 1b', 'reversing Phase 1b closure', 'the deferred switch'). If the base commit does not record Phase 1b closure or a deferred switch, the sequencing language asserts roadmap state that was not decided here.",
+        "Mandating a qualified phone capture/review profile (row 2) before MVP release is a material scope choice that depends on Phase 2 personal-worker/cross-Device route gates; it enlarges release risk relative to a desktop-only minimum and should be an explicit operator call.",
+        "Mode/class identifiers (off/text_only, snapshot_capture, conversational, streamed_supervision, voice_session, discovery_mode, local_only_realtime) are used as if they are existing enumerations; if any is not defined in \u00a721.1.x, the table introduces undefined terms.",
+        "The added \u00a74.2 block is long and dense; it duplicates gate language already present in \u00a721.1.1\u201321.1.5 and \u00a712.2 rather than cross-referencing, increasing drift risk between sections."
+      ],
+      "required_fixes": [
+        "Verify every cited decision/question ID and the 60-second \u00a712.2 raw-buffer figure exist at base commit f4f9136; remove or correct any that do not.",
+        "Confirm UBU-Q0128's current Phase tag and either keep the original 're-tagged Phase 1b' wording or update UBU-Q0128 consistently (outside this proposal if the allowlist forbids it).",
+        "Confirm that Phase 1b closure and the deferred switch are already recorded under UBU-D0305/UBU-D0291; otherwise soften the closure/reopening language to match the recorded roadmap state.",
+        "Operator must explicitly approve the mandatory phone slice (row 2) as a release prerequisite, since it binds MVP release to Phase 2 route qualification."
+      ],
+      "rationale": "Patch applies cleanly, touches only allowlisted files, and passes question-schema checks (Status: Solved, Resolved by: UBU-D0339, remaining metadata preserved). It answers exactly what UBU-Q0183 asks: an ordered set of mandatory mode/device slices (bounded desktop snapshot+PTT voice, bounded phone capture/review, consented finite desktop streaming), explicit evidence and retention gates before each enablement, coordination with Phase 2 and the deferred switch, and a clear list of what is excluded (phone streaming, always-on, Phase 3 gate). It honors the stated constraints: no Phase 3 release gate restored, always-on consent never inferred, mobile stewardship left to UBU-Q0160, switch criteria unchanged, no implementation or hardware-support claim. Cross-references in DESIGN.md \u00a71 and \u00a721.1.3 are updated coherently. Deductions are for unverifiable specific citations (IDs and the 60-second figure), the unreconciled change to the UBU-Q0128 phase statement, assumptions about Phase 1b closure, and the substantial length/duplication of gate text in \u00a74.2. These are auditable fixes rather than structural flaws."
+    }
+  ],
+  "selected_proposal_id": "openai-gpt-6-UBU-Q0183-D0339",
+  "selection_rationale": "Only one proposal was submitted and it passed mechanical validation (applies cleanly, allowlist and question schema OK). It directly resolves UBU-Q0183's scope-allocation question with an ordered slice table, evidence/retention gates and Phase 2/switch coordination while respecting the question's stated prohibitions. Selection is conditional on operator review of the cited artifact IDs, the 60-second buffer figure, the UBU-Q0128 phase wording, and the decision to make a phone slice mandatory before MVP release."
+}
