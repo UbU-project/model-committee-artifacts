@@ -1,0 +1,11 @@
+[
+  {
+    "proposal_id": "ubu-q0160-openai-gpt-6-20261014-exact-structural-lowering",
+    "author_provider": "openai",
+    "cross_score_count": 2,
+    "score_mean": 83.5,
+    "score_spread": 19,
+    "frontier_score_gap": 19,
+    "disagreement_flags": []
+  }
+]

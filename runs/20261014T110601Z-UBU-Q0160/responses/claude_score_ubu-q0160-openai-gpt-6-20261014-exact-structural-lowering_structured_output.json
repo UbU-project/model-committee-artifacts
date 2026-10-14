@@ -1,0 +1,27 @@
+{
+  "scores": [
+    {
+      "proposal_id": "ubu-q0160-openai-gpt-6-20261014-exact-structural-lowering",
+      "score": 74,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "none",
+      "risks": [
+        "Third consecutive protocol-only decision on UBU-Q0160 (after UBU-D0358 and UBU-D0364) with no hardware measurement; requirement accretion raises harness cost before any trial exists and may delay the actual gate.",
+        "References `planning_delta_seconds` as if it were an established kernel-contract field; if PLANNING_KERNEL_CONTRACT.md does not define that identifier, the design text names a nonexistent schema element.",
+        "Introduces a new fallback class (otherwise-valid request outside accelerator bounds routed to CPU) without stating how UBU-D0364's accounting classifies it: hybrid mapping, full CPU fallback, or a separate column. Ambiguity could let range-based fallback be reported inconsistently across candidates.",
+        "The two inserted DESIGN.md paragraphs are dense and long relative to the surrounding \u00a716.10.6 text, making the exact set of new obligations harder to audit and to turn into fixtures.",
+        "The requirement that lowering preserve exact interval/dependency/mask semantics may effectively force all structural operations CPU-resident on fp32-only accelerators, which is correct for parity but should be acknowledged as a likely outcome rather than left implicit."
+      ],
+      "required_fixes": [
+        "Confirm `planning_delta_seconds` is a defined field in PLANNING_KERNEL_CONTRACT.md; otherwise replace it with the actual field name or a generic phrase such as 'the planning delta'.",
+        "Add one sentence specifying how range-triggered CPU routing is recorded in the UBU-D0364 trial manifest (which outcome category it belongs to) so fallback accounting stays comparable across candidates."
+      ],
+      "rationale": "Patch applies, passes allowlist and schema checks, and confines OPEN_QUESTIONS.md edits to UBU-Q0160 while keeping Status: Open and Resolved by: None, which is correct given the question requires physical device measurements and human approval. The content addresses a genuine gap: the existing \u00a716.10.6 matrix records supported ops/dtypes but does not test whether coordinate representation (e.g., fp32 timestamps at epoch scale), equality boundaries, or duration accumulation preserve hard-constraint decisions. The proposed fixtures (large timestamps with unit separations, translated origins, equality endpoints, index/padding bounds, near-limit sums) are concrete, reproducible, and explicitly decline to select an API or dtype. It coheres with UBU-D0283 parity and UBU-D0364 accounting by deferring to them. Deductions: incremental rather than resolving, risk of a fabricated field identifier, unspecified interaction with D0364 outcome categories, and dense prose. Overall a valid, auditable, directly responsive narrowing of an Open question that cannot yet be closed."
+    }
+  ],
+  "selected_proposal_id": "ubu-q0160-openai-gpt-6-20261014-exact-structural-lowering",
+  "selection_rationale": "Only one proposal was submitted and it passed mechanical validation (applies cleanly, allowlist and question schema passed). It is directly responsive to UBU-Q0160's blocked state by tightening the on-device parity protocol with representation-boundary fixtures while correctly leaving the API selection Open pending physical device measurements and operator review. Minor fixes (verify the planning_delta_seconds identifier; clarify how range-based CPU routing is categorized in UBU-D0364 accounting) do not block acceptance but should be addressed before merge."
+}

@@ -1,0 +1,20 @@
+{
+  "scores": [
+    {
+      "proposal_id": "ubu-q0160-openai-gpt-6-20261014-exact-structural-lowering",
+      "score": 93,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "The empirical blocker remains: no harness implementation or physical-device measurements establish API suitability."
+      ],
+      "required_fixes": [],
+      "rationale": "Mechanical validation confirms clean application, allowed files and preserved question schema. The patch usefully specifies representation bounds, arithmetic-boundary fixtures and explicit CPU routing while preserving exact parity, existing budgets and fallback accounting. It advances qualification requirements; API selection appropriately remains Open pending measurements and operator review."
+    }
+  ],
+  "selected_proposal_id": "ubu-q0160-openai-gpt-6-20261014-exact-structural-lowering",
+  "selection_rationale": "The sole candidate is mechanically valid, focused and auditable, with no required fixes identified. This cross-score supports the protocol refinement for local aggregation; it establishes no passing API."
+}

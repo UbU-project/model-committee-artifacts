@@ -1,0 +1,28 @@
+{
+  "scores": [
+    {
+      "proposal_id": "ubu-q0160-openai-gpt-6-20261014-exact-structural-lowering",
+      "score": 84,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Introduces a new fallback class (otherwise-valid request outside accelerator bounds routed to CPU) without stating how UBU-D0364's accounting classifies it: hybrid mapping, full CPU fallback, or a separate column. Ambiguity could let range-based fallback be reported inconsistently across candidates.",
+        "References `planning_delta_seconds` as if it were an established kernel-contract field; if PLANNING_KERNEL_CONTRACT.md does not define that identifier, the design text names a nonexistent schema element.",
+        "The empirical blocker remains: no harness implementation or physical-device measurements establish API suitability.",
+        "The requirement that lowering preserve exact interval/dependency/mask semantics may effectively force all structural operations CPU-resident on fp32-only accelerators, which is correct for parity but should be acknowledged as a likely outcome rather than left implicit.",
+        "The two inserted DESIGN.md paragraphs are dense and long relative to the surrounding \u00a716.10.6 text, making the exact set of new obligations harder to audit and to turn into fixtures.",
+        "Third consecutive protocol-only decision on UBU-Q0160 (after UBU-D0358 and UBU-D0364) with no hardware measurement; requirement accretion raises harness cost before any trial exists and may delay the actual gate."
+      ],
+      "required_fixes": [
+        "Add one sentence specifying how range-triggered CPU routing is recorded in the UBU-D0364 trial manifest (which outcome category it belongs to) so fallback accounting stays comparable across candidates.",
+        "Confirm `planning_delta_seconds` is a defined field in PLANNING_KERNEL_CONTRACT.md; otherwise replace it with the actual field name or a generic phrase such as 'the planning delta'."
+      ],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "ubu-q0160-openai-gpt-6-20261014-exact-structural-lowering",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}
