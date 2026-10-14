@@ -1,0 +1,239 @@
+# Model-Committee Cross-Scoring Request
+
+You are scoring candidate work proposals for the UbU `model-committee` process.
+
+Return exactly one JSON object. Do not return prose outside the JSON object.
+
+This is a v0.2 cross-score. You are not making the final selection; model-committee
+will aggregate valid cross-scores locally.
+
+Scoring provider: `codex`
+Authoring provider for the candidate proposal(s): `openai`
+
+## Selected question
+
+Question ID: `UBU-Q0160`  
+Question title: `Which mobile compute API should the mobile GPU backend target?`  
+Base commit: `c39ea0ad1c7d177fa161ac42318c663545a057fb`
+
+```markdown
+## UBU-Q0160: Which mobile compute API should the mobile GPU backend target?
+
+Status: Open Priority: MVP important Phase: Phase 2 Decision type: Architecture Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 90 Depends on: UBU-Q0156 Blocks: mobile GPU backend selection, mobile interaction/workload roadmap Resolved by: None Last scored: 2026-10-14 Scored from commit: None
+
+Defining context: DESIGN.md §16.5, §16.10.6; PLANNING_KERNEL_CONTRACT.md §4; `UBU-D0126`, `UBU-D0256`, `UBU-D0283`, `UBU-D0290`.
+
+### Question
+
+Which compute API should implement the in-process mobile GPU backend while preserving CPU certification, provenance and the existing parity contract?
+
+### Subquestions
+
+1. How do Vulkan compute, OpenCL on Adreno, ExecuTorch and NNAPI compare on the actual supported device and driver stack?
+2. Which candidate passes exact structural/hard-constraint parity and the named numeric tolerances against the CPU reference path?
+3. What latency, memory, energy and sustained thermal behavior does each exhibit for deterministic skeletonization, hard checks, local repair recipes and a short-horizon branch cache?
+4. Which APIs and operations are actually available on the selected LineageOS build, and what CPU fallback is required?
+
+5. With `UBU-D0292` making the smartphone camera a primary MVP surface, does `UBU-D0290`'s stewardship execution-profile framing survive, or must mobile's product role and planning workload change? Distinguish where the user interacts from where full search executes: a primary mobile client does not by itself require a full mobile planner.
+6. What local perception, voice, battery, privacy and CPU-certification requirements must the camera-first mobile client meet, and how are they sequenced with MVP capture and device synchronization (`UBU-Q0183`)?
+
+### Current direction
+
+The camera-first roadmap implication requires an operator decision. `UBU-D0290` is questioned, not amended; neither a broader mobile workload nor a compute API is selected. Existing parity measurements remain necessary for any selected planning backend, and perception-model suitability needs its own evidence.
+
+No compute API is selected. `UBU-Q0156` settled the desktop invocation boundary; it does not select a mobile backend. This question is blocked on the on-device parity harness producing measurements. The gate is satisfied only once the stewardship workload has been measured against the CPU reference path on physically connected real hardware under the `UBU-D0283` parity rule. Emulator timings and desktop full-search benchmarks do not answer it.
+
+### Resolution
+
+Open pending that measurement gate; no hardware result is inferred from API availability alone.
+
+---
+
+```
+
+## Candidate proposals
+
+```json
+[
+  {
+    "proposal_id": "UBU-Q0160-mobile-stewardship-comparison",
+    "provider_id": "openai",
+    "model_name": "gpt-6",
+    "question_id": "UBU-Q0160",
+    "base_commit": "c39ea0ad1c7d177fa161ac42318c663545a057fb",
+    "summary": "Retain mobile stewardship, acknowledge the settled phone capture sequence, and define a reproducible real-device API comparison while leaving API selection open.",
+    "rationale": "The supplied context contains no qualifying device measurements, so selecting an API would bypass UBU-D0290. UBU-D0339 already resolves capture allocation and sequencing. A frozen same-device comparison advances the remaining decision by distinguishing actual acceleration from CPU fallback and requiring parity, complete certified-result costs, concurrent capture load and recovery evidence.",
+    "changed_files": [
+      "DECISIONS.md",
+      "DESIGN.md",
+      "OPEN_QUESTIONS.md"
+    ],
+    "patch": "diff --git a/DECISIONS.md b/DECISIONS.md\n--- a/DECISIONS.md\n+++ b/DECISIONS.md\n@@ -5603,6 +5603,18 @@ Log review displays the original prediction, actual evidence/coverage, differenc\n \n Link friction arising from user choices to the required counterfactual record without replacing it or making reasons mandatory. Inferred reasons remain inferred; omission establishes no acceptance, absence of friction or causal conclusion. All notes and derivatives inherit current privacy/retention restrictions.\n \n DESIGN.md \u00a717.8.1 supplies schema, prompt, review and enablement requirements. This resolves the annotation/interface contract, not Bayesian mathematics or implementation conformance; no planning-kernel change is required.\n \n ---\n+\n+## UBU-D0358: Mobile API selection requires a reproducible stewardship comparison\n+\n+**Status:** Accepted \u2192 DESIGN.md \u00a716.10.6; narrows `UBU-Q0160` without selecting an API. Retains `UBU-D0290` and applies `UBU-D0339`.\n+\n+Primary phone capture/review and the location of planning compute are separate choices. Retain the bounded mobile stewardship workload and on-device CPU certification of mobile-produced Plans. `UBU-D0339` already allocates mandatory phone capture/review and permits separately qualified operator-owned inference workers; it does not require full mobile search. Perception suitability, privacy, voice, resource qualification and sync sequencing retain their existing release gates.\n+\n+Before selecting a mobile planning API, freeze a same-device CPU comparison, candidate execution mappings, shared fixtures, named numerical tolerances and finite acceptance limits. DESIGN.md \u00a716.10.6 specifies the evidence matrix: actual accelerated operations and CPU fallback, exact parity, complete certified-result latency, aggregate memory, energy/battery, sustained thermals and failure behavior. Runtime/delegate identity and unavailable operations must be explicit; successful CPU fallback cannot establish GPU execution.\n+\n+Select only after operator review of physically connected device results under the existing pre-flight and recovery rules. Keep CPU stewardship when no accelerator qualifies. This decision specifies the comparison and retains the workload; it supplies no hardware result, compute API, implementation conformance, changed planning schema or new release/switch criterion. `UBU-Q0160` stays Open for measured API selection.\n+\n+---\ndiff --git a/DESIGN.md b/DESIGN.md\n--- a/DESIGN.md\n+++ b/DESIGN.md\n@@ -2864,12 +2864,27 @@ Mobile is a real-time steward of Plan legitimacy (`UBU-D0126`, `UBU-D0256`, `UBU\n The persistent Python worker in `UBU-D0283` is a desktop invocation mechanism. A mobile backend runs in process on the device; no Python runtime is shipped on device. The pure `PlanningRequest` \u2192 `PlanningResponse` semantic boundary, CPU-owned backend selection, CPU certification and recorded provenance remain unchanged. Mobile execution records `mobile_cpu` or `mobile_gpu`, `in_process_mobile`, and its own framework or compute API. The compute API is undecided pending `UBU-Q0160`'s measurement gate.\n \n The parity rule from `UBU-D0283` applies unchanged: schema decoding, chunk partitioning, task-slot masks, dependency feasibility, hard-constraint feasibility, rejection classes and CPU-certified Plan validity agree exactly with the CPU reference path. Floating-point scores and rollout estimates use named tolerances or statistical criteria. Shared parity fixtures exercise the applicable stages; the workload benchmark remains stewardship. Every mobile-produced Plan is CPU-certified on the device before it is user-visible.\n \n Validation uses a physically connected device over `adb`, not an AVD: emulator graphics use host rendering and cannot measure the phone's driver, vendor extensions, timing or thermal response. The rooted LineageOS device procedure and mandatory pre-flight are in `docs/MOBILE_DEVICE_TESTING.md`. No device procedure may leave the phone in a state that needs a cable to recover.\n \n+**Camera-first scope (`UBU-D0358`).** Retain this stewardship workload when the phone is a primary capture/review client. `UBU-D0339` (\u00a74.2) already sets the mandatory bounded phone camera-and-voice slice, qualified operator-owned inference routes and Phase 2 coordination. Perception models produce evidence/candidates under \u00a721.1; planning consumes admitted inputs. Perception runtime qualification and planning parity are separate gates. A passing planning benchmark supplies no capture, privacy, voice or perception-quality evidence, and a passing perception model supplies no planning parity.\n+\n+**API comparison gate (`UBU-D0358`).** Before running the selection trials, pin the exact physical phone/SoC/RAM, LineageOS fingerprint, driver/runtime/compiler versions, harness and CPU reference revisions, fixture digests, seeds and effective compute budgets. Freeze the candidate operation mappings, trial counts, cold/warm procedure, run order, sustained duration, numerical tolerance profile and finite acceptance limits. Include required improvement over the same-device `mobile_cpu` baseline and acceptable latency, aggregate memory, energy/battery and thermal trade-offs; do not choose thresholds after seeing a winner. Keep fixtures synthetic or expressly authorized and diagnostics policy-bound.\n+\n+Publish one evidence row for the CPU baseline and each candidate configuration of Vulkan compute, OpenCL on Adreno, ExecuTorch and NNAPI. Identify any runtime/delegate, actual compute API/driver and accelerator used, supported operations/dtypes, CPU-resident portions and unavailable/unsuitable operations with reasons. Treat a runtime configuration as an implementation to measure, rather than assuming its name denotes a GPU API. Demonstrate execution of the claimed accelerated operations on the selected device; API enumeration, library loading, emulation and silent CPU fallback cannot establish it.\n+\n+| Evidence | Required comparison |\n+| --- | --- |\n+| Semantic parity | Replay the same bounded skeleton, hard-check, repair and branch-cache fixtures against the CPU reference. Include \u00a75 of PLANNING_KERNEL_CONTRACT.md's missing-prerequisite and endpoint-equality cases, protected Tasks, stale envelopes, all five \u00a716.5 repair triggers, and cache hits/misses. Enumerate applicable stage outputs and justify any non-applicable stage; record exact structural/feasibility/rejection comparisons and named numeric/statistical checks before CPU certification. CPU rejection cannot turn an accelerator disagreement into a parity pass. |\n+| Certified-result latency and resources | Include decoding, cold initialization/compilation, transfers, synchronization, readback and on-device CPU certification, rather than GPU enqueue time alone. Report sample counts, median, p95, maximum, misses and failures separately for cold/warm operation and each workload. Measure peak aggregate CPU/accelerator memory including caches and certification, energy/battery with method and uncertainty, temperature/throttling and performance over the declared sustained duration. Record ambient conditions, charge state and competing load. Missing evidence for a required limit prevents a pass. |\n+| Shared phone budget | Repeat the proposed concurrent planning, UI and sync load with the bounded camera/voice route intended under \u00a74.2, accounting for every participating endpoint. Apply the existing perception/retention/deadline qualification gates to that route; do not substitute planning timings for capture-to-review measurements. Report contention, stop responsiveness and resource degradation without expanding the planning workload. |\n+| Fallback and recovery | Exercise unavailable operations/runtime, initialization/allocation failure, accelerator timeout/failure, interruption, low battery and thermal limits. CPU selection/fallback must preserve request/seed and semantic checks, reject late accelerator results and fit the remaining request budget; otherwise expose the planning limitation or an eligible cached/clarification path under \u00a716.5. Record the implementation that actually produced the returned result in existing provenance. A process restart requires fresh validity checks before Plan reuse. |\n+\n+Operator review selects only a configuration passing the declared parity and resource gates with demonstrated fallback and a justified benefit over CPU stewardship. Unavailable candidates remain visible as gaps; no accelerator winner is required. If none qualifies, retain CPU stewardship and the explicit GPU gap. This is a required evidence protocol, not a completed harness, measured result or API selection. It changes no `PlanningRequest`, `PlanningResponse`, provenance enum, contract version or switch/release criterion. Perception hardware and numeric profiles remain `UBU-Q0177`/`UBU-Q0168`; `UBU-Q0160` remains Open for planning API selection.\n+\n #### 16.10.7 Correlation groups and rollout matrix\n \n Each stochastic-duration Task may carry `correlation_groups: [{group: str, strength: float}]`. In Phase 1, `strength` is a positive latent-factor loading in `[0, 1]`; negative correlations are deferred.\n \n The CPU kernel constructs a deterministic positive semi-definite correlation matrix by normalizing per-Task positive factor loadings and computing `C = L * L^T + diag(1 - row_norm(L)^2)`. Multiple shared groups combine through the dot product of normalized loading vectors. Numeric jitter may be applied for floating-point error with explicit degraded diagnostics. Silent nearest-PSD projection is not a Phase 1 semantic repair.\n \ndiff --git a/OPEN_QUESTIONS.md b/OPEN_QUESTIONS.md\n--- a/OPEN_QUESTIONS.md\n+++ b/OPEN_QUESTIONS.md\n@@ -2987,39 +2987,39 @@ Enabled Preferences between two routine evergreen Objectives lower at request ti\n Resolved by `UBU-D0288`: routine occurrences are mandatory and carry no priority. They are not layered, are sent with `TaskSpec.value = 0.0`, must be placed, and are never omitted by partial placement; when a day cannot hold them all, the user triages.\n \n ---\n \n ## UBU-Q0160: Which mobile compute API should the mobile GPU backend target?\n \n-Status: Open Priority: MVP important Phase: Phase 2 Decision type: Architecture Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 90 Depends on: UBU-Q0156 Blocks: mobile GPU backend selection, mobile interaction/workload roadmap Resolved by: None Last scored: 2026-10-14 Scored from commit: None\n+Status: Open Priority: MVP important Phase: Phase 2 Decision type: Architecture Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 90 Depends on: UBU-Q0156 Blocks: mobile GPU backend selection Resolved by: None Last scored: 2026-10-14 Scored from commit: None\n \n-Defining context: DESIGN.md \u00a716.5, \u00a716.10.6; PLANNING_KERNEL_CONTRACT.md \u00a74; `UBU-D0126`, `UBU-D0256`, `UBU-D0283`, `UBU-D0290`.\n+Defining context: DESIGN.md \u00a716.5, \u00a716.10.6; PLANNING_KERNEL_CONTRACT.md \u00a74; `UBU-D0126`, `UBU-D0256`, `UBU-D0283`, `UBU-D0290`, `UBU-D0339`, `UBU-D0358`.\n \n ### Question\n \n Which compute API should implement the in-process mobile GPU backend while preserving CPU certification, provenance and the existing parity contract?\n \n ### Subquestions\n \n 1. How do Vulkan compute, OpenCL on Adreno, ExecuTorch and NNAPI compare on the actual supported device and driver stack?\n 2. Which candidate passes exact structural/hard-constraint parity and the named numeric tolerances against the CPU reference path?\n 3. What latency, memory, energy and sustained thermal behavior does each exhibit for deterministic skeletonization, hard checks, local repair recipes and a short-horizon branch cache?\n 4. Which APIs and operations are actually available on the selected LineageOS build, and what CPU fallback is required?\n \n-5. With `UBU-D0292` making the smartphone camera a primary MVP surface, does `UBU-D0290`'s stewardship execution-profile framing survive, or must mobile's product role and planning workload change? Distinguish where the user interacts from where full search executes: a primary mobile client does not by itself require a full mobile planner.\n-6. What local perception, voice, battery, privacy and CPU-certification requirements must the camera-first mobile client meet, and how are they sequenced with MVP capture and device synchronization (`UBU-Q0183`)?\n+5. **Scope answered by `UBU-D0358`.** Retain `UBU-D0290`'s stewardship planning workload for the primary phone capture/review client; full mobile search is not required. Measure contention with the intended bounded camera/voice route before selecting an accelerator.\n+6. **Existing release gates.** `UBU-D0339` resolved `UBU-Q0183`'s capture/device allocation and sync sequence. Local perception, voice, battery and privacy qualification follow DESIGN.md \u00a74.2, \u00a712.2, \u00a721.1 and \u00a71; `UBU-Q0168`/`UBU-Q0177` retain measured profiles. Planning parity and on-device CPU certification remain independent requirements.\n \n ### Current direction\n \n-The camera-first roadmap implication requires an operator decision. `UBU-D0290` is questioned, not amended; neither a broader mobile workload nor a compute API is selected. Existing parity measurements remain necessary for any selected planning backend, and perception-model suitability needs its own evidence.\n+`UBU-D0358` retains mobile stewardship and separates planning API selection from the phone interaction slice already allocated by `UBU-D0339`. DESIGN.md \u00a716.10.6 requires a frozen same-device CPU comparison and candidate execution/evidence matrix, including actual accelerator use, parity, certified-result latency, aggregate resources, sustained thermals, concurrent capture/voice load and fallback. No broader planning workload or compute API is selected; perception-model suitability needs its own evidence.\n \n No compute API is selected. `UBU-Q0156` settled the desktop invocation boundary; it does not select a mobile backend. This question is blocked on the on-device parity harness producing measurements. The gate is satisfied only once the stewardship workload has been measured against the CPU reference path on physically connected real hardware under the `UBU-D0283` parity rule. Emulator timings and desktop full-search benchmarks do not answer it.\n \n ### Resolution\n \n-Open pending that measurement gate; no hardware result is inferred from API availability alone.\n+Partially answered by `UBU-D0358`: retain stewardship planning, apply the existing capture/release allocation and specify a reproducible comparison. API selection remains Open pending physically connected device measurements and operator review; no hardware result or passing API is inferred from this protocol, API availability or CPU fallback.\n \n ---\n \n ## UBU-Q0161: Task descriptions as lossless prose after Clarify\n \n Status: Solved Priority: MVP important Phase: Phase 2 Decision type: Product Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 100 Depends on: None Blocks: None Resolved by: UBU-D0317 Last scored: 2026-10-11 Scored from commit: None\n",
+    "commit_message": "docs: define mobile stewardship API comparison gate",
+    "validation_notes": [
+      "Generated the diff with git diff --no-index from current working-tree files and proposed in-memory contents; repository files were not changed.",
+      "git apply --check passed against the working tree; git apply --check --whitespace=error-all also passed.",
+      "Confirmed UBU-D0358 is unused and added once; UBU-Q0160 remains Open with Resolved by: None, preserving its single-line scoring metadata.",
+      "Changes are limited to three allowed files; UBU-Q0160 is the only question block changed. No planning schema/version or read-only device/sync contract was changed.",
+      "The single OPEN_QUESTIONS.md hunk contains the selected UBU-Q0160 heading and its own Resolution section.",
+      "No device commands or hardware benchmarks ran. API availability, accelerator execution, parity and performance remain unverified."
+    ],
+    "new_questions_added": [],
+    "questions_resolved": [],
+    "decisions_added": [
+      "UBU-D0358"
+    ],
+    "requires_human_review": true
+  }
+]
+```
+
+## Mechanical validation results
+
+```json
+[
+  {
+    "proposal_id": "UBU-Q0160-mobile-stewardship-comparison",
+    "patch_applies": true,
+    "allowlist_passed": true,
+    "changed_files": [
+      "DECISIONS.md",
+      "DESIGN.md",
+      "OPEN_QUESTIONS.md"
+    ],
+    "question_schema_passed": true,
+    "error": null,
+    "normalized_patch": null,
+    "warnings": [],
+    "ordinary_error": null,
+    "recount_error": null,
+    "normalization_error": null
+  }
+]
+```
+
+## Provider weights
+
+Provider weights are historical diagnostic context only in v0.2. Do not use
+self-trust or author identity as score evidence.
+
+```json
+{}
+```
+
+## JSON Schema
+
+Your output must satisfy this schema:
+
+```json
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "scores",
+    "selected_proposal_id",
+    "selection_rationale"
+  ],
+  "properties": {
+    "scores": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "proposal_id",
+          "score",
+          "patch_applies",
+          "implements_selected_work",
+          "preserves_question_schema",
+          "avoids_unnecessary_scope",
+          "decomposition_quality",
+          "risks",
+          "required_fixes",
+          "rationale"
+        ],
+        "properties": {
+          "proposal_id": {
+            "type": "string"
+          },
+          "score": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "patch_applies": {
+            "type": "boolean"
+          },
+          "implements_selected_work": {
+            "type": "boolean"
+          },
+          "preserves_question_schema": {
+            "type": "boolean"
+          },
+          "avoids_unnecessary_scope": {
+            "type": "boolean"
+          },
+          "decomposition_quality": {
+            "type": "string",
+            "enum": [
+              "none",
+              "good",
+              "bad",
+              "not_applicable"
+            ]
+          },
+          "risks": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "required_fixes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "rationale": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "selected_proposal_id": {
+      "type": "string"
+    },
+    "selection_rationale": {
+      "type": "string"
+    }
+  }
+}
+```
+
+## Scoring requirements
+
+Score each proposal from 0 to 100.
+
+Consider:
+
+- whether the patch applies cleanly;
+- whether it implements the selected work;
+- whether it preserves the question schema;
+- whether it avoids unnecessary scope;
+- whether it modifies only allowed files;
+- whether it creates useful decomposition if decomposition occurs;
+- whether it introduces new risks;
+- whether required fixes remain.
+
+Rules:
+
+- Score every proposal in this prompt.
+- `selected_proposal_id` must refer to one scored proposal from this prompt.
+- Manual override is not allowed in v0.2.
+- Prefer a patch that is valid, minimal, auditable, and directly responsive.
+- Do not select a proposal whose patch failed mechanical validation.
+- Allowed question `Status:` values are `Archived`, `Decomposed`, `Deferred`, `Open`, `Solved`, `Superseded`; a resolved question must use `Status: Solved`.
+- Reject `Status: Resolved` as a question-schema violation. Set `preserves_question_schema` to false and require `Status: Solved` as the fix; `Resolved by:` is a separate metadata field.
+- Do not score your own provider's proposal unless explicitly asked for diagnostic self-score.
+
+Return only JSON.

@@ -1,0 +1,29 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0160-mobile-stewardship-comparison",
+      "score": 86,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Stewardship retention requires human approval; the harness, numerical limits and qualifying device measurements remain outstanding.",
+        "Subquestions 5 and 6 are replaced with answer text rather than retained with an appended answer, so the original question wording leaves the live record and auditability depends on git history.",
+        "The 'Shared phone budget' row requires concurrent camera/voice load testing against a route that may not yet exist on device, which could make the comparison gate unpassable until perception work lands, effectively coupling the planning API decision to perception sequencing despite the text saying the gates are separate.",
+        "The DESIGN.md \u00a716.10.6 addition is long and highly prescriptive (four-row evidence matrix plus three paragraphs). It is on-topic, but it hard-codes protocol details (trial counts, cold/warm procedure, sustained duration) that the eventual harness owner may need to revise, which would then require another decision edit.",
+        "The decision and the rewritten subquestion 6 rest on UBU-D0339 having resolved UBU-Q0183's capture/device allocation and sync sequence. That claim, and the DESIGN.md \u00a74.2, \u00a712.2, \u00a721.1 and UBU-Q0168/UBU-Q0177 cross-references, cannot be verified from the supplied context; a wrong citation would make UBU-D0358's scope claim unsound.",
+        "UBU-D0358 is logged as Accepted on a question marked Human approval required. The proposal flags requires_human_review, but if merged without operator sign-off it would retire the 'mobile interaction/workload roadmap' Blocks entry on the committee's say-so."
+      ],
+      "required_fixes": [
+        "Confirm UBU-D0339 exists in DECISIONS.md and actually allocates mandatory phone capture/review, permits operator-owned inference workers, and resolves UBU-Q0183 as stated; adjust or drop the citation if not.",
+        "Keep the original text of subquestions 5 and 6 and append the UBU-D0358 answer beneath each, instead of overwriting them.",
+        "Obtain operator approval for retaining UBU-D0290's stewardship framing before merging, since the question's Current direction explicitly reserves that call for the operator."
+      ],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0160-mobile-stewardship-comparison",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}

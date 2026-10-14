@@ -1,0 +1,11 @@
+[
+  {
+    "proposal_id": "UBU-Q0160-mobile-stewardship-comparison",
+    "author_provider": "openai",
+    "cross_score_count": 2,
+    "score_mean": 85.5,
+    "score_spread": 19,
+    "frontier_score_gap": 19,
+    "disagreement_flags": []
+  }
+]
