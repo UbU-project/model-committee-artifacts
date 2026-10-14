@@ -1,0 +1,171 @@
+{
+  "schema_version": "0.4",
+  "run_id": "20261014T050524Z-UBU-Q0185",
+  "created_at_utc": "2026-10-14T05:05:24Z",
+  "repo_path": "../ubu-design",
+  "base_commit": "1b55da79c2231ff329f026d81bef54847d45af6c",
+  "selected_question_id": "UBU-Q0185",
+  "phase": "work-select",
+  "config_path": "config/models.json",
+  "status": "selected",
+  "commands": [
+    "model-committee run-loop"
+  ],
+  "providers_attempted": [
+    "codex",
+    "claude"
+  ],
+  "providers_succeeded": [
+    "codex",
+    "claude"
+  ],
+  "providers_failed": [],
+  "provider_attempts": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0185-openai-gpt-6-runtime-policy",
+      "response_path": "runs/20261014T050524Z-UBU-Q0185/responses/codex_score_ubu-q0185-openai-gpt-6-runtime-policy_response.json",
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0185-openai-gpt-6-runtime-policy",
+      "response_path": "runs/20261014T050524Z-UBU-Q0185/responses/claude_score_ubu-q0185-openai-gpt-6-runtime-policy_stdout.json",
+      "stderr_path": null
+    }
+  ],
+  "provider_successes": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20261014T050524Z-UBU-Q0185/parsed/codex_work_proposal.json"
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0185-openai-gpt-6-runtime-policy",
+      "response_path": "runs/20261014T050524Z-UBU-Q0185/responses/codex_score_ubu-q0185-openai-gpt-6-runtime-policy_response.json",
+      "parsed_path": "runs/20261014T050524Z-UBU-Q0185/parsed/codex_score_ubu-q0185-openai-gpt-6-runtime-policy_result.json"
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0185-openai-gpt-6-runtime-policy",
+      "response_path": "runs/20261014T050524Z-UBU-Q0185/responses/claude_score_ubu-q0185-openai-gpt-6-runtime-policy_stdout.json",
+      "parsed_path": "runs/20261014T050524Z-UBU-Q0185/parsed/claude_score_ubu-q0185-openai-gpt-6-runtime-policy_result.json"
+    }
+  ],
+  "provider_failures": [],
+  "score_matrix": [
+    {
+      "proposal_id": "UBU-Q0185-openai-gpt-6-runtime-policy",
+      "author_provider": "openai",
+      "scorer_provider": "codex",
+      "score": 96,
+      "valid": true,
+      "rationale": "Reported mechanical validation passes, and changes remain within the three allowed files. The proposal directly resolves sampling-policy ownership while preserving UbU's grammar, resource, validation and admission responsibilities. It uses Status: Solved, preserves the remaining question metadata, retains existing review seed/ceiling behavior and avoids unsupported causal claims about the Vocabulary abort. Documentation and fixture requirements make the decision auditable without claiming implementation evidence.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "Operator-owned sampling can vary across runtimes; adapter documentation, configuration qualification and conformance fixtures remain outstanding."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261014T050524Z-UBU-Q0185/responses/codex_score_ubu-q0185-openai-gpt-6-runtime-policy_response.json",
+        "stderr_path": null
+      }
+    },
+    {
+      "proposal_id": "UBU-Q0185-openai-gpt-6-runtime-policy",
+      "author_provider": "openai",
+      "scorer_provider": "claude",
+      "score": 82,
+      "valid": true,
+      "rationale": "Patch applies cleanly, touches only the three allowlisted files, and passes mechanical schema validation. The question block uses Status: Solved with Resolved by: UBU-D0341 and leaves all other metadata fields untouched, which is correct. The proposal directly answers the architecture question (sampling policy is operator-owned in the runtime; UbU keeps grammar, resource, validation and admission contracts), is consistent with the existing 'deliberately-outside' evidence from UBU-D0302, correctly refuses to claim a cause for the Vocabulary abort, and sets requires_human_review in line with the question's human-approval requirement. The decision text is auditable and hedged appropriately about what it does not establish. Deductions are for verbosity and mild scope expansion: the DESIGN.md addition restates failure-path contracts rather than citing them, and the qualification-profile pinning requirement reaches into UBU-D0331/UBU-D0336 territory in a way that cannot be checked here. These are quality concerns, not blockers, so no fix is strictly required.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "The decision adds new obligations to qualified Device/backend profiles (pinning sampling configuration or its digest, re-running qualification checks) by reference to UBU-D0331/UBU-D0336; those references are not verifiable from this prompt and could conflict with or silently extend what those decisions actually require.",
+        "DESIGN.md \u00a71 gains three dense paragraphs that restate contracts likely already specified elsewhere (saved-state preservation on abort/timeout, retry authority bindings, finite budgets). Duplicated normative text can drift from the canonical contract documents.",
+        "The 'incompatible runtime leaves the affected operation unavailable with an explicit limitation and eligible retry/manual route' clause introduces a concrete behavioral commitment that goes somewhat beyond the ownership question itself and is asserted without pointing at an existing limitation-reporting mechanism.",
+        "Fixture requirements (request inspection for absent sampler overrides, abort/timeout/invalid-output paths) are declared as conformance gates but no owning section or task is identified for them, so they may become orphaned requirements."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261014T050524Z-UBU-Q0185/responses/claude_score_ubu-q0185-openai-gpt-6-runtime-policy_stdout.json",
+        "stderr_path": null
+      }
+    }
+  ],
+  "score_aggregates": [
+    {
+      "proposal_id": "UBU-Q0185-openai-gpt-6-runtime-policy",
+      "author_provider": "openai",
+      "cross_score_count": 2,
+      "score_mean": 89.0,
+      "score_spread": 14,
+      "frontier_score_gap": 14,
+      "disagreement_flags": []
+    }
+  ],
+  "cross_score_count": 2,
+  "score_mean": 89.0,
+  "score_spread": 14,
+  "frontier_score_gap": 14,
+  "disagreement_flags": [],
+  "quorum_result": {
+    "valid": true,
+    "human_review_required": false,
+    "selected_proposal_id": "UBU-Q0185-openai-gpt-6-runtime-policy",
+    "selected_score": 89.0,
+    "selected_cross_score_count": 2,
+    "blocked_reasons": [],
+    "manual_override": false
+  },
+  "selected_proposal_id": "UBU-Q0185-openai-gpt-6-runtime-policy",
+  "automated_selection_valid": true,
+  "human_review_required": false,
+  "artifact_publication_status": "operator_pending",
+  "prompt_size_warning": false,
+  "prompt_context": {
+    "question_ids": [
+      "UBU-Q0185"
+    ],
+    "decision_ids": [
+      "UBU-D0302"
+    ],
+    "sections": {},
+    "core_sections": {
+      "DESIGN.md": [
+        "1"
+      ],
+      "DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md": [
+        "4"
+      ]
+    },
+    "missing_refs": {},
+    "context_chars": 39156,
+    "prompt_chars": 46053
+  }
+}

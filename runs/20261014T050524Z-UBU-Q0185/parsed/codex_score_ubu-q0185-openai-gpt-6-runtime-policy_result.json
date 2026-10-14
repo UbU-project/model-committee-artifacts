@@ -1,0 +1,20 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0185-openai-gpt-6-runtime-policy",
+      "score": 96,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Operator-owned sampling can vary across runtimes; adapter documentation, configuration qualification and conformance fixtures remain outstanding."
+      ],
+      "required_fixes": [],
+      "rationale": "Reported mechanical validation passes, and changes remain within the three allowed files. The proposal directly resolves sampling-policy ownership while preserving UbU's grammar, resource, validation and admission responsibilities. It uses Status: Solved, preserves the remaining question metadata, retains existing review seed/ceiling behavior and avoids unsupported causal claims about the Vocabulary abort. Documentation and fixture requirements make the decision auditable without claiming implementation evidence."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0185-openai-gpt-6-runtime-policy",
+  "selection_rationale": "The sole candidate is mechanically valid, focused and responsive, with no required fixes identified. This nomination remains subject to committee aggregation and the required human approval."
+}

@@ -1,0 +1,11 @@
+[
+  {
+    "proposal_id": "UBU-Q0185-openai-gpt-6-runtime-policy",
+    "author_provider": "openai",
+    "cross_score_count": 2,
+    "score_mean": 89.0,
+    "score_spread": 14,
+    "frontier_score_gap": 14,
+    "disagreement_flags": []
+  }
+]

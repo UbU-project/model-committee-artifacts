@@ -1,0 +1,45 @@
+[
+  {
+    "proposal_id": "UBU-Q0185-openai-gpt-6-runtime-policy",
+    "author_provider": "openai",
+    "scorer_provider": "codex",
+    "score": 96,
+    "valid": true,
+    "rationale": "Reported mechanical validation passes, and changes remain within the three allowed files. The proposal directly resolves sampling-policy ownership while preserving UbU's grammar, resource, validation and admission responsibilities. It uses Status: Solved, preserves the remaining question metadata, retains existing review seed/ceiling behavior and avoids unsupported causal claims about the Vocabulary abort. Documentation and fixture requirements make the decision auditable without claiming implementation evidence.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [
+      "Operator-owned sampling can vary across runtimes; adapter documentation, configuration qualification and conformance fixtures remain outstanding."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20261014T050524Z-UBU-Q0185/responses/codex_score_ubu-q0185-openai-gpt-6-runtime-policy_response.json",
+      "stderr_path": null
+    }
+  },
+  {
+    "proposal_id": "UBU-Q0185-openai-gpt-6-runtime-policy",
+    "author_provider": "openai",
+    "scorer_provider": "claude",
+    "score": 82,
+    "valid": true,
+    "rationale": "Patch applies cleanly, touches only the three allowlisted files, and passes mechanical schema validation. The question block uses Status: Solved with Resolved by: UBU-D0341 and leaves all other metadata fields untouched, which is correct. The proposal directly answers the architecture question (sampling policy is operator-owned in the runtime; UbU keeps grammar, resource, validation and admission contracts), is consistent with the existing 'deliberately-outside' evidence from UBU-D0302, correctly refuses to claim a cause for the Vocabulary abort, and sets requires_human_review in line with the question's human-approval requirement. The decision text is auditable and hedged appropriately about what it does not establish. Deductions are for verbosity and mild scope expansion: the DESIGN.md addition restates failure-path contracts rather than citing them, and the qualification-profile pinning requirement reaches into UBU-D0331/UBU-D0336 territory in a way that cannot be checked here. These are quality concerns, not blockers, so no fix is strictly required.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [
+      "The decision adds new obligations to qualified Device/backend profiles (pinning sampling configuration or its digest, re-running qualification checks) by reference to UBU-D0331/UBU-D0336; those references are not verifiable from this prompt and could conflict with or silently extend what those decisions actually require.",
+      "DESIGN.md \u00a71 gains three dense paragraphs that restate contracts likely already specified elsewhere (saved-state preservation on abort/timeout, retry authority bindings, finite budgets). Duplicated normative text can drift from the canonical contract documents.",
+      "The 'incompatible runtime leaves the affected operation unavailable with an explicit limitation and eligible retry/manual route' clause introduces a concrete behavioral commitment that goes somewhat beyond the ownership question itself and is asserted without pointing at an existing limitation-reporting mechanism.",
+      "Fixture requirements (request inspection for absent sampler overrides, abort/timeout/invalid-output paths) are declared as conformance gates but no owning section or task is identified for them, so they may become orphaned requirements."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20261014T050524Z-UBU-Q0185/responses/claude_score_ubu-q0185-openai-gpt-6-runtime-policy_stdout.json",
+      "stderr_path": null
+    }
+  }
+]

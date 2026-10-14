@@ -1,0 +1,24 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0185-openai-gpt-6-runtime-policy",
+      "score": 89,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "DESIGN.md \u00a71 gains three dense paragraphs that restate contracts likely already specified elsewhere (saved-state preservation on abort/timeout, retry authority bindings, finite budgets). Duplicated normative text can drift from the canonical contract documents.",
+        "Fixture requirements (request inspection for absent sampler overrides, abort/timeout/invalid-output paths) are declared as conformance gates but no owning section or task is identified for them, so they may become orphaned requirements.",
+        "Operator-owned sampling can vary across runtimes; adapter documentation, configuration qualification and conformance fixtures remain outstanding.",
+        "The 'incompatible runtime leaves the affected operation unavailable with an explicit limitation and eligible retry/manual route' clause introduces a concrete behavioral commitment that goes somewhat beyond the ownership question itself and is asserted without pointing at an existing limitation-reporting mechanism.",
+        "The decision adds new obligations to qualified Device/backend profiles (pinning sampling configuration or its digest, re-running qualification checks) by reference to UBU-D0331/UBU-D0336; those references are not verifiable from this prompt and could conflict with or silently extend what those decisions actually require."
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0185-openai-gpt-6-runtime-policy",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}
