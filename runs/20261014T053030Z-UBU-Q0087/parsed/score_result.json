@@ -1,0 +1,25 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0087-openai-gpt-6-declaration-history-v1",
+      "score": 91,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Cross-references cannot be verified from this prompt: UBU-D0076, UBU-D0153, UBU-D0154, UBU-D0273, DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md \u00a7\u00a79 and 17, and the claim that UBU-D0344 is the next unused decision id. A wrong or already-allocated id would produce a dangling or colliding reference.",
+        "DESIGN.md \u00a722.1.1 is a single ~27-line hunk of very dense normative prose. It is correct in substance but hard to audit line by line, and some sentences bundle several distinct rules (e.g., rejection of cyclic refs, staging of unavailable refs, replay dedup) that a reviewer may want split or cross-linked to existing admission rules.",
+        "Decision text marks UBU-D0344 as Accepted while the question is Human-approval-required; acceptable under the normal merge-on-review flow, but the human approver should confirm this is the intended status on merge.",
+        "Introduces a new named artifact `ScopeAssessment` and the `current_participation`/`desired_participation` distinction inline. These are reasonable but are not anchored to any existing schema section, so later sections may need to reconcile naming.",
+        "Partial supersession and causal historical views require careful implementation; the specified conformance fixtures have not been executed.",
+        "The rewrite of the existing \u00a722.1 sentence drops the phrase 'may legitimize, supersede, or conflict with observed scope drift' in favor of a pointer to \u00a722.1.1. The meaning is preserved in the new section, but the one-line summary in \u00a722.1 is now less self-describing."
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0087-openai-gpt-6-declaration-history-v1",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}

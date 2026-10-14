@@ -1,0 +1,24 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0087-openai-gpt-6-declaration-history-v1",
+      "score": 86,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "none",
+      "risks": [
+        "Cross-references cannot be verified from this prompt: UBU-D0076, UBU-D0153, UBU-D0154, UBU-D0273, DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md \u00a7\u00a79 and 17, and the claim that UBU-D0344 is the next unused decision id. A wrong or already-allocated id would produce a dangling or colliding reference.",
+        "DESIGN.md \u00a722.1.1 is a single ~27-line hunk of very dense normative prose. It is correct in substance but hard to audit line by line, and some sentences bundle several distinct rules (e.g., rejection of cyclic refs, staging of unavailable refs, replay dedup) that a reviewer may want split or cross-linked to existing admission rules.",
+        "Introduces a new named artifact `ScopeAssessment` and the `current_participation`/`desired_participation` distinction inline. These are reasonable but are not anchored to any existing schema section, so later sections may need to reconcile naming.",
+        "The rewrite of the existing \u00a722.1 sentence drops the phrase 'may legitimize, supersede, or conflict with observed scope drift' in favor of a pointer to \u00a722.1.1. The meaning is preserved in the new section, but the one-line summary in \u00a722.1 is now less self-describing.",
+        "Decision text marks UBU-D0344 as Accepted while the question is Human-approval-required; acceptable under the normal merge-on-review flow, but the human approver should confirm this is the intended status on merge."
+      ],
+      "required_fixes": [],
+      "rationale": "Mechanical validation passed (patch applies, allowlist and question schema OK). The proposal directly answers all five subquestions: an explicit field list for ownDeclaredPerspectiveHistory; clear coexist-versus-supersede rules (explicit user-authorized, scoped to named overlap, desired never replaces current, withdrawal and correction append rather than mutate); drift detection via comparison against the declaration applicable at the behavior's time with affect and counterevidence shown separately and unresolved comparisons made explicit; transition linkage via baseline declaration versions plus a separately admitted resulting declaration, with no automatic scope change on Objective completion or refusal; and a user-review based distinction between reviewed evolution and candidate unnoticed creep. Question metadata stays single-line with Status: Solved and Resolved by: UBU-D0344, scores and dates untouched. Scope is well contained: Phase 1 is explicitly left unchanged and thresholds, typed evidence enums, full transition schema and process/outcome detail are deferred to Q0089, Q0092, Q0094 and Q0095 rather than pulled in. No new questions were added, which is appropriate given answerability 90. Points withheld for auditability of the dense single hunk and for cross-references I cannot verify against the base commit."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0087-openai-gpt-6-declaration-history-v1",
+  "selection_rationale": "Only one proposal was submitted and it passed mechanical validation. It is directly responsive to every subquestion of UBU-Q0087, keeps the question metadata schema intact with Status: Solved, touches only the three allowlisted documents, and explicitly defers adjacent concerns to their existing open questions instead of expanding scope. Remaining concerns are auditability of the dense DESIGN.md section and unverified cross-reference ids, which the human approver should check before merge; neither blocks selection."
+}

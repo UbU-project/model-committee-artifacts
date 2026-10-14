@@ -1,0 +1,11 @@
+[
+  {
+    "proposal_id": "UBU-Q0087-openai-gpt-6-declaration-history-v1",
+    "author_provider": "openai",
+    "cross_score_count": 2,
+    "score_mean": 91.0,
+    "score_spread": 10,
+    "frontier_score_gap": 10,
+    "disagreement_flags": []
+  }
+]

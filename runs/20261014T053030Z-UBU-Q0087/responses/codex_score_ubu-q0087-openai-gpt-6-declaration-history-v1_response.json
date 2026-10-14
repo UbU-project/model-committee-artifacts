@@ -1,0 +1,20 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0087-openai-gpt-6-declaration-history-v1",
+      "score": 96,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Partial supersession and causal historical views require careful implementation; the specified conformance fixtures have not been executed."
+      ],
+      "required_fixes": [],
+      "rationale": "Mechanical validation confirms clean application, allowed files and preserved question schema. The proposal answers all five subquestions with explicit declaration fields, scoped supersession, temporal evidence comparison, user-reviewed evolution and transition links. It preserves Phase 1 behavior and leaves adjacent thresholds, evidence policies and transition lifecycle questions open. No required documentation fixes are evident."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0087-openai-gpt-6-declaration-history-v1",
+  "selection_rationale": "The sole candidate is mechanically valid, directly responsive and auditable, with no required fixes. This cross-score supports consideration subject to the required human approval."
+}

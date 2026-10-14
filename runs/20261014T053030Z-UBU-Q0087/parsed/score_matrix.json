@@ -1,0 +1,46 @@
+[
+  {
+    "proposal_id": "UBU-Q0087-openai-gpt-6-declaration-history-v1",
+    "author_provider": "openai",
+    "scorer_provider": "codex",
+    "score": 96,
+    "valid": true,
+    "rationale": "Mechanical validation confirms clean application, allowed files and preserved question schema. The proposal answers all five subquestions with explicit declaration fields, scoped supersession, temporal evidence comparison, user-reviewed evolution and transition links. It preserves Phase 1 behavior and leaves adjacent thresholds, evidence policies and transition lifecycle questions open. No required documentation fixes are evident.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [
+      "Partial supersession and causal historical views require careful implementation; the specified conformance fixtures have not been executed."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20261014T053030Z-UBU-Q0087/responses/codex_score_ubu-q0087-openai-gpt-6-declaration-history-v1_response.json",
+      "stderr_path": null
+    }
+  },
+  {
+    "proposal_id": "UBU-Q0087-openai-gpt-6-declaration-history-v1",
+    "author_provider": "openai",
+    "scorer_provider": "claude",
+    "score": 86,
+    "valid": true,
+    "rationale": "Mechanical validation passed (patch applies, allowlist and question schema OK). The proposal directly answers all five subquestions: an explicit field list for ownDeclaredPerspectiveHistory; clear coexist-versus-supersede rules (explicit user-authorized, scoped to named overlap, desired never replaces current, withdrawal and correction append rather than mutate); drift detection via comparison against the declaration applicable at the behavior's time with affect and counterevidence shown separately and unresolved comparisons made explicit; transition linkage via baseline declaration versions plus a separately admitted resulting declaration, with no automatic scope change on Objective completion or refusal; and a user-review based distinction between reviewed evolution and candidate unnoticed creep. Question metadata stays single-line with Status: Solved and Resolved by: UBU-D0344, scores and dates untouched. Scope is well contained: Phase 1 is explicitly left unchanged and thresholds, typed evidence enums, full transition schema and process/outcome detail are deferred to Q0089, Q0092, Q0094 and Q0095 rather than pulled in. No new questions were added, which is appropriate given answerability 90. Points withheld for auditability of the dense single hunk and for cross-references I cannot verify against the base commit.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [
+      "Cross-references cannot be verified from this prompt: UBU-D0076, UBU-D0153, UBU-D0154, UBU-D0273, DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md \u00a7\u00a79 and 17, and the claim that UBU-D0344 is the next unused decision id. A wrong or already-allocated id would produce a dangling or colliding reference.",
+      "DESIGN.md \u00a722.1.1 is a single ~27-line hunk of very dense normative prose. It is correct in substance but hard to audit line by line, and some sentences bundle several distinct rules (e.g., rejection of cyclic refs, staging of unavailable refs, replay dedup) that a reviewer may want split or cross-linked to existing admission rules.",
+      "Introduces a new named artifact `ScopeAssessment` and the `current_participation`/`desired_participation` distinction inline. These are reasonable but are not anchored to any existing schema section, so later sections may need to reconcile naming.",
+      "The rewrite of the existing \u00a722.1 sentence drops the phrase 'may legitimize, supersede, or conflict with observed scope drift' in favor of a pointer to \u00a722.1.1. The meaning is preserved in the new section, but the one-line summary in \u00a722.1 is now less self-describing.",
+      "Decision text marks UBU-D0344 as Accepted while the question is Human-approval-required; acceptable under the normal merge-on-review flow, but the human approver should confirm this is the intended status on merge."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20261014T053030Z-UBU-Q0087/responses/claude_score_ubu-q0087-openai-gpt-6-declaration-history-v1_stdout.json",
+      "stderr_path": null
+    }
+  }
+]
