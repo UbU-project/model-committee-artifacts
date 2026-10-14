@@ -1,0 +1,180 @@
+{
+  "schema_version": "0.4",
+  "run_id": "20261014T053949Z-UBU-Q0094",
+  "created_at_utc": "2026-10-14T05:39:49Z",
+  "repo_path": "../ubu-design",
+  "base_commit": "ad0c5f8d7390f714bd7c707cb4060d15190a287a",
+  "selected_question_id": "UBU-Q0094",
+  "phase": "work-select",
+  "config_path": "config/models.json",
+  "status": "selected",
+  "commands": [
+    "model-committee run-loop"
+  ],
+  "providers_attempted": [
+    "codex",
+    "claude"
+  ],
+  "providers_succeeded": [
+    "codex",
+    "claude"
+  ],
+  "providers_failed": [],
+  "provider_attempts": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0094-openai-2026-10-14",
+      "response_path": "runs/20261014T053949Z-UBU-Q0094/responses/codex_score_ubu-q0094-openai-2026-10-14_response.json",
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0094-openai-2026-10-14",
+      "response_path": "runs/20261014T053949Z-UBU-Q0094/responses/claude_score_ubu-q0094-openai-2026-10-14_stdout.json",
+      "stderr_path": null
+    }
+  ],
+  "provider_successes": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20261014T053949Z-UBU-Q0094/parsed/codex_work_proposal.json"
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0094-openai-2026-10-14",
+      "response_path": "runs/20261014T053949Z-UBU-Q0094/responses/codex_score_ubu-q0094-openai-2026-10-14_response.json",
+      "parsed_path": "runs/20261014T053949Z-UBU-Q0094/parsed/codex_score_ubu-q0094-openai-2026-10-14_result.json"
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0094-openai-2026-10-14",
+      "response_path": "runs/20261014T053949Z-UBU-Q0094/responses/claude_score_ubu-q0094-openai-2026-10-14_stdout.json",
+      "parsed_path": "runs/20261014T053949Z-UBU-Q0094/parsed/claude_score_ubu-q0094-openai-2026-10-14_result.json"
+    }
+  ],
+  "provider_failures": [],
+  "score_matrix": [
+    {
+      "proposal_id": "UBU-Q0094-openai-2026-10-14",
+      "author_provider": "openai",
+      "scorer_provider": "codex",
+      "score": 95,
+      "valid": true,
+      "rationale": "Addresses all five subquestions with explicit transition fields, retained reverse indexes, separately admitted declaration changes, Objective-linked Log/evidence provenance and clear delivery boundaries. Preserves ordinary Objective lifecycle authority, counterparty autonomy and privacy rules. Supplied mechanical checks pass, changes stay within allowed files, and UBU-Q0094 correctly uses Status: Solved. Related questions remain open without unnecessary decomposition.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "Single-owner, one-time Objective ownership introduces a modeling constraint that should be confirmed during the required human review.",
+        "Implementation conformance remains unverified; reciprocal admission, index rebuilding and policy enforcement require the specified fixtures."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261014T053949Z-UBU-Q0094/responses/codex_score_ubu-q0094-openai-2026-10-14_response.json",
+        "stderr_path": null
+      }
+    },
+    {
+      "proposal_id": "UBU-Q0094-openai-2026-10-14",
+      "author_provider": "openai",
+      "scorer_provider": "claude",
+      "score": 84,
+      "valid": true,
+      "rationale": "Patch applies cleanly, touches only allowed files, and the question block uses Status: Solved with Resolved by: UBU-D0345 and a substantive Resolution. All five subquestions are answered concretely: a field split between the versioned transition record and Relationship's rebuildable, policy-filtered `scope_transition_refs` index; retention of reverse refs across active, completed, abandoned, superseded and invalid states with `declined` as an outcome view; `ownDeclaredPerspectiveHistory` changes only via a separately admitted explicit declaration linked back to transition/Objective/evidence; Log event_payload and EvidenceRef bindings back to the Objective; and an explicit MVP-hook versus post-MVP orchestration boundary. The DECISIONS.md entry is coherent and correctly scopes itself to the model contract rather than implementation conformance, and the \u00a722.1.1 pointer update is proper bookkeeping. Scope is appropriate; the only out-of-section edit is a small field rename in \u00a77.5 that is justified by the new contract. Deductions for the unverified field rename fallout, the heavy cross-reference load that makes auditing harder, and the one_time-Objective and lineage constraints that pre-shape Q0095. No decomposition was attempted and none was needed.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "\u00a77.5 renames the provisional `relationship_id` field to `relationship_ref`; any other DESIGN.md or fixture text that still names `relationship_id` for RelationshipScopeTransition would become stale and was not checked by the validation notes.",
+        "New \u00a722.3.1 is inserted directly before \u00a722.4; if \u00a722.3 already contains a 22.3.1 subsection the numbering would collide (diff context suggests it does not, but this is unverified).",
+        "The contract asserts one owning `one_time` Objective per attempt and a `supersedes_transition_ref`/`reopens_transition_ref` lineage rule; this constrains Q0095's outcome/lifecycle work and should be confirmed consistent with \u00a77.3 Objective status/supersession semantics before Q0095 is answered.",
+        "Very dense normative prose with many cross-references (UBU-D0076, D0154, D0155, D0273, D0344, Q0089, Q0092, Q0095\u2013Q0099, DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md \u00a7\u00a79 and 17); each reference is plausible but none were verified here, and auditability is reduced by the density.",
+        "Treating `declined` as an evidence-backed outcome/history filter rather than an Objective status diverges from the question's literal framing of five parallel states; it is consistent with \u00a77.5's counterparty-autonomy rule but is a design choice a human reviewer should consciously accept."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261014T053949Z-UBU-Q0094/responses/claude_score_ubu-q0094-openai-2026-10-14_stdout.json",
+        "stderr_path": null
+      }
+    }
+  ],
+  "score_aggregates": [
+    {
+      "proposal_id": "UBU-Q0094-openai-2026-10-14",
+      "author_provider": "openai",
+      "cross_score_count": 2,
+      "score_mean": 89.5,
+      "score_spread": 11,
+      "frontier_score_gap": 11,
+      "disagreement_flags": []
+    }
+  ],
+  "cross_score_count": 2,
+  "score_mean": 89.5,
+  "score_spread": 11,
+  "frontier_score_gap": 11,
+  "disagreement_flags": [],
+  "quorum_result": {
+    "valid": true,
+    "human_review_required": false,
+    "selected_proposal_id": "UBU-Q0094-openai-2026-10-14",
+    "selected_score": 89.5,
+    "selected_cross_score_count": 2,
+    "blocked_reasons": [],
+    "manual_override": false
+  },
+  "selected_proposal_id": "UBU-Q0094-openai-2026-10-14",
+  "automated_selection_valid": true,
+  "human_review_required": false,
+  "artifact_publication_status": "operator_pending",
+  "prompt_size_warning": false,
+  "prompt_context": {
+    "question_ids": [
+      "UBU-Q0026",
+      "UBU-Q0087",
+      "UBU-Q0094"
+    ],
+    "decision_ids": [
+      "UBU-D0076",
+      "UBU-D0344"
+    ],
+    "sections": {
+      "DESIGN.md": [
+        "22.1.1"
+      ]
+    },
+    "core_sections": {
+      "DESIGN.md": [
+        "1"
+      ],
+      "DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md": [
+        "4"
+      ]
+    },
+    "missing_refs": {},
+    "context_chars": 53604,
+    "prompt_chars": 60738
+  }
+}

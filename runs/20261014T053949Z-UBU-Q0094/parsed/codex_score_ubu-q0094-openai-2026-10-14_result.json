@@ -1,0 +1,21 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0094-openai-2026-10-14",
+      "score": 95,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Single-owner, one-time Objective ownership introduces a modeling constraint that should be confirmed during the required human review.",
+        "Implementation conformance remains unverified; reciprocal admission, index rebuilding and policy enforcement require the specified fixtures."
+      ],
+      "required_fixes": [],
+      "rationale": "Addresses all five subquestions with explicit transition fields, retained reverse indexes, separately admitted declaration changes, Objective-linked Log/evidence provenance and clear delivery boundaries. Preserves ordinary Objective lifecycle authority, counterparty autonomy and privacy rules. Supplied mechanical checks pass, changes stay within allowed files, and UBU-Q0094 correctly uses Status: Solved. Related questions remain open without unnecessary decomposition."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0094-openai-2026-10-14",
+  "selection_rationale": "The sole candidate is mechanically valid, directly responsive and consistent with the surrounding model contracts, with no required fixes identified. This is a cross-score preference for local aggregation."
+}

@@ -1,0 +1,1 @@
+UMC: docs: define RelationshipScopeTransition ownership and reverse history

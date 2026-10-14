@@ -1,0 +1,26 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0094-openai-2026-10-14",
+      "score": 90,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Implementation conformance remains unverified; reciprocal admission, index rebuilding and policy enforcement require the specified fixtures.",
+        "New \u00a722.3.1 is inserted directly before \u00a722.4; if \u00a722.3 already contains a 22.3.1 subsection the numbering would collide (diff context suggests it does not, but this is unverified).",
+        "Single-owner, one-time Objective ownership introduces a modeling constraint that should be confirmed during the required human review.",
+        "The contract asserts one owning `one_time` Objective per attempt and a `supersedes_transition_ref`/`reopens_transition_ref` lineage rule; this constrains Q0095's outcome/lifecycle work and should be confirmed consistent with \u00a77.3 Objective status/supersession semantics before Q0095 is answered.",
+        "Treating `declined` as an evidence-backed outcome/history filter rather than an Objective status diverges from the question's literal framing of five parallel states; it is consistent with \u00a77.5's counterparty-autonomy rule but is a design choice a human reviewer should consciously accept.",
+        "Very dense normative prose with many cross-references (UBU-D0076, D0154, D0155, D0273, D0344, Q0089, Q0092, Q0095\u2013Q0099, DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md \u00a7\u00a79 and 17); each reference is plausible but none were verified here, and auditability is reduced by the density.",
+        "\u00a77.5 renames the provisional `relationship_id` field to `relationship_ref`; any other DESIGN.md or fixture text that still names `relationship_id` for RelationshipScopeTransition would become stale and was not checked by the validation notes."
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0094-openai-2026-10-14",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}
