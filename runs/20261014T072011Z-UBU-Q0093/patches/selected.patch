@@ -1,0 +1,89 @@
+diff --git a/DECISIONS.md b/DECISIONS.md
+--- a/DECISIONS.md
++++ b/DECISIONS.md
+@@ -5530,3 +5530,17 @@ EvidenceRefs pin source/version, selectors/time ranges, Compartments, permission
+ DESIGN.md §22.2.1 defines enum values, parameter requirements, policy intersections and behavioral conformance gates. This accepts a typed enforceable contract, not passing implementation evidence or a forensic-erasure guarantee; supported Phase 2 paths must demonstrate enforcement before enablement.
+ 
+ ---
++
++## UBU-D0353: Extrospection hands off user behavior through optional linked introspection review
++
++**Status:** Accepted → DESIGN.md §2.10.1.1. Resolves `UBU-Q0093`; applies `UBU-D0273`/`UBU-D0274` and `UBU-D0352` without expanding Phase 1 scope.
++
++Route review toward introspection when permitted evidence identifies a specific user-controlled behavior or assumption within the Relationship, with an inspectable baseline and uncertainty, rather than claiming sole fault or counterparty intent. Scope drift, boundary crossings, commitment/reciprocity discrepancies and trust-reliance miscalibration can create linked candidates; affect or dysfunction alone cannot.
++
++Use the existing per-object AdvisoryCandidate lifecycle, independent source/target dispositions and current purpose-specific evidence authority. Extrospection access cannot authorize introspection, and derivatives inherit source restrictions. Handoff acceptance opens review only; exact observations or canonical changes require separate ordinary admission.
++
++Users may keep Relationship review, defer, correct or reject without explanation. Durable minimized suppression distinguishes rejected routing from rejected claims and prevents equivalent reframings across either surface. Preserve shared-context and counterparty evidence without blame-shifting in either direction; infer no Preferences or wrongdoing from dismissal.
++
++DESIGN.md §2.10.1.1 specifies eligibility, evidence bindings, review controls and enablement fixtures. This resolves the product contract, not implementation conformance or `UBU-Q0089`'s proactive thresholds.
++
++---
+diff --git a/DESIGN.md b/DESIGN.md
+--- a/DESIGN.md
++++ b/DESIGN.md
+@@ -352,6 +352,31 @@ Accepted findings do not rewrite a Relationship object in place. Acceptance admi
+ 
+ Superseded findings point to the replacement finding or admitted record and leave the older framing queryable for audit, correction, and rejection-dedup purposes. Supersession is the ordinary path for narrowing an overbroad finding, replacing unsupported framing with a better one, or updating a finding after Relationship evidence changes.
+ 
++#### 2.10.1.1 Extrospection-to-introspection handoff
++
++**Phase 2 contract (`UBU-D0353`).** Offer a handoff when the review target is the user's own observed action, omission, reliance decision or interpretation practice within a named Relationship, and a useful self-review claim can be stated without assuming the counterparty's motives or inner state. "Primarily concerns the user" identifies the behavior to review, not sole causation or blame. Source finding acceptance is neither required nor sufficient: a permitted candidate, deferred, resurfaced or accepted finding can support a linked proposal; rejected, superseded and archived findings cannot be revived automatically. Respect existing deferral and suppression: a deferred source supports a new handoff only on an ordinary resurfacing trigger or explicit user request.
++
++Compare attributed behavior with applicable declarations, commitments, stated boundaries or evidence-calibration assumptions for the same domain, context and effective interval. Show supporting and disconfirming evidence, provenance, coverage gaps, uncertainty and plausible alternative explanations, including changed capacity or an inaccurate baseline. Missing/private time, negative affect, counterparty refusal and unequal effort alone cannot establish user failure. Ambiguous actor attribution or scope produces a clarification item, not an assertion that the user caused the problem.
++
++| Source assessment | Candidate introspection target |
++|---|---|
++| `ScopeAssessment` | The user's participation diverges from the applicable current-participation declaration. Ask whether this was intended evolution, a stale declaration or unwanted drift; desired participation does not replace the historical baseline. |
++| `BoundaryAssessment` | An attributed user action may cross a source-backed stated boundary, disclosure rule or authority limit. Review that action and the applicable limit; uncertain consent or boundary meaning remains unresolved. |
++| `ReciprocityAssessment` | A specific user commitment or scoped expectation conflicts with observed follow-through, or the user's demands exceed the stated arrangement. Preserve missing evidence and capacity explanations; unequal totals do not prove a debt or entitlement. |
++| `TrustCalibrationAssessment` | The user's reliance, disclosure, avoidance or interpretation of a named claim appears inconsistent with its evidence. Review verification and reliance choices without scoring the counterparty's trustworthiness or treating inferred intent as fact. |
++
++Affective or functionality findings qualify only when permitted evidence supports a specific user behavior or assumption for review; discomfort alone does not. A single incident is not a habit. Proposed repeated patterns require §12.2's user reconciliation before being used as patterns. Frame the prompt around the user's controllable choices and model repair, without character judgments, diagnosis or inferred Preferences. Preserve independently supported counterparty and shared-context concerns in Relationship review: a handoff neither excuses counterparty conduct nor converts it into the user's fault, and extrospection must not explain away the user's contribution by inventing counterparty motives.
++
++Represent the proposed introspection finding as a linked per-object `AdvisoryCandidate` under §21.2.1, retaining its existing lifecycle and privacy/provenance envelope. Its payload binds the source finding id/version, Relationship and user-controlled perspective Identity, behavior and normalized claim, domain/scope/effective interval, baseline refs/versions, supporting and disconfirming `EvidenceRef` versions, uncertainty/coverage limits and routing rationale. Source and target retain independent review histories; links and generated summaries confer neither acceptance nor independent corroboration. Deduplicate equivalent proposals across both review surfaces rather than creating another candidate when the user switches views.
++
++Before deriving, displaying or routing the proposal, apply §22.2.1's current `extrospection`, `introspection` and applicable `review` permissions to every contributing source and derivative. `require_review` needs operation-bound approval; `deny` or missing authority cannot be overridden by accepting the handoff. Bind approvals to source/finding/candidate and policy versions, actor/Device, purpose, selected representation and destination; recheck before reads, generation, result release and admission. Inherit every source's Compartment, disclosure, retention and routing restrictions, including metadata/existence restrictions; references, summaries and local processing cannot waive them or renew expiry. A denied handoff leaves the source review available only within its existing authority. A generic user-authored note remains possible without exposing denied content or existence. Cross-Relationship reuse, planning, sync, export and training gain no permission from routing; their existing gates still apply.
++
++Show the proposed self-review claim, why it belongs in introspection, permitted evidence/counterevidence and gaps, scope and any admission effects. Offer `Review in introspection`, `Keep in Relationship review`, `Defer`, `Reject handoff` and `Correct`. Opening or accepting the handoff agrees only to routing: the linked candidate remains `proposed` or `resurfaced` until separate explicit review accepts an exact scoped observation, annotation, Snapshot, Log correction or other ordinary canonical update. An optional Task or declaration/Preference change requires its own explicit acceptance; routing creates no obligation or external action. Bind admission to current versions and policy; stale proposals require fresh review. Source finding acceptance/rejection is a separate control, never implied by a routing choice.
++
++Reasons are optional, with `none_given` when omitted. Record declines through §17.0's `decision_recorded`/`suggestion_declined` and existing candidate review events. Retain only the permitted minimized suppression record under §21.2.1/`UBU-D0273`, distinguishing rejected routing from rejected claim. A routing rejection leaves the source disposition unchanged and suppresses equivalent handoff offers across both surfaces; a claim rejection cannot be evaded by relabeling it as introspection. Deferral follows ordinary resurfacing triggers. A materially changed replacement links prior rejection and explains new evidence or correction; new wording, model version, restart or view switching alone is insufficient. Rejection, deferral and nonresponse are not evidence of denial, wrongdoing or a Preference and cannot generate punitive follow-up Tasks.
++
++Before enabling this path, require fixtures covering each assessment above, ambiguous/mixed attribution, changed capacity/baselines, candidate versus accepted sources, routing without admission, independent source/target rejection and cross-surface suppression, materially changed replacements, source corrections/stale approvals, replay without duplicate candidates/effects, and denied/expired/mixed-Compartment evidence including denied existence. Verify unchanged canonical state until separate ordinary admission and policy-safe review/Log outcomes. These are required checks, not passing implementation evidence. Proactive prompting and rumination thresholds remain `UBU-Q0089`; general safeguard override UX remains `UBU-Q0101`. This contract does not expand Phase 1 bootstrap or next-action scope.
++
+ ### 2.10.2 Autonomy-first safeguards
+ 
+ Relationship, extrospection, and RelationshipScopeTransition safeguards should be wise default-on recommendations, not paternalistic hard gates. UbU may strongly recommend pre-action introspection, extrospection, TrustCalibrationAssessment, power/vulnerability review, pacing review, graceful nonachievement planning, and manipulation-risk review. The user may bypass or disable advisory safeguards unless doing so violates a structurally enforceable hard boundary, a self-imposed user-configured required gate, or an unavoidable external provider/platform/legal constraint.
+diff --git a/OPEN_QUESTIONS.md b/OPEN_QUESTIONS.md
+--- a/OPEN_QUESTIONS.md
++++ b/OPEN_QUESTIONS.md
+@@ -1318,27 +1318,27 @@ Resolved by UBU-D0352. DESIGN.md §22.2.1 defines typed retention lifetime/form/
+ 
+ ## UBU-Q0093: Extrospection-to-introspection handoff
+ 
+-Status: Open Priority: MVP important Phase: Phase 2 Decision type: Product Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 90 Depends on: UBU-Q0050, UBU-Q0088 Blocks: introspection UX, extrospection UX, relationship review Resolved by: None Last scored: 2026-10-14 Scored from commit: None
++Status: Solved Priority: MVP important Phase: Phase 2 Decision type: Product Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 90 Depends on: UBU-Q0050, UBU-Q0088 Blocks: introspection UX, extrospection UX, relationship review Resolved by: UBU-D0353 Last scored: 2026-10-14 Scored from commit: None
+ 
+ ### Question
+ 
+ When should a relational finding be routed into introspection because the evidence primarily concerns the user's own behavior?
+ 
+ ### Subquestions
+ 
+ 1. How should UbU identify that the user is driving scope drift, boundary violation, reciprocity failure, or trust miscalibration?
+ 2. Which extrospection findings create candidate introspection findings?
+ 3. How should evidence be reused without violating Compartment or EvidenceUsePolicy boundaries?
+ 4. How should UbU avoid turning extrospection into blame-shifting toward the counterparty?
+ 5. How should the user reject or accept the introspection handoff?
+ 
+ ### Current direction
+ 
+ Extrospection should remain self-governance. Findings primarily about user behavior should hand off to introspection.
+ 
+ ### Resolution
+ 
+-Open.
++Resolved by `UBU-D0353`: specific evidence-backed user behavior or assumptions may create linked introspection candidates for scope drift, boundary crossings, reciprocity/commitment discrepancies or trust miscalibration. Routing is optional and separate from source disposition and canonical admission; current introspection evidence permission and inherited Compartment restrictions remain binding. Rejection is durable across review surfaces without blame or Preference inference. DESIGN.md §2.10.1.1 specifies controls and enablement fixtures; proactive thresholds remain `UBU-Q0089`.
+ 
+ ---
+ 

@@ -1,0 +1,27 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-gpt-6-UBU-Q0093-handoff",
+      "score": 85,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Relies on many unverified cross-references (DESIGN.md \u00a712.2, \u00a717.0, \u00a721.2.1, \u00a722.2.1; UBU-D0273/D0274/D0352; event names `decision_recorded`/`suggestion_declined`; reason value `none_given`; candidate states `proposed`/`resurfaced`; permission values `require_review`/`deny`). If any of these do not exist at the base commit, the new section contains dangling anchors.",
+        "The question depends on UBU-Q0050 and UBU-Q0088; the patch does not state whether those are resolved. If either is still Open, marking UBU-Q0093 Solved may be premature.",
+        "The DESIGN.md \u00a72.10.1.1 text is very dense: long normative paragraphs plus an extensive pre-enablement fixture list. This raises audit and conformance cost and may be read as a heavier gate than the decision intends.",
+        "Cross-surface deduplication and durable suppression of 'equivalent reframings' presume a canonical equivalence key for proposals across introspection and Relationship review, which the section does not define.",
+        "Inserting a `####` subsection between the end of \u00a72.10.1 and \u00a72.10.2 is sound only if no existing \u00a72.10.1.1 anchor exists; the hunk context suggests none, but this was not independently verified."
+      ],
+      "required_fixes": [
+        "Before merge, confirm every referenced anchor and identifier (section numbers, decision IDs, event names, enum values) exists at base commit b940ed6; adjust or drop any that do not.",
+        "Confirm UBU-Q0050 and UBU-Q0088 are in a state compatible with resolving UBU-Q0093, or note the dependency status in the Resolution text."
+      ],
+      "rationale": "Patch applies cleanly, touches only the three allowed files, and passes schema validation with `Status: Solved` and `Resolved by: UBU-D0353`. It is directly responsive: each of the five subquestions is answered explicitly (routing criteria and baselines for identifying user-driven drift; a per-assessment table of which findings create candidates; permission and Compartment inheritance for evidence reuse; explicit anti-blame-shifting constraints in both directions; a concrete control set with routing separated from admission and durable, minimized rejection). It adds one sequential decision, no new questions, and explicitly defers proactive thresholds and safeguard-override UX to existing questions, so scope is contained. Deductions are for the heavy reliance on unverifiable cross-references, the unstated dependency status of Q0050/Q0088, and the density of the DESIGN section, which hurts auditability even though the content is coherent."
+    }
+  ],
+  "selected_proposal_id": "openai-gpt-6-UBU-Q0093-handoff",
+  "selection_rationale": "Sole candidate; it passed mechanical validation, preserves the question schema, confines changes to allowed files, and resolves all five subquestions with a single decision and matching DESIGN section while deferring adjacent concerns to existing questions. Remaining issues are verification items for the human reviewer rather than structural defects."
+}

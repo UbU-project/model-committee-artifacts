@@ -1,0 +1,18 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-gpt-6-UBU-Q0093-handoff",
+      "score": 97,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [],
+      "required_fixes": [],
+      "rationale": "Mechanical validation confirms clean application, allowed files and preserved question schema. The proposal addresses all five subquestions with concrete eligibility criteria, restricted evidence reuse, balanced attribution, separate routing and admission decisions, and durable rejection. It reuses existing contracts, preserves Phase 2 scope and clearly distinguishes required conformance fixtures from passing implementation evidence."
+    }
+  ],
+  "selected_proposal_id": "openai-gpt-6-UBU-Q0093-handoff",
+  "selection_rationale": "The sole candidate is mechanically valid, directly responsive and auditable, with no required fixes identified. This nomination supports local cross-score aggregation."
+}

@@ -1,0 +1,199 @@
+{
+  "schema_version": "0.4",
+  "run_id": "20261014T072011Z-UBU-Q0093",
+  "created_at_utc": "2026-10-14T07:20:11Z",
+  "repo_path": "../ubu-design",
+  "base_commit": "b940ed6ed2e4b99cae5f35567c7f95cb6dd554c9",
+  "selected_question_id": "UBU-Q0093",
+  "phase": "work-select",
+  "config_path": "config/models.json",
+  "status": "selected",
+  "commands": [
+    "model-committee run-loop"
+  ],
+  "providers_attempted": [
+    "codex",
+    "claude"
+  ],
+  "providers_succeeded": [
+    "codex",
+    "claude"
+  ],
+  "providers_failed": [],
+  "provider_attempts": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "openai-gpt-6-UBU-Q0093-handoff",
+      "response_path": "runs/20261014T072011Z-UBU-Q0093/responses/codex_score_openai-gpt-6-ubu-q0093-handoff_response.json",
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "openai-gpt-6-UBU-Q0093-handoff",
+      "response_path": "runs/20261014T072011Z-UBU-Q0093/responses/claude_score_openai-gpt-6-ubu-q0093-handoff_stdout.json",
+      "stderr_path": null
+    }
+  ],
+  "provider_successes": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20261014T072011Z-UBU-Q0093/parsed/codex_work_proposal.json"
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "openai-gpt-6-UBU-Q0093-handoff",
+      "response_path": "runs/20261014T072011Z-UBU-Q0093/responses/codex_score_openai-gpt-6-ubu-q0093-handoff_response.json",
+      "parsed_path": "runs/20261014T072011Z-UBU-Q0093/parsed/codex_score_openai-gpt-6-ubu-q0093-handoff_result.json"
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "openai-gpt-6-UBU-Q0093-handoff",
+      "response_path": "runs/20261014T072011Z-UBU-Q0093/responses/claude_score_openai-gpt-6-ubu-q0093-handoff_stdout.json",
+      "parsed_path": "runs/20261014T072011Z-UBU-Q0093/parsed/claude_score_openai-gpt-6-ubu-q0093-handoff_result.json"
+    }
+  ],
+  "provider_failures": [],
+  "score_matrix": [
+    {
+      "proposal_id": "openai-gpt-6-UBU-Q0093-handoff",
+      "author_provider": "openai",
+      "scorer_provider": "codex",
+      "score": 97,
+      "valid": true,
+      "rationale": "Mechanical validation confirms clean application, allowed files and preserved question schema. The proposal addresses all five subquestions with concrete eligibility criteria, restricted evidence reuse, balanced attribution, separate routing and admission decisions, and durable rejection. It reuses existing contracts, preserves Phase 2 scope and clearly distinguishes required conformance fixtures from passing implementation evidence.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261014T072011Z-UBU-Q0093/responses/codex_score_openai-gpt-6-ubu-q0093-handoff_response.json",
+        "stderr_path": null
+      }
+    },
+    {
+      "proposal_id": "openai-gpt-6-UBU-Q0093-handoff",
+      "author_provider": "openai",
+      "scorer_provider": "claude",
+      "score": 85,
+      "valid": true,
+      "rationale": "Patch applies cleanly, touches only the three allowed files, and passes schema validation with `Status: Solved` and `Resolved by: UBU-D0353`. It is directly responsive: each of the five subquestions is answered explicitly (routing criteria and baselines for identifying user-driven drift; a per-assessment table of which findings create candidates; permission and Compartment inheritance for evidence reuse; explicit anti-blame-shifting constraints in both directions; a concrete control set with routing separated from admission and durable, minimized rejection). It adds one sequential decision, no new questions, and explicitly defers proactive thresholds and safeguard-override UX to existing questions, so scope is contained. Deductions are for the heavy reliance on unverifiable cross-references, the unstated dependency status of Q0050/Q0088, and the density of the DESIGN section, which hurts auditability even though the content is coherent.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [
+        "Before merge, confirm every referenced anchor and identifier (section numbers, decision IDs, event names, enum values) exists at base commit b940ed6; adjust or drop any that do not.",
+        "Confirm UBU-Q0050 and UBU-Q0088 are in a state compatible with resolving UBU-Q0093, or note the dependency status in the Resolution text."
+      ],
+      "risks": [
+        "Relies on many unverified cross-references (DESIGN.md \u00a712.2, \u00a717.0, \u00a721.2.1, \u00a722.2.1; UBU-D0273/D0274/D0352; event names `decision_recorded`/`suggestion_declined`; reason value `none_given`; candidate states `proposed`/`resurfaced`; permission values `require_review`/`deny`). If any of these do not exist at the base commit, the new section contains dangling anchors.",
+        "The question depends on UBU-Q0050 and UBU-Q0088; the patch does not state whether those are resolved. If either is still Open, marking UBU-Q0093 Solved may be premature.",
+        "The DESIGN.md \u00a72.10.1.1 text is very dense: long normative paragraphs plus an extensive pre-enablement fixture list. This raises audit and conformance cost and may be read as a heavier gate than the decision intends.",
+        "Cross-surface deduplication and durable suppression of 'equivalent reframings' presume a canonical equivalence key for proposals across introspection and Relationship review, which the section does not define.",
+        "Inserting a `####` subsection between the end of \u00a72.10.1 and \u00a72.10.2 is sound only if no existing \u00a72.10.1.1 anchor exists; the hunk context suggests none, but this was not independently verified."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261014T072011Z-UBU-Q0093/responses/claude_score_openai-gpt-6-ubu-q0093-handoff_stdout.json",
+        "stderr_path": null
+      }
+    }
+  ],
+  "score_aggregates": [
+    {
+      "proposal_id": "openai-gpt-6-UBU-Q0093-handoff",
+      "author_provider": "openai",
+      "cross_score_count": 2,
+      "score_mean": 91.0,
+      "score_spread": 12,
+      "frontier_score_gap": 12,
+      "disagreement_flags": []
+    }
+  ],
+  "cross_score_count": 2,
+  "score_mean": 91.0,
+  "score_spread": 12,
+  "frontier_score_gap": 12,
+  "disagreement_flags": [],
+  "quorum_result": {
+    "valid": true,
+    "human_review_required": false,
+    "selected_proposal_id": "openai-gpt-6-UBU-Q0093-handoff",
+    "selected_score": 91.0,
+    "selected_cross_score_count": 2,
+    "blocked_reasons": [],
+    "manual_override": false
+  },
+  "selected_proposal_id": "openai-gpt-6-UBU-Q0093-handoff",
+  "automated_selection_valid": true,
+  "human_review_required": false,
+  "artifact_publication_status": "operator_pending",
+  "prompt_size_warning": true,
+  "prompt_context": {
+    "question_ids": [
+      "UBU-Q0025",
+      "UBU-Q0050",
+      "UBU-Q0054",
+      "UBU-Q0055",
+      "UBU-Q0056",
+      "UBU-Q0061",
+      "UBU-Q0062",
+      "UBU-Q0088",
+      "UBU-Q0093"
+    ],
+    "decision_ids": [
+      "UBU-D0100",
+      "UBU-D0129",
+      "UBU-D0265",
+      "UBU-D0266",
+      "UBU-D0267",
+      "UBU-D0268",
+      "UBU-D0269",
+      "UBU-D0273"
+    ],
+    "sections": {
+      "DESIGN.md": [
+        "2.10.1",
+        "4",
+        "12",
+        "18.1",
+        "19.1",
+        "19.2",
+        "26.3",
+        "26.4"
+      ]
+    },
+    "core_sections": {
+      "DESIGN.md": [
+        "1"
+      ],
+      "DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md": [
+        "4"
+      ]
+    },
+    "missing_refs": {},
+    "context_chars": 149537,
+    "prompt_chars": 157458
+  }
+}
