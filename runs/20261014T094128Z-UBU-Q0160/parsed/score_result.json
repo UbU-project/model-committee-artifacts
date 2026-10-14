@@ -1,0 +1,24 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0160-openai-mobile-trial-accounting-20261014",
+      "score": 84,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "\"Positive minimum proportion of timely, parity-correct expected results\" is intentionally unspecified; a later operator could satisfy it trivially, so the gate's strength depends on a future declaration the decision does not constrain.",
+        "Decision numbering UBU-D0364 and the DECISIONS.md insertion point could not be independently verified against the base commit from this scoring context; the author's validation notes and the mechanical check are the only evidence.",
+        "Marginal value is modest: UBU-Q0160 is blocked on physically connected device measurements, and this adds protocol text rather than evidence, so the question stays exactly as blocked as before.",
+        "The DESIGN.md insertion is three dense paragraphs that partly restate obligations already present in \u00a716.10.6 and UBU-D0358 (exact parity, fallback provenance, frozen same-device comparison), increasing section length and the chance of future drift between overlapping statements.",
+        "The protocol still requires a working harness, declared acceptance thresholds and real-device measurements before an API can be selected."
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0160-openai-mobile-trial-accounting-20261014",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}

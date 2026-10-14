@@ -1,0 +1,45 @@
+[
+  {
+    "proposal_id": "UBU-Q0160-openai-mobile-trial-accounting-20261014",
+    "author_provider": "openai",
+    "scorer_provider": "codex",
+    "score": 95,
+    "valid": true,
+    "rationale": "Mechanical validation passes, and the patch modifies only allowed files. It usefully strengthens UBU-D0358 with matched workloads and cache conditions, frozen acceptance criteria, complete request accounting and separate accelerator/fallback latency populations. These requirements prevent omitted failures or CPU fallback from overstating accelerator benefit. Existing exact parity, named numeric tolerances, on-device CPU certification, provenance and recovery rules remain intact. UBU-Q0160 retains its metadata, Open status and Resolved by: None. The proposal appropriately advances the evidence protocol without claiming an API selection or hardware result.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [
+      "The protocol still requires a working harness, declared acceptance thresholds and real-device measurements before an API can be selected."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20261014T094128Z-UBU-Q0160/responses/codex_score_ubu-q0160-openai-mobile-trial-accounting-20261014_response.json",
+      "stderr_path": null
+    }
+  },
+  {
+    "proposal_id": "UBU-Q0160-openai-mobile-trial-accounting-20261014",
+    "author_provider": "openai",
+    "scorer_provider": "claude",
+    "score": 72,
+    "valid": true,
+    "rationale": "Mechanical validation passes: patch applies, only DECISIONS.md, DESIGN.md and OPEN_QUESTIONS.md are touched, and the UBU-Q0160 metadata line is preserved with Status: Open and Resolved by: None. The proposal is honest about what can be done while the question is hardware-blocked: it does not infer an API, threshold or passing configuration, and it says so in both the decision and the DESIGN.md text. The substantive addition closes a real evidentiary loophole (success-only latency populations, CPU fallback counted as accelerator benefit, failed ordinary trials reclassified as fault cohorts, retries not charged to the original deadline), which is a coherent extension of the UBU-D0283 parity rule and UBU-D0358 protocol. OPEN_QUESTIONS.md edits are minimal and correctly cross-reference the new decision without changing the resolution status. Score is held below the high range because the change is verbose relative to its new information content, overlaps existing \u00a716.10.6 language, and does not move the question toward selection; it is a valid, auditable, low-risk refinement rather than a decisive contribution.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [
+      "Marginal value is modest: UBU-Q0160 is blocked on physically connected device measurements, and this adds protocol text rather than evidence, so the question stays exactly as blocked as before.",
+      "The DESIGN.md insertion is three dense paragraphs that partly restate obligations already present in \u00a716.10.6 and UBU-D0358 (exact parity, fallback provenance, frozen same-device comparison), increasing section length and the chance of future drift between overlapping statements.",
+      "\"Positive minimum proportion of timely, parity-correct expected results\" is intentionally unspecified; a later operator could satisfy it trivially, so the gate's strength depends on a future declaration the decision does not constrain.",
+      "Decision numbering UBU-D0364 and the DECISIONS.md insertion point could not be independently verified against the base commit from this scoring context; the author's validation notes and the mechanical check are the only evidence."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20261014T094128Z-UBU-Q0160/responses/claude_score_ubu-q0160-openai-mobile-trial-accounting-20261014_stdout.json",
+      "stderr_path": null
+    }
+  }
+]

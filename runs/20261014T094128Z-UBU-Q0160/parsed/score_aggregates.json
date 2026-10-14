@@ -1,0 +1,11 @@
+[
+  {
+    "proposal_id": "UBU-Q0160-openai-mobile-trial-accounting-20261014",
+    "author_provider": "openai",
+    "cross_score_count": 2,
+    "score_mean": 83.5,
+    "score_spread": 23,
+    "frontier_score_gap": 23,
+    "disagreement_flags": []
+  }
+]
