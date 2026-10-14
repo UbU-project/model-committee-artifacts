@@ -1,0 +1,21 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0177-openai-runtime-isolation-20261014",
+      "score": 91,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "No real-device measurements establish a sufficient hardware profile; the proposal advances qualification requirements only.",
+        "Isolation evidence remains bounded by fixture coverage and runtime observability, which must be demonstrated during qualification."
+      ],
+      "required_fixes": [],
+      "rationale": "Mechanical validation confirms clean application, allowed files and preserved question schema. The patch adds concrete, auditable isolation fixtures, authorized controls and measurements with protections enabled. It connects directly to secure hardware qualification while retaining existing authority boundaries, human approval and Open status. Its limitation is evidentiary: it strengthens the protocol without supplying the measured hardware answer."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0177-openai-runtime-isolation-20261014",
+  "selection_rationale": "The sole candidate is mechanically valid and provides a focused qualification improvement with no required patch fixes identified. This cross-score does not approve hardware or resolve UBU-Q0177; final selection remains with the committee aggregation."
+}

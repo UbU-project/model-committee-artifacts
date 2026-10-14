@@ -1,0 +1,23 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0177-openai-runtime-isolation-20261014",
+      "score": 80,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "New DESIGN.md text cites \u00a721.1.5 (artifact lifecycle / broker checks); the cross-reference is asserted by the author and not independently verified here. If that anchor does not exist at the base commit the decision text dangles.",
+        "The proposal extends the qualification protocol rather than supplying measurements. Each added mandatory gate raises the cost of actually closing UBU-Q0177, which already cannot close without real-device evidence and operator approval.",
+        "UBU-D0336 is self-labelled Accepted while the question is Human-approval-required; the proposal correctly sets requires_human_review, but the decision number and Accepted status may collide with concurrently authored decisions and must be rechecked at merge time.",
+        "The DESIGN.md addition is three dense paragraphs; the volume of fixture detail (job orders, revocation, crash/restart, resource pressure, concurrency, positive control) is reasonable for a security gate but increases the risk that later editors cannot tell which items are mandatory versus conditional."
+      ],
+      "required_fixes": [],
+      "rationale": "Patch passed mechanical validation and touches only DECISIONS.md, DESIGN.md and OPEN_QUESTIONS.md. UBU-Q0177 metadata line, Status: Open and Resolution semantics are preserved; the question is only annotated to reference UBU-D0336. The work is directly responsive to the 'securely' dimension of the question: cross-job runtime state (KV caches, decoded media, handles, scratch) is a plausible leak path in a warm local multimodal runtime, and the proposal makes it an explicit, auditable gate inside the existing UBU-D0331 protocol, including a positive control so detector failure is not mistaken for isolation. Requiring cold/warm and sustained measurements to be re-run with protections enabled prevents benchmarking an unsafe configuration, which is the most concrete improvement to the eventual hardware profile. The proposal correctly declines to select hardware or close the question. Points withheld for the unverified \u00a721.1.5 anchor, the added protocol weight without any new evidence, and the density of the inserted text."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0177-openai-runtime-isolation-20261014",
+  "selection_rationale": "Only one proposal was submitted and it passed mechanical validation, preserved the question schema, stayed within the allowlist, and narrowed UBU-Q0177's security qualification without overclaiming a hardware selection or closing the question. It is selectable; the residual concerns are verification items (\u00a721.1.5 anchor, decision-number collision) rather than defects in the patch."
+}
