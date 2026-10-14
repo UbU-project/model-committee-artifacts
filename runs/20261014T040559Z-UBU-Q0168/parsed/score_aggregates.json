@@ -1,0 +1,11 @@
+[
+  {
+    "proposal_id": "UBU-Q0168-deadline-boundary-fixtures",
+    "author_provider": "openai",
+    "cross_score_count": 2,
+    "score_mean": 83.0,
+    "score_spread": 18,
+    "frontier_score_gap": 18,
+    "disagreement_flags": []
+  }
+]

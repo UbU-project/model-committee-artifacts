@@ -1,0 +1,30 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0168-deadline-boundary-fixtures",
+      "score": 83,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Adds further unmeasured normative requirements (equality expiry, separate fallback/quiescence/release ceilings, restart rules) to a question whose closure criterion is real-device evidence, so it raises the closure bar without moving toward evidence.",
+        "Controller fixtures are specified but not implemented or executed; enforcement remains unverified.",
+        "DECISIONS.md entry header style (Status line with arrow to DESIGN.md section) cannot be checked against sibling entries from the diff context alone.",
+        "Decision ID UBU-D0335 and the cross-reference to UBU-D0331 as the hardware trial protocol are not verifiable from the diff; a collision or wrong pointer would need a follow-up edit.",
+        "Finite numerical profiles and real-device acceptance evidence remain outstanding, so this patch cannot justify closing UBU-Q0168.",
+        "Introduces an implementation testability constraint (deterministic clock and adapter injection into the actual controller) through documentation while stating no implementation is selected.",
+        "Possible overlap or subtle conflict with existing UBU-D0325 text on deadline comparators, first-useful-result deadlines and stream clock basis; the surrounding D0325 wording is not visible in the diff.",
+        "The new \u00a721.1.4 block is dense and partly restates the adjacent Interruption and Measured enablement gate paragraphs, increasing reading load in an already long section."
+      ],
+      "required_fixes": [
+        "Check the new boundary semantics against the existing UBU-D0325 text in \u00a721.1.4 and cite rather than restate anything D0325 already specifies.",
+        "Confirm UBU-D0335 is the next unused decision ID at the base commit and that UBU-D0331 is the hardware trial protocol; correct the references if either is wrong."
+      ],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0168-deadline-boundary-fixtures",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}

@@ -1,0 +1,181 @@
+{
+  "schema_version": "0.4",
+  "run_id": "20261014T040559Z-UBU-Q0168",
+  "created_at_utc": "2026-10-14T04:05:59Z",
+  "repo_path": "../ubu-design",
+  "base_commit": "f12f2407c8e4c4a5b77a84a1c6a3b6f0e8727a74",
+  "selected_question_id": "UBU-Q0168",
+  "phase": "work-select",
+  "config_path": "config/models.json",
+  "status": "selected",
+  "commands": [
+    "model-committee run-loop"
+  ],
+  "providers_attempted": [
+    "codex",
+    "claude"
+  ],
+  "providers_succeeded": [
+    "codex",
+    "claude"
+  ],
+  "providers_failed": [],
+  "provider_attempts": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0168-deadline-boundary-fixtures",
+      "response_path": "runs/20261014T040559Z-UBU-Q0168/responses/codex_score_ubu-q0168-deadline-boundary-fixtures_response.json",
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0168-deadline-boundary-fixtures",
+      "response_path": "runs/20261014T040559Z-UBU-Q0168/responses/claude_score_ubu-q0168-deadline-boundary-fixtures_stdout.json",
+      "stderr_path": null
+    }
+  ],
+  "provider_successes": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20261014T040559Z-UBU-Q0168/parsed/codex_work_proposal.json"
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0168-deadline-boundary-fixtures",
+      "response_path": "runs/20261014T040559Z-UBU-Q0168/responses/codex_score_ubu-q0168-deadline-boundary-fixtures_response.json",
+      "parsed_path": "runs/20261014T040559Z-UBU-Q0168/parsed/codex_score_ubu-q0168-deadline-boundary-fixtures_result.json"
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0168-deadline-boundary-fixtures",
+      "response_path": "runs/20261014T040559Z-UBU-Q0168/responses/claude_score_ubu-q0168-deadline-boundary-fixtures_stdout.json",
+      "parsed_path": "runs/20261014T040559Z-UBU-Q0168/parsed/claude_score_ubu-q0168-deadline-boundary-fixtures_result.json"
+    }
+  ],
+  "provider_failures": [],
+  "score_matrix": [
+    {
+      "proposal_id": "UBU-Q0168-deadline-boundary-fixtures",
+      "author_provider": "openai",
+      "scorer_provider": "codex",
+      "score": 92,
+      "valid": true,
+      "rationale": "Mechanical validation confirms clean application, allowed files and preserved question schema. The patch adds precise, auditable deadline-boundary, stream-invalidation and interruption-race qualification requirements without inventing performance claims. It keeps the question Open and preserves related question boundaries. This is useful architectural refinement, with measured acceptance still pending.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "Controller fixtures are specified but not implemented or executed; enforcement remains unverified.",
+        "Finite numerical profiles and real-device acceptance evidence remain outstanding, so this patch cannot justify closing UBU-Q0168."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261014T040559Z-UBU-Q0168/responses/codex_score_ubu-q0168-deadline-boundary-fixtures_response.json",
+        "stderr_path": null
+      }
+    },
+    {
+      "proposal_id": "UBU-Q0168-deadline-boundary-fixtures",
+      "author_provider": "openai",
+      "scorer_provider": "claude",
+      "score": 74,
+      "valid": true,
+      "rationale": "Patch applies, passes allowlist and schema checks, and edits only DECISIONS.md, DESIGN.md and the UBU-Q0168 entry. It leaves the question Open with metadata intact and explicitly declines to treat the added contract as closure, which matches the question's stated close criteria. The content is directly on-topic: it pins degradation behavior at deadline boundaries, stream freshness invalidation and interruption races, with a per-class fixture table that is auditable and does not invent performance numbers, hardware claims or schema changes. The main limits are that no documentation patch can supply the evidence the question needs, so progress toward closure is small, and that several cross-references and the fit with D0325 cannot be verified from the diff.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [
+        "Confirm UBU-D0335 is the next unused decision ID at the base commit and that UBU-D0331 is the hardware trial protocol; correct the references if either is wrong.",
+        "Check the new boundary semantics against the existing UBU-D0325 text in \u00a721.1.4 and cite rather than restate anything D0325 already specifies."
+      ],
+      "risks": [
+        "Decision ID UBU-D0335 and the cross-reference to UBU-D0331 as the hardware trial protocol are not verifiable from the diff; a collision or wrong pointer would need a follow-up edit.",
+        "Adds further unmeasured normative requirements (equality expiry, separate fallback/quiescence/release ceilings, restart rules) to a question whose closure criterion is real-device evidence, so it raises the closure bar without moving toward evidence.",
+        "Possible overlap or subtle conflict with existing UBU-D0325 text on deadline comparators, first-useful-result deadlines and stream clock basis; the surrounding D0325 wording is not visible in the diff.",
+        "Introduces an implementation testability constraint (deterministic clock and adapter injection into the actual controller) through documentation while stating no implementation is selected.",
+        "The new \u00a721.1.4 block is dense and partly restates the adjacent Interruption and Measured enablement gate paragraphs, increasing reading load in an already long section.",
+        "DECISIONS.md entry header style (Status line with arrow to DESIGN.md section) cannot be checked against sibling entries from the diff context alone."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261014T040559Z-UBU-Q0168/responses/claude_score_ubu-q0168-deadline-boundary-fixtures_stdout.json",
+        "stderr_path": null
+      }
+    }
+  ],
+  "score_aggregates": [
+    {
+      "proposal_id": "UBU-Q0168-deadline-boundary-fixtures",
+      "author_provider": "openai",
+      "cross_score_count": 2,
+      "score_mean": 83.0,
+      "score_spread": 18,
+      "frontier_score_gap": 18,
+      "disagreement_flags": []
+    }
+  ],
+  "cross_score_count": 2,
+  "score_mean": 83.0,
+  "score_spread": 18,
+  "frontier_score_gap": 18,
+  "disagreement_flags": [],
+  "quorum_result": {
+    "valid": true,
+    "human_review_required": false,
+    "selected_proposal_id": "UBU-Q0168-deadline-boundary-fixtures",
+    "selected_score": 83.0,
+    "selected_cross_score_count": 2,
+    "blocked_reasons": [],
+    "manual_override": false
+  },
+  "selected_proposal_id": "UBU-Q0168-deadline-boundary-fixtures",
+  "automated_selection_valid": true,
+  "human_review_required": false,
+  "artifact_publication_status": "operator_pending",
+  "prompt_size_warning": false,
+  "prompt_context": {
+    "question_ids": [
+      "UBU-Q0168"
+    ],
+    "decision_ids": [
+      "UBU-D0325"
+    ],
+    "sections": {
+      "DESIGN.md": [
+        "21.1.4"
+      ]
+    },
+    "core_sections": {
+      "DESIGN.md": [
+        "1"
+      ],
+      "DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md": [
+        "4"
+      ]
+    },
+    "missing_refs": {},
+    "context_chars": 43308,
+    "prompt_chars": 50314
+  }
+}

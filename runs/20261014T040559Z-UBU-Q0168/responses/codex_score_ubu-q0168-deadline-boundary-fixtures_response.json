@@ -1,0 +1,21 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0168-deadline-boundary-fixtures",
+      "score": 92,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Controller fixtures are specified but not implemented or executed; enforcement remains unverified.",
+        "Finite numerical profiles and real-device acceptance evidence remain outstanding, so this patch cannot justify closing UBU-Q0168."
+      ],
+      "required_fixes": [],
+      "rationale": "Mechanical validation confirms clean application, allowed files and preserved question schema. The patch adds precise, auditable deadline-boundary, stream-invalidation and interruption-race qualification requirements without inventing performance claims. It keeps the question Open and preserves related question boundaries. This is useful architectural refinement, with measured acceptance still pending."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0168-deadline-boundary-fixtures",
+  "selection_rationale": "The sole candidate is mechanically valid, focused and directly relevant. Recommended for cross-score aggregation as a qualification-contract improvement, not as question resolution."
+}

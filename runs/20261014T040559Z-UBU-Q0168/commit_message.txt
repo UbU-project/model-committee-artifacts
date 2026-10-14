@@ -1,0 +1,1 @@
+UMC: docs: specify latency boundary qualification fixtures for UBU-Q0168

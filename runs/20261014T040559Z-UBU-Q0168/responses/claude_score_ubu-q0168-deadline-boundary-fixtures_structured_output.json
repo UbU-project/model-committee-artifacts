@@ -1,0 +1,28 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0168-deadline-boundary-fixtures",
+      "score": 74,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "none",
+      "risks": [
+        "Decision ID UBU-D0335 and the cross-reference to UBU-D0331 as the hardware trial protocol are not verifiable from the diff; a collision or wrong pointer would need a follow-up edit.",
+        "Adds further unmeasured normative requirements (equality expiry, separate fallback/quiescence/release ceilings, restart rules) to a question whose closure criterion is real-device evidence, so it raises the closure bar without moving toward evidence.",
+        "Possible overlap or subtle conflict with existing UBU-D0325 text on deadline comparators, first-useful-result deadlines and stream clock basis; the surrounding D0325 wording is not visible in the diff.",
+        "Introduces an implementation testability constraint (deterministic clock and adapter injection into the actual controller) through documentation while stating no implementation is selected.",
+        "The new \u00a721.1.4 block is dense and partly restates the adjacent Interruption and Measured enablement gate paragraphs, increasing reading load in an already long section.",
+        "DECISIONS.md entry header style (Status line with arrow to DESIGN.md section) cannot be checked against sibling entries from the diff context alone."
+      ],
+      "required_fixes": [
+        "Confirm UBU-D0335 is the next unused decision ID at the base commit and that UBU-D0331 is the hardware trial protocol; correct the references if either is wrong.",
+        "Check the new boundary semantics against the existing UBU-D0325 text in \u00a721.1.4 and cite rather than restate anything D0325 already specifies."
+      ],
+      "rationale": "Patch applies, passes allowlist and schema checks, and edits only DECISIONS.md, DESIGN.md and the UBU-Q0168 entry. It leaves the question Open with metadata intact and explicitly declines to treat the added contract as closure, which matches the question's stated close criteria. The content is directly on-topic: it pins degradation behavior at deadline boundaries, stream freshness invalidation and interruption races, with a per-class fixture table that is auditable and does not invent performance numbers, hardware claims or schema changes. The main limits are that no documentation patch can supply the evidence the question needs, so progress toward closure is small, and that several cross-references and the fit with D0325 cannot be verified from the diff."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0168-deadline-boundary-fixtures",
+  "selection_rationale": "Only proposal in the prompt and it passed mechanical validation. It is minimal, confined to allowed files, preserves the question schema, keeps UBU-Q0168 honestly Open, and adds auditable boundary-fixture requirements that refine the degradation behavior the question asks about without claiming measured results."
+}
