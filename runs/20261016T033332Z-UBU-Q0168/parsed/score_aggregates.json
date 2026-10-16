@@ -1,0 +1,11 @@
+[
+  {
+    "proposal_id": "UBU-Q0168-openai-ingress-latency",
+    "author_provider": "openai",
+    "cross_score_count": 1,
+    "score_mean": 95.0,
+    "score_spread": 0,
+    "frontier_score_gap": 0,
+    "disagreement_flags": []
+  }
+]

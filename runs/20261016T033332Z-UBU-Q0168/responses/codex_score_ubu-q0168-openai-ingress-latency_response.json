@@ -1,0 +1,20 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0168-openai-ingress-latency",
+      "score": 95,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "The ingress guarantees still require passing controller fixtures and pinned real-device acceptance evidence."
+      ],
+      "required_fixes": [],
+      "rationale": "The supplied mechanical validation confirms clean application, allowed files and preserved question schema. The patch addresses a concrete latency-accounting gap through original-offer budgets, bounded ingress, cancellation handling and independently scheduled workload trials. It preserves controller-relative deadlines, complete outcome accounting and existing qualification gates. The documentation consistently leaves numerical profiles and measured acceptance unresolved."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0168-openai-ingress-latency",
+  "selection_rationale": "The sole candidate is valid, focused and auditable, strengthening latency qualification without claiming measured performance or prematurely closing UBU-Q0168."
+}

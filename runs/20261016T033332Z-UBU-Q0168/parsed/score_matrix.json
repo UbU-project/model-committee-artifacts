@@ -1,0 +1,40 @@
+[
+  {
+    "proposal_id": "UBU-Q0168-openai-ingress-latency",
+    "author_provider": "openai",
+    "scorer_provider": "codex",
+    "score": 95,
+    "valid": true,
+    "rationale": "The supplied mechanical validation confirms clean application, allowed files and preserved question schema. The patch addresses a concrete latency-accounting gap through original-offer budgets, bounded ingress, cancellation handling and independently scheduled workload trials. It preserves controller-relative deadlines, complete outcome accounting and existing qualification gates. The documentation consistently leaves numerical profiles and measured acceptance unresolved.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [
+      "The ingress guarantees still require passing controller fixtures and pinned real-device acceptance evidence."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20261016T033332Z-UBU-Q0168/responses/codex_score_ubu-q0168-openai-ingress-latency_response.json",
+      "stderr_path": null
+    }
+  },
+  {
+    "proposal_id": "UBU-Q0168-openai-ingress-latency",
+    "author_provider": "openai",
+    "scorer_provider": "claude",
+    "score": null,
+    "valid": false,
+    "rationale": "",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [],
+    "schema_validation": {
+      "valid": false,
+      "message": "claude exited with 1",
+      "response_path": "runs/20261016T033332Z-UBU-Q0168/responses/claude_score_ubu-q0168-openai-ingress-latency_stdout.json",
+      "stderr_path": "runs/20261016T033332Z-UBU-Q0168/responses/claude_score_ubu-q0168-openai-ingress-latency_stderr.txt"
+    }
+  }
+]
