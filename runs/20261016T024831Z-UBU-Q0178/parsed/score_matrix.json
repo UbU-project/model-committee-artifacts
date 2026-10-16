@@ -1,0 +1,41 @@
+[
+  {
+    "proposal_id": "UBU-Q0178-openai-period-workload-20261015",
+    "author_provider": "openai",
+    "scorer_provider": "codex",
+    "score": 91,
+    "valid": true,
+    "rationale": "Supplied mechanical validation confirms clean application, allowed files and preserved question schema. The patch directly connects affordability to useful workload delivery, preserves existing qualification and accounting controls, and explicitly retains unmet demand and ownership gaps. It is a coherent incremental improvement, while correctly leaving Q0178 Open pending comparative real-device evidence and operator review.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [
+      "Finite-window results require careful extrapolation; optimistic availability or downtime assumptions could overstate period workload capacity.",
+      "The proposal strengthens qualification requirements but supplies no measured affordable path or cost envelope."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20261016T024831Z-UBU-Q0178/responses/codex_score_ubu-q0178-openai-period-workload-20261015_response.json",
+      "stderr_path": null
+    }
+  },
+  {
+    "proposal_id": "UBU-Q0178-openai-period-workload-20261015",
+    "author_provider": "openai",
+    "scorer_provider": "claude",
+    "score": null,
+    "valid": false,
+    "rationale": "",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [],
+    "schema_validation": {
+      "valid": false,
+      "message": "claude exited with 1",
+      "response_path": "runs/20261016T024831Z-UBU-Q0178/responses/claude_score_ubu-q0178-openai-period-workload-20261015_stdout.json",
+      "stderr_path": "runs/20261016T024831Z-UBU-Q0178/responses/claude_score_ubu-q0178-openai-period-workload-20261015_stderr.txt"
+    }
+  }
+]

@@ -1,0 +1,1 @@
+UMC: docs: require period workload feasibility for lower-cost multimodal paths
