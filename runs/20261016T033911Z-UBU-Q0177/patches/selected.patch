@@ -1,0 +1,75 @@
+diff --git a/DECISIONS.md b/DECISIONS.md
+index 9f4683e..cf069e0 100644
+--- a/DECISIONS.md
++++ b/DECISIONS.md
+@@ -5882,3 +5882,15 @@ Expire or invalidate pending ingress locally and prevent late dispatch/release u
+ Require §21.1.4's delayed-handoff, ingress-saturation, boundary and interruption fixtures, plus pinned deployment trials driven by frozen arrivals for claimed concurrent/sustained workloads. Report ingress and end-to-end timings alongside class timings; an incompletely offered workload cannot qualify a smaller denominator. These are enforcement and evidence requirements, not numerical selection or passing implementation/hardware evidence. `UBU-Q0168` stays Open pending the existing frozen acceptance trials and operator review; no kernel API or wire-schema change is selected.
+ 
+ ---
++
++## UBU-D0381: Multimodal qualification verifies backend release after cancellation
++
++**Status:** Accepted → DESIGN.md §1. Narrows `UBU-Q0177`; measured hardware selection remains Open.
++
++Extend `UBU-D0331`/`UBU-D0336`'s cancellation and reuse evidence to actual backend quiescence, source-dependent buffer cleanup and runtime/worker resource release. Cancellation status, process exit or worker disconnection alone cannot establish complete-route release. Keep outstanding work generation-bound, prevent premature buffer reuse and withhold further dispatch through an affected runtime instance while release is unconfirmed. Immediate invalidation, controls and useful manual completion remain independent of backend progress.
++
++Charge unresolved resources and any qualified fallback to the same aggregate limits; neither containment nor pending cleanup extends existing release or retention deadlines. Require delayed-completion, repeated-cancellation, teardown-failure and late-callback/write fixtures with actual lifecycle observations, plus real-device evidence and costs in the existing support matrix. Disconnected workers require endpoint-local enforcement and truthful unconfirmed remote-release status.
++
++This specifies evidence for the existing bounded-release gate without supplying passing results, selecting hardware or changing the mobile planning/API allocation. `UBU-Q0177` remains Open pending the complete mandatory-slice evidence and operator approval.
++
++---
+diff --git a/DESIGN.md b/DESIGN.md
+index d77a81b..5c221d7 100644
+--- a/DESIGN.md
++++ b/DESIGN.md
+@@ -118,6 +118,12 @@ During each job, pin verified artifacts and enforcement settings or detect chang
+ 
+ Require actual-controller fixtures for an approved matching route, model replacement at the same path, changed delegated-provider/permission/egress settings, worker-profile mismatch, restart with stale approval and change between dispatch and result release. Verify observed source access, output suppression and dependent-mode unavailability, including useful manual completion. Repeat the existing cold/warm and sustained measurements with these controls active and publish their costs, failures and evidence in the support matrix. These requirements establish no supported deployment; `UBU-Q0177` remains Open.
+ 
++**Observed multimodal resource release (`UBU-D0381`).** Extend `UBU-D0331`/`UBU-D0336` qualification to the actual lifecycle of source-dependent buffers, pending backend submissions and runtime/worker handles after timeout, stop, expiry or revocation. Local invalidation still blocks further reads and result release immediately. A cancelled status, cancellation acknowledgment, process exit or lost worker link alone cannot establish complete-route cleanup or resource release. Bind outstanding work and buffers to the original job generation; prevent their reuse until backend quiescence and required cleanup are demonstrated. Verified read-only weights retain `UBU-D0336`'s separate treatment.
++
++Keep unresolved resources charged to whole-route memory/storage/concurrency limits, including any separately qualified fallback. Withhold further dispatch through the affected runtime instance while release is unconfirmed; immediate controls and useful manual completion must remain schedulable. This containment cannot extend source/intermediate retention or the existing finite cancellation-to-resource-release ceiling. A failed or unobserved required release/retention bound prevents qualification. For a disconnected worker, exercise endpoint-local enforcement and report remote release as unconfirmed until permitted endpoint evidence is available.
++
++Extend the existing distinct-grant fixtures with delayed backend completion, repeated cancellation, teardown failure and late callbacks/writes while a subsequent job is requested. Freeze expected dispositions and observe actual dispatch, buffer ownership and denied reuse, not just generated output. Record invalidation, backend quiescence, cleanup and resource-release offsets separately, with pending-resource high-water marks. Controller injections alone supply no deployed backend-release evidence; demonstrate the supported lifecycle on the exact physical endpoints. Include unresolved work, teardown and any fallback in the existing cold/warm and sustained resource measurements and support matrix. These are runtime-lifecycle observations, not forensic-erasure guarantees or passing hardware evidence; `UBU-Q0177` remains Open.
++
+ **Economically accessible local paths (`UBU-D0332`).** Compare two candidate routes for a bounded camera-and-voice slice under `UBU-D0331`:
+ 
+ - **Existing single Device:** bounded still-image capture and push-to-talk audio, with smaller/quantized or task-specific local models capable of CPU inference, finite context and serialized inference jobs. Evaluate supported older hardware without assuming that age, nominal RAM or model size establishes eligibility.
+diff --git a/OPEN_QUESTIONS.md b/OPEN_QUESTIONS.md
+index b165827..025888d 100644
+--- a/OPEN_QUESTIONS.md
++++ b/OPEN_QUESTIONS.md
+@@ -3477,29 +3477,33 @@
+ ## UBU-Q0177: Minimum viable secure local hardware for multimodal interaction
+ 
+ Status: Open Priority: MVP important Phase: Phase 2 Decision type: Architecture Auto-choice eligibility: Human approval required Importance score: TBD Automation-likelihood score: TBD Risk score: TBD Answerability score: 100 Depends on: None Blocks: None Resolved by: None Last scored: 2026-10-15 Scored from commit: None
+ 
+ ### Question
+ 
+ What measured local hardware profile can deliver the MVP multimodal experience securely and usefully?
+ 
+ ### Current direction
+ 
+ Delta §17.15. Evaluate model quality, memory, latency, energy, sustained thermal behavior, endpoint security and local storage on supported devices. Distinguish primary mobile interaction from mobile planning workload (`UBU-Q0160`). No modern-phone universality or cloud-versus-local quality ranking is assumed.
+ 
+ `UBU-D0331` specifies revision-pinned Device-role profiles, predeclared usefulness/resource criteria, real-device cold/warm and sustained trials, endpoint/storage gates and a reviewed support matrix in DESIGN.md §1. This narrows the qualification process without selecting hardware, a mobile planner or a compute API. `UBU-D0336` adds isolation fixtures across inference jobs and measures the enforced isolation/reset costs within that profile.
+ 
+ `UBU-D0362` makes hardware-selection completeness explicit: the approved profile set must cover all mandatory capture/review slices in DESIGN.md §4.2 (`UBU-D0339`), with qualified endpoints, any worker routes and demonstrated shared-hardware workload limits.
+ 
+ `UBU-D0368` extends qualification to every enabled processing stage, including delegated OS services, with connected/offline, backend-loss and reconnection evidence for actual provider calls, egress restrictions and queued retries. The support matrix binds the complete pipeline and its resource/retention costs.
+ 
+ `UBU-D0375` makes qualification an enforced use-time binding: missing or mismatched deployment pins withhold dependent modes and invalidate affected active work. Changed bindings require affected rechecks and renewed operator approval.
+ 
++`UBU-D0381` requires observed backend quiescence, buffer cleanup and resource release after cancellation. Unresolved work remains generation-bound and charged to aggregate limits, with further dispatch through the affected runtime withheld; cancellation status or disconnection alone cannot establish release.
++
+ ### Resolution
+ 
+ Open. `UBU-D0331` answers the qualification protocol only. Close after actual real-device evidence demonstrates the declared MVP slices, numeric latency/resource profiles, endpoint and retention controls, sustained behavior and useful manual degradation, and the operator approves a scoped hardware/software support matrix. No measured minimum or supported Device is established by the protocol. `UBU-D0336` adds runtime-isolation gates; those fixtures also require passing deployment evidence before selection. `UBU-D0362` requires that selection to cover every mandatory §4.2 slice, with each endpoint and any inter-Device route qualified; partial coverage leaves this question Open.
+ 
+ `UBU-D0368` adds complete-route locality evidence; its required real-device trials remain outstanding and establish no supported configuration. `UBU-D0375` adds deployment-binding enforcement and change fixtures; those checks also require passing evidence and select no hardware.
+ 
++`UBU-D0381` adds actual backend-release and pending-resource fixtures, including disconnected-worker enforcement. These still require real-device evidence within the existing release/retention bounds and establish no supported profile.
++
+ ---
+ 
+ ## UBU-Q0178: Economically accessible local compute paths

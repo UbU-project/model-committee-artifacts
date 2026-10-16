@@ -1,0 +1,21 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0177-openai-observed-resource-release",
+      "score": 90,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Opaque backends may make quiescence and cleanup difficult to observe; qualification must substantiate those observations on each supported route.",
+        "This advances qualification requirements but supplies no measured hardware profile or approved support matrix."
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 1 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0177-openai-observed-resource-release",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}

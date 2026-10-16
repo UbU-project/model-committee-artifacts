@@ -1,0 +1,41 @@
+[
+  {
+    "proposal_id": "UBU-Q0177-openai-observed-resource-release",
+    "author_provider": "openai",
+    "scorer_provider": "codex",
+    "score": 90,
+    "valid": true,
+    "rationale": "Mechanical validation confirms clean application, allowed files and preserved question schema. The patch coherently strengthens existing cancellation and isolation gates through generation-bound ownership, aggregate resource accounting, dispatch containment and real-device lifecycle fixtures. It preserves release and retention deadlines, mandatory-slice coverage and operator approval, while accurately keeping UBU-Q0177 Open. Its contribution is a scoped qualification clarification rather than completion of hardware selection.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [
+      "Opaque backends may make quiescence and cleanup difficult to observe; qualification must substantiate those observations on each supported route.",
+      "This advances qualification requirements but supplies no measured hardware profile or approved support matrix."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20261016T033911Z-UBU-Q0177/responses/codex_score_ubu-q0177-openai-observed-resource-release_response.json",
+      "stderr_path": null
+    }
+  },
+  {
+    "proposal_id": "UBU-Q0177-openai-observed-resource-release",
+    "author_provider": "openai",
+    "scorer_provider": "claude",
+    "score": null,
+    "valid": false,
+    "rationale": "",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [],
+    "schema_validation": {
+      "valid": false,
+      "message": "claude exited with 1",
+      "response_path": "runs/20261016T033911Z-UBU-Q0177/responses/claude_score_ubu-q0177-openai-observed-resource-release_stdout.json",
+      "stderr_path": "runs/20261016T033911Z-UBU-Q0177/responses/claude_score_ubu-q0177-openai-observed-resource-release_stderr.txt"
+    }
+  }
+]

@@ -1,0 +1,21 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0177-openai-observed-resource-release",
+      "score": 90,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Opaque backends may make quiescence and cleanup difficult to observe; qualification must substantiate those observations on each supported route.",
+        "This advances qualification requirements but supplies no measured hardware profile or approved support matrix."
+      ],
+      "required_fixes": [],
+      "rationale": "Mechanical validation confirms clean application, allowed files and preserved question schema. The patch coherently strengthens existing cancellation and isolation gates through generation-bound ownership, aggregate resource accounting, dispatch containment and real-device lifecycle fixtures. It preserves release and retention deadlines, mandatory-slice coverage and operator approval, while accurately keeping UBU-Q0177 Open. Its contribution is a scoped qualification clarification rather than completion of hardware selection."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0177-openai-observed-resource-release",
+  "selection_rationale": "The sole candidate is mechanically valid, auditable and directly relevant to secure resource qualification. No blocking fixes are evident; measured hardware selection remains outstanding. This preference is for cross-score aggregation, not final committee selection."
+}
