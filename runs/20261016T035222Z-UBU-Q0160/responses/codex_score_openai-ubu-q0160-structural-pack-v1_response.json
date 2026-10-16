@@ -1,0 +1,20 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-ubu-q0160-structural-pack-v1",
+      "score": 92,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "The pack remains a specification: serialized fixtures, independently checked CPU goldens, harness execution and physical-device measurements are still outstanding."
+      ],
+      "required_fixes": [],
+      "rationale": "Mechanical validation passes, and changes stay within the allowed files. The concrete outcomes agree with the existing dependency, containment, Static-anchor, overlap and masking semantics. Independent expected values and comparisons before CPU certification strengthen the first harness slice. The patch preserves Open status, metadata, CPU authority and all remaining qualification gates. It advances fixture specification without supplying API-selection evidence."
+    }
+  ],
+  "selected_proposal_id": "openai-ubu-q0160-structural-pack-v1",
+  "selection_rationale": "The sole eligible proposal provides useful, auditable progress toward the parity harness while preserving the requirement for real-device measurements and operator review. Final selection remains with local aggregation."
+}

@@ -1,0 +1,40 @@
+[
+  {
+    "proposal_id": "openai-ubu-q0160-structural-pack-v1",
+    "author_provider": "openai",
+    "scorer_provider": "codex",
+    "score": 92,
+    "valid": true,
+    "rationale": "Mechanical validation passes, and changes stay within the allowed files. The concrete outcomes agree with the existing dependency, containment, Static-anchor, overlap and masking semantics. Independent expected values and comparisons before CPU certification strengthen the first harness slice. The patch preserves Open status, metadata, CPU authority and all remaining qualification gates. It advances fixture specification without supplying API-selection evidence.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [
+      "The pack remains a specification: serialized fixtures, independently checked CPU goldens, harness execution and physical-device measurements are still outstanding."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20261016T035222Z-UBU-Q0160/responses/codex_score_openai-ubu-q0160-structural-pack-v1_response.json",
+      "stderr_path": null
+    }
+  },
+  {
+    "proposal_id": "openai-ubu-q0160-structural-pack-v1",
+    "author_provider": "openai",
+    "scorer_provider": "claude",
+    "score": null,
+    "valid": false,
+    "rationale": "",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [],
+    "schema_validation": {
+      "valid": false,
+      "message": "claude exited with 1",
+      "response_path": "runs/20261016T035222Z-UBU-Q0160/responses/claude_score_openai-ubu-q0160-structural-pack-v1_stdout.json",
+      "stderr_path": "runs/20261016T035222Z-UBU-Q0160/responses/claude_score_openai-ubu-q0160-structural-pack-v1_stderr.txt"
+    }
+  }
+]
