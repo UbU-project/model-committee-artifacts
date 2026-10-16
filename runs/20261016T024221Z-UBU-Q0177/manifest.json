@@ -1,0 +1,179 @@
+{
+  "schema_version": "0.4",
+  "run_id": "20261016T024221Z-UBU-Q0177",
+  "created_at_utc": "2026-10-16T02:42:21Z",
+  "repo_path": "../ubu-design",
+  "base_commit": "70b2ebab4139bfdf3b4c030e6436e6e4530b5f8f",
+  "selected_question_id": "UBU-Q0177",
+  "phase": "work-select",
+  "config_path": "config/models.json",
+  "status": "selected",
+  "commands": [
+    "model-committee run-loop"
+  ],
+  "providers_attempted": [
+    "codex",
+    "claude"
+  ],
+  "providers_succeeded": [
+    "codex"
+  ],
+  "providers_failed": [
+    "claude: ProviderError: claude exited with 1"
+  ],
+  "provider_attempts": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0177-openai-D0375-deployment-bindings",
+      "response_path": "runs/20261016T024221Z-UBU-Q0177/responses/codex_score_ubu-q0177-openai-d0375-deployment-bindings_response.json",
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0177-openai-D0375-deployment-bindings",
+      "response_path": "runs/20261016T024221Z-UBU-Q0177/responses/claude_score_ubu-q0177-openai-d0375-deployment-bindings_stdout.json",
+      "stderr_path": null
+    }
+  ],
+  "provider_successes": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20261016T024221Z-UBU-Q0177/parsed/codex_work_proposal.json"
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0177-openai-D0375-deployment-bindings",
+      "response_path": "runs/20261016T024221Z-UBU-Q0177/responses/codex_score_ubu-q0177-openai-d0375-deployment-bindings_response.json",
+      "parsed_path": "runs/20261016T024221Z-UBU-Q0177/parsed/codex_score_ubu-q0177-openai-d0375-deployment-bindings_result.json"
+    }
+  ],
+  "provider_failures": [
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "failure_class": "ProviderError",
+      "message": "claude exited with 1",
+      "timeout_seconds": 3600,
+      "exit_status": 1,
+      "stderr_path": "runs/20261016T024221Z-UBU-Q0177/responses/claude_score_ubu-q0177-openai-d0375-deployment-bindings_stderr.txt",
+      "response_path": "runs/20261016T024221Z-UBU-Q0177/responses/claude_score_ubu-q0177-openai-d0375-deployment-bindings_stdout.json",
+      "quorum_met": false
+    }
+  ],
+  "score_matrix": [
+    {
+      "proposal_id": "UBU-Q0177-openai-D0375-deployment-bindings",
+      "author_provider": "openai",
+      "scorer_provider": "codex",
+      "score": 90,
+      "valid": true,
+      "rationale": "Mechanical validation confirms clean application, allowed files and preserved question schema. The patch adds a focused enforcement requirement to existing qualification rules, covering changed components, worker mismatches, stale approvals and dispatch/release races. It requires observable controller behavior and measurement of enforcement costs, while correctly retaining Open status. Its contribution is qualification enforcement rather than the outstanding measured hardware answer.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "The enforcement requirements remain unimplemented and unmeasured; this proposal establishes no minimum hardware profile or supported deployment.",
+        "Required bindings that cannot be verified for delegated services will withhold dependent modes; deployment evidence must demonstrate useful manual completion."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261016T024221Z-UBU-Q0177/responses/codex_score_ubu-q0177-openai-d0375-deployment-bindings_response.json",
+        "stderr_path": null
+      }
+    },
+    {
+      "proposal_id": "UBU-Q0177-openai-D0375-deployment-bindings",
+      "author_provider": "openai",
+      "scorer_provider": "claude",
+      "score": null,
+      "valid": false,
+      "rationale": "",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [],
+      "schema_validation": {
+        "valid": false,
+        "message": "claude exited with 1",
+        "response_path": "runs/20261016T024221Z-UBU-Q0177/responses/claude_score_ubu-q0177-openai-d0375-deployment-bindings_stdout.json",
+        "stderr_path": "runs/20261016T024221Z-UBU-Q0177/responses/claude_score_ubu-q0177-openai-d0375-deployment-bindings_stderr.txt"
+      }
+    }
+  ],
+  "score_aggregates": [
+    {
+      "proposal_id": "UBU-Q0177-openai-D0375-deployment-bindings",
+      "author_provider": "openai",
+      "cross_score_count": 1,
+      "score_mean": 90.0,
+      "score_spread": 0,
+      "frontier_score_gap": 0,
+      "disagreement_flags": []
+    }
+  ],
+  "cross_score_count": 1,
+  "score_mean": 90.0,
+  "score_spread": 0,
+  "frontier_score_gap": 0,
+  "disagreement_flags": [],
+  "quorum_result": {
+    "valid": true,
+    "human_review_required": false,
+    "selected_proposal_id": "UBU-Q0177-openai-D0375-deployment-bindings",
+    "selected_score": 90.0,
+    "selected_cross_score_count": 1,
+    "blocked_reasons": [],
+    "manual_override": false
+  },
+  "selected_proposal_id": "UBU-Q0177-openai-D0375-deployment-bindings",
+  "automated_selection_valid": true,
+  "human_review_required": false,
+  "artifact_publication_status": "operator_pending",
+  "prompt_size_warning": false,
+  "prompt_context": {
+    "question_ids": [
+      "UBU-Q0177"
+    ],
+    "decision_ids": [
+      "UBU-D0331",
+      "UBU-D0336",
+      "UBU-D0339",
+      "UBU-D0362",
+      "UBU-D0368"
+    ],
+    "sections": {
+      "DESIGN.md": [
+        "1",
+        "4.2"
+      ]
+    },
+    "core_sections": {
+      "DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md": [
+        "4"
+      ]
+    },
+    "missing_refs": {},
+    "context_chars": 65960,
+    "prompt_chars": 73086
+  }
+}

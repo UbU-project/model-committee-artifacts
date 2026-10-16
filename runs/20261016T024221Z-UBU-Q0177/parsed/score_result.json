@@ -1,0 +1,21 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0177-openai-D0375-deployment-bindings",
+      "score": 90,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Required bindings that cannot be verified for delegated services will withhold dependent modes; deployment evidence must demonstrate useful manual completion.",
+        "The enforcement requirements remain unimplemented and unmeasured; this proposal establishes no minimum hardware profile or supported deployment."
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 1 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0177-openai-D0375-deployment-bindings",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}

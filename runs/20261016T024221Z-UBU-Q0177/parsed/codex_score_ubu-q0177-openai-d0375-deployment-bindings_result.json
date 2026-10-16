@@ -1,0 +1,21 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0177-openai-D0375-deployment-bindings",
+      "score": 90,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "The enforcement requirements remain unimplemented and unmeasured; this proposal establishes no minimum hardware profile or supported deployment.",
+        "Required bindings that cannot be verified for delegated services will withhold dependent modes; deployment evidence must demonstrate useful manual completion."
+      ],
+      "required_fixes": [],
+      "rationale": "Mechanical validation confirms clean application, allowed files and preserved question schema. The patch adds a focused enforcement requirement to existing qualification rules, covering changed components, worker mismatches, stale approvals and dispatch/release races. It requires observable controller behavior and measurement of enforcement costs, while correctly retaining Open status. Its contribution is qualification enforcement rather than the outstanding measured hardware answer."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0177-openai-D0375-deployment-bindings",
+  "selection_rationale": "The sole candidate is mechanically valid, scoped and auditable. It makes useful progress on secure qualification without claiming unsupported hardware results or prematurely resolving UBU-Q0177."
+}

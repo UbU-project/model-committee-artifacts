@@ -1,0 +1,41 @@
+[
+  {
+    "proposal_id": "UBU-Q0177-openai-D0375-deployment-bindings",
+    "author_provider": "openai",
+    "scorer_provider": "codex",
+    "score": 90,
+    "valid": true,
+    "rationale": "Mechanical validation confirms clean application, allowed files and preserved question schema. The patch adds a focused enforcement requirement to existing qualification rules, covering changed components, worker mismatches, stale approvals and dispatch/release races. It requires observable controller behavior and measurement of enforcement costs, while correctly retaining Open status. Its contribution is qualification enforcement rather than the outstanding measured hardware answer.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [
+      "The enforcement requirements remain unimplemented and unmeasured; this proposal establishes no minimum hardware profile or supported deployment.",
+      "Required bindings that cannot be verified for delegated services will withhold dependent modes; deployment evidence must demonstrate useful manual completion."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20261016T024221Z-UBU-Q0177/responses/codex_score_ubu-q0177-openai-d0375-deployment-bindings_response.json",
+      "stderr_path": null
+    }
+  },
+  {
+    "proposal_id": "UBU-Q0177-openai-D0375-deployment-bindings",
+    "author_provider": "openai",
+    "scorer_provider": "claude",
+    "score": null,
+    "valid": false,
+    "rationale": "",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [],
+    "schema_validation": {
+      "valid": false,
+      "message": "claude exited with 1",
+      "response_path": "runs/20261016T024221Z-UBU-Q0177/responses/claude_score_ubu-q0177-openai-d0375-deployment-bindings_stdout.json",
+      "stderr_path": "runs/20261016T024221Z-UBU-Q0177/responses/claude_score_ubu-q0177-openai-d0375-deployment-bindings_stderr.txt"
+    }
+  }
+]
