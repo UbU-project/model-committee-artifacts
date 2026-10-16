@@ -1,0 +1,176 @@
+{
+  "schema_version": "0.4",
+  "run_id": "20261016T021944Z-UBU-Q0163",
+  "created_at_utc": "2026-10-16T02:19:44Z",
+  "repo_path": "../ubu-design",
+  "base_commit": "2aecbb0a44afa147485cf1dab65f11c593aa4350",
+  "selected_question_id": "UBU-Q0163",
+  "phase": "work-select",
+  "config_path": "config/models.json",
+  "status": "selected",
+  "commands": [
+    "model-committee run-loop"
+  ],
+  "providers_attempted": [
+    "codex",
+    "claude"
+  ],
+  "providers_succeeded": [
+    "codex"
+  ],
+  "providers_failed": [
+    "claude: ProviderError: claude exited with 1"
+  ],
+  "provider_attempts": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0163-openai-series-truncation-20261015",
+      "response_path": "runs/20261016T021944Z-UBU-Q0163/responses/codex_score_ubu-q0163-openai-series-truncation-20261015_response.json",
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0163-openai-series-truncation-20261015",
+      "response_path": "runs/20261016T021944Z-UBU-Q0163/responses/claude_score_ubu-q0163-openai-series-truncation-20261015_stdout.json",
+      "stderr_path": null
+    }
+  ],
+  "provider_successes": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20261016T021944Z-UBU-Q0163/parsed/codex_work_proposal.json"
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0163-openai-series-truncation-20261015",
+      "response_path": "runs/20261016T021944Z-UBU-Q0163/responses/codex_score_ubu-q0163-openai-series-truncation-20261015_response.json",
+      "parsed_path": "runs/20261016T021944Z-UBU-Q0163/parsed/codex_score_ubu-q0163-openai-series-truncation-20261015_result.json"
+    }
+  ],
+  "provider_failures": [
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "failure_class": "ProviderError",
+      "message": "claude exited with 1",
+      "timeout_seconds": 3600,
+      "exit_status": 1,
+      "stderr_path": "runs/20261016T021944Z-UBU-Q0163/responses/claude_score_ubu-q0163-openai-series-truncation-20261015_stderr.txt",
+      "response_path": "runs/20261016T021944Z-UBU-Q0163/responses/claude_score_ubu-q0163-openai-series-truncation-20261015_stdout.json",
+      "quorum_met": false
+    }
+  ],
+  "score_matrix": [
+    {
+      "proposal_id": "UBU-Q0163-openai-series-truncation-20261015",
+      "author_provider": "openai",
+      "scorer_provider": "codex",
+      "score": 92,
+      "valid": true,
+      "rationale": "Mechanical validation passes, and changes remain confined to UBU-Q0163. The follow-up usefully separates recurrence-rule truncation from explicit cancellation, specifies production-path evidence and replay controls, and preserves protection when evidence is insufficient. It keeps the question open and makes no unsupported retirement claim.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "Progress remains documentation-only: authoritative rule-change ordering, exception coverage and passing implementation evidence remain outstanding."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261016T021944Z-UBU-Q0163/responses/codex_score_ubu-q0163-openai-series-truncation-20261015_response.json",
+        "stderr_path": null
+      }
+    },
+    {
+      "proposal_id": "UBU-Q0163-openai-series-truncation-20261015",
+      "author_provider": "openai",
+      "scorer_provider": "claude",
+      "score": null,
+      "valid": false,
+      "rationale": "",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [],
+      "schema_validation": {
+        "valid": false,
+        "message": "claude exited with 1",
+        "response_path": "runs/20261016T021944Z-UBU-Q0163/responses/claude_score_ubu-q0163-openai-series-truncation-20261015_stdout.json",
+        "stderr_path": "runs/20261016T021944Z-UBU-Q0163/responses/claude_score_ubu-q0163-openai-series-truncation-20261015_stderr.txt"
+      }
+    }
+  ],
+  "score_aggregates": [
+    {
+      "proposal_id": "UBU-Q0163-openai-series-truncation-20261015",
+      "author_provider": "openai",
+      "cross_score_count": 1,
+      "score_mean": 92.0,
+      "score_spread": 0,
+      "frontier_score_gap": 0,
+      "disagreement_flags": []
+    }
+  ],
+  "cross_score_count": 1,
+  "score_mean": 92.0,
+  "score_spread": 0,
+  "frontier_score_gap": 0,
+  "disagreement_flags": [],
+  "quorum_result": {
+    "valid": true,
+    "human_review_required": false,
+    "selected_proposal_id": "UBU-Q0163-openai-series-truncation-20261015",
+    "selected_score": 92.0,
+    "selected_cross_score_count": 1,
+    "blocked_reasons": [],
+    "manual_override": false
+  },
+  "selected_proposal_id": "UBU-Q0163-openai-series-truncation-20261015",
+  "automated_selection_valid": true,
+  "human_review_required": false,
+  "artifact_publication_status": "operator_pending",
+  "prompt_size_warning": false,
+  "prompt_context": {
+    "question_ids": [
+      "UBU-Q0163"
+    ],
+    "decision_ids": [
+      "UBU-D0258",
+      "UBU-D0259",
+      "UBU-D0318"
+    ],
+    "sections": {
+      "DESIGN.md": [
+        "1",
+        "23.1"
+      ]
+    },
+    "core_sections": {
+      "DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md": [
+        "4"
+      ]
+    },
+    "missing_refs": {},
+    "context_chars": 79962,
+    "prompt_chars": 86971
+  }
+}

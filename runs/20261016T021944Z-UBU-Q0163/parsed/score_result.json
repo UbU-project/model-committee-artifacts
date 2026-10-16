@@ -1,0 +1,20 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0163-openai-series-truncation-20261015",
+      "score": 92,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Progress remains documentation-only: authoritative rule-change ordering, exception coverage and passing implementation evidence remain outstanding."
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 1 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0163-openai-series-truncation-20261015",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}

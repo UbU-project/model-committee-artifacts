@@ -1,0 +1,11 @@
+[
+  {
+    "proposal_id": "UBU-Q0163-openai-series-truncation-20261015",
+    "author_provider": "openai",
+    "cross_score_count": 1,
+    "score_mean": 92.0,
+    "score_spread": 0,
+    "frontier_score_gap": 0,
+    "disagreement_flags": []
+  }
+]

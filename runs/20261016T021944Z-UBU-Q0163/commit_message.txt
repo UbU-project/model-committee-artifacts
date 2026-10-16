@@ -1,0 +1,1 @@
+UMC: docs: specify recurring-series truncation qualification for UBU-Q0163
