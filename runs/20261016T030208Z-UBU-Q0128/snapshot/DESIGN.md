@@ -1,0 +1,6020 @@
+# UbU Design
+
+Status: Draft / active pre-MVP dogfooding  
+Repository: `ubu-design`  
+Purpose: Canonical public design document for the UbU project
+
+---
+
+## 1. Overview
+
+**UbU** is a privacy-first planning, coordination, and self-governance system for implementing life logistics.
+
+UbU takes messy real-world inputs—tasks, calendar events, messages, external events, user preferences, physical/emotional state, Resource availability, Skill capability, integration data, realtime interaction streams, and agent or worker outputs—and turns them into explicit, inspectable, recalculable Plans.
+
+UbU is not merely a task list or calendar application. Its core motivation is to help an individual human being plan and implement the logistics of an actual life: what matters, what must happen, what the world must contain, what the user is capable of doing, what can be learned, what should be bought or delegated, and what should happen next. Organizational coordination is an important emergent property of the same model, not the root purpose.
+
+The canonical UbU use-case formula is:
+
+> **Objective + Current State + Constraints + Resources + Skills + Techniques + Preferences + External Options → Legitimate Plan**
+
+The canonical use-case statement: UbU helps an individual user solve everyday life problems by transforming a desired outcome into a legitimate, executable plan. It does this by modeling the current state of the user's life, the desired state, required Tasks, available and missing Resources, available and missing Skills, reusable Techniques, affect and energy constraints, financial tradeoffs, public or marketplace options, expert-guided alternatives, and evidence from execution. UbU's purpose is not merely to schedule time, but to help the user determine what path can realistically move life from the current state toward the desired state.
+
+The deeper purpose is to help people build the capabilities, resources, routines, and relationships needed to actually live the life they choose — not just to schedule it.
+
+**Access within ordinary life logistics (`UBU-D0338`).** Present guided camera acquisition and voice/text/form choices as ordinary ways to capture concerns, review proposals and act on Plans. Keep UbU's primary identity as a privacy-first life-logistics system; access features are available without a disability label or special onboarding category. Describe concrete benefits and limitations for tested workflows and Device/assistive-technology combinations. Camera availability alone establishes no accessibility claim.
+
+The first MVP is designed around **dogfooding**: using UbU to coordinate the design, development, release, and maintenance of UbU itself.
+
+Recent LLM and agentic-AI changes reinforce UbU's core boundary: realtime, multimodal, tool-using, memory-bearing models are valuable interaction and extraction backends, but UbU remains the user-sovereign state-transition, planning, logging, privacy, and review layer.
+
+**Advisory generation policy (`UBU-D0341`).** For the MVP/Phase 2 advisory boundary, the operator configures sampling behavior in the selected inference runtime. UbU adds no generic decode Settings or application-selected temperature, top-p/top-k or repetition penalties, hidden request overrides or automatic retry tuning. Existing model/endpoint selection, timeout and review seed/ceiling behavior remain; the review seed provides no cross-model or cross-runtime reproducibility guarantee.
+
+UbU owns bounded validator-safe producer grammars (`UBU-D0302`), finite request/output and job budgets, cancellation, validation and ordinary candidate review/admission. Required grammar and resource/output-limit fields may be sent to the runtime without transferring these contracts to sampler policy. A runtime unable to meet them leaves the affected operation unavailable with an explicit limitation and eligible retry/manual route. Abort, timeout and invalid output preserve saved state and admit no generated state changes. Retries retain current authority/input bindings and finite call/time budgets; failure cannot relax validation or authorize another route.
+
+Document each supported adapter's required grammar/limit behavior and runtime sampling configuration instructions. Pin observable sampling configuration or its digest in qualified Device/backend profiles and label unknown effective defaults explicitly. Configuration changes require affected qualification checks under `UBU-D0331`/`UBU-D0336` where applicable. Before claiming conformance, require adapter fixtures that inspect requests for absence of application-selected sampler overrides while preserving existing review seed/ceiling behavior and required grammar/limit fields; exercise abort, timeout and invalid-output paths for preserved saved state, bounded retries and unchanged review/admission requirements. These are required checks, not passing runtime evidence or a diagnosis of the Vocabulary abort.
+
+For Phase 1, UbU must also be understandable as a first-person user experience. The minimal user-facing loop is: answer a small number of bootstrapping questions, allow UbU to construct an initial context model, receive one recommended next Task, inspect why that Task matters now, act or override, then let UbU learn from the result through Logs, Snapshots, and recalculation.
+
+For Phase 2, a single-live-session sync implementation is sufficient (`UBU-D0312`), with arbitrary N Devices, concurrent offline mutations, partial replicas, and transport-independent integrity-protected statements. Direct exchanges, imported bundles, and user-selected encrypted stores share the same causality, policy, and conflict rules; no Device or transport becomes a permanent canonical authority. Full automatic peer mesh is optional. DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md §26's topology research remains a freeze gate, with at least three Devices demonstrating serialized direct exchange and encrypted store-and-forward, recoverable delivery, deterministic admission/conflict handling, and Compartment-safe partial replication as specified by `UBU-D0312`.
+
+The minimum indirect path for the first Phase 2 sync release is implemented, authenticated encrypted bundle export/import through a user-selected file store, with at least one documented external rclone or rsync copy workflow exercised before freeze (`UBU-D0313`). Manual export/copy/import is sufficient; built-in clients and background delivery are optional. Encryption and recipient authorization protect statements, payloads, and manifests before storage, while ordinary admission and Compartment policy govern every import.
+
+**Interrupted sync recovery (`UBU-D0314`).** Maintain a durable, policy-protected recovery record throughout each exchange. Connection loss, interrupted import, or restart without an admitted final checkpoint for the declared exchange scope records `incomplete_sync_session`. End the failed live session and release its slot while preserving recovery records and queued work; other Devices may synchronize and ordinary policy-authorized offline work may continue against an explicitly stale local view.
+
+Fully verified, authorized statements whose required causal/admission dependencies are satisfied may be admitted incrementally. Persist each admission outcome, resulting state, and deduplication metadata as one crash-consistent unit. These admissions survive disconnect, retry, and discard, subject to existing redaction/purge policy. Partial statements, unverified payloads, and items with missing required statements or dependencies remain staged; they cannot be treated as admitted mutations or supply authoritative inputs to Plans or external projections.
+
+An integrity-protected `checkpoint` or equivalent authenticated manifest commit must bind the declared exchange scope and expected statement/payload inventory, or its content-addressed equivalent. Admit it only after all material required for this Replica's authorized replication level has been durably verified and the required dependency/admission checks have completed. Report completion only after that checkpoint admission is durable, and only for that local scope. A checkpoint cannot admit contested mutations or prove other Devices current. A lost acknowledgment leaves delivery unknown to the sender; replay cannot undo the recipient's durable admissions. Outgoing statements remain pending for an intended recipient until the sender durably records a matching authenticated acknowledgment of that recipient's durable checkpoint admission. Exchange acknowledgments directly or through encrypted return bundles; transmission, file-copy success, or local checkpoint creation is insufficient.
+
+The recovery record tracks exchange/bundle identity, source/recipient Device references, authenticated manifest reference if available, last locally admitted checkpoint, received/missing content references, and durable per-statement admission/idempotency outcomes. Reconstruct progress after restart from durable records. Recovery storage, dependency fetches, retention, and diagnostics obey current Zone/Compartment policy; restricted views reveal neither denied payload nor Compartment identity. Retention cleanup preserves permitted causality, deduplication, and incomplete/discard outcome metadata; missing content must be retransmitted rather than assumed received.
+
+At the next authorized connection or import, resume from durable progress, or replay the original statements if no usable cursor exists. Preserve original statement ids, content hashes, idempotency keys, causal parents, and observed versions. Recheck integrity, Device trust, actor authority, current routing/Compartment policy, object/policy versions, and dependencies before admitting pending material or disclosing retained content. Recovery records and old checkpoints grant no authority. Automatic recovery is allowed only for deterministic, idempotent, non-authority-changing cases under `UBU-D0248`; revoked Devices and review-required conflicts retain their ordinary rejection/review rules.
+
+Offer Resume/retry and Discard through the existing policy-safe incomplete/stale-sync diagnostic, showing the last completed scope and permitted pending counts. Discard removes unfinished incoming staging and its cursor while preserving already-admitted history, locally authored queued work, and still-required policy-permitted causality/idempotency metadata; record the discard outcome. It does not emit a tombstone or undo admitted mutations. A transient interruption alone requires no blocking merge prompt. Review-required conflicts use DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md §17's blocking `manual_decision` diagnostic and admitted `conflict_resolution` statement. Apply DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md §22's Plan invalidation/recalculation rules to admitted changes even while the exchange remains incomplete.
+
+**Sync-state warnings (`UBU-D0315`).** Multiple Devices may remain powered on and perform policy-authorized offline work simultaneously; only live sync exchanges serialize under `UBU-D0312`. Explain this once in Phase 2 onboarding. Ordinary offline use, Device switching, peer absence, and elapsed time alone cause no modal warning or recurring notification. Time-based reminders are opt-in with a user-selected cadence.
+
+Keep one compact, non-blocking status for the active permitted sync scope, with details on demand: last durably admitted checkpoint and its scope/time (or "No completed exchange yet"), permitted locally authored pending counts split into awaiting exchange and awaiting recipient acknowledgment, staged incoming work, and incomplete-session state with Resume/retry and Discard per `UBU-D0314`. Say "Delivery unconfirmed" for a missing acknowledgment. File-copy success and a completed local exchange never justify "All Devices are up to date". A disconnected peer's changes are unknown unless policy-permitted evidence establishes pending state; age alone proves neither new changes nor their absence.
+
+Show an inline Plan/Calendar freshness explanation where relevant inputs may be missing or stale: "This Plan uses this Device's current view; other Devices may have changes." Identify confirmed remote pending changes only when supported by permitted evidence. Locally authored outgoing work is saved local state, not evidence that the local Plan is stale. Label protected blocks and policy-withheld items separately from exchange failures; retrying sync cannot expand visibility.
+
+Before external projection whose relevant permitted inputs have known pending changes, an incomplete exchange, or unknown peer freshness, present an inline review: "Other Device changes may be missing. Synchronize before projection, or use this Device's current view." Offer Sync/exchange (including export/import), Continue with current view, and Cancel. Continue requires explicit stale-state acceptance once per projection operation or reviewed batch, bound to the Device, operation, payload/input and policy versions, and permitted scope. Record it under §17.0 using `decision_recorded` with `decision_kind: safeguard_advisory_bypassed`; recheck the bindings before execution. This accepts freshness uncertainty only. Current authority, Device trust, integrity, Compartment/export policy, Plan-legitimacy requirements, and `UBU-D0248`'s blocking `manual_decision`/`conflict_resolution` rules still govern eligibility. If those rules forbid execution, omit Continue. Mere interruption or missing peer contact creates no blocking merge prompt.
+
+Coalesce advisory explanations by Device, permitted scope, condition, and material evidence. Offer Dismiss until material change or Snooze until a user-selected time; persist the local choice across views and restart while keeping status discoverable. Reopen for material changes affecting that warning, such as newly learned permitted pending statements or changed relevant Plan/input versions; snooze may also reopen at its chosen deadline. A new projection operation needs its own scoped choice. Age or restart alone cannot reopen a dismissed advisory; opt-in reminders may follow their chosen cadence. Dismissal needs no justification and is logged under §17.0 without turning the warning into a synchronized Task. Advisory suppression cannot hide a required blocking conflict diagnostic.
+
+Generate visible text, counts, urgency, and reappearance only from evidence or derived warnings allowed at this Replica's replication level. Restricted notices use DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md §23's "A protected object cannot sync to this Device." without denied payload, source object identifiers, or Compartment ids/labels; omit object-specific notices when even existence is denied. Warnings preserve intentional partial replication and never recommend powering off other Devices or switching to a single primary Device.
+
+**Future schedulable manual review (`UBU-D0316`).** A later versioned extension may admit a shared Dynamic review Task with independent, coherent scheduling inputs and a protected conflict-episode identity. Its target is evidence to review, not admitted contested effects. Place it only in validated unaffected Calendar capacity; otherwise keep it unplaced. The diagnostic/prompt must still admit a permitted source-conflict `conflict_resolution` without review Task creation, placement, or completion. Conflicts in the Task, its scheduling/projection artifacts, or resolution workflow terminate at that diagnostic and never spawn review-of-review Tasks. Task lifecycle reconciliation follows resolution; snooze or deletion cannot clear the underlying blocker. Current authority and source privacy govern every step. The first Phase 2 sync release retains §17's diagnostic-only model until this extension's versioned contracts and behavioral gates pass.
+
+**Task lore after Clarify (`UBU-D0317`).** After a Clarify round, persist the operator's submitted answers through ordinary admission independently of synthesis, then offer one additional local synthesis job. The Task description is readable narrative. Keep the pre-existing description, subsequent operator edits, exact questions/answers and their necessary context as separate durable per-Task source records with stable ids, versions, actor/Device/session/round provenance, effective/recorded times, hashes and privacy/retention policy. Versioned context refs are sufficient only while the referenced context remains retrievable. Corrections append records with explicit supersession links; they never edit originals. Accepted model prose is a derived revision, not independent evidence. Raw audio/video retention is not required.
+
+The local model returns an `AdvisoryCandidate` containing proposed prose, model/template provenance, the complete source manifest/digest and a source-to-prose coverage map. Every answer, qualification, original lore statement, correction and unresolved issue must map to prose spans; every factual prose assertion must map back to sources. Equivalent repetitions may share wording. Superseded assertions retain a temporal account of the old and corrected meanings; disagreements, unknowns, declined answers and open questions remain explicit. Preserve attribution, negation, conditions, quantities and uncertainty. Unsupported inferences remain separate labelled suggestions, not synthesized lore.
+
+Review shows the description diff and a source-by-source checklist with exact source text beside its mapped prose. Deterministic checks require complete source/span coverage, valid references, finite bounds and current bindings; structural coverage and another model's opinion cannot establish semantic fidelity. Explicit operator approval confirms readable prose preserves all source meanings and invents no facts or agreement. Offer edit, regenerate or keep the prior description; edited prose needs renewed coverage review. Recheck authority, policy, Task-description/source/candidate versions and source digest before atomically admitting the description revision and its provenance. Concurrent changes invalidate approval and use ordinary conflict review. Failure, rejection or model unavailability preserves the prior description and saved answers. Lore approval does not admit typed planner constraints or authorize external action.
+
+Later Clarify uses admitted prose plus the source manifest, unresolved issues and correction links. Supply exact question/context/answer records for topics being revisited and make remaining permitted originals retrievable. Check the originals before treating a topic as settled; absence from a prompt is not absence of knowledge. Missing records make context explicitly incomplete. A partial Replica unable to establish the full source frontier may offer a scoped preview but cannot replace the Task description.
+
+Declare finite storage, prompt, result and job time/call limits. Retain source history and admitted revision/provenance while the Task is retained; archival must remain queryable. Chunk long inputs along complete source records and track coverage across chunks through the final prose. If complete reviewable prose cannot fit, stop and keep saved sources rather than truncate or drop knowledge; no cloud fallback. At storage exhaustion, pause Clarify and show any unsaved input; never claim it saved or silently evict history. Rejected candidate payloads follow the ordinary minimized retention lifecycle.
+
+Source records, synthesized prose, coverage maps and subsequent context inherit all source disclosure, routing and retention restrictions; local processing does not waive them. Reject synthesis into a Task whose destination policy cannot protect its sources. Recheck policy on every read, sync and export. Authorized redaction/purge also removes disallowed content from dependent prose, revisions and cached context; prevent reconstruction from retained derivatives. Keep only permitted minimized gap metadata, disclose incompleteness without revealing denied existence, and never claim lossless retention beyond that scope.
+
+**Recurring-busy workaround retirement (`UBU-D0318`).** Timed expanded recurrence instances already capture as individual Tasks. Retire a temporary manual capacity blocker only for an operator-reviewed source/series and planning scope with verified replacement occupancy. Full series-level import is not a prerequisite when expanded instances cover that scope; unsupported inputs, missed/on-demand capture and incomplete coverage retain explicit residual blocking.
+
+Record a policy-permitted coverage manifest binding the implementation revision, source/series references, capture window/cursor and completeness evidence, source and admitted input versions, planning horizon, expected busy UTC intervals, occurrence-to-Task lineage, and blocker references. Every relevant busy occurrence must map to one active capacity-bearing representation; record how any uncovered part of the blocker remains protected. Titles or coincident times do not establish occurrence identity. Repeated capture, restart and replay preserve lineage without duplicate Tasks. Moves, cancellations and series changes supersede prior active reservations through ordinary admission while preserving logged history; absence from an incomplete response cannot establish cancellation.
+
+Fixed busy commitments use capacity-occupying Static Tasks at validated UTC start/end times and bound chunks under `UBU-D0279`. Capture counts, Calendar display and Task existence alone do not prove occupancy. Verify the CPU reference path and each enabled planner backend against expected occupied/free intervals: flexible placements cannot enter busy time, and a source occurrence, its projection and its temporary blocker cannot consume capacity twice. Distinct commitments that genuinely overlap retain their conflict rather than being deduplicated by time.
+
+Before removal, show the exact blocker replacements and residual intervals and obtain explicit operator approval bound to the manifest and current versions. Apply them through ordinary admission as one batch, or an equivalent serialized handoff that prevents Plan certification/projection of intermediate missing or doubled occupancy. Invalidate affected Plans and certify recalculation before reuse or projection. Failure or stale inputs preserve protection and require fresh review. Retire only the identified workaround, preserving source commitments and history. Advancing the horizon or receiving material source changes requires renewed coverage checks before using affected capacity; missing, stale or policy-withheld data never proves free time. Evidence and diagnostics obey current Compartment policy; this process neither grants capture/export authority nor bypasses existing sync/projection checks.
+
+**Measured local multimodal hardware (`UBU-D0331`).** Qualify an exact physical-hardware/software profile, separately identifying every execution-enclave Device and its capture, review, inference and optional planning roles. Pin hardware/RAM, OS build and security-update posture, drivers/runtime, model and weights digest, quantization, context/media sizes, storage/key configuration, UbU/template and policy revisions. Declare enabled sources, latency classes, concurrency, supported session duration and operating conditions. Primary mobile interaction does not select a full mobile planner or compute API (`UBU-Q0160`); capture-mode/device allocation and delivery sequence remain `UBU-Q0183`.
+
+Before testing, freeze the scenario set, useful-outcome rubric and finite acceptance limits for quality, latency/freshness, memory/storage, battery/thermal behavior and cancellation. Use §21.1.3's ordinary interaction and text/form workflows, with synthetic or expressly consented fixtures covering visible details, exact names/values, noisy speech, ambiguity, corrections and unsupported requests. Review grounding, preserved uncertainty, fabricated assertions, correction burden and useful candidate-to-admission/next-action outcomes; transcripts, token rates and plausible conversation alone cannot pass. Count accepted, corrected, unresolved, rejected and failed outcomes separately over all trials. Numeric interaction profiles follow §21.1.4 and remain `UBU-Q0168`'s measured work.
+
+For each proposed Device/backend/mode, run at least 30 cold-start and 100 warm trials using the pinned fixtures, plus at least 30 minutes of its proposed concurrent capture/inference/UI workload and the full maximum supported session if longer. Measure the complete capture-to-review route, including any authorized worker transfer. Record ambient conditions, charging/battery state, competing load, instrumentation and repeat procedure. Report §21.1.4's separate timings with sample counts, median, p95, maximum and misses/errors; include peak aggregate CPU/accelerator memory, model loading, buffers/caches and concurrent manual/planning work at the declared state/context limits. Report model/state/approved-artifact storage, peak scratch and required free-space reserve, energy/battery measurements and uncertainty, temperature/throttling and performance over time. Unavailable metrics stay explicit; missing evidence for a required limit prevents qualification. A short successful run cannot establish sustained or longer-session support.
+
+Endpoint qualification must demonstrate a maintained security-update posture, installation/model integrity checks, OS access isolation, protected Device keys and access-controlled encrypted persistent storage with documented key custody and recovery. State the threat envelope: locked-device loss, unauthorized unprivileged processes, unintended persistence and unauthorized egress; do not claim protection from a compromised OS or malicious local administrator. Exercise source/Device revocation, lock/restart, denied reads/egress, storage exhaustion and interrupted cleanup. Inventory raw/intermediate/retained copies, OS/runtime swap, hibernation, crash dumps, caches and backups; enforce §12.2 and §21.1.5 on every applicable path or disable the affected mode. Encryption alone cannot satisfy transient-media retention. A rooted/debug planning-parity device supplies no endpoint-security evidence by itself; hardware attestation remains optional under DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md §26, and cleanup establishes no forensic-erasure guarantee.
+
+Publish a policy-safe support matrix linking the exact profile, enabled workflows/classes, measured usable-memory/free-storage envelope, quality and timing results, sustained operating duration, security/retention outcomes and demonstrated fallback. Test offline/model loss, low battery, thermal/resource pressure, stop/silence, delayed results and manual completion without hidden cloud routing or loss of permitted saved state. A worker on another Device needs its own qualified endpoint/profile and existing route/Compartment checks; a same-Device worker remains an execution context unless separately admitted under §23.1. Ownership grants no disclosure authority. Only profiles passing all declared limits and mandatory security/retention gates may be operator-approved for those slices; material profile changes require affected rechecks. Label the selected configuration a tested sufficient profile among the tested candidates, with failures and limitations visible; infer no universal phone minimum or local-versus-cloud quality ranking. `UBU-Q0177` stays Open until a reviewed evidence-backed profile is selected; a protocol alone cannot close it. Lower-cost reach remains `UBU-Q0178`.
+
+**Inference runtime reuse qualification (`UBU-D0336`).** Extend the endpoint gate to the deployed runtime's effective process permissions and source-dependent state across jobs. Inventory prompt/KV caches, embeddings, decoded media, buffers, leased handles and scratch separately from verified read-only model weights. A warm process or shared weights grant no access to prior job context. Enforce §21.1.5's lifecycle before reuse; separately authorized retained artifacts enter a new job only through fresh broker access and current bindings. If safe reuse cannot be demonstrated, qualify an isolated per-job runtime or leave the affected mode unavailable.
+
+Run paired synthetic camera-and-voice jobs A/B under distinct grants, with B denied A's source and context. Put a unique synthetic detail in A and request it from B without supplying it. Exercise both job orders, ordinary completion, cancellation and source/policy revocation, crash/restart and resource pressure; include overlapping jobs only where concurrency is proposed. Inspect B's actual supplied context, runtime reads, result/artifact releases, cache/handle lookups and diagnostics for unauthorized A content or identifiers. Probe ambient filesystem, credential, camera/microphone and network access through the runtime's actual interfaces under deployment permissions; model refusal or a configured permission declaration alone cannot establish denial. Include an authorized control supplying the synthetic detail to B through the broker to verify the detector and permitted access path. Absence of a detail in generated prose alone cannot prove isolation.
+
+Record pinned fixture/grant versions, expected and observed access/release outcomes, runtime permission observations, reset/termination behavior and policy-safe evidence links in the qualification report. Every enabled reuse/concurrency mode must demonstrate the allowed control and zero unauthorized reads/releases in these fixtures; unobserved mandatory paths remain unqualified. Repeat the cold/warm and sustained workload measurements with the enforced isolation, reset and cache restrictions active, accounting for their time, energy and aggregate memory/storage costs. Publish limitations beside the support matrix. These fixtures supply no passing runtime, hardware selection or forensic-erasure result.
+
+**MVP hardware support coverage (`UBU-D0362`).** Select a set of qualified hardware/software profiles that collectively covers every mandatory capture/review slice in §4.2 (`UBU-D0339`): bounded laptop/desktop camera-and-voice, bounded phone capture/review with its selected inference route, and finite laptop/desktop realtime audio/video. For each required slice, the support matrix identifies the exact capture, review and inference Device profiles, any inter-Device route, enabled sources/classes, declared concurrency and session limits, passing whole-route evidence and operator approval bound to those revisions. Shared physical hardware may cover several slices; qualify the proposed combined workload or enforce and demonstrate the declared mode exclusions under `UBU-D0331`/`UBU-D0336`.
+
+Record pass, fail or missing evidence for each mandatory slice and each required endpoint/route gate. Operator-approved passing configurations may establish support for their qualified slices while incomplete coverage remains visible. Close `UBU-Q0177` only after the operator approves a complete support set with passing evidence for every mandatory slice; a bounded camera-and-voice result alone cannot establish the realtime slice. This clarifies hardware-selection completeness under the existing release scope and supplies no measured result or mobile planner/API selection.
+
+**Complete local processing route (`UBU-D0368`).** For each proposed §4.2 slice, extend the qualification profile with a stage-by-stage manifest of all enabled capture/preprocessing, OCR/vision, speech recognition, embeddings, inference and optional speech-output components, including delegated OS services. Bind each applicable stage to its implementation/model pins, execution Device/profile, effective permissions, input/intermediate copies, persistence paths and allowed destinations. Source-processing traffic stays on qualified endpoints and any selected authenticated encrypted, policy-authorized worker route. Keep package/model acquisition and separately authorized sync/export distinct; none authorizes cloud inference, hidden fallback or source-bearing telemetry.
+
+On the exact deployment with its egress restrictions active, exercise the frozen useful-outcome fixtures with Internet access available and blocked; preserve the selected permitted worker link in the latter condition. Also exercise unavailable local components, queued retries and restored connectivity. Inspect actual provider/service calls and network attempts/destinations for source content and intermediates, including services outside the main model process. Include a controlled denied-egress probe and, when selected, an authorized worker-transfer control to verify observation and enforcement. A successful networking-disabled run, a local API label or absence of a plaintext canary in encrypted traffic cannot establish connected-mode locality. Undeclared remote processing, unauthorized transmission or an unobserved required path withholds the affected mode; backend loss preserves permitted saved input and the existing manual route without remote substitution.
+
+Attach policy-safe manifest and observation evidence with pass/fail/missing stage dispositions to the support matrix. Measure the complete pipeline with its deployed restrictions active under the existing cold/warm and sustained trials, including every enabled stage's aggregate resource and retention costs. Apply affected rechecks when a stage, delegated provider, destination or enforcement configuration changes. These requirements supply no passing deployment or supported hardware; `UBU-Q0177` stays Open pending the existing complete-support-set evidence and operator approval.
+
+**Qualification bindings at use (`UBU-D0375`).** Bind enabled multimodal modes to the operator-approved profile and complete pipeline manifest. Before source acquisition and inference dispatch, compare the effective deployment with its required pins under `UBU-D0331`/`UBU-D0336`/`UBU-D0368` across every execution endpoint, including actual model identity, delegated providers, effective permissions and retention/egress controls. Record how each required binding is verified. Missing or mismatched required bindings withhold every dependent mode; a stable pathname, backend label or past passing result cannot establish a match.
+
+During each job, pin verified artifacts and enforcement settings or detect changes and invalidate affected work before further source access or result release. Recheck the job's qualification bindings at release. On missing or mismatched bindings, apply existing interruption, cancellation and retention rules: stop affected acquisition/output, reject late live results, preserve permitted saved state and keep immediate controls and the manual loop available. A shared component change affects all dependent routes. Changed bindings require affected rechecks and renewed operator approval before use; restored support never resumes capture or replays work automatically.
+
+Require actual-controller fixtures for an approved matching route, model replacement at the same path, changed delegated-provider/permission/egress settings, worker-profile mismatch, restart with stale approval and change between dispatch and result release. Verify observed source access, output suppression and dependent-mode unavailability, including useful manual completion. Repeat the existing cold/warm and sustained measurements with these controls active and publish their costs, failures and evidence in the support matrix. These requirements establish no supported deployment; `UBU-Q0177` remains Open.
+
+**Economically accessible local paths (`UBU-D0332`).** Compare two candidate routes for a bounded camera-and-voice slice under `UBU-D0331`:
+
+- **Existing single Device:** bounded still-image capture and push-to-talk audio, with smaller/quantized or task-specific local models capable of CPU inference, finite context and serialized inference jobs. Evaluate supported older hardware without assuming that age, nominal RAM or model size establishes eligibility.
+- **Existing personal worker:** capture and review on one Device, with bounded inference on an existing operator-owned laptop/desktop worker. Qualify both endpoints and the complete authenticated encrypted transfer route. Current Device trust, Compartment/source permissions and original consent, freshness, retention and job limits govern every copy; ownership or physical proximity grants no authority. Worker loss leaves a qualified same-Device route or useful text/forms.
+
+Each candidate uses legally locally runnable software/weights with disclosed licenses, installation downloads and fees, and requires no hosted inference, paid API credential or recurring model-service subscription. Dedicated accelerators and continuous streaming are optional for this evaluated slice; `UBU-Q0183` retains overall release scope and sequencing. Demonstrate same-Device operation with networking disabled and worker operation with Internet access blocked. Ordinary manual entry, exact correction, candidate review, admitted-state inspection and action recording remain available with models absent under §21.1.3.
+
+Before dispatch, show the selected route, enabled modalities, measured latency class, finite wait/context/media limits and fallback. Reduce resolution, frame count or context only within a qualified profile, retaining transform provenance and explicit missing coverage. Slower processing cannot extend raw-media deadlines or freshness, silently omit necessary detail, or weaken uncertainty, corroboration, review, admission or Plan certification. Unsupported work returns an explicit limitation and an eligible retry or manual route. Switching models, endpoints or sources requires fresh bindings and applicable consent; cost/resource pressure grants no routing authority.
+
+Extend `UBU-D0331`'s frozen useful-outcome rubric and real-device trials with a paired comparison of these routes on the same permitted §21.1.3 fixtures and declared workload. Include at least one CPU-only inference candidate and one existing-worker candidate; unavailable or ineligible candidates remain visible. Require a visible camera detail plus speech to produce a grounded reviewable candidate, exact correction/admission and a useful next action or explicit planning limitation. Report successful, corrected, unresolved, rejected and failed trials separately, plus total workflow time and operator setup, maintenance and correction effort. A text-only fallback cannot establish multimodal reach.
+
+Declare the comparison baseline, usage period/workload and evaluated cash, effort, energy and storage budgets before trials. Report incremental outlay for already-owned hardware separately from acquisition/refurbishment and replacement assumptions. Include necessary software/model fees, download/connectivity, measured workload energy, storage, secure upkeep and accessories for the whole route, including a worker. Price observations state date, region and currency; running-cost estimates state usage period, workload, rates and uncertainty. Distinguish measured outcomes, quoted prices and estimates; unknown required costs prevent a claim that the budget is met. Use "lower-cost" only for a specified comparator and matched useful workload, with accuracy, latency and effort tradeoffs beside cash savings. User-supplied budget scenarios establish an evaluated envelope, without inferring individual affordability or population reach.
+
+Publish costs, effort, qualified workflows/classes and failures alongside `UBU-D0331`'s support matrix. Select a path only after the operator reviews evidence that it passes the declared usefulness, resource, cost and mandatory security/retention limits. If no path qualifies, retain useful manual operation and the explicit multimodal gap. `UBU-Q0178` remains Open until an evidence-backed lower-cost path is selected; this protocol establishes no price, device minimum or supported configuration. `UBU-Q0177` and `UBU-Q0168` retain hardware and numeric-profile acceptance; CPU inference here selects no mobile planner or compute API under `UBU-Q0160`.
+
+**Entry cash and useful-outcome accounting (`UBU-D0337`).** Extend `UBU-D0332`'s comparison with explicit ownership scenarios: capture/review Device only, or capture/review Device plus an existing worker. Include the Device-only scenario even if its worker route is unavailable. Evaluate acquisition/replacement separately; an already-owned worker's zero acquisition outlay cannot be used in a scenario that must buy one.
+
+Before trials, declare finite entry-cash, cash-per-budget-period and total-horizon ceilings alongside the existing effort, energy and storage budgets. Entry cash includes every mandatory payment before the first useful multimodal outcome. Show subsequent payments in the period when due, including secure upkeep and necessary replacement under the declared assumptions. Amortization or unconfirmed resale proceeds cannot make a due payment fit. State the security-support and replacement assumptions over that horizon; continued use after an endpoint's declared maintained-security eligibility ends cannot be priced as a saving. Unknown required payments prevent a budget pass.
+
+For each measured workload, report all-attempt totals for run-related cash, energy and active operator minutes, including failures and retries, and divide each total by the number of useful multimodal outcomes. That denominator includes only successful or successfully corrected camera-and-voice workflows meeting the frozen rubric; keep those outcome counts separate. Manual-only completion after multimodal failure remains fallback and cannot enter the denominator. With zero qualifying outcomes, report per-outcome values as undefined and the workload as unqualified. Period estimates retain the observed outcome mix and disclose uncertainty; fixed entry, upkeep and replacement costs remain in whole-route totals.
+
+Add ownership prerequisites, entry/period payment schedules and ceilings, all-attempt totals, outcome denominators and per-outcome values to the cost/support matrix, with evidence links and pass/fail/unknown for each budget and mandatory gate. Select only for scenarios whose whole-route budgets and `UBU-D0331`/`UBU-D0336` qualification gates pass. Keep any no-worker multimodal gap visible. This extension selects no measured configuration or cost envelope; `UBU-Q0178` stays Open pending operator-reviewed results.
+
+**First-use setup and acquisition recovery (`UBU-D0363`).** For each eligible route in `UBU-D0332`/`UBU-D0337`'s comparison, add one first-use setup trial and one interrupted package/model acquisition followed by its documented recovery on the exact candidate hardware. Before trials, freeze the starting OS/security state, available storage and package/model inventory, installation path, connectivity/data allowance and any required helper Device or human assistance. Declare finite transferred-byte, first-use elapsed-time and active-effort limits alongside the existing cash, energy and storage budgets. Distinguish already-installed and packages/models-absent starting states; preinstalled trial artifacts cannot establish the latter's entry budget.
+
+Run setup through the first useful camera-and-voice outcome under the frozen rubric. Measure all transferred bytes including failed transfers and retries, operator/helper effort, wall time, energy and peak storage including downloads, unpacking, installed packages/weights and recovery copies. Bind results to package digests and the exercised instructions. Apply `UBU-D0331`'s installation/model-integrity checks before activation; incomplete or unverified acquisitions cannot become usable profiles. Record the interrupted-acquisition recovery separately; a supported full re-download is permissible when its measured costs and limits pass.
+
+Include mandatory helper resources and connectivity payments in the applicable entry/period totals, with recovery cost and its assumed frequency and uncertainty explicit in period estimates. Keep setup costs separate from `UBU-D0337`'s run-related totals and count only rubric-qualified multimodal outcomes. Publish evidence and pass/fail/unknown for each setup limit in the existing cost/support matrix. Failed or unknown required setup limits prevent selection for the affected starting-state/ownership scenario; passing setup alone cannot qualify inference or close `UBU-Q0178`. This specifies evidence collection without selecting a provisioning or maintenance-automation architecture.
+
+**Secure-upkeep feasibility (`UBU-D0369`).** Extend `UBU-D0332`/`UBU-D0337`/`UBU-D0363`'s comparison with one documented OS or runtime security-update cycle for each execution endpoint on each eligible route's exact hardware, plus interrupted update acquisition followed by its supported recovery. Before trials, freeze starting/destination versions, maintained-security eligibility, update instructions, available storage, connectivity/data allowance and required helper resources. Declare finite transferred-byte, route-downtime and active-effort limits within the scenario's period cash, energy and storage budgets. First-use installation alone cannot establish secure-upkeep feasibility.
+
+Measure all attempts through the first useful camera-and-voice outcome after installation/model-integrity checks and affected `UBU-D0331`/`UBU-D0336`/`UBU-D0368` requalification. Include downloaded bytes and retries, payments when due, operator/helper effort, energy, elapsed time with the affected multimodal route unavailable, and peak storage for coexisting installed, staged and recovery artifacts. Separate upkeep, recovery and requalification from first-use and run totals; include each cost exactly once in whole-route schedules and preserve `UBU-D0337`'s useful-outcome denominator. Recovery preserves permitted saved state and rechecks current Device/source/Compartment permissions and retention before resuming; reverting to a build whose maintained-security eligibility has ended cannot count as successful recovery.
+
+Publish evidence and pass/fail/unknown for each required upkeep limit by ownership/horizon scenario in the existing cost/support matrix. Period estimates disclose update/recovery frequency and uncertainty rather than treating the trial as a guarantee of future update availability. Failed or unknown required limits prevent lower-cost selection for the affected scenario; evaluate shorter horizons or budgeted replacement separately instead of pricing unsupported operation as a saving. Preserve the explicit no-worker gap. This adds evidence for secure upkeep and selects no maintenance-automation architecture or measured path; `UBU-Q0178` remains Open pending operator-reviewed comparative results.
+
+**Period workload feasibility (`UBU-D0376`).** Extend `UBU-D0332`/`UBU-D0337`'s comparison by freezing a demand schedule for each ownership/budget scenario before acceptance: a positive required number of rubric-qualified camera-and-voice outcomes per budget period, offered-request count/timing including bursts, finite completion and active-effort limits, and capture/review/inference endpoint availability and competing-use windows. Apply the same demand and frozen rubric to candidate routes and the named lower-cost comparator. Ownership alone cannot establish worker availability.
+
+Exercise a predeclared finite demand window covering the claimed bursts and availability boundaries on the exact route with its deployed qualification controls active. Reuse `UBU-D0331`'s trials where schedule/load match without reducing minimum counts or sustained durations. Apply `UBU-D0361`'s offered-request/retry accounting and `UBU-D0337`'s multimodal denominator: each requested outcome counts at most once, and manual-only fallback contributes none. Record attained useful outcomes, unmet requests, queue wait/backlog, total workflow time and all-attempt costs. Refusals, unavailable endpoints and unfinished work remain in offered demand; waiting cannot extend freshness, raw-media retention or job deadlines.
+
+Publish observed-window outcomes separately from period projections in the existing cost/support matrix. State projection assumptions and uncertainty for demand, endpoint availability, competing use and secure-upkeep downtime; projected completions are not observed outcomes. Record pass/fail/unknown for the required period useful-outcome target alongside every existing budget and mandatory gate. Selection requires both workload and whole-route budget passes for the same scenario; missing capacity evidence prevents selection. Lower demand, longer waits or additional hardware define separately evaluated scenarios. Preserve the explicit no-worker gap. This adds workload feasibility to cost acceptance and establishes no measured configuration, price or population reach; `UBU-Q0178` remains Open.
+
+---
+
+## 2. Core Principles
+
+### 2.1 User sovereignty
+
+The user is the final authority over what the user wants and what occurred.
+
+UbU may recommend, infer, estimate, warn, and automate, but it must not override user sovereignty.
+
+User overrides are authoritative, but not necessarily consistent. Two forms of consistency matter:
+
+- **Logistical consistency**: hard consistency required by the data model and planner.
+- **Philosophical consistency**: broader consistency between the user’s stated goals and actual behavior.
+
+UbU may reject or require repair of logistical contradictions. Philosophical contradictions are allowed and may be surfaced later through reporting.
+
+Example:
+
+- A user cannot maintain an active preference cycle such as `A > B`, `B > C`, `C > A`.
+- A user may state an Objective like “communicate more with X” and later ignore a message from X. That is philosophically meaningful, but not a data-model violation.
+
+### 2.2 Explicit value
+
+Value must be explicit in the UbU data model.
+
+Value is attached to **Objectives** through user-defined **Preferences**. Numeric “utils” may be derived for plan scoring, but these are transient computational artifacts, not canonical facts about the user.
+
+UbU should not expose derived utility as if it were the user's real value. User-facing value formation should rely on direct Preference statements, review, reflection, examples, and later correction.
+
+LLMs may estimate or suggest value-related structures, but AI-generated value is non-canonical unless accepted through UbU’s explicit model.
+
+#### 2.2.1 Preference calibration
+
+Phase 1 may use preference-calibration examples during onboarding, Calendar preview, and Log review. These examples describe common situations, likely emotional costs, likely emotional rewards, and plausible tradeoffs so the user can make more thoughtful Preference judgments.
+
+Examples are not canonical Preferences. They are prompts for self-reporting. A calibration example becomes canonical only if the user accepts, edits, or answers it in a way that UbU records as a Preference, Snapshot, Log entry, Objective annotation, or review note.
+
+Preference calibration should reduce shallow, reactive, or situationally distorted guesses without manipulating the user into a hidden value model. The user remains the final authority over Preferences.
+
+### 2.3 Explicit planning
+
+Planning must remain explicit and constraint-based.
+
+UbU should model:
+
+- Tasks
+- dependencies
+- preconditions
+- effects
+- Objectives
+- Preferences
+- UniverseState
+- Plans
+- Calendars
+- external events
+- decision/recalculation triggers
+
+LLMs may assist, but the canonical planning and decision logic must remain explicit and recalculable outside the LLM.
+
+#### 2.3.1 Life logistics, Resources, and Skills
+
+Real-life planning failures are often not time-allocation failures. They are readiness failures: the user lacks a document, tool, ingredient, credential, location, payment method, transportation option, quiet space, or embodied capability required to perform the Task.
+
+UbU therefore treats external prerequisites and embodied capabilities as planning-relevant predicates:
+
+- a **Resource** is something the user or another Identity must have access to or in the correct state;
+- a **Skill** is a rust-prone capability held by an Identity;
+- a **Technique** is a reusable procedure that can transform Resources, Skills, time, and attention into an Objective-serving result.
+
+Resource and Skill modeling is delayed from Phase 1 only because of the bootstrapping process. It is not conceptually peripheral. A minimal Resource/Skill-aware task-readiness layer is a Phase 3 candidate because it directly serves the core personal life-logistics product.
+
+**Government and public-resource symmetry.** Any institution that can constrain a user's plan may also provide Resources, permissions, remedies, or procedures that improve the user's plan. UbU must model both sides. UbU should not only surface regulations, permits, and constraints — it should also identify grants, subsidies, benefit programs, weatherization assistance, workforce training, legal aid, public infrastructure, hardship waivers, appeals, and other government- or community-supported Resources that may make a plan possible or cheaper.
+
+Many public Resources are conditionally unlockable: they become available only after the user completes prerequisite actions such as applying for a benefit, collecting required documents, filing a form, requesting an accommodation, or waiting for an enrollment window. UbU should model these as conditional Resource availability states and generate the prerequisite Tasks automatically.
+
+**Library and Community Resource Mode.** Libraries, tool libraries, makerspaces, public workshops, repair cafés, and community resource centers should be treated as Resource providers. A user can state a goal such as "fix small things around my apartment" and UbU can plan around library tool loans, local workshops, Skill acquisition Tasks, DIY projects using borrowed Resources, return deadlines, and future Skills unlocked. This supports the public-good, frugality, sustainability, and self-sufficiency narratives and democratizes access to Resources that were previously available only to those with money or social capital.
+
+**Expert-Guided DIY and Technique Commissioning.** UbU should not imply that users must personally master every Skill. For problems where the user lacks a Skill, there is a middle tier between generic guides and full-service labor: expert-guided DIY. The user submits evidence about their specific situation — photos, measurements, model numbers, symptoms, skill level, available Resources, risk tolerance. A skilled expert reviews the situation and returns a custom Technique Package: diagnosis, parts list, tool list, step-by-step instructions, safety warnings, and the conditions under which to stop and hire a professional. This is AI-orchestrated expert delegation that produces a custom executable Technique for the user's actual situation — not generic advice.
+
+### 2.4 Privacy-first architecture
+
+UbU is designed around privacy, local-first operation, compartmentalized data, multiple Identities, and user-controlled sharing.
+
+Sensitive data must not leak merely because structural planning metadata is useful.
+
+### 2.5 Affect-aware planning
+
+Human beings are not machines.
+
+In `user_mode`, affective state is part of the planning problem. Energy, stress, tiredness, mood, and related human limitations are constraints that planning must respect.
+
+UbU should not assume that users can simply execute arbitrary work because a schedule says they should.
+
+### 2.5.1 Human-complete planning quality
+
+UbU treats affect as a core part of planning, not a decorative wellness feature.
+
+A plan that ignores fatigue, stress, boredom, motivation, emotional load, recovery, and dignity is not merely incomplete. It may become actively misleading.
+
+A high-quality plan should:
+
+- produce fast feedback about success or failure;
+- make failure informative rather than humiliating;
+- suggest revision after failure;
+- respect the user’s dignity;
+- respect emotional and physical limits;
+- distinguish sustainable stretch from destructive pressure;
+- help the user grow beyond current limitations when appropriate;
+- remain recalculable when reality contradicts the model.
+
+The goal is neither comfort-maximization nor coercive productivity. The goal is humane self-governance: disciplined action that respects the user’s emotional and physical reality.
+
+For Phase 1, UbU models this as a derived `human_complete_plan_quality` assessment rather than a new first-class canonical object.
+
+Phase 1 plan-quality analysis is derived from the candidate Plan, current affect Snapshot, Task duration and success estimates, modeled affect deltas, Log history, and user overrides. It may be cached with Plan/risk-report artifacts, but it is recalculable and non-canonical.
+
+The minimum Phase 1 signals are:
+
+- `feedback_latency`: expected time until the Plan produces observable evidence through Task completion, Task failure, a blocked precondition, an affect Snapshot, a user override, or an External Event.
+- `checkpoint_coverage`: whether important work windows contain a near-term observation point instead of relying on end-of-day hindsight.
+- `affect_margin`: how close the Plan comes to configured energy, stress, tiredness, mood, and recovery limits.
+- `failure_pattern`: whether recent failures point to wrong estimates, missing dependencies, stale affect data, interruption, overload, or a changed Objective rather than a character judgment about the user.
+- `stretch_pressure`: a derived label of `comfort`, `sustainable_stretch`, or `destructive_pressure`.
+- `post_plan_state_delta`: whether completing the Plan is expected to leave the user better off, neutral, depleted, or at elevated risk despite nominal task completion.
+
+Informative failure is failure that improves the model: it shortens future feedback loops, reveals an unmodeled constraint, updates duration or success estimates, or changes the next Plan. Humiliating or demoralizing failure is indicated by repeated overload, repeated late discovery, avoidable public exposure, dignity-risking wording or presentation, or a pattern where the same user-limits are ignored after they have been observed.
+
+UbU should present failed execution as a failed plan assumption or changed world state unless the user explicitly records another interpretation. Suggested improvements should be framed as model repairs, constraint changes, smaller Tasks, added checkpoints, revised timing, recovery, clarification, delegation, or Objective reconsideration.
+
+**Phase 1 realization (`UBU-D0240`).** The `human_complete_plan_quality` assessment and a companion risk report are implemented as derived, recalculable artifacts computed in the orchestrator over the kernel's emitted signals (affect margin, rollout robustness and feasibility, skeleton failures) joined with store context (Task deadlines, Log history, affect Snapshot freshness, worker status). Risk findings are categorized (`deadline_risk`, `dependency_fragility`, `worker_bottleneck`, `stale_affect`, `affect_margin`, `destructive_pressure`, `post_plan_depletion`, `low_coverage`, `skeleton_failure`) with a severity and a blocking flag; `destructive_pressure`, hard deadline-infeasibility, and recommendation-path skeleton failures are blocking and drive recalculation. The affect signals (`affect_margin`, `stretch_pressure`, `post_plan_state_delta`) are derived behind a single `post_plan_affect_projection` seam from the kernel's affect margin; a per-task `affect_delta` input and a non-linear (clamped, sigmoid) forward affect trajectory, eventually kernel-owned, are deferred behind that seam.
+
+Sustainable stretch means a Plan asks for more than the user's current baseline while retaining near-term feedback, recovery margin, and a plausible improvement path. Destructive pressure means the Plan depends on overriding observed limits, lacks recovery, hides failure until too late, repeatedly requires success above observed capacity, or leaves the user worse off even if tasks are completed.
+
+Post-MVP work may add richer growth models, personalized baseline learning, longitudinal dignity and morale trend reports, and UI-specific coaching language. Phase 1 only needs derived assessment, risk-report findings, recalculation triggers, and non-blaming revision suggestions.
+
+### 2.6 Release Outreach Pipeline
+
+The Release Outreach Pipeline is an accepted future feature bundle with the tagline:
+
+> UbU should make every release explain itself.
+
+Release management should not stop at code, tests, changelogs, and deployment artifacts. For UbU-runs-UbU, every meaningful minor release should create a reviewable release outreach package when there is enough change to explain.
+
+A release outreach package is a derived artifact set attached to ordinary WorkItems, Logs, release artifacts, and export/projection gates. Phase 1 does not add a new canonical entity; it requires a structured package manifest, claim register, evidence/provenance index, reviewed text drafts, approved media references, privacy/export review, approval records, and a publication plan.
+
+Release outreach must be evidence-bound. Each public claim should carry a support label such as `implemented_behavior`, `mock_or_fixture_behavior`, `future_plan`, or `speculative_goal`, plus evidence refs when evidence is claimed. Public artifacts must not represent planned, fixture-backed, mock, or speculative behavior as implemented behavior.
+
+Screenshots, UI-test exports, fixture captures, and demo recordings are provenance-bearing evidence. They should record source workflow or worker, repo/build/test refs, fixture or live-data mode, visible Identity and Compartment exposure, redaction, hash, capture time, approval state, and the claims they support.
+
+Publication is gated by default. UbU may draft, assemble, render, and prepare communication artifacts automatically, but video rendering, platform upload, public posting, or external channel mutation require explicit human approval unless a project has configured a narrow trusted auto-publication rule.
+
+The Release Outreach Pipeline is not UbU-specific marketing glue. It is intended to generalize to project-management configurations through audience-specific communication Objectives for users, developers, maintainers, funders, internal stakeholders, customers, community members, or other audiences.
+
+### 2.7 First-person legibility
+
+UbU must be legible to users who do not think in programming, planning theory, or project-management jargon. The system may use explicit internal objects such as Objectives, Tasks, Plans, Logs, UniverseState, Compartments, and Snapshots, but the first user-facing experience should make the core loop obvious:
+
+1. What matters?
+2. What is true now?
+3. What should I do next?
+4. Why this action?
+5. What happened when I tried?
+6. What should change in the model?
+
+For Phase 1, first-person legibility is implemented through a minimal bootstrap interview and next-action focus mode. These are UX requirements over existing core objects, not new canonical ontology objects.
+
+Calendar preview and Log review are also first-person legibility requirements. They are notable Tasks that should run regularly so the user can inspect what UbU is about to recommend, compare planned behavior against actual behavior, correct mistaken assumptions, and decide whether Preferences, Objectives, Tasks, affect Snapshots, or estimates need revision.
+
+### 2.8 Dogfooding
+
+UbU should be useful for managing its own development.
+
+The Phase 1 MVP should coordinate UbU’s GitHub issues, pull requests, reviews, CI events, release milestones, design questions, and contributor interactions.
+
+### 2.9 LLM boundary
+
+LLMs are useful but bounded.
+
+LLMs may serve as:
+
+- planning oracles,
+- advisory systems,
+- screenshot/UI interpreters,
+- external workflow assistants,
+- value-reflection assistants,
+- document summarizers,
+- automation helpers.
+
+LLMs must not be the canonical real-time decision engine.
+
+Short-turnaround execution decisions should be computed by UbU’s explicit decision logic.
+
+---
+
+### 2.10 Associations and organizational introspection
+
+UbU models formal and informal organizations as **Associations**: Identity-scoped, perspective-bound coordination structures that emerge from Relationships, shared Objectives, commitments, norms, Logs, External References, and evidence.
+
+An Association is not assumed to be a globally objective object with an authoritative member list. A legal entity, GitHub organization, Discord server, website, conference event, or skill network may provide strong External References, but it does not eliminate the need for perspective-bound modeling and attestations.
+
+Organizational introspection is a first-class UbU feature. For individuals, UbU asks whether actual behavior matches stated Objectives and values. For Associations, UbU asks whether actual work, decisions, resource allocation, overrides, and undocumented structure match the Association's declared mission, values, and commitments.
+
+LLMs may help extract candidate AssociationAttestations from permitted evidence-bearing records, but the generated claims remain reviewable, provenance-backed, confidence-scored, and disputable.
+
+### 2.10.1 Extrospection and Relationship review
+
+Extrospection is the Relationship-level sibling of introspection and organizational introspection. It exists because Relationships have **epistemic asymmetry**: UbU can model the user's own perspective from first-party declarations, behavior, affect history, and reflection, but it can only maintain evidence-backed hypotheses about another party's perspective.
+
+Extrospection does not reveal, prove, or authoritatively attest to another person's inner state. It tests the user's counterparty-perspective hypotheses, declared Relationship scopes, trust assumptions, reciprocity assumptions, and boundary expectations against permitted Relationship evidence. Its UX should confront the user with evidence in tension, including supporting evidence, disconfirming evidence, ambiguity, and possible clarification paths, while preserving affect-aware framing and user sovereignty.
+
+Extrospection findings are candidate, reviewable state. They may inform introspection when the evidence primarily concerns the user's own behavior, but they must not silently mutate durable Relationship models before user review.
+
+An `ExtrospectionFinding` is an evidence-backed candidate over Relationship, Association, message, Log, Snapshot, External Reference, or user-provided evidence. The minimum record carries finding id, Relationship or affected Identity refs, finding kind, normalized claim shape, evidence refs or hashes, supporting and disconfirming notes, assumptions and ambiguities, confidence, Compartment refs, disclosure policy, provenance, review status, surfaced-at time, and correction, rejection, revocation, supersession, or archive links.
+
+Lifecycle states are `candidate`, `deferred`, `resurfaced`, `accepted`, `rejected`, `superseded`, and `archived`. New findings begin as `candidate`; a candidate may be accepted, rejected, deferred, superseded by a replacement candidate, or archived as no longer useful. A deferred finding becomes `resurfaced` only when materially new evidence, a user request, a policy-triggered review interval, or an accepted Relationship change makes the prior deferral worth reviewing again. Accepted, rejected, and superseded findings remain historical records and may later be archived according to retention policy, but archiving is not erasure unless a separate deletion or redaction rule permits it.
+
+Unreviewed, deferred, resurfaced, rejected, and superseded findings are not admitted state. They may influence review ordering, explanations, clarification prompts, risk warnings, and local candidate suggestions, but they must not mutate Relationship state, Association state, Preferences, trust or reputation scores, capability grants, disclosure policy, projection state, external messages, or external actions. They also must not be used as hidden planner constraints that treat the counterparty hypothesis as settled fact.
+
+Deferred findings resurface by linking the old finding, the new evidence or trigger, and the reason the prior deferral no longer controls. Resurfacing preserves the earlier decision and presents the combined evidence as a review item rather than quietly promoting the old candidate.
+
+Rejected findings retain a durable, privacy-minimized rejection key sufficient to suppress repeated bad framings: normalized finding kind, subject and scope, polarity or asserted value shape, evidence hashes or source fingerprints, model or extractor version, prompt/template digest when relevant, Compartment and redaction class, rejection reason or user correction, deciding actor, authority source, decided-at time, and retention or purge policy. The rejection record must not make the rejected claim true, exportable, or more widely visible merely because it is retained for deduplication.
+
+Accepted findings do not rewrite a Relationship object in place. Acceptance admits a separate scoped Relationship observation, annotation, Snapshot, Log entry, AssociationAttestation, or correction record with its own authority, provenance, confidence, Compartment, and effective interval. Corrected query views may use those admitted records under the ordinary Snapshot and attestation rules, but counterparty-perspective claims remain hypotheses unless backed by an accepted source with authority for the claim.
+
+Superseded findings point to the replacement finding or admitted record and leave the older framing queryable for audit, correction, and rejection-dedup purposes. Supersession is the ordinary path for narrowing an overbroad finding, replacing unsupported framing with a better one, or updating a finding after Relationship evidence changes.
+
+#### 2.10.1.1 Extrospection-to-introspection handoff
+
+**Phase 2 contract (`UBU-D0353`).** Offer a handoff when the review target is the user's own observed action, omission, reliance decision or interpretation practice within a named Relationship, and a useful self-review claim can be stated without assuming the counterparty's motives or inner state. "Primarily concerns the user" identifies the behavior to review, not sole causation or blame. Source finding acceptance is neither required nor sufficient: a permitted candidate, deferred, resurfaced or accepted finding can support a linked proposal; rejected, superseded and archived findings cannot be revived automatically. Respect existing deferral and suppression: a deferred source supports a new handoff only on an ordinary resurfacing trigger or explicit user request.
+
+Compare attributed behavior with applicable declarations, commitments, stated boundaries or evidence-calibration assumptions for the same domain, context and effective interval. Show supporting and disconfirming evidence, provenance, coverage gaps, uncertainty and plausible alternative explanations, including changed capacity or an inaccurate baseline. Missing/private time, negative affect, counterparty refusal and unequal effort alone cannot establish user failure. Ambiguous actor attribution or scope produces a clarification item, not an assertion that the user caused the problem.
+
+| Source assessment | Candidate introspection target |
+|---|---|
+| `ScopeAssessment` | The user's participation diverges from the applicable current-participation declaration. Ask whether this was intended evolution, a stale declaration or unwanted drift; desired participation does not replace the historical baseline. |
+| `BoundaryAssessment` | An attributed user action may cross a source-backed stated boundary, disclosure rule or authority limit. Review that action and the applicable limit; uncertain consent or boundary meaning remains unresolved. |
+| `ReciprocityAssessment` | A specific user commitment or scoped expectation conflicts with observed follow-through, or the user's demands exceed the stated arrangement. Preserve missing evidence and capacity explanations; unequal totals do not prove a debt or entitlement. |
+| `TrustCalibrationAssessment` | The user's reliance, disclosure, avoidance or interpretation of a named claim appears inconsistent with its evidence. Review verification and reliance choices without scoring the counterparty's trustworthiness or treating inferred intent as fact. |
+
+Affective or functionality findings qualify only when permitted evidence supports a specific user behavior or assumption for review; discomfort alone does not. A single incident is not a habit. Proposed repeated patterns require §12.2's user reconciliation before being used as patterns. Frame the prompt around the user's controllable choices and model repair, without character judgments, diagnosis or inferred Preferences. Preserve independently supported counterparty and shared-context concerns in Relationship review: a handoff neither excuses counterparty conduct nor converts it into the user's fault, and extrospection must not explain away the user's contribution by inventing counterparty motives.
+
+Represent the proposed introspection finding as a linked per-object `AdvisoryCandidate` under §21.2.1, retaining its existing lifecycle and privacy/provenance envelope. Its payload binds the source finding id/version, Relationship and user-controlled perspective Identity, behavior and normalized claim, domain/scope/effective interval, baseline refs/versions, supporting and disconfirming `EvidenceRef` versions, uncertainty/coverage limits and routing rationale. Source and target retain independent review histories; links and generated summaries confer neither acceptance nor independent corroboration. Deduplicate equivalent proposals across both review surfaces rather than creating another candidate when the user switches views.
+
+Before deriving, displaying or routing the proposal, apply §22.2.1's current `extrospection`, `introspection` and applicable `review` permissions to every contributing source and derivative. `require_review` needs operation-bound approval; `deny` or missing authority cannot be overridden by accepting the handoff. Bind approvals to source/finding/candidate and policy versions, actor/Device, purpose, selected representation and destination; recheck before reads, generation, result release and admission. Inherit every source's Compartment, disclosure, retention and routing restrictions, including metadata/existence restrictions; references, summaries and local processing cannot waive them or renew expiry. A denied handoff leaves the source review available only within its existing authority. A generic user-authored note remains possible without exposing denied content or existence. Cross-Relationship reuse, planning, sync, export and training gain no permission from routing; their existing gates still apply.
+
+Show the proposed self-review claim, why it belongs in introspection, permitted evidence/counterevidence and gaps, scope and any admission effects. Offer `Review in introspection`, `Keep in Relationship review`, `Defer`, `Reject handoff` and `Correct`. Opening or accepting the handoff agrees only to routing: the linked candidate remains `proposed` or `resurfaced` until separate explicit review accepts an exact scoped observation, annotation, Snapshot, Log correction or other ordinary canonical update. An optional Task or declaration/Preference change requires its own explicit acceptance; routing creates no obligation or external action. Bind admission to current versions and policy; stale proposals require fresh review. Source finding acceptance/rejection is a separate control, never implied by a routing choice.
+
+Reasons are optional, with `none_given` when omitted. Record declines through §17.0's `decision_recorded`/`suggestion_declined` and existing candidate review events. Retain only the permitted minimized suppression record under §21.2.1/`UBU-D0273`, distinguishing rejected routing from rejected claim. A routing rejection leaves the source disposition unchanged and suppresses equivalent handoff offers across both surfaces; a claim rejection cannot be evaded by relabeling it as introspection. Deferral follows ordinary resurfacing triggers. A materially changed replacement links prior rejection and explains new evidence or correction; new wording, model version, restart or view switching alone is insufficient. Rejection, deferral and nonresponse are not evidence of denial, wrongdoing or a Preference and cannot generate punitive follow-up Tasks.
+
+Before enabling this path, require fixtures covering each assessment above, ambiguous/mixed attribution, changed capacity/baselines, candidate versus accepted sources, routing without admission, independent source/target rejection and cross-surface suppression, materially changed replacements, source corrections/stale approvals, replay without duplicate candidates/effects, and denied/expired/mixed-Compartment evidence including denied existence. Verify unchanged canonical state until separate ordinary admission and policy-safe review/Log outcomes. These are required checks, not passing implementation evidence. Proactive prompting and rumination thresholds remain `UBU-Q0089`; general safeguard override UX remains `UBU-Q0101`. This contract does not expand Phase 1 bootstrap or next-action scope.
+
+### 2.10.2 Autonomy-first safeguards
+
+Relationship, extrospection, and RelationshipScopeTransition safeguards should be wise default-on recommendations, not paternalistic hard gates. UbU may strongly recommend pre-action introspection, extrospection, TrustCalibrationAssessment, power/vulnerability review, pacing review, graceful nonachievement planning, and manipulation-risk review. The user may bypass or disable advisory safeguards unless doing so violates a structurally enforceable hard boundary, a self-imposed user-configured required gate, or an unavoidable external provider/platform/legal constraint.
+
+UbU classifies safeguards into four governance categories:
+
+- **Product hard boundaries**: structural invariants UbU can enforce by data model, routing, authorization, validation, storage, provenance, or append-only audit mechanics. These include Compartment denials, privacy/export policy, data-access authorization, EvidenceUsePolicy restrictions, identity and Compartment isolation, integration authorization, provenance integrity, audit-record integrity, and immutable Log/correction rules.
+- **External hard constraints**: provider, platform, app-store, integration, or legal constraints that UbU must obey for a specific jurisdiction, distribution channel, or external surface. They are source-labeled constraints, not independent expressions of UbU philosophy.
+- **User-configured required gates**: self-imposed user or project policy gates that may block a workflow while enabled. They are recorded separately from product invariants and external constraints so documentation does not imply that UbU itself treats the underlying behavioral judgment as mechanically certain.
+- **Advisory behavioral safeguards**: fallible risk assessments such as manipulation, coercion, harassment, stalking, deception, power-asymmetry risk, rumination risk, relationship-transition ethics, or other behavioral misuse checks. These are generally default-on, uncertainty-transparent, user-overrideable, and introspection-relevant when bypassed.
+
+Hard-boundary documentation must name the specific enforced invariant and its enforcement mechanism. Behavioral-safeguard documentation should use language such as recommend, warn, ask for review, require user-configured review, or refuse a provider-forbidden action. It must not imply that UbU can reliably prevent behavioral misuse, illegal conduct, or harm merely by classifying user intent.
+
+### 2.11 Cloud LLM provider boundary
+
+Cloud LLMs are optional execution providers, not the canonical UbU brain.
+
+The core model should support provider-neutral routing across local model providers, user-configured BYOK cloud APIs, user-owned remote workers, optional UbUCorp managed gateways, and future compatible providers. External/cloud routing must remain governed by Compartment policy, context minimization, redaction where appropriate, cost policy, provenance, and user-visible disclosure.
+
+Local-first operation remains the philosophical baseline. Cloud LLM use may improve performance and scalability, but it must not become a hidden dependency of the FOSS core or a way to bypass `no_cloud_llm` Compartments.
+
+The minimum provider-neutral model is an `LLMProviderDescriptor` plus a routed invocation envelope. Provider descriptors identify `provider_id`, `provider_class`, `endpoint_or_worker_ref`, execution location, operator, region or jurisdiction when known, supported models, modalities, context window, structured-output and tool-use capabilities, safety behavior, retention/training/disclosure profile, cost and rate-limit metadata, credential reference kind, default-enabled state, and user-visible name. Provider classes are `local_process`, `byok_cloud_api`, `user_owned_worker`, `ubucorp_managed_gateway`, and `third_party_compatible`.
+
+Provider adapters should expose the same narrow interface regardless of backend: list available models and capabilities, estimate cost and context fit, prepare a minimized request, invoke or stream completion, cancel when supported, and return usage, model, provider, and provenance metadata. The adapter interface normalizes execution; it does not erase trust-boundary differences.
+
+An `LLMRouteRequest` records purpose, actor Identity, related Task/Objective/workflow refs, required capabilities, candidate provider policy, cost and latency limits, ContextBundle or source refs, required output schema when any, review requirement, and requested advisory use. An `LLMRouteDecision` records the selected provider and model, local/internal/external/cloud boundary classification, Compartment policy result, redaction and minimization summary, estimated cost, user-disclosure text, approval state, and Log refs for allowed or denied routing.
+
+Compartment policy is evaluated before context assembly and again before provider invocation. Content from a `no_cloud_llm` Compartment cannot be sent to cloud provider classes, including BYOK cloud APIs, UbUCorp managed gateways, or third-party compatible cloud providers. Content from a `no_external_export` Compartment cannot be sent to external providers, remote workers, managed gateways, or third-party services except as redacted structural references that expose no protected payload. `local_only` content is limited to eligible local Devices and local providers. A capability grant, provider setting, or user approval cannot override these hard Compartment denials.
+
+Cloud routing requires a minimized `ContextBundle` or equivalent envelope that records purpose, source object refs, Compartment refs, Identity and Association refs exposed, destination provider, model ref, data categories exposed, redaction policy, minimization notes, retention policy, user-visible summary, creation time, expiry when applicable, and downstream candidate refs. Raw payloads should be replaced with references, summaries, hashes, or redacted structural fields whenever the task can still be performed.
+
+BYOK credentials are stored as scoped credential references, not embedded in provider descriptors, ContextBundles, prompts, Logs, or exported artifacts. A credential may be scoped by provider, account, model family, Identity, Compartment, workflow, cost budget, and Device or worker. The default storage target is the local instance or OS/device secret store; a user-owned worker may hold its own credential if explicitly configured. Credential rotation and revocation preserve audit continuity through credential version refs without exposing the secret.
+
+UbUCorp managed inference is represented as one provider class, not as privileged protocol authority. It must use the same provider descriptor, routing envelope, Compartment gates, disclosure, cost controls, provenance, and output admission path as any other cloud provider. The FOSS core must remain useful when the UbUCorp provider is absent.
+
+Before or at execution time, any workflow that uses a cloud or external LLM must disclose the provider, model or model class, operator, local-vs-cloud status, destination region when known, whether BYOK or UbUCorp-managed credentials are used, data categories and Compartments exposed, retention/training profile, estimated cost when available, and the fact that output is advisory until admitted through UbU validation and review. Users may grant per-run, session, workflow, or policy-based approval only when Compartment policy allows it.
+
+---
+
+### 2.12 Context-rich messaging and legacy communication upgrade
+
+UbU should treat messages as planning-relevant communication events, not merely flat text strings.
+
+A normal WhatsApp, SMS, Discord, IRC, Slack, Matrix, or email message often lacks explicit context. The context exists in the sender's intent, the recipient's Relationship history, the channel purpose, the Association involved, the current Objective, the implied Task, the expected response time, and the consequences of ignoring or delaying the message.
+
+UbU should eventually support **context-rich asynchronous messaging** in which a message may carry a bounded metadata envelope: message kind, topic, related Objective or Task, related Association, priority, interrupt recommendation, response expectation, assumptions, ambiguities, provenance, and disclosure policy.
+
+For Phase 3, a minimal version of this is a premier feature because it allows a receiving UbU instance to decide whether the message should interrupt an existing Plan, become a Task, update an Objective, or wait for a normal communication-review window.
+
+Legacy-system integration can still provide value before native UbU-to-UbU messaging exists. UbU may ingest flat legacy messages and use a structured extraction layer to generate candidate planning state. When both parties have UbU, legacy transports may be upgraded by attaching, linking, or side-channeling a UbU Message Context Envelope while preserving the normal human-readable legacy message.
+
+This metadata must be intentionally bounded. UbU should not leak private Relationship history, hidden Objectives, private Association assumptions, or sensitive Compartment contents simply because the receiver would benefit from richer context.
+
+### 2.13 Realtime and agentic AI boundary
+
+Local camera-and-voice perception is the primary interaction surface and part of the MVP release (`UBU-D0292`, amending `UBU-D0132`). Realtime multimodal models remain replaceable perceptual/extraction backends: they may listen, speak, watch, transcribe, translate, detect interruptions, monitor Task progress, assist meeting capture, or generate candidate UI, but they do not become UbU's authoritative planner. Text and forms remain available, and primary interaction never implies continuous-capture consent.
+
+UbU distinguishes **model-time awareness** from **planner-time semantics**. A model may notice elapsed time, silence, overlapping speech, or changed conditions; UbU decides whether those observations update a Task, Log, Snapshot, Calendar, Objective, or recalculation trigger.
+
+Realtime/discovery functionality must be mode-bound and visible. The user should know whether UbU is off, text-only, in a voice session, in active Discovery mode, in meeting/logging mode, local-only, or cloud-assisted.
+
+### 2.14 LLMs, structured outputs, and memory
+
+LLMs are replaceable cognitive backends. They may interpret, summarize, propose, critique, classify, transcribe, generate fixtures, or call tools, but accepted state remains typed, scoped, provenance-bearing, and correctable.
+
+Structured output is not sufficient for state admission. A schema-valid object is still a candidate until UbU validates semantics, Compartment policy, provenance, conflicts, and user-review requirements.
+
+UbU memory should be explicit objects such as Preferences, Objectives, Identities, Associations, PlanningConstraints, TaskPatterns, AffectPatterns, Snapshots, Logs, External References, and Attestations. Vague assistant memory does not replace the UbU data model.
+
+### 2.15 MCP-style integration boundary
+
+UbU should be both an MCP-style client and an MCP-style server.
+
+As a client, UbU may connect to tools, local services, repositories, calendars, email, files, model providers, and agent services. As a server, UbU may expose narrow capabilities such as candidate Task creation, Plan-summary reading, Log-candidate submission, clarification requests, Plan-repair proposals, Objective-status queries, and AssociationAttestation candidates.
+
+Every tool surface is bounded by Identity, Compartment, capability grant, Objective scope, operation kind, time window, provenance, and review policy. External agents should usually submit candidates rather than mutate canonical state directly.
+
+### 2.16 Delegation Substrate
+
+The **Delegation Substrate** is the near-term model for preparing Tasks for delegation. It formalizes purpose, executor, authority, expected output, evidence, privacy scope, constraints, review, and failure/escalation path.
+
+Delegation Substrate is useful even when the user performs a Task solo. A self-performed Task can still benefit from a clear statement of why the Task matters, what authority or context applies, what output is expected, and what evidence would prove completion.
+
+The full Skill Barter marketplace is not an MVP requirement. MVP-relevant work should implement the primitives that make future delegation and marketplace features possible without operating a public marketplace.
+
+### 2.17 General Contractor and Skill Barter direction
+
+A **General Contractor** is an Identity, Agent, or Association delegated authority to coordinate multiple subordinate executors toward an Objective or Container of Tasks. The role is a first-class coordination specialization, not merely another worker label.
+
+The **Skill Barter marketplace** is a future marketplace direction and EthConf outreach hook, especially for cypherpunk/privacy-oriented audiences. It signals voluntary coordination, sovereign identity, privacy, open markets, FOSS contribution, pseudonymous capability, and lawful user-controlled settlement references.
+
+Skill Barter should connect to future Ethereum-aligned privacy technologies such as FHE, ZK, secure compute, private reputation, and selective disclosure while avoiding token-first, speculation-first, illicit-market, or exploitative labor framing.
+
+### 2.18 Context assembly and background agency
+
+Context assembly is a privacy-relevant act. UbU should track why a context bundle was assembled, which objects and Compartments it included, which Identities or Associations it exposed, where it was routed, how it was minimized, and which downstream candidate updates it supported.
+
+Computer-use agents and background processes are high-risk actors because they may operate credentials, browsers, files, APIs, money, privacy budgets, and external systems. They require authority scopes, audit trails, prompt-injection exposure tracking, rollback or mitigation paths, and explicit notification/escalation policy.
+
+The long-term UX should evolve into a **state-transition cockpit** rather than chat plus calendar. The Phase 1 one-next-Task loop remains the narrow proof; later UIs should help the user inspect and approve state transitions such as Plan repairs, Log corrections, Delegation Substrate packets, agent actions, AssociationAttestations, and external projections.
+
+### 2.19 Directional authority
+
+Authority and intent originate at the individual and flow outward into coordination, never inward (`UBU-D0220`). This is the line between a legitimate social outgrowth of self-governance and self-governance absorbed into a coordination platform. From the schema's point of view the two look almost identical — the same Objectives, Associations, and Delegations — and only the direction of authority distinguishes them. Naming the invariant is what keeps the multi-scale coordination picture (§32) legible as UbU rather than as scope creep wearing UbU's vocabulary.
+
+---
+
+## 3. Model-committee dogfooding
+
+UbU may use model-committee automation to help maintain its own design process.
+
+The model committee is not the canonical decision engine. It is an advisory Automation Worker pattern that can:
+
+- read the canonical design repo,
+- identify unresolved questions,
+- propose answers,
+- critique alternatives,
+- generate candidate changesets,
+- run consistency checks,
+- estimate MVP readiness,
+- rank remaining open questions,
+- identify follow-up questions.
+
+Accepted design state exists only when committed to the canonical design repo.
+
+Question rankings are derived planning metadata. They may guide the next committee run, but they are not canonical design truth.
+
+Model-committee automation has three expected lifecycle modes:
+
+1. **Pre-MVP:** design-freeze assistant.
+2. **MVP dogfooding:** repo-maintenance and planning worker.
+3. **Post-MVP:** continuous design-governance assistant.
+
+The goal is to accelerate implementation, not to create unlimited pre-implementation design work.
+
+Model-committee automation is bounded by the Phase 1 design automation stop rule in `UBU-D0175`. Broad pre-MVP design expansion no longer blocks Phase 1; further design work may block implementation only when it is required for a concrete implementation slice, an accepted hard invariant, a needed contract, or avoidance of an irreversible schema contradiction.
+
+The first implementation of this process is intentionally constrained by the v0.1 restrictions recorded in `DECISIONS.md`. The accepted v0.2 direction expands the bootstrap loop with Claude Code CLI, frontier cross-scoring, disagreement flags, schema-native structured output, and operator-run artifact publication while preserving the advisory authority boundary.
+
+### 3.0 Current dogfooding status
+
+`model-committee v0.1` is the first runnable bootstrap artifact for UbU’s dogfooding process.
+
+It is not the full UbU planner, but it exercises the recursive project-governance loop: parse canonical state, check consistency, select answerable work, generate candidate changesets, score them, validate patches, and produce reviewable artifacts.
+
+This establishes active pre-MVP dogfooding while preserving the rule that accepted design state exists only when committed to the canonical design repository.
+
+The current strategic emphasis is implementation-first Phase 1 dogfooding: use visible dogfooding, contributor recruitment, and prototype-funder discovery to accelerate the trunk of UbU rather than to expand design philosophy indefinitely.
+
+### 3.1 v0.1 Codex-first provider model
+
+`model-committee` v0.1 uses Codex CLI as the primary model provider.
+
+The runtime calls `codex exec` for:
+
+- primary work proposal generation;
+- work scoring.
+
+Codex outputs are schema-constrained. Prompts are passed through stdin. Final responses are written to JSON files. JSONL event streams and stderr output are preserved in run logs.
+
+Codex is used only as a proposal and scoring provider in v0.1. It must not directly mutate canonical repo files. It produces JSON work proposals and score results. Patches are validated and selected by `model-committee`, then written as review artifacts.
+
+Every runtime Codex call must pass `--skip-git-repo-check`.
+
+`model-committee` does not pass deprecated `--disable web_search` flags. If Codex web search must be disabled, that is handled through Codex configuration or profile state outside `model-committee`.
+
+Local Ollama models remain secondary work proposal providers. They provide local diversity, dissent, fallback, and offline review, but Codex is the required scoring provider for automatic patch selection in v0.1.
+
+### 3.1.1 v0.2 Claude Code and cross-scoring provider model
+
+`model-committee v0.2` adds Claude Code CLI as a second frontier provider for both work proposal generation and scoring.
+
+The v0.2 provider model is not raw majority voting. It is cross-scored adversarial review:
+
+- Codex may generate work proposals.
+- Claude Code may generate work proposals.
+- Claude Code scores Codex-authored proposals.
+- Codex scores Claude-authored proposals.
+- A provider's self-score may be preserved as diagnostic metadata, but it does not count as quorum evidence.
+
+Claude Code should use schema-native structured output through `--json-schema`. The v0.2 target environment uses Claude Code CLI `2.1.146`, which supports that flag. Claude output parsing should therefore read the schema-conforming `structured_output` field from the CLI JSON envelope when `--output-format json` and `--json-schema` are used. Prompt-only JSON extraction is a compatibility fallback, not the primary path.
+
+Claude Code is invoked as a subprocess provider. `model-committee` itself still must not call Anthropic APIs directly. The explicit boundary is that approved provider CLIs may perform their own network/API calls according to their configured upstream authentication and billing, while `model-committee` owns orchestration, prompts, schemas, validation, manifests, logs, and review artifacts.
+
+Claude tool authority should be restricted explicitly. The default scripted schema-output call should use no tools, or `--tools Read` only when file inspection is required. `--allowedTools` alone is not a sandbox boundary because it controls permission prompts, not the total available tool set.
+
+v0.2 manifests and reviews should include a score matrix with author provider, scorer provider, proposal ID, score, validity, rationale, risks, and required fixes. Disagreement is signal: a large score gap between Codex and Claude Code should not be hidden inside a single aggregate score.
+
+v0.2 automated selection requires at least one valid work proposal, at least one valid cross-score from a different frontier provider, no hard validation failure on the selected patch, and no critical disagreement flag unless manually overridden outside automatic selection. Default thresholds are a frontier score gap of 25 or more points, selected score below 70, selected patch validation failure, or no valid frontier cross-score. A dedicated human-review-required exit code, provisionally `9`, should distinguish quorum/disagreement review from invalid selected patch failure.
+
+`review.md` should include an operator-run final step for publishing a run directory to the sibling `../model-committee-artifacts` repository. `model-committee v0.2` should generate these commands but must not auto-push or mutate remote GitHub state.
+
+### 3.1.2 Model-committee run log and provenance format
+
+A `model-committee` run log is a filesystem run directory plus a manifest. The log is derived state, but it must be sufficient for a human reviewer or deterministic fake-provider test to reconstruct what canonical inputs, prompts, schemas, provider outputs, validations, scores, and selected artifacts existed at selection time.
+
+The minimum v0.1/v0.2 run directory preserves:
+
+- `manifest.json` with run identity, schema version, tool version, base commit, working-tree state, selected question metadata, provider configuration summaries, artifact paths and hashes, proposal records, validation results, score/quorum results, selection result, exit code, timestamps, and publication status.
+- `inputs/` snapshots of `DESIGN.md`, `DECISIONS.md`, and `OPEN_QUESTIONS.md`, plus hashes and the base commit used for the run.
+- `schemas/` copies or hashed references for every schema used to validate proposals, score results, manifests, provider metadata, and review artifacts.
+- `prompts/` for every provider invocation, including role, phase, template or source hash, question ID, schema ref, provider ID, model name, and prompt text.
+- `raw/` provider artifacts, including Codex JSON outputs, Codex JSONL event logs, Claude Code JSON envelopes, Ollama raw responses, stdout/stderr, timeout and exit-status records, and usage or cost metadata when available.
+- `parsed/` normalized proposals and scores, including extracted Claude `structured_output` payloads, JSON validation results, parse errors, provider failure records, and repaired or rejected candidate payloads.
+- `patches/` with one patch file per proposal, patch validation status, selected patch copy, and any mechanical validation diagnostics.
+- `scores/` with the score matrix, cross-score records, self-score diagnostics when retained, disagreement flags, quorum decision, selected proposal ID, and human-review-required reason when applicable.
+- top-level `selected.patch`, `commit_message.txt`, and `review.md`.
+
+Provider invocation records must include `invocation_id`, provider ID, provider class, model name or alias, phase, command/argv shape with secrets redacted, timeout, start and end timestamps, exit status, stdout/stderr artifact paths, raw output path, parsed output path, schema path or hash, validation result, and failure class when applicable. They must not store API keys, bearer tokens, credential files, private environment dumps, or unredacted secrets.
+
+v0.2 review artifacts should expose the score matrix, disagreement flags, quorum result, selected patch validation status, selected score, cross-score provenance, and the operator-run artifact-publication commands. The commands are part of the review artifact and must not be executed automatically.
+
+### 3.1.3 Public dogfooding artifact policy
+
+Public dogfooding artifacts should publish a sanitized review package, not the complete private run log by default. The public package is evidence that the loop is real and reviewable: canonical inputs led to provider proposals, validated patches, cross-scores, quorum or disagreement outcomes, human review, and a later canonical commit when accepted.
+
+Default public artifacts are:
+
+- `review.md`, including run ID, base commit, selected question, selected proposal summary, validation result, score matrix summary, quorum or disagreement result, failed-provider summary, and publication commands.
+- `selected.patch` and `commit_message.txt` when a candidate exists.
+- `manifest.public.json` or an equivalent redacted manifest containing hashes, provider/model IDs, artifact paths, scores, validation status, selected proposal ID, exit code, and links to the accepted commit, Issue, or PR when available.
+- Score-matrix and validation summaries sufficient to reproduce the selection judgment without exposing full prompts or private reasoning.
+
+The complete local run directory may be archived outside the design repo. Public publication must exclude secrets, private environment dumps, credentials, private chain-of-thought, unsafe provider text, unredacted raw prompts when they contain sensitive context, and raw provider logs that are not needed for public review. Redacted raw artifacts may be published only when they help diagnose a run and pass the same artifact-safety check.
+
+Successful, failed, and human-review-required runs should all be publishable. Failed runs should be labeled by failure class, such as parse failure, invalid patch, no quorum, provider timeout, or critical disagreement, and should explain the next review action. This improves credibility when failures show bounded authority, preserved evidence, and no silent state mutation.
+
+GitHub connection is by reference, not automatic mutation. A public artifact should name the related open question, Issue, PR, accepted decision, selected patch, and final commit when available. `model-committee` may generate links and operator instructions, but opening PRs, pushing artifacts, and accepting canonical design changes remain human actions.
+
+### 3.2 Changeset-based work phase
+
+Model-committee automation should make implementation explicit.
+
+After a selected question or problem is chosen, models may be asked to produce concrete changesets. A changeset may be a documentation patch, code patch, schema patch, or other explicit repo-state transition artifact.
+
+Other models, or a designated scoring model, then score those changesets. The best changeset is selected and written as reviewable artifacts such as:
+
+- `selected.patch`
+- `commit_message.txt`
+- `review.md`
+- run logs
+
+This prevents implementation from being hidden inside an external editor agent and makes the committee loop applicable to documentation changes, code changes, bug fixes, and future UbU implementation work.
+
+VS Code or another editor may still be used for human review, but it is not part of the canonical committee loop.
+
+The accepted work-phase contract is intentionally mechanical. A work proposal is a schema-validated envelope containing provider identity, model name, selected question or problem ID, base commit, summary, rationale, changed-file list, a raw unified diff, suggested commit message, validation notes, declared new questions, declared resolved questions, declared decisions, and a human-review flag. The patch is the authoritative changeset; prose summaries are explanatory only.
+
+Before scoring, `model-committee` validates the proposal envelope, base commit, allowed file set, referenced question and decision IDs, patch syntax, patch applicability against the recorded base snapshot, and any work-item-specific semantic checks. For current design-document work, the v0.1 writable set is limited to `DESIGN.md`, `DECISIONS.md`, and `OPEN_QUESTIONS.md`. Later code, schema, fixture, and bug-fix work generalizes by declaring an allowed path set plus validators, tests, and artifact expectations for the selected work item.
+
+Only mechanically valid proposals are eligible for automatic selection. Invalid proposals are retained in logs with diagnostics, but they are not quorum evidence. If a selected proposal later fails patch validation, automatic selection fails rather than silently applying a different patch; the run writes review artifacts and uses the invalid-selected-patch failure path.
+
+Work scoring considers at least correctness against the selected question or problem, consistency with accepted decisions, mechanical validity, minimality, reviewability, risk and reversibility, validation or test adequacy, maintainability, and whether the changeset preserves model-committee authority boundaries. Score records must name required fixes and validation assumptions. Self-scores may be retained as diagnostics, but only non-self scores count for quorum evidence. v0.1 uses Codex scoring over valid Codex and Ollama proposals; v0.2 requires frontier cross-scoring between Codex and Claude Code as described above.
+
+`model-committee` v0.1 and v0.2 do not automatically apply patches, commit locally, push artifacts, open pull requests, or mutate GitHub. A human operator may apply `selected.patch`, inspect `review.md`, rerun appropriate checks, and create a normal local commit using `commit_message.txt` as a suggestion. Any future automatic local commit path requires a later accepted decision with explicit clean-worktree, validation, and approval rules.
+
+### 3.3 Prioritized recursive loop
+
+Model-committee runs use a prioritized recursive loop:
+
+1. **System-wide consistency check** verifies that the current project state is coherent.
+2. **Question/problem prioritization selection** chooses the next work item only after consistency is known.
+3. **Work** produces and scores concrete changesets.
+
+Each run should record loop state in its manifest or review artifact: base commit, canonical input hashes, consistency status, blocking failure IDs, warning IDs, selected loop mode, selected work item, provider/version baseline, and whether any derived scores were reused or invalidated.
+
+System-wide consistency checks run before prioritization and before ordinary work. They are triggered by:
+
+- a new base commit, merge, rebase, checkout, or human-applied patch that changes canonical files;
+- a directive decision or other direct edit to `DECISIONS.md`;
+- any edit to `DESIGN.md`, `DECISIONS.md`, `OPEN_QUESTIONS.md`, or `PLANNING_KERNEL_CONTRACT.md`;
+- prompt, schema, validator, quorum, provider-weight, provider-config, or model-committee tool-version changes;
+- enabled LLM model, model-alias, or provider capability changes;
+- Codex CLI, Claude Code CLI, Ollama, or other approved provider CLI version or behavior changes;
+- explicit operator request, scheduled audit, doctor run, or prior run ending with consistency, quorum, or validation failure;
+- derived-document changes when derived-document consistency checks are enabled.
+
+Hard consistency failures block ordinary prioritization and ordinary work. Hard failures include missing or unparseable canonical files, duplicate question or decision IDs, malformed question metadata, dependency references to missing questions, dependency cycles, invalid `Resolved by` references, solved/decomposed/deferred/superseded status contradictions, selected-work dependency violations, patch-base mismatch, forbidden-path proposals, and canonical input changes after the recorded consistency snapshot.
+
+Warnings do not block prioritization when they cannot invalidate the selected work item. Warnings include stale derived documents, unscored or `TBD` ranking fields, optional provider failures when quorum remains satisfiable, nonblocking provider version drift, stale historical scores, and derived artifact publication gaps. Prioritization may run with warnings only when the warning list is recorded and stale scores are excluded from automatic selection.
+
+When hard failures exist, the next selectable work is consistency repair, decomposition, or diagnostic work for those failures. A consistency failure should be converted into a problem record with stable failure key, severity, affected files or object IDs, evidence, suggested repair, and whether a human decision is required. If the repair is mechanical and inside the current allowed file set, model-committee may solicit repair patches. If the repair exposes an unresolved design choice, it may create or update an open question; new MVP blockers must satisfy the `UBU-D0175` blocker-certificate rule.
+
+Ordinary work may proceed against a known inconsistency only when the selected work item repairs or narrows that inconsistency, declares the relevant failure IDs, avoids relying on invalid derived ranking, and reruns consistency after the candidate patch. It must not mix unrelated design answering with consistency repair unless both are necessary for the same failure.
+
+LLM model updates and provider CLI updates do not retroactively change committed canonical design state or historical run logs. They do invalidate reusable derived rankings, readiness estimates, and score evidence that depend on the old provider baseline. Before automatic selection reuses any such artifact, model-committee must rerun consistency and, when the selected proposal depends on old scores, rescore or require human review.
+
+Future integrated UbU Automation Worker behavior should map this loop to ordinary worker semantics: consistency checks are high-priority assigned work; repair outputs are mutation or patch candidates; canonical state changes only after parent validation and human repository review where required.
+
+### 3.4 Consistency requirements
+
+System-wide consistency checks should include both document consistency and logical consistency.
+
+For `model-committee`, consistency checking should verify at least:
+
+- canonical files exist and are parseable;
+- question IDs are unique;
+- decision IDs are unique;
+- question dependencies point to existing questions;
+- question dependencies do not contain cycles;
+- `Resolved by` fields point to existing decisions or are explicitly unresolved;
+- solved, decomposed, deferred, or superseded questions are marked consistently;
+- question metadata satisfies the declared schema;
+- derived documents do not contradict canonical files when derived-document checks are enabled.
+
+A question should not be selected for ordinary answer/work execution if it has unresolved dependencies, unless those dependencies are answered in the same work item.
+
+Blocked questions may still be selected for decomposition work when decomposition can produce replacement questions with fewer, simpler, or no dependencies.
+
+### 3.5 Direct project directives
+
+The UbU project may receive direct project-owner directives that are appended to `DECISIONS.md` as accepted decisions.
+
+These directive decisions are treated as canonical once committed.
+
+Directive decisions are a “word of God” mechanism for project governance, but they are still represented as explicit repo state rather than hidden chat context.
+
+If a directive decision creates inconsistency, the next system-wide consistency check should detect it and convert the inconsistency into a problem report, question update, or work item.
+
+### 3.6 Decomposition and design-burden reduction
+
+Model-committee should not treat every increase in open-question count as failure.
+
+A hard, ambiguous, or blocked question may be validly split into multiple simpler questions when the replacement questions are clearer, narrower, lower-risk, or easier to automatically answer.
+
+This is especially valuable when a blocked question can be decomposed into replacement questions where at least one replacement question has fewer dependencies, simpler dependencies, or no dependencies.
+
+The relevant metric is unresolved design burden, not merely raw open-question count.
+
+For derived ranking, unresolved design burden combines dependency burden, ambiguity burden, automation burden, and implementation burden. Dependency burden includes unresolved dependency count, dependency depth, and whether a dependency blocks Phase 1 work. Ambiguity burden includes mixed decision types, vague scope, and missing acceptance criteria. Automation burden includes automation-likelihood, validator availability, risk, and human-involvement class. Implementation burden includes whether the question blocks a concrete Phase 1 slice, hard invariant, needed contract, or persistent schema choice.
+
+A decomposition is valid when replacement questions preserve the parent intent, are individually narrower, include dependency and lineage metadata, and reduce total estimated burden. The strongest decomposition creates at least one immediately answerable replacement question.
+
+A decomposition is bad when it creates more, harder, vaguer, more coupled, or lineage-free questions.
+
+A decomposition is good when it exposes smaller answerable units and improves future automation.
+
+Replacement questions should link to the original with `Decomposes: UBU-Qxxxx` or equivalent metadata once parser support exists. Until decomposed-status metadata is parser-supported, parent questions should remain open unless an accepted decision also resolves the parent; resolved parent questions are tombstoned normally.
+
+### 3.7 Answerability-first prioritization
+
+Question selection should use answerability as the first gate.
+
+A question is eligible for ordinary work only if:
+
+- it has no dependencies;
+- all dependencies are solved;
+- or all dependencies are being answered in the same work item.
+
+Answerability is a hard gate for ordinary answering, not for decomposition work. For ordinary work, unresolved dependencies make the question ineligible unless included in the same work item. For decomposition selection, unresolved dependencies contribute to burden and can raise priority when replacement questions are expected to have fewer, simpler, or no dependencies. Dependency simplification improves ranking only through the decomposition path; it does not make the blocked parent ordinarily answerable.
+
+After answerability is established, questions are ranked by:
+
+1. automation-likelihood,
+2. importance,
+3. risk ascending.
+
+Questions blocked by unresolved dependencies may be selected for decomposition rather than ordinary answering.
+
+### 3.7.1 Automation coverage taxonomy
+
+`Auto-choice eligibility` is a governance gate separate from answerability and automation-likelihood. The accepted values are:
+
+- `Auto eligible`: automation may propose, score, and select a review candidate when dependencies, validators, and quorum pass. This does not bypass human repository review.
+- `Human approval required`: automation may draft, decompose, score, and prepare review artifacts, but the selected result must be marked human-review-required before it can resolve the question.
+- `Human only`: automation may summarize context, detect consistency issues, or list options, but it must not auto-select an answer.
+
+Use the stricter category when classification is uncertain. A proposal may not lower a question's human-involvement category without human review.
+
+### 3.8 v0.1 and v0.2 provider and network boundaries
+
+`model-committee` v0.1 is a narrow local Python CLI.
+
+It may communicate only with:
+
+- local Ollama `base_url`;
+- Codex CLI subprocesses.
+
+v0.2 may also invoke Claude Code CLI as an explicitly configured subprocess provider.
+
+`model-committee` itself must not call:
+
+- GitHub;
+- OpenAI APIs directly;
+- Anthropic APIs directly;
+- Gemini APIs;
+- arbitrary HTTP URLs.
+
+`httpx` may be used only for the configured Ollama `base_url`. Frontier cloud providers are accessed through approved CLI subprocess boundaries rather than direct API calls by `model-committee`.
+
+This provider policy preserves the bootstrap architecture and prevents accidental API creep while allowing approved CLI providers to use their own upstream authentication and billing.
+
+### 3.9 v0.1 and v0.2 testing and diagnostics
+
+`model-committee` v0.1 should include fake provider mode for deterministic tests.
+
+Fake provider mode should not call Codex or Ollama. It should load canned fixture responses, then run normal JSON validation, patch validation, scoring, selection, and artifact-writing logic.
+
+`model-committee` v0.1 should also include a `doctor` command that checks the local environment:
+
+- Python version;
+- `git` availability;
+- `codex` availability;
+- required `codex exec` flags;
+- Claude Code CLI availability when enabled;
+- Claude Code schema-native structured-output support when enabled;
+- Ollama reachability;
+- configured Ollama model availability;
+- required target repo files;
+- runs directory writability.
+
+A `version` command should print the installed `model-committee` version.
+
+### 3.10 v0.1 and v0.2 authority boundary
+
+`model-committee` has advisory authority only in both v0.1 and v0.2. It may produce derived analysis and review artifacts, but it must not directly create accepted design state. Accepted design state exists only after an ordinary human-reviewed repo change is committed to the canonical repo.
+
+The following actions may be automated in v0.1:
+
+- read `DESIGN.md`, `DECISIONS.md`, and `OPEN_QUESTIONS.md`;
+- parse open questions and their metadata;
+- run consistency checks over canonical files;
+- rank answerable questions using answerability, automation-likelihood, importance, and risk;
+- generate schema-constrained Codex work proposals and score results;
+- collect Ollama work proposals as secondary proposal inputs;
+- validate proposal JSON and candidate patches mechanically;
+- select a patch only from mechanically valid proposals using a valid Codex score result;
+- write run logs, review artifacts, selected patches, and commit-message suggestions.
+
+v0.2 additionally may automate:
+
+- invoking Claude Code CLI as a schema-native subprocess provider;
+- generating and validating Claude Code work proposals and score results;
+- cross-scoring Codex and Claude Code proposals;
+- constructing score-matrix artifacts;
+- detecting disagreement and quorum failures;
+- writing human-review-required results when quorum, score, or disagreement thresholds fail;
+- adding operator-run artifact-publication commands to `review.md`.
+
+The following actions require human repository review in v0.1 and v0.2:
+
+- accepting a proposed answer as design state;
+- applying, editing, or committing any candidate patch to canonical files;
+- changing question status, priority, dependencies, or resolved-by metadata in the canonical repo;
+- treating readiness estimates as release, scope-freeze, or go/no-go decisions;
+- converting a proposed open question into canonical `OPEN_QUESTIONS.md` state;
+- changing provider weights, quorum rules, or network/provider boundaries.
+
+The following actions are outside automatic authority:
+
+- direct OpenAI, Anthropic, Gemini, GitHub, or arbitrary HTTP API calls by `model-committee` itself;
+- auto-merge, auto-push, automatic PR creation, or GitHub mutation;
+- automatic artifact publication;
+- automatic patch application to canonical repo files;
+- allowing Codex CLI, Claude Code CLI, Ollama, or any model provider to directly edit canonical repo files;
+- internal manual override of failed scoring, quorum, disagreement, or patch-selection checks;
+- readiness-score writes to derived public files such as `README.md`;
+- deriving canonical user value, project directives, or release commitments from model output alone.
+
+Provider outputs are weighted by configured trust weights, provider role, cross-score status, and observed reliability metadata, not by one-provider-one-vote counting. Static configured weights are sufficient for v0.1 and v0.2; adaptive weighting remains deferred.
+
+Provider failures are logged as run events. A failure should record the provider, model, run phase, failure class, timeout or exit status when available, stderr/response artifact path when available, and whether quorum remained satisfied.
+
+A valid v0.1 committee result requires at least one mechanically valid work proposal and a valid Codex score result. Two or more valid proposals are preferred but not required. Failed secondary providers do not invalidate a run when quorum is met.
+
+A valid automated v0.2 committee result requires at least one valid work proposal, at least one valid cross-score from a different frontier provider, no hard validation failure on the selected patch, and no critical disagreement flag unless manually overridden outside automatic selection. Human-review-required results should use a distinct exit code, provisionally `9`.
+
+Codex CLI and Claude Code CLI authority differ from direct API authority because they are invoked only as subprocess providers. Their outputs are proposal and scoring artifacts only. Direct OpenAI and Anthropic API authority is zero because direct cloud-provider API calls by `model-committee` are forbidden.
+
+### 3.11 Feature-to-data map
+
+Alongside bootstrap-dependency build ordering, the project maintains a **feature-to-data map** (`UBU-D0224`): for each feature, the data components it actually invokes at runtime versus those merely present in the model. As a worked example, the smart-Focus-mode decision invokes UniverseState, introspected affect, declared rules, divergence detection, dependency resolution (indirectly), and legitimization — and does not invoke extrospection, commitment tracking, or the privacy wire. The map is a legibility instrument: it makes "this feature needs nearly everything" falsifiable, prevents quiet scope creep, and gives reviewers a precise picture of what a slice depends on. It is a planned full-product artifact, not a Phase 1 deliverable.
+
+---
+
+## 4. Release Phases
+
+Phase labels name the phase that implements an item. The phases, their build order, and the mapping from labels used before `UBU-D0275` are recorded in §4.7.
+
+### 4.1 Phase 1: Single-user GitHub dogfooding
+
+A single user uses UbU to coordinate development of UbU itself.
+
+Primary goals:
+
+- import or observe GitHub issues, PRs, reviews, CI events, and milestones;
+- represent them in UbU’s Objective/Task/Calendar model;
+- generate useful Plans;
+- provide a minimal bootstrap interview that creates an initial dogfooding context, current or stale affect Snapshot, and prioritized Objective/Task seed set;
+- provide a next-action focus mode that shows one recommended next Task with an inspectable explanation of why it matters now;
+- update GitHub as a low-dimensional projection of UbU state;
+- expose limitations and open questions through dogfooding.
+
+The frozen Phase 1 implementation set is:
+
+- local single-user `user_mode` instance for UbU-runs-UbU;
+- bootstrap interview and explicit seed model creation;
+- GitHub issue, PR, review, CI, milestone, and comment import from live data or approved fixtures;
+- ExternalReference-style source links sufficient to trace imported GitHub objects;
+- Objective, Preference, Task, Container, UniverseState, Snapshot, Plan, Calendar, Log, Identity, Relationship, Compartment, Automation Worker, External Event, and External Reference schemas only to the depth required by the dogfooding loop;
+- schedulable Static and Dynamic Tasks with Objective links, durations, dependency/precondition/effect fields, active/completed/failed/moot lifecycle handling, and moot reason codes sufficient for the demo;
+- lightweight UniverseState facts, affect Snapshot handling, accepted mutation vocabulary, and deterministic precondition evaluation;
+- append-only per-instance Logs with correction, annotation, provenance, worker-submission, and recalculation-trigger entries;
+- Plan and Calendar generation for a next work window with a default Plan and inspectable explanation;
+- next-action focus mode with start, done, snooze, reject, decompose, explain-more, and feedback controls;
+- derived risk and human-complete plan-quality reports covering deadline risk, dependency fragility, worker or automation bottlenecks, stale affect, affect-margin, destructive pressure, and post-plan depletion warnings;
+- minimal Compartment guardrails for `local_only`, `no_cloud_llm`, `no_external_export`, allowed integration/device references, low-security labeling, and logged boundary decisions;
+- Automation Worker identity, scoped capability grants, explicit assignment/status display, and mutation or projection request submission without direct canonical writes;
+- Delegation Substrate-compatible Task formalization fields where needed for dogfooding, worker assignment, or solo self-reminder clarity, including purpose, executor type, authority, expected output, evidence, review, privacy scope, and escalation notes;
+- clearly marked GitHub projection previews or human-approved writes for UbU-managed labels, comments, or blocks, plus reconciliation reporting;
+- manually structured Release Outreach Pipeline work items and artifact records for release notes, screenshots, scripts, and contributor calls-to-action;
+- manually structured EthConf outreach notes and follow-up artifacts that dogfood Association formation and organizational introspection without requiring full multi-user Association automation.
+
+Phase 2 explicitly defers:
+
+- multi-device local-first sync;
+- partial replication across Devices, Zones, or Compartments;
+- secure cross-device Compartment propagation;
+- sync conflict handling;
+- cross-device worker or enclave coordination beyond the single local instance boundary.
+
+Phase 3 is the bridge from the bootstrap MVP toward the full personal life-logistics product. It prioritizes minimal Resource/Skill-aware task readiness, private skill-tree foundations, and narrow Identity coordination that directly improves single-user life logistics. Phase 4 (§4.5) begins the full version 1.0 release track, and Phase 5+ (§4.6) continues it.
+
+Phase 3 explicitly includes:
+
+- minimal Resource objects and Task resource requirements sufficient to answer whether a Task is realistically ready to start or complete;
+- minimal Skill objects and Task skill requirements sufficient to answer whether the user can perform a Task, needs a refresher, should learn a prerequisite, or should consider purchase/delegation;
+- minimal cross-user contextual messaging between UbU instances;
+- user-to-user Identity-mediated requests, status updates, questions, commitments, and blockers;
+- bounded Message Context Envelopes carrying priority, interrupt recommendation, topic, response expectation, assumptions, ambiguities, provenance, and disclosure policy;
+- legacy-message ingestion and limited upgrade paths where both parties use UbU;
+- user-to-user Identity commitments, capabilities, and limited disclosure sufficient for narrow coordination;
+- early Delegation Substrate use between Identities, if Phase 2/3 authority and privacy boundaries are in place.
+
+Phase 3 still defers:
+
+- full inventory management, full financial management, bank syncing, investment tracking, receipt OCR, tax categorization, and Quicken-like accounting workflows;
+- public Skill Barter marketplace operation, payment/settlement flows, reputation markets, dispute resolution, and marketplace governance;
+- shared global project truth between users;
+- rich subjective Relationship-model exchange;
+- full Association synchronization;
+- multi-party governance, invitation, revocation, or trust protocols;
+- broad personal-data ingestion beyond selected communication integrations.
+
+Phase 1 keeps these abstractions documented for compatibility but does not implement them:
+
+- Technique as a first-class planning object (minimal Technique-based Objective expansion in Phase 3, richer integration in Phase 4);
+- Resource and Skill as first-class planning objects beyond lightweight compatibility placeholders (minimal readiness in Phase 3; richer integration in Phase 4);
+- full Compact Calendar planner grammar and high-coverage transport format;
+- complete Zone and Device system beyond the current local execution enclave;
+- organization-mode and worker-mode web admin consoles;
+- richer relationship-management, personal CRM, and longitudinal affect/growth models;
+- full Release Outreach Pipeline video generation, rendering, and publication workflow;
+- broad email, text-message, file, invoice, note, or personal-data ingestion outside narrow approved dogfooding fixtures;
+- full realtime multimodal capture (Phase 1b MVP-release scope under `UBU-D0292`, with mandatory mode/device slices and delivery order set by `UBU-D0339` in §4.2); always-on assistant behavior remains outside this release commitment;
+- public Skill Barter marketplace operation, payment/settlement flows, reputation markets, dispute resolution, and General Contractor subdelegation workflows;
+- adaptive model-committee weighting, automatic patch application, GitHub mutation, and direct cloud-provider APIs.
+
+Stop rule:
+
+> A new abstraction may be added to Phase 1 only when it is required to complete the single-user GitHub dogfooding loop, enforce an accepted hard invariant, or avoid a known irreversible schema contradiction. Otherwise it must be documented as a Phase 2, Phase 3, or post-MVP concern and must not block Phase 1 implementation.
+
+After `UBU-D0175`, new MVP blockers are allowed only when discovered during implementation of a concrete Phase 1 slice and accompanied by a blocker certificate naming the blocked object or file, failed acceptance criterion, unsafe fallback, minimum answer needed, and persistence impact. Phase 1 readiness is judged slice-by-slice rather than by global philosophical completion of the model.
+
+### 4.1.0 Phase 1 readiness scoring
+
+Phase 1 readiness is a derived, evidence-backed, human-reviewed signal. It reports `scope_freeze_readiness` and `mvp_readiness` from per-slice evidence, gates, and score caps rather than from raw open-question count or model confidence. Unresolved nonblocking questions do not reduce Phase 1 readiness after `UBU-D0175` unless they carry a valid blocker certificate. Model-committee may compute readiness reports and propose README readiness text, but it must not publish or update public readiness signals automatically. The accepted rubric is `UBU-D0189`.
+
+The minimum dogfooding loop that proves UbU’s core model is:
+
+1. bootstrap the operator, project context, available work window, constraints, and current or stale affect Snapshot;
+2. import or load a curated UbU GitHub fixture with issues, PR/review/CI signals, milestone context, and source links;
+3. map those inputs into Objectives, Tasks, External Events, Logs, UniverseState facts, and External References;
+4. generate a Calendar with a default Plan for the next work window;
+5. present one recommended next Task with an explanation of Objective value, dependencies, deadlines, affect constraints, worker status, and risk findings;
+6. record completion, failure, snooze, rejection, decomposition, or override as Log evidence and trigger recalculation when appropriate;
+7. preview or perform a human-approved UbU-managed GitHub projection update;
+8. show a reconciliation or risk summary that makes the changed model inspectable.
+
+### 4.1.1 Phase 1 public demo criteria
+
+The Phase 1 public demo should use real UbU GitHub issues or a frozen fixture captured from real UbU GitHub data when live access is unsafe, unavailable, or non-reproducible.
+
+The smallest persuasive demo is an end-to-end single-user dogfooding loop:
+
+1. import a curated set of UbU issues, PR/review/CI signals, and milestone context;
+2. map those inputs into Objectives, schedulable Tasks, External Events, and traceable source links;
+3. generate a Calendar with a default Plan for the next work window;
+4. show why the Plan was chosen, including dependencies and worker assignment or worker status;
+5. show user-mode affect constraints by applying a current affect Snapshot or by creating an affect-collection Task when affect data is stale or missing;
+6. write or preview clearly marked UbU-managed GitHub projection labels, comments, or managed blocks;
+7. show a risk summary covering at least deadline risk, dependency fragility, and worker or automation bottlenecks.
+
+The demo must not require Phase 2 sync, Phase 3 multi-user coordination, full RBAC, a complete Compact Calendar UI, or autonomous remote GitHub mutation. If live GitHub writes are unsafe for the public recording, a dry-run projection is acceptable only when it shows the exact payload that would be written after human approval.
+
+### 4.1.2 Phase 1 user-facing loop
+
+Phase 1 must include a minimal first-person UX loop for dogfooding. The loop is intentionally narrow: it collects explicit answers, creates explicit UbU objects, recommends one next Task, records what happened, and recalculates from Logs and current state.
+
+1. **Bootstrap interview**
+   - Ask exactly the minimum questions needed to seed the first dogfooding Plan:
+     1. `What are you trying to move forward right now?`
+     2. `Which project context should UbU use for this first session?`
+     3. `How much usable time do you have for the next work window?`
+     4. `Is there a deadline, meeting, release target, or external event that changes what matters today?`
+     5. `What work should UbU consider first?`
+     6. `What is already blocked, unavailable, or not worth recommending right now?`
+     7. `How are your energy, stress, and mood right now?`
+     8. `When choosing between useful work, what should UbU favor today?`
+   - Record the project/context answer as UniverseState facts and source-linked Logs.
+   - Record available time, static commitments, deadlines, and immediate constraints as UniverseState facts, Tasks, External Events, or Logs.
+   - Record affect answers as a user-declared Snapshot, or create an affect-collection Task when the user skips or the data is stale.
+   - Record favored tradeoffs as Preferences only when the user accepts an explicit Preference statement; otherwise retain them as Log notes or Objective annotations.
+   - Seed a small Objective/Task set from user answers plus approved GitHub fixtures or configured imports.
+
+2. **Minimum data for one recommendation**
+   - A user or operator Identity.
+   - At least one active Objective.
+   - At least one active schedulable Task linked to that Objective with title and duration or work-window estimate.
+   - A current work window or next available time.
+   - Current or explicitly stale affect state.
+   - Known hard blockers, deadlines, dependencies, and source references for the recommended Task when available.
+   - If this minimum is missing, the next recommended Task should be a clarification, import, or affect-collection Task rather than pretending to optimize.
+
+3. **Plan generation**
+   - Generate a candidate default Plan from explicit modeled state.
+   - Preserve inspectability of the full Plan.
+   - Explain relevant Objective value, constraints, dependencies, deadlines, risk findings, worker status, and affect constraints.
+   - Mark any fixture-backed, hardcoded, or mock recommendation path directly in the UI and run artifact.
+
+4. **Calendar preview**
+   - Treat Calendar preview as a notable recurring Task.
+   - Default cadence is before the first recommended Task in a user-declared work window and after a material Calendar regeneration when UbU is about to rely on the new default Plan.
+   - Let the user inspect the candidate Calendar or default Plan before relying on it.
+   - Ask whether the Plan feels plausible, motivating, humane, and consistent with the user's current context.
+   - Ask only lightweight model-repair questions about expected execution, perceived control, social pressure, and missing context; store raw psychological comments as review notes unless the user accepts a concrete canonical update.
+   - Allow the user to correct Preferences, Objectives, Tasks, affect Snapshots, availability, or estimates before execution.
+   - Let the user snooze, skip, or adjust Calendar-preview cadence through the cadence rule on its evergreen system Objective (§7.4.1).
+
+5. **Next-action focus mode**
+   - Present one recommended next Task as the default UI surface.
+   - Show title, Objective link, estimated duration or work window, current status, and source/provenance label.
+   - Show `why this matters now` with at least the served Objective, timing reason, main dependency or blocker status, affect/staleness status, and top risk or opportunity considered.
+   - Show what UbU considered, including visible counts or links for candidate Tasks, blocked Tasks, hard constraints, affect constraints, worker/projection state, and imported or fixture sources.
+   - Provide controls for start, done, snooze, reject, decompose, override, and explain more.
+   - Keep full Plan inspection one action away through a Plan drawer, timeline, or inspector that shows ordered Tasks, assumptions, source links, and explanation fragments.
+   - One-task focus reduces cognitive load; it must not hide the Plan, turn the recommendation into opaque automation, or imply that the user has committed to the default Plan.
+
+6. **Feedback, Log review, and recalculation**
+   - After `done`, ask whether completion matched the estimate, whether the modeled effect happened, and whether energy or stress changed enough to update the Snapshot.
+   - After failure or blocked execution, ask what assumption failed: missing dependency, wrong duration, stale affect, interruption, unclear Task, changed priority, or other.
+   - After snooze, ask for the next review time or condition and whether the reason is timing, affect, dependency, or user preference.
+   - After rejection, ask whether the Task is wrong, not valuable now, blocked, too large, already done, duplicate, or should become moot.
+   - After override, record the chosen Task or action, the reason if supplied, and whether the override should update Preferences, availability, Task estimates, Objective status, or only this Plan.
+   - Treat Log review as a notable recurring Task. Default cadence is at the end of a work window or at the next startup when there are unreconciled deviations, with a weekly catch-up if routine review is skipped.
+   - Store reviewed outcomes as canonical updates only when they change Logs, Snapshots, Preferences, Objectives, Tasks, or recalculation triggers; otherwise keep autonomy, competence, relatedness, attitude, subjective-norm, perceived-control, and expected-execution comments as noncanonical review notes or derived report inputs.
+   - Record outcomes as Logs and trigger recalculation when the outcome changes Task status, availability, affect state, dependencies, Objective status, or user Preferences.
+   - Treat failure, rejection, override, and deviation as model evidence, not user blame.
+
+7. **Discovery mode when appropriate**
+   - Allow the user to choose discovery mode at any time.
+   - Show active, paused, ended, and pending-review state, enabled sources, routing or retention limits, and evidence count.
+   - Provide pause, resume, exit, inspect, reject, delete, and review controls.
+   - Collect only enabled Phase 1 evidence such as quick notes, user-selected current action, Calendar context, configured integration events, coarse motion or location category, focus state, and app-state category.
+   - Treat inferred observations as reviewable evidence, not final truth; defer ambiguous interpretation until Log review or user-visible reconciliation.
+
+The Phase 1 version may be simple and fixture-backed. Fixture behavior must be labeled as fixture behavior, mock recommendations must not be described as implemented planning, and public demos should show the exact boundary between explicit UbU objects, approved fixtures, and implemented planner behavior. The public demonstration pattern is bootstrap, one recommended next Task, explanation, user feedback, recalculation, and full-Plan inspection. It does not require broad email, text-message, file, invoice, note, or personal-data ingestion. It must not claim complete life-modeling, therapeutic authority, autonomous life coaching, complete planning automation, full privacy isolation, Phase 2 sync, or Phase 3 multi-user coordination. The purpose is to demonstrate the core UbU experience: one meaningful next action, with an explanation, grounded in explicit state.
+
+### 4.1.3 Release Outreach Pipeline dogfooding
+
+The Release Outreach Pipeline should become part of ordinary UbU-runs-UbU release management. A minor release should produce a release outreach package when the current project state contains enough user-visible, developer-visible, or contributor-visible change to justify public explanation.
+
+The Phase 1 package is manual but structured. Minimum package artifacts are:
+
+- `manifest.json` with release, source, Identity, Compartment, status, and hash metadata;
+- `claim_register.json` with audience, support status, evidence refs, and review state for each public claim;
+- `evidence_index.json` for source artifacts, hashes, selectors, and provenance;
+- release-note, script, narration/caption, announcement, and publication-metadata drafts when relevant;
+- `media_refs.json` for approved screenshots, UI-test exports, fixture captures, or recordings;
+- `export_review.json`, `approvals.json`, and `publication_plan.json`;
+- known-limitations, future-work, and contributor call-to-action notes tied to real artifacts.
+
+Media provenance records must distinguish approved live captures, approved fixture/synthetic captures, UI-test exports, and mock/demo-only captures. Every claim in scripts, release notes, and public posts links to claim-register evidence and uses the support labels accepted in `UBU-D0180`.
+
+Phase 1 dogfooding may generate text drafts, collect approved screenshots or recordings, assemble a publication plan, and record human approvals. It may use local renderers or LLM/script workers only as Automation Workers that produce candidate artifacts under capability grants.
+
+Post-MVP work includes automatic UI capture generation, demo-flow export, script drafting from repository state, narration and caption generation, thumbnail generation, video rendering automation, platform upload, social posting, mailing-list publication, analytics feedback, and trusted auto-publication policies.
+
+The full video-generation and publication pipeline remains future work. Phase 1 should generate reviewable communication artifacts before trying to automate external publication.
+
+### 4.1.4 EthConf outreach as Association-introspection dogfooding
+
+EthConf outreach is a Phase 1 dogfooding workflow for Association formation and organizational introspection.
+
+Phase 1 represents the workflow with ordinary Objectives, Tasks, Logs, External Events, External References, Release Outreach package artifacts, public dogfooding review packages, and manually reviewed candidate AssociationAttestations. It does not require full Association automation, multi-user Association sync, automatic contact analysis, or broad message/archive ingestion.
+
+Minimum evidence set:
+
+- canonical design files and accepted decisions;
+- public dogfooding artifacts such as model-committee review packages, selected patches, issue fixtures, release outreach packages, and public retrospectives;
+- structured EthConf outreach notes with private details separated from redacted public summaries;
+- follow-up Tasks, missed follow-ups, public replies, contributor/funder/design-partner next actions, and outcome Logs.
+
+Minimum outputs:
+
+- candidate AssociationAttestations about declared project mission, outreach commitments, observed follow-through, and evidence gaps;
+- mission-alignment questions, especially whether outreach behavior supports the privacy-first self-governance, contributor-recruitment, workflow-discovery, and compatible-funding goals;
+- priority-drift observations and commitment-mismatch notes;
+- follow-up Tasks with owners, review dates, evidence refs, and public/private disclosure labels;
+- redacted retrospective notes suitable for public dogfooding artifacts.
+
+The core review prompt is: `Does UbU's actual outreach behavior prove, from reviewable evidence, that the project pursued its stated goals?` The answer may be yes, no, mixed, or insufficient evidence, and must cite evidence or gaps rather than model confidence alone.
+
+Public artifacts expose only redacted summaries, evidence selectors, hashes, public links, reviewed claims, and approved follow-up Tasks. They must not expose private notes, raw contact details, unapproved conversation content, private funding terms, private relationship hypotheses, or Compartment-protected payloads.
+
+Acceptance criteria: the workflow produces one evidence-backed retrospective, at least one candidate AssociationAttestation or explicit no-evidence finding, at least one mission-alignment question, any needed follow-up Tasks, an export review, and a public-safe redacted artifact that labels fixture/manual/LLM-assisted content. A human reviewer must be able to trace each public claim to evidence or to a recorded evidence gap.
+
+### 4.1.5 Optional VoxPopuli EthConf demo
+
+UbU may optionally demonstrate a **VoxPopuli** flow at EthConf if it does not displace higher-priority dogfooding, contributor, or funder deliverables. In this flow, a user speaks freely about what they wish would happen or what feels disorganized. An LLM-assisted extractor converts that natural-language input into candidate Objectives, Tasks, constraints, preferences, and planning assumptions for the user to inspect, correct, accept, or reject.
+
+VoxPopuli is a trust-building outreach hook, not a replacement for the narrow Phase 1 bootstrap interview. It should demonstrate how LLMs can help structure abstract human concerns while UbU remains the explicit, inspectable planning system.
+
+### 4.1.6 Phase 1 implementation priority order
+
+Phase 1 implementation proceeds in this priority order:
+
+1. Remove all in-memory orchestrator state (`MemoryState`) and fully implement `ubu_store` as the canonical local admission and persistence path for the running loop.
+2. Log event vocabulary: correction, annotation, provenance, worker-submission, and recalculation-trigger entries.
+3. UniverseState facts.
+4. Affect Snapshot content, accepted mutation vocabulary, and deterministic precondition evaluation.
+5. Structured bootstrap interview with seed Objective, Task, and Snapshot creation.
+6. Plan and Calendar generation for a next work window with a default Plan and inspectable explanation.
+7. Activate `ubu_github_adapter` as a functioning orchestrator dependency for import, projection preview, approved writes, and reconciliation.
+
+The remaining §4.1 frozen-set items follow in bootstrap-dependency-driven ordering: persistence and vocabulary precede the features that must reference them.
+
+**Phase 1 realization (`UBU-D0241`).** Step 3 (UniverseState facts) is foundationally realized, together with the accepted mutation vocabulary and deterministic precondition evaluation named in step 4, implemented as the §11 container and pure `ubu-core` semantics and persisted by `ubu-store`. The precondition, effect, and bootstrap-fact wiring of these facts into the loop is realized across Wiring-A/B/C (`UBU-D0242`): preconditions gate planning, a completed Task's effects mutate the facts, and the bootstrap records the initial facts under the `UBU-D0243` namespace convention. Step 4's affect-Snapshot content is realized by the affect observation route (`UBU-D0304`); step 5's interactive bootstrap interview remains.
+
+### 4.2 Phase 1b: Quick UbU merge through the switch
+
+Phase 1b extends the Phase 1 system until it can replace Quick UbU, the separately developed personal planner that serves as the dogfooding user's working daily tool, so that Quick UbU becomes legacy software (`UBU-D0275`).
+
+Exit criterion:
+
+> The switch: the dogfooding user's primary daily planning runs on mainline UbU.
+
+Phase 1b closed by decision on 2026-10-10 (`UBU-D0305`), with its planner condition discharged by the greedy Stage 1 certification under the CPU tensor-worker profile (`UBU-D0303`). The ratification gate of `UBU-D0291` was met with no provisional subject root; its registry remains the standing agenda, evaluated at the deferred switch. The switch is not in force and follows the completion of Phase 2.
+
+Until the switch, Quick UbU remains the primary tool and mainline is exercised against non-primary test data. (The switch is deferred until Phase 2 is complete (`UBU-D0305`).)
+
+**The Phase 1b rule.** Every Quick UbU feature merged into mainline adopts the restrictions, forms, and functional boundaries of the MVP design it corresponds to, even when that design's implementation phase is later. Open questions that block Phase 1b are answered during Phase 1b whatever phase they were previously tagged, and the items they pull forward are re-tagged Phase 1b.
+
+Phase 1b includes:
+
+- the Phase 1b foundations already decided, including sync-ready mutation envelopes, the Device registry, tombstones, redacted Handles, projection-conflict repair, Device-local credentials, the local advisory worker, advisory batches, and first-class advisory candidate review;
+- the Quick UbU practical features, ported under the Phase 1b rule;
+- the planner the switch requires: decomposition into Containers whose ordered child Tasks are grouped into segments that stay together (§9.4); an allowed time range on Tasks; Task value and priority inputs to Plan scoring; routines as evergreen-Objective recurrence that instantiates Tasks (§7.4.1); partial placement when not every Dynamic Task fits the planning horizon; and the desktop GPU backend with its CPU reference path (§16.10).
+
+**MVP-release scope amendment (`UBU-D0292`, sequenced by `UBU-D0339`).** Local camera-and-voice interaction, including explicitly enabled realtime capture, remains in the Phase 1b MVP-release backlog. Phase 1b's closure does not establish release completion or implemented capture. `UBU-D0339` resolves `UBU-Q0183`'s scope allocation below; implementation proceeds alongside Phase 2 without reopening Phase 1b or changing `UBU-D0305`'s switch criteria. `UBU-Q0128` remains Phase 1b-origin work now tracked in Phase 2; Phase 3 does not gate this interaction surface. Mobile planning retains `UBU-D0290`'s stewardship workload and parity rules; any workload/API or stewardship amendment still requires `UBU-Q0160`.
+
+**Capture delivery order (`UBU-D0339`).** Deliver the following slices in order. Rows 1–3 are mandatory before MVP release; exact hardware/software configurations require evidence-backed selection under `UBU-Q0177`. A Device is an execution enclave: qualify each capture, review and inference endpoint and any inter-Device route, even on shared physical hardware.
+
+| Order | Required mode/device slice | Delivery boundary |
+|---|---|---|
+| 1 | Operator-owned laptop/desktop: `off`/`text_only`, bounded still-image capture and push-to-talk voice, with independently selectable speech output; `snapshot_capture` and `conversational` classes. | Establish §21.1.3's common concern-to-candidate, exact correction, review/admission and next-action loop, plus every ordinary voice and text/form workflow. Camera preview or transcription alone cannot pass. Keep the complete manual loop usable with capture and models disabled. |
+| 2 | At least one qualified phone capture/review profile: bounded still images and push-to-talk voice through the same loop. | Inference may run on that phone or a separately qualified operator-owned laptop/desktop worker through an authenticated encrypted, policy-authorized route. Show the chosen route before acquisition/dispatch; worker loss preserves permitted drafts and useful text/forms. This allocates interaction, without selecting a mobile planner or compute API. |
+| 3 | At least one qualified laptop/desktop profile: explicitly started, finite local realtime sessions in ordinary-attention `voice_session` and Task-scoped `discovery_mode`, using the `local_only_realtime` route. | Support microphone-only, camera-only and simultaneous ongoing audio/live-camera input; repeated one-shot captures alone cannot satisfy this slice. Demonstrate `conversational` and `streamed_supervision` classes, visible source state and gaps, pause/resume/stop, interruption and reviewable updates. Models propose evidence/candidates; only ordinary review/admission changes state. |
+
+**Evidence and retention precede enablement.** Each slice needs revision-pinned passing §21.1.1 host-mapping, qualifier, corroboration and admission evidence for its enabled adapters (`UBU-Q0166`), §21.1.3 usefulness/access evidence including `UBU-D0338`'s affected user-tested workflows, §21.1.4 numerical and deadline-boundary results (`UBU-Q0168`), and §1's endpoint/runtime qualification (`UBU-Q0177`, `UBU-D0331`, `UBU-D0336`). Unsupported mappings remain unresolved; failed mandatory gates withhold the affected slice. Select at least one bounded camera-and-voice path from rows 1–2 under `UBU-Q0178`'s reviewed ownership/budget comparison (`UBU-D0332`, `UBU-D0337`), including CPU-only and existing-worker candidates and explicit no-worker gaps; manual fallback does not establish multimodal reach.
+
+Before row 3 is exposed, demonstrate §21.1.5's broker isolation, finite aggregate limits, original-time/coverage bindings and bounded cancellation (`UBU-D0326`), plus §12.2's enforced memory-only raw buffer ceiling of 60 seconds, copy/cache/swap controls, expiry/restart cleanup and policy-filtered inspection/discard controls (`UBU-D0327`–`UBU-D0328`). No automatic derivative archive replaces discarded media. Retained minimized evidence/candidates need their own permitted purpose and retention authority. Optional summary/hash/clip/export controls stay unavailable until their separate retention, review and routing gates pass; capture consent never authorizes saving or exporting.
+
+**Coordination with the switch and device wave.** Build and qualify these slices against non-primary test data while Phase 2 develops Device trust, Compartment policy, sync and personal-worker routes. Cross-Device inference waits for its endpoint/route gates; permitted candidate exchange uses the existing Phase 2 contract and carries no live source consent or approval. Exercise phone/desktop switching, corrections, partial replicas, stale policy, revocation and restart without stale admission, duplicate effects or implicit capture resumption. Phase 2's existing three-Device sync freeze evidence remains required independently; its third Device need not implement AV. Release integration and operator-reviewed acceptance follow Phase 2 completion and the deferred switch under `UBU-D0305`/`UBU-D0291`. A capture shortfall blocks MVP-release completion, without adding a switch criterion or reversing Phase 1b closure.
+
+Publish the release support matrix by Device/backend/mode with enabled sources/classes, finite session/resource limits, measured results, user-tested access combinations, retention/security outcomes, approved cost scenarios and useful fallbacks. Phone streaming, meeting/multi-party logging, retrospective analysis, cloud-assisted interaction, other sensitive sources and restricted-attention interaction beyond immediate local controls are subsequent separately qualified slices, not prerequisites for this release minimum. Withhold unavailable processing/review under §21.1.2 while keeping immediate local pause/stop/silence available; always-on capture is outside the commitment. Resource/Skill/Technique-dependent scenarios retain their later phases.
+
+The richer household apprentice, maintenance triage, purchasing defense, Skill evidence and tacit-expertise examples depend on first-class Technique, Resource and Skill implementations. They are phased but unimplemented dependencies: Phase 3 supplies minimal readiness and Technique-based Objective expansion, and Phase 4 supplies richer integration. Evidence semantics, hardware suitability and scenario-specific scope remain unresolved. Camera-first MVP scope does not promise that those later planning objects or scenarios are MVP-ready.
+
+Phase 1b defers multi-device sync and everything else assigned to Phase 2 and later.
+
+### 4.3 Phase 2: Single-user multi-device synchronization
+
+A single user runs UbU across multiple Devices / execution enclaves.
+
+Phase 2 is in development from 2026-10-10 (`UBU-D0305`), and the switch of `UBU-D0275` follows its completion.
+
+Phase 2 validates:
+
+- local-first sync;
+- partial replication;
+- Zone and Compartment boundaries;
+- device roles;
+- conflict handling;
+- user-owned worker execution on the user's laptop, desktop, or other trusted personal compute device.
+
+Design rubric:
+
+> Phase 2 should feel like multi-agent coordination, but all agents happen to agree.
+
+A Phase 2 personal worker is not a mandatory cloud dependency. It is an optional execution backend for a user's own UbU instance. It may provide more CPU, GPU, memory, storage, network availability, or battery-independent runtime than the mobile device while preserving the user's practical control over the compute environment.
+
+### 4.4 Phase 3: Minimal multi-user / Identity coordination
+
+Multiple humans coordinate through explicit Identities, capabilities, limited disclosure, and commitments.
+
+Phase 3 should enable coordination without surveillance or shared global truth.
+
+### 4.5 Phase 4: Version 1.0 release track
+
+Phase 4 begins the full version 1.0 release track. It expands Resource and Skill usability, Technique-database integration, DIY-versus-purchase/hire planning, and the user-facing capability graph without requiring the public Skill Barter marketplace.
+
+### 4.6 Phase 5+: Version 1.0+ release track
+
+Phase 5+ continues the full version 1.0+ track with mature inventory, financial-management extensions, public or federated Skill Barter, reputation/evidence, dispute workflows, and other multi-party marketplace features.
+
+### 4.7 Phase map and build order
+
+| Phase | Scope | Status |
+|---|---|---|
+| Phase 0 | ETHConf NYC demo | Complete |
+| Phase 1 | Single-user GitHub dogfooding (§4.1) | Feature-complete |
+| Phase 1b | Quick UbU merge through the switch, including the planner (§4.2) | Complete (closed by decision 2026-10-10, UBU-D0305; switch deferred until Phase 2 is complete) |
+| Phase 2 | Single-user multi-device synchronization (§4.3) | In development (from 2026-10-10, UBU-D0305) |
+| Phase 3 | Minimal multi-user / Identity coordination and Resource/Skill task readiness (§4.4) | Planned |
+| Phase 4 | Version 1.0 release track (§4.5) | Planned |
+| Phase 5+ | Version 1.0+ release track (§4.6) | Planned |
+
+Phases are built in table order. A phase label names the phase that implements an item; pulling an item forward re-tags that item and never renumbers phases (`UBU-D0275`). Labels used before `UBU-D0275` map as follows: Phase 3A becomes Phase 3, Phase 3B becomes Phase 4, and Phase 4+ becomes Phase 5+.
+
+---
+
+## 5. Operating Modes
+
+Each UbU instance runs in exactly one mode. Modes are mutually exclusive and cannot change after initialization.
+
+### 5.1 `user_mode`
+
+A personal UbU instance operated for an autonomous human user.
+
+Properties:
+
+- includes user affect modeling;
+- represents personal Objectives and Preferences;
+- may integrate with personal calendars, tasks, messages, sensors, and devices;
+- supports personal Zones and Compartments.
+
+### 5.2 `organization_mode`
+
+An organizational UbU instance operated on behalf of a project or organization.
+
+Important philosophical note:
+
+An organization is not an autonomous human. Organization mode is shorthand for a human-operated planning system where the organization appears as a structure in UniverseState, directives, Identities, and Preferences.
+
+Properties:
+
+- does not model intrinsic affect;
+- may use Preferences as organizational directives;
+- may be run on a thin web/database host;
+- may delegate work to Automation Workers;
+- may expose a web UI;
+- may eventually support classic user accounts and access control.
+
+For MVP, all organization-mode users may be treated as admin-equivalent to avoid premature RBAC complexity.
+
+### 5.3 `worker_mode`
+
+A worker-mode instance performs delegated work assigned by another UbU instance.
+
+A worker-mode instance is usually:
+
+- one-device / one-enclave;
+- daemon/service-oriented;
+- administered through a web page and/or CLI;
+- capable of running heavy compute or GPU workloads;
+- externally represented as an Identity;
+- assigned Tasks by a user-mode or organization-mode instance.
+
+Worker mode may run on a local machine, a server, or a thin controller that starts/stops cloud compute resources.
+
+---
+
+## 6. Core Entity Summary
+
+The core model includes:
+
+- Objective
+- Technique
+- Preference
+- Setting
+- WorkItem
+- Task
+- Container
+- UniverseState
+- Snapshot
+- Plan
+- Calendar
+- Log
+- Message Context Envelope
+- Message Extraction Result
+- Voice Profile Descriptor
+- Identity
+- Relationship
+- RelationshipScopeTransition
+- ExtrospectionFinding
+- Zone
+- Compartment
+- Automation Worker
+- External Event
+- External Reference
+- Association
+- AssociationAttestation
+- SharedAssociationDescriptor
+
+Some entities are implemented in MVP. Others are documented now to avoid future contradiction.
+
+---
+
+## 7. Objectives
+
+An **Objective** is a desired or maintained state of the universe.
+
+Examples:
+
+- “Release UbU MVP”
+- “Review open pull requests”
+- “Maintain relationship with contributor X”
+- “Explore whether Alice is open to a romantic Relationship scope”
+- “Transition Bob from close-friend scope to formal-acquaintance scope”
+- “Collect affect information relevant to important usage”
+- “Finish documentation draft”
+- “Explain the latest release to users and contributors”
+
+Objectives are the canonical anchor for value.
+
+### 7.1 Objective modes
+
+An Objective has one of two modes:
+
+- `one_time`
+- `evergreen`
+
+#### One-time Objective
+
+A one-time Objective is completed once and does not reactivate.
+
+#### Evergreen Objective
+
+An evergreen Objective may become satisfied and later become active again.
+
+Example:
+
+- “Maintain clean kitchen”
+- “Keep relationship with X warm”
+- “Collect affect information”
+- “Manage GitHub issue queue”
+
+### 7.2 MVP Objective fields
+
+Required:
+
+- `objective_id`
+- `title_or_description`
+- `mode`
+- `status`
+
+Optional:
+
+- `notes`
+- `tags`
+- `linked_container_refs`
+
+Derived / transient:
+
+- `derived_util_cache`
+- predicted satisfaction
+- observed satisfaction
+
+Not present in MVP:
+
+- linked Techniques
+- explicit satisfaction field
+- required provenance
+
+### 7.3 Objective statuses
+
+Candidate MVP statuses:
+
+- `active`
+- `satisfied`
+- `completed`
+- `abandoned`
+- `invalid`
+- `superseded`
+
+Mode rules:
+
+- `completed` applies to one-time Objectives.
+- `satisfied` applies to evergreen Objectives.
+- `satisfied` is not a valid one-time Objective status.
+- `completed` is not a valid evergreen Objective status.
+
+One-time Objective transitions:
+
+- `active` may transition to `completed`, `abandoned`, `invalid`, or `superseded`.
+- `completed`, `abandoned`, and `superseded` are terminal for normal planning.
+- `invalid` may be applied from any one-time Objective status when the Objective is discovered to be malformed, impossible, contradictory, or admitted by mistake.
+- `superseded` may be applied from any one-time Objective status except `invalid` when a newer Objective or accepted design/source artifact replaces the Objective.
+- One-time Objectives do not reactivate after `completed`; later renewed intent should use a new Objective or explicit supersession.
+
+Evergreen Objective transitions:
+
+- `active` may transition to `satisfied`, `abandoned`, `invalid`, or `superseded`.
+- `satisfied` may transition to `active`, `abandoned`, `invalid`, or `superseded`.
+- `abandoned` and `superseded` are terminal for normal planning.
+- `invalid` may be applied from any evergreen Objective status when the Objective is discovered to be malformed, impossible, contradictory, or admitted by mistake.
+- `superseded` may be applied from any evergreen Objective status except `invalid` when a newer Objective or accepted design/source artifact replaces the Objective.
+
+Evergreen `satisfied` to `active` reactivation is a canonical transition only when the current accepted state changes through user declaration, authorized observation/import, or elapsed-time recurrence evaluation. Hypothetical Plan simulation may predict future reactivation, but does not by itself mutate canonical Objective status.
+
+Every accepted canonical Objective status transition creates an `objective_transitioned` Log entry. Simulated or predicted status changes inside candidate Plans are not canonical transitions and do not create Objective transition Logs unless accepted as real state.
+
+### 7.4 Evergreen recurrence
+
+Evergreen Objectives may include recurrence/reactivation behavior.
+
+For MVP:
+
+- default recurrence type: `maintenance_time_decay`
+- recurrence may be represented as a static timespan or simple PDF-like field
+- user declarations or authorized observations may modify satisfaction state
+
+#### 7.4.1 Calendar-style recurrence with exceptions (Phase 1b)
+
+The MVP `maintenance_time_decay` field cannot express scheduled recurrence with named exceptions, such as "Mondays at 09:00, except company holidays, when it moves to the next day at 08:00." Phase 1b extends evergreen recurrence with a calendar-style schedule modeled on the RFC 5545 (iCalendar) base-rule-plus-exception pattern that generic calendar event schedules use.
+
+A Phase 1b recurrence schedule carries (`UBU-D0275`):
+
+- a base rule (RRULE-shaped): frequency, interval, by-day/by-month-day/by-hour constraints, time-of-day, duration, and a timezone reference;
+- exclusion dates (EXDATE-shaped): occurrences removed from the base rule, e.g. holidays;
+- additional dates (RDATE-shaped): occurrences added outside the base rule;
+- override entries: occurrences whose time, duration, or other parameters differ from the base rule, e.g. "the holiday occurrence moves to the next day at 08:00";
+- an optional enablement window: a start date/time and end date/time outside which the schedule produces no occurrences.
+
+The schedule must be **deterministic**: evaluating it against a given timezone and exception set yields a fixed occurrence series. This preserves the existing rule (§16.2) that evergreen recurrence is evaluated deterministically before Calendar generation. Stochastic recurrence remains a separate future extension and is out of scope for this schema.
+
+This schema lives on the **evergreen Objective**, not on a separate object. It replaces the eliminated `Task.recurrence` field (see `UBU-D0214`): a recurrence schedule reactivates the Objective, and planning then synthesizes the Tasks that satisfy it (see §15.2.1.1). It is the canonical home for cadence that previously lived on Tasks, including Calendar-preview and Log-review cadence (§4.1.2, §17.8) and relationship-maintenance cadence (the evergreen "keep this relationship warm" Objective).
+
+**Phase 1b routine instantiation (`UBU-D0286`).** For Quick UbU routine import, each routine template is one evergreen Objective with a recurrence schedule plus Objective-local `routine_instance_template` metadata. The Phase 1b schedule evaluator supports daily, weekly-by-weekday, day-of-month, first-workday-of-month, and first-workday-of-quarter rules, each evaluated in the schedule's IANA timezone with an optional interval and enablement window. `Workday` means Monday through Friday in that timezone unless an explicit exception set is configured; named holiday calendars, general exception-set management, and automatic holiday shifting are not Phase 1b requirements. EXDATE/RDATE/override entries remain available for explicit deterministic corrections.
+
+The `routine_instance_template` supplies inherited occurrence fields: title, duration or duration PDF, category tag/provenance label, projection reminder policy, nominal local start, local allowed time-of-day range, placement mode, optional relative placement metadata, and any legacy `occupies_capacity` compatibility value while that field exists. Reminders are projection metadata, not planning commitments. Planned instances become Dynamic Tasks with concrete UTC `allowed_time_range` values. Static instances become Static Tasks at nominal start/end and, when capacity-occupying, bound chunks; moving a routine from static to planned changes future instantiation and may merge chunks that those static instances previously separated.
+
+Routine instantiation runs pre-kernel over the planning horizon. Implementations may keep a rolling materialized cache, but occurrence identity is deterministic from the routine Objective id, schedule version, local occurrence anchor, placement mode, and template version. Future cached occurrences with no execution evidence may be superseded by rule edits; started, completed, skipped, or otherwise logged occurrences remain history, and conflicting edits surface review candidates rather than silently rewriting them.
+
+Quick UbU `after` is Objective-level relative placement metadata. Instantiation resolves it against the predecessor occurrence's nominal local end plus the offset to produce the dependent occurrence's nominal start and allowed range; if execution order matters, the occurrence Tasks also receive an ordinary dependency edge. Phase 1b does not add minimum-lag kernel edges.
+
+Done, skipped, and missed are occurrence Task Logs that roll up to the evergreen Objective. Done counts as successful completion. Skipped and missed break the Objective streak unless an explicit exclusion, override, or reviewed excusal says the occurrence should not count. Streaks remain per-evergreen-Objective as decided by `UBU-D0214`.
+
+**Mandatory routine occurrences (`UBU-D0288`).** Every routine occurrence, Static or planned, is mandatory. Routines carry no priority: occurrences take no part in Preference layering, and the CPU sends them with `TaskSpec.value = 0.0`, so their position within the allowed range earns no utility. Search must place every mandatory occurrence, and partial placement never omits one. When a day cannot hold them all, UbU reports the occurrences it cannot place and the user triages by skipping, moving, or changing other commitments; a skip is an ordinary skipped occurrence Log.
+
+A recurrence schedule with no resolvable occurrences inside its enablement window, or that references an undefined exception set, is a philosophical-consistency finding surfaced during ordinary review, not a hard logistical block, unless it prevents a required baseline (§15.2.2). See `UBU-D0213`.
+
+### 7.5 RelationshipScopeTransition Objectives
+
+A user may create an Objective to change the user's participation in a Relationship, invite or test a mutual scope change, or clarify whether another party is willing to enter a different scope. This is explicitly permissible self-governance. It is implemented through ordinary Objectives, Techniques, Steps, Tasks, Logs, reviews, and UniverseState mutations, not through a parallel relationship-planning system.
+
+A Relationship scope transition Objective must target user-controlled behavior: disclosures, invitations, boundary-setting, availability changes, communication changes, clarification attempts, and accepted model updates. It must model counterparty response as uncertain and autonomous. For consent-dependent transitions, counterparty response is `outcome_observations`, not user success or failure.
+
+`RelationshipScopeTransition` is a semantic target/reference for such Objectives. Identity, ownership and history bindings follow §22.3.1 (`UBU-D0345`); process criteria, observations and closure follow §22.3.2 (`UBU-D0346`); Step validation and autonomy acknowledgment follow §22.3.3 (`UBU-D0347`); strategy review, affect use and transparency follow §22.3.4 (`UBU-D0348`); transition types and review gates follow §22.3.5 (`UBU-D0354`); power, vulnerability, pacing and graceful nonachievement follow §22.3.6 (`UBU-D0355`). Additional review fields remain provisional where noted:
+
+- `relationship_ref`;
+- `transition_type`: `unilateral`, `exploratory`, `mutual`, or `retroactive_scope_clarification`;
+- `current_scope` and `desired_scope`;
+- `transition_intent`;
+- `scope_history_context`;
+- `user_controlled_changes`;
+- `counterparty_response_hypotheses`;
+- `process_success_criteria`;
+- `outcome_observations`;
+- `counterparty_autonomy_acknowledgment`;
+- `power_asymmetry` and `power_asymmetry_basis`;
+- `vulnerability_profile`;
+- `prohibited_strategy_types`;
+- `epistemic_transparency_requirements`;
+- `affect_knowledge_firewall`;
+- `pacing_constraints`;
+- `graceful_nonachievement_path`;
+- `review_checkpoints`;
+- `extrospection_expectations`;
+- `introspection_expectations`;
+- `safeguard_policy`.
+
+A Relationship keeps reverse references to active, completed, abandoned, declined, or superseded RelationshipScopeTransitions that affected it. The Relationship object remains primarily descriptive; the Objective carries the aspirational process.
+
+---
+
+## 8. Preferences and Value
+
+A **Preference** is a relation between Objectives.
+
+Value is derived from Preferences, not directly authored as an absolute scalar.
+
+**Settings are not Preferences (`UBU-D0287`).** Named configuration values, such as onboarding answers and AffectProfile parameters, are `Setting` records with a name, a value, and an authority source. A Setting configures planning inputs but never expresses value: it is not compared pairwise and never enters Preference layering.
+
+### 8.1 Preference object
+
+MVP fields:
+
+- `objective_a`
+- `objective_b`
+- `order`
+- `acquired_method`
+- `acquired_date`
+- `enabled`
+
+`order` may be:
+
+- `a_preferred_to_b`
+- `a_indifferent_to_b`
+
+`acquired_method` may include:
+
+- `user_defined`
+- `llm_estimated`
+
+More detailed method metadata may be added later.
+
+**Phase 1b Task Preferences (`UBU-D0282`).** In Phase 1b a Preference may relate two Tasks instead of two Objectives, with the same `order` values, so explicit Task prioritization stays pairwise (`UBU-D0009`). A Preference never relates a Task to an Objective.
+
+### 8.2 Ordinal rankings
+
+Ordinal UI input compiles immediately into pairwise Preference objects.
+
+The original ordinal ranking may be retained in the log, but Preferences remain pairwise in the canonical model.
+
+### 8.3 Indifference
+
+Indifference is explicit.
+
+Indifferent Objectives are assigned equal derived util values.
+
+### 8.4 Preference contradictions
+
+Preference cycles are logistical consistency errors.
+
+Example:
+
+- `A > B`
+- `B > C`
+- `C > A`
+
+UbU must query the user for resolution with high priority.
+
+### 8.5 Derived utils
+
+Derived util values are transient and may be cached on Objectives.
+
+They must be treated as volatile and recalculated when needed.
+
+Default MVP direction:
+
+- active Preferences form a DAG of Objectives;
+- indifference creates equal-util levels;
+- least-preferred level receives util `1.0`;
+- each higher level is multiplied by `√2`.
+
+Util derivation is typically local to the Objective subset being compared in a single planning process.
+
+### 8.6 Preference calibration examples
+
+A **PreferenceCalibrationExample** is a user-facing prompt or scenario used to help the user make better Preference judgments. It may describe a common emotional cost, common emotional reward, motivation ambiguity, social-pressure pattern, or tradeoff.
+
+Preference calibration examples are MVP-important onboarding and review aids. They are not canonical value objects unless the user accepts or edits the resulting judgment into a Preference or other canonical entry.
+
+The minimum Phase 1 calibration library has six example frames:
+
+- `urgent_vs_important`: urgent external commitment versus important but nonurgent Objective;
+- `emotional_cost_vs_visible_progress`: emotionally costly repair, clarification, or maintenance work versus easier visible progress;
+- `social_pressure_vs_planned_objective`: socially pressured request versus planned user-chosen Objective;
+- `recovery_vs_more_work`: recovery or rest versus another useful Task;
+- `short_term_relief_vs_long_term_importance`: short-term relief or cleanup versus long-term capability, relationship, or project importance;
+- `ambiguity_vs_decomposition`: decomposition of ambiguous work versus starting a larger unclear Task.
+
+Each example identifies one or more calibration dimensions: `urgent_value`, `emotional_cost`, `social_pressure`, `recovery_value`, `long_term_importance`, and `ambiguity_value`.
+
+Default presentation budget:
+
+- Bootstrap interview: at most two examples after the user has named real Objectives or candidate Tasks.
+- Calendar preview: at most one relevant example when the default Plan appears value-misaligned, socially pressured, recovery-fragile, or unusually urgent.
+- Log review: at most one relevant example for an unreconciled rejection, override, failure, or repeated deviation unless the user asks for more.
+
+Answers become canonical only through normal admission:
+
+- explicit accepted pairwise Objective comparisons become Preferences;
+- current affect, availability, capacity, or recovery reports become Snapshots or UniverseState facts when they describe observed current state;
+- preview/review answers that explain outcomes, rejections, overrides, or calibration interactions become Logs, Log annotations, or Log corrections;
+- comments about Objective importance or fit that do not declare pairwise order become Objective annotations or review notes;
+- raw feelings, social-pressure comments, skipped examples, and unaccepted hypotheses remain noncanonical review notes.
+
+Calibration wording must avoid leading the user:
+
+- use the user's actual Objectives or Tasks when possible;
+- present plausible costs and rewards for both sides;
+- avoid preselected answers, hidden scoring, therapy, diagnosis, moral judgment, and "should" language;
+- offer `neither`, `indifferent`, `not applicable`, edit, and free-text paths;
+- disclose that examples are prompts for self-reporting, not UbU's values.
+
+Candidate fields for a calibration example include:
+
+- `example_id`
+- `version`
+- `situation_summary`
+- `calibration_dimensions`
+- `common_emotional_costs`
+- `common_emotional_rewards`
+- `possible_tradeoffs`
+- `calibration_question`
+- `resulting_object_refs`
+- `source`
+- `revision_status`
+
+Example definitions are versioned derived content. UbU may revise or retire examples when user corrections, skips, edits, repeated non-use, or review feedback show that an example is confusing or leading. Historical Logs are not rewritten.
+
+---
+
+## 9. WorkItems, Tasks, and Containers
+
+### 9.1 WorkItem
+
+A **WorkItem** is the abstraction over concrete work-like entities.
+
+A WorkItem may be:
+
+- Task
+- Container
+- possible future subtype
+
+### 9.2 Task
+
+A **Task** is a schedulable WorkItem.
+
+Tasks may be:
+
+- Static Task
+- Dynamic Task
+
+#### Static Task
+
+A Static Task has fixed start and end times.
+
+Examples:
+
+- meeting
+- class
+- appointment
+
+Static Tasks are included directly in Plans.
+
+#### Dynamic Task
+
+A Dynamic Task has flexible scheduling.
+
+Dynamic Tasks may have:
+
+- duration or duration PDF
+- allowed time range
+- dependencies
+- preconditions
+- effects
+- Objective link
+- success probability
+- affect delta
+- expected cost
+
+**Phase 1 realization (`UBU-D0239`).** A Phase 1 Task carries an optional `duration_estimate` — either a fixed scalar or the §3 three-point shifted-log-normal (`min_seconds`/`mode_seconds`/`p95_seconds`) — and optional `correlation_groups` membership, defaulting to a fixed estimate and independence when absent. These are the per-Task duration uncertainty and correlation inputs the planning rollout consumes; the store admits and persists them, and the orchestrator carries them into the kernel `TaskSpec`.
+
+**Phase 1b allowed range (`UBU-D0276`).** A one-off Dynamic Task may carry `allowed_time_range: { earliest_start, latest_finish }`, expressed as absolute UTC instants. The planner must place the Task's entire occupied interval inside that hard range by mapping it to the kernel `TaskSpec.window`. The range is a declared Task input, not a derived decision envelope, due date, deadline, or recurring local time-of-day rule. Routine instances receive their concrete range when recurrence instantiates them. Static Tasks continue to use fixed start and end times rather than representing a fixed commitment as a zero-slack Dynamic range.
+
+**Phase 1b split policy (`UBU-D0284`).** A schedulable Task has `split_policy`, defaulting to `atomic`. A splittable Task declares `splittable { min_piece_seconds, resume_overhead_seconds, max_pieces }`; all three fields are admitted Task inputs rather than silent category defaults. Advisors may propose defaults for review, but admission records the explicit policy. Pieces are Plan placements of the same Task, not child WorkItems, and actual partial execution is recorded as Log evidence plus a remaining-work estimate on that Task rather than a Container replacement.
+
+**Operator-authored preconditions (baseline A6).** The expanded Tasks row reads its precondition in words and lets the operator author a single leaf over a recorded target, with predicates constrained by that target's collection. Clearing is an explicit act that explains removal of the planning requirement. Boolean trees are readable and clearable; their authoring remains available through existing routes, outside this form. Operator authorship does not depend on admitting a model proposal.
+
+**Captured notes (`UBU-D0298`).** Calendar event notes may initialize an absent/blank Task description after edge trimming, within 16,384 UTF-8 bytes, preserving interior text. Existing interview knowledge and operator edits are never overwritten. Overlong notes are refused whole while the otherwise capturable Task/title remains; description is never exported back to Google Calendar. Lossless prose synthesis of later Clarify answers remains open in `UBU-Q0161`.
+
+### 9.3 MVP Task schedulability invariant
+
+A Task is schedulable in MVP if it has:
+
+- stable ID
+- Objective link
+- duration or duration PDF
+- active status
+- title
+
+Permitted:
+
+- dependencies may be empty
+- earliest-start may be absent
+- due may be absent
+- cost may be absent
+- effect may be absent in exceptional cases
+
+Tasks with no known modeled effect may be reportable as low-utility or “meaningless” for plan scoring.
+
+### 9.3.1 Evergreen gap-fillers
+
+Phase 1 does not add an evergreen Task subtype. An evergreen gap-filler is an ordinary active Dynamic Task, usually serving an evergreen Objective, with a `gap_fill_policy` that lets the planner consider it when an otherwise discretionary gap exists.
+
+Required `gap_fill_policy` fields:
+
+- `eligible`: `true`;
+- `minimum_useful_duration_seconds`;
+- `maximum_useful_duration_seconds`;
+- `cooldown_policy`, including an explicit `none_declared` value when no cooldown applies;
+- `autonomy_mode`, which is `suggest_only` in Phase 1.
+
+Optional `gap_fill_policy` fields:
+
+- `preferred_duration_seconds` when different from the Task duration model;
+- `location_scope`, such as `anywhere`, `current_location`, or a broad user-defined category;
+- `required_context_refs`, such as required material, device, app, or integration state;
+- `affect_suitability`, when the Task has narrower affect fit than normal Task affect constraints;
+- `rank_hint`, for local tie-breaking among otherwise similar candidates.
+
+Existing Task fields carry Objective link, title, status, duration, dependencies, preconditions, effects, and provenance. Readiness should use ordinary preconditions when possible. Recurrence is not a Task field: scheduled recurrence lives on the evergreen Objective (§7.4.1) and planning synthesizes Task instances per reactivation (`UBU-D0214`).
+
+Recovery, meals, sleep, transition buffers, setup/teardown, and other legitimization support work are not gap-fillers by default. They protect human viability before optional gap work is considered.
+
+### 9.4 Container
+
+A **Container** groups WorkItems.
+
+Containers are not directly scheduled in Plans. Plans contain Tasks.
+
+A Container may represent:
+
+- decomposed work
+- preempted work
+- Technique instantiation
+- grouped child Tasks
+- Super Automation workflow structure
+
+Container completion is derived from child states.
+
+A Container is complete when all child Tasks are either:
+
+- completed
+- moot
+
+Task-to-Container mutation is a structural replacement, not an in-place type change. The original Task handle remains a historical Task handle and is not reused as the Container handle.
+
+Mutation creates a new Container with a new `container_id`. The Container records `origin_task_ref`, `mutation_reason`, `mutation_log_ref`, child WorkItem refs, and lineage/provenance sufficient to trace the restructuring.
+
+For Phase 1b decompositions, the Container record is the admitted structure that keeps an ordered checklist together. It must include `container_id`, `origin_task_ref`, `mutation_reason`, `mutation_log_ref`, ordered child Task refs, segment split points, lineage, and provenance. The ordered child refs are Task refs, not embedded WorkItems, for every schedulable child created or linked by the decomposition.
+
+Segments are represented as split points over the ordered child Task list: each split point means the current segment ends after that child and the next child starts a new segment. No split points means the whole ordered list is one segment. Segment ids, when materialized, are derived from the Container version and contiguous child-index ranges; they are not independent canonical WorkItems.
+
+All child Tasks created by decomposition, preemption, retry, or worker expansion receive new Task handles. Existing child or continuation Tasks may be linked into the Container, but the mutation operation does not reassign the original Task handle to a child.
+
+The original Task transitions to `moot` with reason code `replaced_by_new_plan_structure` when decomposition or regrouping preserves the underlying intent. If responsibility moves to another executor without decomposition, `delegated` may be more accurate; if a newer source artifact replaces the Task, `superseded` may be more accurate.
+
+Fields that describe the original intent stay on the Container or its lineage metadata: title or summary, served Objective refs, parent/dependency context, external-reference lineage, Compartment/security labels, authority/provenance, and notes needed to explain why the work was split.
+
+Fields that make a schedulable action executable belong on child Tasks: duration or duration PDF, preconditions, effects, executor/delegation fields, worker assignment/status, expected output, evidence requirements, and any child-specific dependencies or deadlines. Child Tasks may inherit or narrow Objective refs, Compartment refs, authority source, and External Reference context when valid, but they do not silently inherit stale status, completion evidence, or modeled effects that no longer apply.
+
+Within a segment, children are planned and repaired as strictly back-to-back work. Phase 1b does not model a maximum-gap edge between children; any admitted gap, wait, recovery, handoff, or pause is represented by a separate Task or by a segment boundary.
+
+Task split policy applies to individual Tasks, including decomposition child Tasks, but an admitted compiled segment remains an atomic placement unit. If a child in a multi-child segment needs independent splitting, review must create segment boundaries around that child or reject the decomposition until edited; the planner does not split the interior of a compiled segment.
+
+Phase 1b keeps the planning kernel contract unchanged. Before kernel dispatch, the orchestrator compiles each admitted segment into one temporary placement unit whose duration is the exact sum of fixed child durations, or for stochastic durations the conservative component-wise sum of minimum, mode, and p95 with one rollout sample for the segment. After the kernel places the unit, the orchestrator expands it back into child Plan entries in Container order with contiguous offsets. A native no-gap kernel edge is deferred until measurement shows the conservative segment approximation distorts rollout results.
+
+Children with hard static timing, allowed time ranges, preconditions, dependencies, or effects that cannot safely apply to the whole segment force a segment boundary before that child, or after it when the constraint belongs only to prior work. Shared hard constraints may constrain the compiled segment as a whole. If no sequence of boundaries can preserve the child constraint without creating an internal gap or making the proposal unschedulable, admission rejects the decomposition or requires review edits before admission.
+
+When execution finishes a child early or late, completed children stay fixed as history. The unstarted suffix of its segment remains a contiguous placement unit for local repair, starting no earlier than the actual completion time of the prior child. If the suffix no longer satisfies admitted hard constraints, repair replans from the next segment boundary or surfaces a reviewable repair candidate; it does not scatter remaining siblings as independent filler.
+
+Undoing a decomposition is another admitted structural replacement, not deletion. It creates a restored Task with a new Task handle carrying the original intent and prior schedulable fields when still valid, marks the Container and child Tasks as superseded or moot by that restoration, and retains the original moot event, mutation log, child Task history, Plan history, External Reference lineage, and review/admission events for audit.
+
+External References are preserved by linking the external object to the new Container when it represents the larger work and to child Tasks only when the external object supports, evidences, or projects that specific child. The original Task's historical External References are not rewritten; new `supersedes`, `projection_of`, `supports`, or `evidence_for` references may be added according to the accepted External Reference model.
+
+GitHub-linked Task decomposition should keep the GitHub Issue or PR traceable to the Container and add child-level External References only for actionable subwork that needs projection or reconciliation.
+
+Automation/Super Automation expansion uses the same structural-replacement rule; worker-specific child Task details are in §25.1.2.
+
+### 9.5 Moot
+
+`moot` is a first-class terminal Task status.
+
+It is functionally equivalent to completion for planning, but distinct for logs and reporting.
+
+MVP moot reason codes are schema-controlled enum values:
+
+- `externally_satisfied`
+- `superseded`
+- `delegated`
+- `no_longer_relevant`
+- `invalidated_by_universe_change`
+- `replaced_by_new_plan_structure`
+- `user_declared_moot`
+- `automation_obsolete`
+- `duplicate`
+
+The MVP list is sufficient for Phase 1 and intentionally closed to free-form reason codes. New canonical reason codes require an explicit schema migration or accepted decision. Implementations may store human-readable notes on the `task_moot` Log entry, but the canonical `moot_reason_code` remains one of the enum values.
+
+`duplicate` is included because duplicate work is common in imported GitHub/project queues and should be queryable separately from generic plan supersession.
+
+`delegated` remains separate from `externally_satisfied`. `delegated` means the Task is no longer work for this executor because responsibility moved to another executor, worker, Identity, or delegation path. It does not by itself assert that the underlying Objective or required world state has been satisfied. `externally_satisfied` means the desired state became true through another action or event, regardless of delegation.
+
+Use the narrowest accurate code:
+
+- `externally_satisfied`: the required state is already true because of outside action or observation.
+- `superseded`: this Task is replaced by a newer Task, Objective, decision, or source artifact.
+- `delegated`: responsibility moved out of this Task's executor scope and will be tracked elsewhere.
+- `no_longer_relevant`: the Task is no longer useful, but not because the world invalidated it.
+- `invalidated_by_universe_change`: an external state change made the Task impossible or wrong.
+- `replaced_by_new_plan_structure`: decomposition, regrouping, or planning restructure replaced this Task without changing the underlying intent.
+- `user_declared_moot`: the user explicitly says the Task should be treated as moot and no more specific code is appropriate.
+- `automation_obsolete`: a worker, automation path, or generated work item is obsolete because automation state changed.
+- `duplicate`: the Task duplicates another active, completed, or canonical work item.
+
+Readiness and execution states such as proposed, ready, blocked, and in-progress are derived views, not canonical Task status (`UBU-D0227`). Candidacy is the store's candidate/admitted distinction; ready and blocked are computed from dependencies and deterministic precondition evaluation; in-progress is `active` plus recorded start evidence in the Log. Derived readiness may appear in API responses, UI, and reports, but it is never persisted as canonical Task status, and `canceled` is not a canonical status — the specific moot reason code is used instead.
+
+**Phase 2 status additions (not in Phase 1):**
+
+`DEFERRED_INTENT` — a Phase 2 nonterminal Task status, with wire value `deferred_intent`, for an explicit user decision to retain an idea without planning it. The complete deferral record, planning exclusion, review cadence, promotion, and dismissal rules are defined in §9.7 (`UBU-D0308`).
+
+`WAITING_FOR` — a Phase 2 nonterminal Task status for a personally retained Task awaiting a human response or outside action. The complete waiting record, release rules, worker boundary, planning visibility, and Logs are defined in §9.6 (`UBU-D0307`).
+
+### 9.6 Waiting-for lifecycle (Phase 2)
+
+`WAITING_FOR` is a nonterminal Task status with wire value `waiting_for` (`UBU-D0307`, following `UBU-D0228`). It records that the user retains responsibility for the Task but cannot continue until a human response or outside action occurs. It extends the Phase 1 lifecycle of `UBU-D0227`; ready, blocked, and in-progress remain derived views. A failed precondition alone does not create this status.
+
+#### Waiting record
+
+A Task has exactly one `waiting_for` record while its status is `waiting_for`, and the field is absent otherwise. Historical records remain in the append-only Log. The record carries:
+
+- `wait_id`: a new opaque episode id on every entry, retained across edits within that episode; it is not a separate WorkItem or canonical object type.
+- `since`: the effective UTC instant of entry, preserved across reminder snoozes and expectation changes.
+- `reason` and `resume_condition`: required descriptions of what is awaited and what evidence would permit continuation. An optional `resume_precondition` uses the existing §10.1 predicate schema over admitted UniverseState. `auto_resume` defaults to `false`; `true` requires that predicate and an explicitly accepted rule authorizing restoration to `active` when it becomes true.
+- `counterparty_identity_ref`: optional existing Identity ref. Absence is valid and does not cause Identity or Relationship creation. The reference conveys neither assignment nor communication authority.
+- `expected_by`: optional tagged expectation, either `{ kind: instant, at: UTC timestamp }` or `{ kind: local_date, date: YYYY-MM-DD, time_zone: IANA zone, review_at: resolved UTC timestamp }`. For a local date, admission resolves `review_at` to the start of the following local day and retains the date and zone for display and replay. This is an estimate, not a Task deadline, allowed range, promised completion, or release condition.
+- `reminder_policy`: `{ mode: none | once | repeat, first_review_at?, interval_seconds?, snoozed_until? }`. `once` and `repeat` require a UTC `first_review_at`; `repeat` also requires a positive `interval_seconds`; schedule fields inconsistent with the selected mode are rejected. Admission defaults to `once` at the expected-by boundary when one exists, otherwise `none`; repeating reminders require explicit opt-in. `snoozed_until` is an optional UTC instant that postpones ordinary reminders without changing `since`, `expected_by`, or the release condition. Changing the expectation requires explicitly retaining or revising the reminder schedule.
+- `escalation_trigger_at`: optional UTC instant. If the wait remains unresolved at that instant, surface a local escalation review of follow-up, alternatives, or abandonment; absence means no scheduled escalation. It grants no authority to contact the counterparty or another person.
+- `evidence_refs`: optional Log or External Reference links supporting the request and release criterion. Ordinary Task provenance and `compartment_ids` apply to the entire record, notifications, Logs, and derived reports; protected content is referenced and redacted under existing policy.
+
+#### Transitions and admission
+
+Only an admitted `active` Task enters `waiting_for`. Entry retains the Task id, Objective, executor responsibility, dependencies, preconditions, effects, timing constraints, and remaining-work estimate. If work has started, entry closes its current execution interval with a stopping boundary and partial-work evidence, preserving the remaining-work estimate. After restoration, historical start evidence alone does not imply an ongoing execution interval; a new start records resumed work. Elapsed waiting time is excluded from execution duration and duration learning.
+
+`waiting_for -> active` requires admitted evidence satisfying the release criterion, or an explicit user withdrawal/override of that criterion with a reason. A matching `resume_precondition` causes restoration only under the accepted `auto_resume` rule; otherwise it proposes review. Automatic release requires accessible, current admitted evidence for the targets establishing the predicate match. An `absent` match requires an admitted clear; omission, redaction, or staleness in a partial Replica cannot establish release even when the baseline evaluator treats unknown targets as absent. Admission rejects an automatic wait whose release is already confirmed; accepted rules are re-evaluated after relevant admitted state changes. Raw messages, worker observations, the expected-by boundary, reminders, and elapsed time cannot restore or complete the Task by themselves. Restoration re-evaluates all ordinary dependencies and preconditions without clearing them: an `active` Task can remain blocked.
+
+`waiting_for -> completed | failed | moot` uses the existing outcome admission rules and evidence. Receipt of a response normally restores `active`; external satisfaction uses the applicable §9.5 moot reason rather than inventing completion. Reminder dismissal and snooze leave the Task waiting; abandonment uses the existing narrow moot reason. On exit, clear the current waiting record and cancel its pending reminders and escalation. A later wait receives a new `wait_id` and explicit expectations and policies.
+
+Entry supplies a fresh `wait_id`; edits and releases target the current episode. Every change, including automatic release, checks the expected Task version and carries an idempotency key. Duplicate submissions cannot repeat a canonical transition or create another review/follow-up request; a result for an older wait cannot release a newer one. Authorized workers submit candidates through the normal admission path. Multi-device causality and conflicts use the existing sync contract rather than a separate waiting-state merge rule.
+
+An Automation Worker polling for completion remains tracked through its assignment lifecycle (§25.1.2), including lease expiry, delivery, and review. Polling alone does not put its assigned Task into `waiting_for`. A human wait may be observed by a separately assigned polling/review Task or worker role; it does not imply delegation of the user's original Task or an execution lease. Assignment and waiting state never overwrite each other.
+
+#### Planning, review, and Calendar preview
+
+The CPU excludes waiting Tasks from the executable task graph before kernel dispatch and also excludes Tasks with required, unsatisfied dependencies on them, transitively. It retains those dependency blockers in explanations instead of deleting edges to make dependents schedulable. Waiting consumes no placement or duration sample, contributes no completion/effect credit, and needs no new `TaskSpec` field. An expected-by estimate cannot establish future readiness. Unrelated eligible work remains available.
+
+The planning horizon includes a blocked-waits view showing age, release criterion, permitted counterparty details, expectation, next review, overdue state, and affected downstream work. Crossing an expected-by boundary while still waiting creates a qualitative lateness/dependency-fragility finding in derived risk reporting (§28), without inventing a success probability, new Risk object, or scoring penalty. Waits with no expectation remain visible as having unknown release time.
+
+Reminder and escalation boundaries use `elapsed_time` recalculation triggers (§29). Canonical review requests use `(task_ref, wait_id, boundary_kind, boundary_at)` as their deterministic idempotency key and deduplicate through existing sync admission; offline notification delivery does not promise global exactly-once behavior. After downtime or snooze, collapse missed repeat reminders into one attention item and compute the next future boundary from the admitted schedule; do not replay a backlog of notifications. Reviews request user attention; any time-consuming follow-up is a separate ordinary Task admitted by the user or an explicit creation policy, linked to this wait and deduplicated by the same boundary key.
+
+Calendar preview suppresses the waiting Task's execution slot but displays a separate waiting list and non-occupying review/expectation markers. Only an admitted follow-up Task can reserve review or contact time. Entry invalidates future execution placements through ordinary Plan repair while preserving actual history and §29 override rules; incompatible fixed commitments or override placements are surfaced for review. Leaving the wait does not silently complete its follow-up Tasks.
+
+#### Phase 2 Log events
+
+Phase 2 adds `task_waiting_entered`, `task_waiting_updated`, and `task_waiting_exited` to the §17 envelope. Each accepted change records Task ref, `wait_id`, expected/resulting Task version, old/new status, effective time, actor and authority source, reason, evidence refs, idempotency key, and the changed waiting fields or policy-permitted protected references. Edits, including snooze and expectation changes, log before/after values without resetting `since`.
+
+Exit records whether the release was evidence-confirmed, an explicit user override, or a terminal outcome. A terminal exit also writes the existing `task_completed`, `task_failed`, or `task_moot` entry with its normal payload in the same admitted transaction. Waiting-state updates and their Log entries are atomic; corrected interpretations use §17.3 correction links. Rejected or stale worker requests use existing rejection Logs and cannot emit a successful exit.
+
+Entry and exit invalidate affected Plans and risk views and produce the existing `recalculation_triggered` entry: `user_override`, `external_event`, or `worker_request` identifies the actual authority/evidence path; terminal outcomes use their existing trigger kinds. Metadata changes and due reviews normally mark derived views stale; changes affecting current/next work or hard feasibility require immediate recalculation under §29. Batching retains all source event refs.
+
+### 9.7 Deferred-intent lifecycle (Phase 2)
+
+`DEFERRED_INTENT` (`deferred_intent` on the wire) is a nonterminal Task status for an explicit user choice to remember work without committing to plan it (`UBU-D0308`). It extends `UBU-D0227` for Phase 2 and follows `UBU-D0228`. Low-priority `active` Tasks remain planning candidates; deferred Tasks do not. Dismissal uses terminal `moot` with an existing §9.5 reason code, never a new `cancelled` status.
+
+#### Deferral record and admission
+
+A Task has exactly one `deferred_intent` record while its status is `deferred_intent`, and the field is absent otherwise. The record carries:
+
+- `deferral_id`: a new opaque episode id for each entry, retained across edits and reviews in that episode; it is not a separate WorkItem.
+- `since`: effective UTC entry time, preserved across keep-deferred choices and schedule edits.
+- `reason`: optional user explanation; omission is valid and does not invite an inferred canonical reason.
+- `defer_until`: optional tagged review boundary, either `{ kind: instant, at: UTC timestamp }` or `{ kind: local_date, date: YYYY-MM-DD, time_zone: IANA zone, review_at: resolved UTC timestamp }`. For a local date, admission resolves and retains the UTC start of that date in the stated zone. It controls ordinary review timing, not an allowed range, deadline, promised start, or automatic reactivation.
+- `review_interval_seconds`: positive interval, default `2592000` (30 days). Cadence configuration is a Setting, not a Preference; the admitted record retains the effective interval for replay.
+- `last_review_at`: optional UTC time of the latest explicit review action. Merely displaying, closing, or ignoring a prompt does not set it.
+- `next_review_at`: required finite UTC instant, initially the future `defer_until` boundary when supplied, otherwise `since + review_interval_seconds`. An explicit keep-deferred or Objective-review action records `last_review_at` and uses a newly chosen or retained future `defer_until` boundary; if none remains, it clears an expired date and sets `last_review_at + review_interval_seconds`. An explicit date/interval edit recomputes the boundary from the retained future date or the edit time plus the interval. Reason-only edits do not postpone review; no edit resets `since`.
+
+Entry requires an explicit user deferral action. It may admit a newly captured deferred Task with stable id, title, and ordinary provenance before an Objective link, duration, or Preference is supplied, or move an admitted `active` Task to `deferred_intent`. Existing Task identity, intent, dependencies, effects, constraints, Preferences, and remaining-work evidence are retained. Advisors and workers may propose deferral but cannot infer or admit it from low priority, missed execution, or missing Preference. A waiting Task must first leave `waiting_for` under §9.6; the two current records never coexist. Terminal Tasks remain terminal; reconsideration creates a new linked Task through ordinary admission.
+
+Started work records a stopping boundary and partial-work evidence before entry. Conflicting running assignments, fixed commitments, or override placements must be resolved through their existing admission and repair rules before deferral is admitted. Deferral grants no authority to cancel an external event or stop a worker. Routine occurrence Tasks retain §7.4.1's mandatory semantics and use explicit skip, move, or recurrence-edit controls; deferral cannot replace those controls. A someday idea about a routine may be captured as a separate non-occurrence Task.
+
+#### Planning boundary
+
+The CPU excludes deferred Tasks from the executable task graph before kernel dispatch, including skeleton sampling, optional gap-fill selection, duration sampling, capacity budgets, and completion/effect credit. It also excludes dependents with required, unsatisfied dependencies on them, transitively, preserving those blockers in explanations rather than deleting edges. Unrelated eligible work remains available. No `TaskSpec` field or priority floor is added, and elapsed deferral time is not execution duration or duration-learning evidence.
+
+Entry invalidates future placements through ordinary Plan repair while preserving actual execution history. Deferred Tasks remain accessible in a separate retained ideas view and review report, with age, reason, next review, linked Objective, and affected downstream work. They reserve no Calendar slot. Promotion re-evaluates ordinary schedulability fields, dependencies, and preconditions; an `active` Task may still be blocked. Neither a review date nor an Objective change promotes the Task.
+
+#### Review cadence and actions
+
+Regular Log review (§17.8) includes due deferred Tasks; default deferred-item cadence is 30 days, independently of the more frequent Log-review Task. A chosen `defer_until` postpones ordinary surfacing until that boundary. If review was skipped or the Device was offline, the next Log review or startup surfaces one overdue attention item per current episode, without replaying missed reminders. A material admitted change to a linked Objective's status or desired outcome queues an earlier review even before `defer_until`; it cannot cancel, complete, or promote the Task by itself. Manual review is always available.
+
+Scheduled review requests use `(task_ref, deferral_id, next_review_at)` as an idempotency key; Objective-triggered requests use `(task_ref, deferral_id, objective_change_log_ref)`. Coalesce outstanding causes into one attention item per current episode under existing sync admission. Due boundaries use the existing `elapsed_time`/`log_review_due` paths. A stale request for an earlier episode or superseded review boundary cannot mutate the Task. A review action that retains deferral acknowledges the presented cause refs and leaves only the next future boundary and any unresolved Objective-review request. Attention items occupy no time; any additional review/follow-up Task is separately admitted and scheduled.
+
+The prompt shows current intent, attainability, desirability, and whether explicit Preference commitment remains unresolved, and offers:
+
+- **Promote to active:** supply ordinary §9.3 schedulability fields and explicitly confirm/cite an enabled, user-accepted pairwise Preference involving this Task or its linked Objective, or admit that comparison during review. Record the Preference refs with the promotion decision. An inferred ranking, scalar priority, or unary commitment flag is insufficient; if no relevant comparison can yet be made, keep deferred or open Objective review. Dependencies and preconditions remain independently evaluated.
+- **Keep deferred:** optionally edit the reason, date, or interval and record a finite future `next_review_at` under the record's scheduling rule. Without a retained/chosen future date, use the admitted interval after review (30 days by default). Keeping an idea does not create a Preference commitment.
+- **Dismiss permanently:** explicitly transition to `moot` using the narrowest existing reason, such as `no_longer_relevant`, `invalidated_by_universe_change`, or `user_declared_moot`. Retain the Task and its history; do not delete it or assert completion.
+- **Review linked Objective:** keep the Task deferred and record the next review boundary while coalescing an unresolved Objective-review request for this episode and Objective. If no Objective is linked, offer normal Objective creation/linking review. This action does not declare a Preference or create a time reservation by itself.
+
+The Phase 2 Preference declaration requirement is enforced at review and promotion, not at idea creation. Keep-deferred, Objective-review, skipped, or ignored prompts do not resolve a missing commitment; it remains flagged for later review. There is no automatic dismissal after an age or number of missed reviews. Closing or ignoring the prompt leaves the attention request pending and retains `next_review_at`; a due boundary remains overdue. It cannot stand in for an explicit keep-deferred action or acceptance. Compartment policy applies to records and reports; missing, redacted, or stale Replica data cannot establish infeasibility, user acceptance, or a lifecycle transition.
+
+#### Phase 2 Log events
+
+Phase 2 adds `task_deferred_intent_entered`, `task_deferred_intent_updated`, and `task_deferred_intent_exited` using the §17 envelope. Each accepted change atomically records Task ref, `deferral_id`, expected/resulting Task version, old/new status, effective time, actor and authority source, idempotency key, optional reason/evidence refs, and before/after record fields or policy-permitted protected references. Entry records the explicit deferral action; updates include keep-deferred and review-schedule edits; exit records promotion or the admitted terminal outcome and clears the current record and pending review requests. Existing completion/failure/moot admission remains applicable; a terminal exit also appends its ordinary outcome event in the same transaction.
+
+Review choices use `decision_recorded` with Phase 2 `decision_kind: deferred_intent_review` and the §17.0 payload, including review ref, available actions, chosen action, optional reason capture, and any accepted Preference or Objective refs. An accepted review action records its decision atomically with any Task change, newly accepted Preference, and review-request update. Skipping or ignoring records no acceptance and no invented Preference. Every mutation checks the current Task version and episode id and uses existing idempotency, authority, worker-candidate, and sync-conflict rules. Corrections append §17.3 correction links. Entry and exit invalidate affected Plans and reports and use existing §29 recalculation triggers; metadata-only review edits normally mark derived views stale.
+
+---
+
+## 10. Task Preconditions and Effects
+
+### 10.1 Preconditions
+
+Preconditions are deterministic constraints over UniverseState.
+
+If preconditions are unknown or partially modeled, they are treated as absent in MVP.
+
+MVP preconditions use a recursive object with `all_of` and `any_of` arrays for simple AND/OR composition. A leaf predicate has `target`, `predicate`, and optional `expected` fields. `target` uses the same dotted UniverseState target convention as mutations, beginning with `facts`, `numeric_values`, `set_memberships`, or `event_markers`.
+
+MVP predicates are:
+
+- `equals`, for exact JSON-compatible equality;
+- `member_of`, for checking that `expected` is present in a `set_memberships` target;
+- `absent`, for checking that a target is not present or has been cleared.
+
+Numeric comparisons are not in MVP, even for `numeric_values` targets. Numeric values may be checked only by equality or absence.
+
+Preconditions may reference event markers, affect-related UniverseState keys in `user_mode`, and Relationship-relevant UniverseState keys when the containing Task is allowed to see those targets. Organization-mode and worker-mode validation must reject intrinsic-affect preconditions. Relationship-relevant and Compartment-protected targets remain subject to Compartment policy, mode rules, and user-acceptance requirements for private or inferred claims.
+
+A failed precondition means the Task is blocked for planning and execution, not invalid. `unschedulable` is a derived planner result when no placement satisfies otherwise valid preconditions and Calendar Logic; `invalid` is reserved for malformed Tasks, malformed precondition schema, forbidden targets, or contradictions in canonical state.
+
+**Phase 1 realization (`UBU-D0241`).** The deterministic evaluator — recursive `all_of`/`any_of`, leaf predicates `equals`/`member_of`/`absent`, unknown or partially modeled targets treated as absent, malformed preconditions surfaced as evaluation errors — is implemented as a pure `ubu-core` function over a UniverseState. Attaching `preconditions` to the Task schema and consuming the evaluator are realized in Wiring-A (`UBU-D0242`); effect application and bootstrap fact-recording remain.
+
+**Phase 1 realization (`UBU-D0242`, Wiring-A).** A Task carries optional `preconditions`, and the orchestrator evaluates them against the current UniverseState via the pure `ubu-core` evaluator during request building, partitioning Tasks: satisfied or absent → eligible, a failed precondition → **blocked** (excluded from planning and surfaced), a malformed precondition → **invalid** (surfaced distinctly). Only eligible Tasks reach the kernel, which is unchanged. This realizes the §10.1 blocked result in the orchestrator; the planner's placement-based `unschedulable` is a separate concern, untouched.
+
+### 10.2 Effects
+
+A Task effect describes predicted mutation of UniverseState if the Task succeeds.
+
+MVP effect object:
+
+- scalar success probability
+- mutation list
+
+If success probability is `1` or `null`, the effect is assumed to occur when the Task completes.
+
+If a Task fails, UniverseState is unchanged in MVP.
+
+**Phase 1 realization (`UBU-D0242`, Wiring-B).** When a Task completes, the orchestrator applies its `effects.mutations` to the current UniverseState through the pure `ubu-core` applicator and persists the result through `ubu-store`, which owns UniverseState persistence — no other component writes to it. A failed Task leaves UniverseState unchanged. `success_probability` is planning/rollout metadata and has no bearing once the Task has completed: completion means the Task succeeded, so the effect applies regardless of it.
+
+### 10.3 Duration and success probability
+
+Duration uncertainty and success probability are distinct.
+
+A Task may have:
+
+- fixed duration
+- duration PDF
+- scalar success probability on the effect object
+
+Task duration PDFs likely use seconds as the canonical time unit in MVP.
+
+### 10.4 Resource preconditions and task readiness
+
+A **Resource** is any physical, digital, legal, financial, informational, location, access-controlled, or tool-like thing whose state affects whether a Task can begin, continue, or complete. Examples include a whiteboard, a specific file, a queued podcast episode, a ladder, bread flour, a car, a passport, a software license, an API key, a warranty document, a payment method, or a quiet room.
+
+Resource modeling is core to UbU's life-logistics purpose. It is delayed from Phase 1 because Phase 1 bootstraps the planning kernel through GitHub dogfooding, not because Resource is optional to the real product.
+
+The Phase 3 Resource boundary should be a thin task-readiness layer, not a full inventory or financial-management product. The first user-facing question is:
+
+> What must be true about the world before this Task is realistically executable?
+
+A minimal Phase 3 Resource object may carry:
+
+- `resource_id`;
+- `name`;
+- `kind` (`physical`, `digital`, `financial`, `access`, `location`, `information`, `tool`, `consumable`, `other`);
+- `availability_state` (`available`, `missing`, `unavailable`, `unknown`, `needs_acquisition`, `needs_preparation`);
+- `location_or_access_hint`;
+- `owner_identity_ref` when relevant;
+- `compartment_ref`;
+- `notes`.
+
+A Task may carry `resource_requirements[]` with:
+
+- `resource_ref` or free-text placeholder;
+- `requirement_type` (`required`, `helpful`, `blocks_start`, `blocks_completion`);
+- `status` (`satisfied`, `unsatisfied`, `unknown`).
+
+If a required Resource is missing, UbU may suggest or create prerequisite Tasks such as buying a part, finding a document, charging a battery, downloading a form, renewing a license, preparing a workspace, or checking whether a store or service is available. A Task requiring a Resource cannot be scheduled as ready unless the required Resource is in the required availability state in UniverseState.
+
+A mature Resource model naturally extends into inventory control, subscriptions, household logistics, procurement, cost history, depreciation, budgeting, and Quicken-like financial management. These are Phase 4/Phase 5+ full-version-1.0 features, not Phase 3 requirements. The distinctive UbU finance path is not to clone a ledger application first; it is to connect spending, ownership, maintenance, and acquisition to Objectives, Tasks, Techniques, Compartments, and capability growth.
+
+### 10.5 Skill preconditions and capability readiness
+
+A **Skill** is an Identity-owned capability that can satisfy a Task dependency. Skills are not static tags. They can be learned, tested, evidenced, improved through practice, and allowed to rust over time.
+
+A minimal Skill object may carry:
+
+- `skill_id`;
+- `name`;
+- `domain`;
+- `description`;
+- `owner_identity_ref`;
+- `proficiency_level`;
+- `confidence`;
+- `verified_status`;
+- `last_used_at`;
+- `last_tested_at`;
+- `rust_model`;
+- `prerequisite_skill_refs[]`;
+- `unlocks_technique_refs[]`;
+- `evidence_refs[]`;
+- `compartment_ref`.
+
+A Task may carry `skill_requirements[]` with:
+
+- `skill_ref`;
+- `required_level`;
+- `requirement_type` (`blocks_start`, `blocks_completion`, `improves_quality`, `reduces_risk`, `reduces_cost`);
+- `acceptable_substitutes[]`.
+
+Skill evidence may include self-declaration, completed Tasks, passed quizzes, supervised completions, credentials, portfolio artifacts, peer review, marketplace ratings, or External References. Self-declared evidence may be enough for private planning; public or barter-visible claims need stronger evidence, especially for high-risk or regulated domains.
+
+Skill rust is part of the model. UbU should not assume that a Skill remains permanently available at the same level because it was once learned. Last use, last test, confidence, consequence of failure, and refresher requirements should influence whether a Task is ready, risky, or should be preceded by learning/practice.
+
+### 10.6 Techniques, capability graphs, and DIY-versus-purchase planning
+
+A **Technique** is a reusable procedure that can transform Resources, Skills, time, attention, and other prerequisites into an Objective-serving result. A Technique can describe how Resources are used (`consumed`, `borrowed`, `referenced`, `transformed`, or `produced`) and which Skills are required, reinforced, tested, or produced.
+
+A large UbU-run or UbU-compatible Technique database can become a practical real-life capability graph. It can represent procedures such as replacing a faucet cartridge, filing an LLC annual report, cooking a basic meal, setting up encrypted backups, learning Rust ownership, preparing a ZK circuit review, or cleaning an apartment before guests arrive.
+
+Technique requirements can create skill-tree behavior:
+
+- prerequisites unlock new Techniques;
+- learning Tasks can be scheduled to acquire missing Skills;
+- completed DIY Tasks reinforce or test Skills;
+- missing Skills can trigger a decision between learning, DIY, hiring, buying, bartering, or deferring.
+
+This creates a natural DIY-versus-purchase/hire tradeoff. UbU can compare time cost, money cost, affect cost, Resource availability, Skill rust, risk, failure consequence, learning value, future task unlocks, and possible Skill Barter value.
+
+The marketing hook is legitimate if kept grounded:
+
+> UbU gamifies real life not by adding fake points, but by turning real Objectives, Resources, Skills, Techniques, constraints, and evidence into a capability tree the user can actually live inside.
+
+See `UBU-Q0114`, `UBU-Q0115`, `UBU-Q0118`, `UBU-Q0119`, `UBU-Q0120`, and `UBU-Q0121`.
+
+---
+
+## 11. UniverseState
+
+**UniverseState** is a first-class object representing the modeled state of the world relevant to UbU planning.
+
+For MVP, UniverseState is a lightweight shell with loosely typed facts and events.
+
+**Phase 1 realization (`UBU-D0241`).** UniverseState is realized as this four-collection container (`facts`, `numeric_values`, `set_memberships`, `event_markers` plus shell fields) in `ubu-core`, replacing a dormant objectives+tasks placeholder, and is admitted and persisted by `ubu-store`. The seven-operation mutation vocabulary (§11.3) and the deterministic precondition evaluator (§10.1) are implemented as pure `ubu-core` functions — validate-the-whole-list-then-apply-in-order for mutations; recursive `all_of`/`any_of` with `equals`/`member_of`/`absent` for preconditions. It is a single current-state object: mutations apply in place with `captured_at` as valid-at, and history lives in Logs and the containing envelopes, not in UniverseState versioning. Wiring preconditions onto Tasks and into the planner's `unschedulable` result, applying effects on Task completion, recording bootstrap facts, and Compartment/redaction-identity enforcement on Relationship/affect targets are the follow-on; they are not yet implemented.
+
+### 11.1 MVP UniverseState fields
+
+Core shell:
+
+- `universe_state_id`
+- `timestamp` or valid-at instant
+- `facts`
+- `numeric_values`
+- `set_memberships`
+- `event_markers`
+- `source_summary`
+- `confidence_summary` optional
+
+### 11.2 UniverseState values
+
+MVP value discipline:
+
+- fact keys are free-form strings;
+- default keys should use a lightweight namespace convention;
+- values are text / JSON-like payloads.
+
+**Namespace convention (`UBU-D0243`, amended by `UBU-D0291`).** A target is `<collection>.<subject>(.<entity-path>)?.<predicate>`. The first segment after the collection is a permanent top-level taxonomy referenced by every fact, precondition and mutation, so it remains governed and reviewed. Its effective vocabulary is the governed set union one visible operator-authored provisional registry. The governed set remains `operator`, `project`, `github`, `affect`, `relationship`, and only a recorded amending decision extends it. Minting a provisional root is an explicit operator act, never a side effect of recording a fact and never available to an advisor; producers may use only the effective vocabulary. Every root is a snake_case singular noun naming an entity or domain, never an instance, attribute, provenance/source or reverse-DNS authority prefix. Predicates and entity paths retain their existing rules. `affect` retains its reserved meaning, and `UBU-D0242`'s intrinsic-affect rejection keys off `<subject> == affect` unchanged.
+
+Every provisional root must be ratified by an amending decision or retired before the switch; the registry is that agenda. The store is disposable until the switch, making that the last cheap rename point before UniverseState keys, fact_provenance keys and Task precondition strings require rewriting without migration tooling. No root is proposed here. Registry, minting and validator/advisor enforcement are follow-up orchestrator work, not implemented by this ticket.
+
+The Phase 1b Tasks form reads requirements in words and authors a single leaf. Boolean trees remain readable and clearable, and authorable through the existing routes; a tree editor is outside the form's scope.
+
+A stricter ontology can be added later.
+
+**Human authoring and target advice (`UBU-D0296`, `UBU-D0300`).** The UniverseState form offers `asserted` for a person's statement and `measured` for an instrument/reading; it does not offer `derived` or `proposed`. A UniverseTarget advisor proposes only a target name, without a value. Its admission requires the operator's own value and records an assertion through the ordinary mutation path. No current advisor suggests values.
+
+**Perceptual provenance (`UBU-D0293`).** The closed enum remains `asserted / measured / derived / proposed`, not a confidence ladder. Unconfirmed visual observation or inference maps to a `proposed` candidate, never a canonical value. Personal confirmation maps to `asserted`, instrument/reading evidence to `measured`, and an actual computation from facts to `derived`. External verification qualifies the evidence and keeps the underlying source kind. Candidate/Discovery evidence carries observation, confidence and corroboration qualifiers; `FactProvenance` remains only `{kind, recorded_at}`. This future perceptual mapping does not implement value proposals or broaden the existing advisors' authority.
+
+### 11.3 Mutation vocabulary
+
+MVP mutations support:
+
+- `set_fact`
+- `clear_fact`
+- `increment_numeric`
+- `decrement_numeric`
+- `add_membership`
+- `remove_membership`
+- `append_event_marker`
+
+MVP mutation items use a small deterministic schema. Required fields are `operation` and `target`; `payload` is required except for `clear_fact`; `note` is optional. Mutation items do not carry item-level confidence, source, or provenance in MVP. Those belong on the containing Task effect, Snapshot, Log entry, worker mutation request, External Reference, or other envelope.
+
+Targets are dotted strings. The first segment names the UniverseState collection being changed: `facts`, `numeric_values`, `set_memberships`, or `event_markers`. Remaining segments form the lightweight namespaced key inside that collection. Example targets include `facts.github.issue.14.pipeline_state`, `numeric_values.affect.energy`, `set_memberships.github.issue.14.labels`, and `event_markers.relationship.rel_123.interactions`. The first post-collection segment is a controlled-vocabulary `<subject>` governed by `UBU-D0243`, the final segment is a snake_case `<predicate>`, and any segments between form an entity/instance path.
+
+Payload rules by operation:
+
+- `set_fact`: any JSON-compatible value;
+- `clear_fact`: no payload;
+- `increment_numeric` / `decrement_numeric`: numeric delta payload;
+- `add_membership` / `remove_membership`: JSON scalar member payload, usually a string;
+- `append_event_marker`: JSON object payload describing the lightweight marker.
+
+A Task effect's mutation list is unconditional once that effect succeeds. Conditional behavior belongs in Task preconditions, effect success probability, or planner branching, not in individual mutation items. Implementations should validate the full mutation list before applying it and apply valid items in list order.
+
+Mutation targets may include affect-related UniverseState keys in `user_mode`; organization and worker modes must reject intrinsic-affect mutations. Mutation targets may include Relationship-relevant UniverseState keys, but inferred or worker-generated relationship facts remain subject to Compartment policy, mode rules, provenance/logging envelopes, and user acceptance where required. Task effects should not silently overwrite user-declared private affect or Relationship truths.
+
+**Phase 1 realization (`UBU-D0242`, Wiring-B).** A minimal `InstanceMode` (the §5 modes) and a pure `ubu-core` validation enforce the organization/worker-mode rejection of intrinsic-affect targets for **both** preconditions (§1585) and mutations (this section). A target is intrinsic-affect by namespace — the segment after its collection is `affect` (e.g. `numeric_values.affect.energy`). In `user_mode` such targets are permitted; in organization or worker mode they make the Task `invalid`. The orchestrator passes the instance mode (`user_mode` for the MVP single-user instance), so the rejection is dormant but encoded and tested. The user-declared-private-truths guard above remains deferred (it needs a provenance/acceptance model).
+
+---
+
+## 12. Snapshots
+
+A **Snapshot** is an observed state update.
+
+User-declared and sensor-derived observations use the same object type.
+
+Snapshots are partial observed assertions over specific UniverseState fields. They are not full-state replacements and do not assert anything about omitted fields.
+
+MVP snapshot fields:
+
+- `snapshot_id`
+- `timestamp` or valid-at instant
+- `source`
+- per-dimension or per-field values
+- snapshot-level confidence
+- optional per-field confidence overrides
+- correction or revocation status derived from Log correction links
+
+### 12.1 Snapshot precedence rule
+
+- Latest observed snapshot overrides simulation on conflicting fields.
+- User-declared snapshots are top-priority observations.
+- Confidence is stored, but does not override explicit user declaration in MVP.
+- Between conflicting user-declared Snapshots for the same field, latest effective timestamp wins unless a later Log correction says otherwise.
+- Between conflicting non-user observations, source priority, effective timestamp, and confidence may be used by the Snapshot application algorithm.
+
+Snapshot records are immutable once accepted into the append-only Log. A Snapshot may be corrected or revoked only by a later Log correction entry that points to the original Snapshot observation. A correction that asserts replacement state creates a new Snapshot and links it to the corrected Snapshot or Log entry; a revocation without replacement simply removes the original Snapshot from corrected query views while preserving the historical claim.
+
+Social identity observations, such as group membership, role activation, self-concept statements, or mode-context salience, follow the same partial-assertion rule. A Snapshot or accepted record may assert one scoped social-identity fact without implying that omitted memberships, roles, or contexts are absent, inactive, or unknown.
+
+Corrections and revocations remain append-only. A later user correction can withdraw, narrow, or replace a social-identity claim without editing the original historical assertion.
+
+### 12.2 Discovery mode
+
+**Discovery mode** is a user-selectable workflow state, not a fourth instance operating mode. It is off by default and may be started, paused, resumed, exited, or inspected by the user at any time. The UI must show active capture state, enabled sources, local/cloud routing status, retention limits, and pending-review evidence count.
+
+Phase 1 session states are `inactive`, `active`, `paused`, `ended`, and `pending_review`. A minimal `DiscoveryEvidenceItem` is a reviewable candidate artifact with session ref, effective time or interval, source kind, signal kind, payload ref or redacted summary, confidence, Compartment or low-security label, provenance, and review status. Raw evidence is not final truth.
+
+Allowed Phase 1 discovery inputs are intentionally narrow:
+
+- explicit quick notes, user-selected current action, voice or text notes intentionally captured by the user, and manual start/stop markers;
+- UbU app state, Task controls, Calendar or default Plan context, timers, focus state, and foreground app category or app identifier when explicitly enabled;
+- configured integration events already allowed by Compartment, External Event, and External Reference policy;
+- coarse motion category such as stationary, walking, transit, or driving;
+- coarse user-defined location category or geofence event, not continuous raw location by default;
+- device state needed for interpretation, such as screen on/off or network/offline state.
+
+Phase 1 discovery excludes covert or broad capture by default: continuous microphone, camera, screen recording, keystroke logging, raw message bodies, raw file contents, raw GPS trails, and cross-Identity sharing are outside the default discovery input set. Any later use of those sources requires a separate explicit mode, Compartment review, routing disclosure, and user approval.
+
+**AV refinement for the MVP interaction surface (`UBU-D0292`).** The primary camera-and-voice surface does not enable continuous sources implicitly. A consented capture session remains visible, source-scoped, pausable and inspectable under the clause above. Process raw AV locally on the operator's own hardware, minimize context and retain only material justified by its purpose. Selective clips, summaries, hashes or deletion are operator-controlled under Compartment policy; subsequent export needs its own allowed route and approval. No-cloud/no-export denials remain hard. Segmentation and bounded local interfaces follow §21.1.5 (`UBU-D0326`); raw-media retention defaults follow `UBU-D0327` below and operator controls follow `UBU-D0328`; recording a policy does not claim its enforcement has shipped.
+
+**Default raw-media retention (`UBU-D0327`).** For an explicitly enabled continuous or near-continuous perception session, durable raw-media retention is off. Use a local memory-only rolling buffer with a maximum sample age of **60 seconds from acquisition**, measured on the original source monotonic clock. Release material earlier when its authorized processing/look-back purpose no longer needs it or a shorter policy limit applies. The finite byte and aggregate-resource limits required by §21.1.5 may shorten this window; it is a privacy ceiling, not a promised look-back duration or latency result. Pins, worker copies, queues, retries and decoded frames share the original deadline. No raw disk spool, debug payload, general cache, automatic backup or sync copy is authorized by this default. A Device/backend profile whose persistence paths cannot meet effective policy is ineligible.
+
+On pause, end, source/Identity/Compartment change or revocation, invalidate affected reads and pending results immediately and release unsaved raw buffers and copies within §21.1.5's bounded cancellation grace, without exceeding the original age ceiling. Resume starts a fresh source epoch. Pending review, an unfinished model job and session metadata do not keep raw media alive; expired spans become explicitly unavailable.
+
+A purposeful clip requires explicit operator approval before durable saving, bound to the selected source intervals, purpose, eligible capture Device, Compartment and current policy versions. A relevance suggestion or capture consent alone cannot approve it. Store only the bounded selected material in access-controlled encrypted local storage on that Device, on the operator's own hardware, with lineage and an absolute expiry. The default expiry is **24 hours after the earliest captured sample**, or an earlier source/Compartment deadline. Missing reliable capture-time mapping denies durable saving. Review, copying, reprocessing and restart never reset expiry. A longer finite lifetime requires a separate purpose-specific approval bound to the clip and current policies before expiry; expired material cannot be recovered by renewed approval. Durable saving remains unavailable if eligible storage, finite clip/quota limits or expiry enforcement are absent. Recheck current policy and Device eligibility on every access; capture-time approval is not continuing authority. Backup, another Device and export require their separately allowed route and approval; hard denials remain binding.
+
+Expiry denies further reads and result release and cancels affected jobs. Remove expired app-controlled clip payloads, any clip-specific keys and reconstructive raw copies; if cleanup is interrupted, reconcile deadlines and complete pending cleanup before reopening capture or retained-media access after restart. Clock rollback or uncertain remaining lifetime must deny access rather than extend retention. Report scheduled, pending, failed and confirmed local deletion distinctly; a deadline or local unlink cannot establish remote deletion or forensic erasure. App shutdown may leave cleanup pending and must not be reported as completed deletion.
+
+Do not automatically replace discarded raw media with a transcript, embedding, hash or summary archive. Separately retained minimized evidence needs its own allowed purpose and retention authority, inherits source disclosure restrictions, and may outlive raw media only when policy permits. Purge disallowed reconstructive derivatives and retain only permitted gap/deletion metadata. The append-only rules below continue to govern admitted claims. This is a policy decision, not implemented automated deletion or a physical-erasure guarantee; continuous capture and clip storage require the revision-pinned retention checks in `UBU-D0327` before enablement. Detailed operator controls follow `UBU-D0328` below.
+
+Selective raw-media retention and append-only evidence are distinct. Discarding a raw stream or deleting an authorized clip does not edit an admitted historical claim in place: append minimized correction, revocation, deletion or tombstone metadata with the appropriate links. The immutable Log retains evidence about what was asserted, reviewed or withdrawn, not an automatic reconstructible copy of private raw media. A hash is not proof of an event and can itself leak correlation; policy must govern it. Later views can mark deleted evidence unavailable without inventing a replacement observation. `UBU-Q0162` tracks the reported Log-editability enforcement gap.
+
+**Operator media controls (`UBU-D0328`, Phase 2).** Keep capture state and pause/stop controls available independently of model completion. A policy-filtered media inventory shows each permitted source/session, capture Device and processing route, purpose, source intervals and coverage gaps, transient raw buffer versus retained artifact, storage destination, effective retention rule/deadline and cleanup state. Inspect/replay only material still available and authorized; show expired/deleted evidence as unavailable. Show known permitted copies and export outcomes without claiming a complete inventory of other Devices or recipients. Counts, previews, filenames, source refs and Compartment labels obey current visibility policy; omit an item when even existence is denied.
+
+Offer independent actions with no durable-save or export option selected by default. Show the selected source/artifact scope, destination, retention effects and any remaining permitted evidence before committing an action. Capture consent, relevance suggestions, model output and prior deletion authorize none of these actions implicitly.
+
+| Control | Required behavior |
+|---|---|
+| Discard raw / Delete retained artifact | Remove the selected app-controlled payloads and affected disallowed copies/derivatives; invalidate their handles and pending reads/results, cancel affected work and report cleanup under `UBU-D0327`. Discard does not create a summary, transcript, embedding or hash. It acts on the displayed scope; Stop capture is separately available immediately. |
+| Create summary | Use only selected, permitted local source spans with bounded analysis. Preview the exact proposed text with source/transform provenance, analyzed/missing coverage, attribution and uncertainty. It remains advisory evidence requiring ordinary review/admission; a summary cannot certify an event or effect. |
+| Create hash | Make hashing an explicit optional operation. Show the algorithm/version, exact input representation and source scope; record lineage only as policy permits. A hash can disclose identity or correlation and is neither anonymization nor proof of the captured event. No mandatory media hash belongs in discard or audit records. |
+| Save clip | Preview the actual selected sources, channels, intervals and any codec padding. Apply `UBU-D0327`'s eligible encrypted local storage, explicit version-bound approval and absolute expiry; use §21.1.5's bounded authorized read/output scope. Unavailable spans cannot be recovered or silently replaced with adjacent capture. |
+| Export | Review the final output and metadata locally, then obtain a separate operation-bound approval for an allowed recipient and route through the authoritative Compartment/export gate. Include filenames, attachments, thumbnails, captions, timestamps, source refs and hashes in disclosure review; clipboard, share-sheet, file-copy and integration routes outside protected storage receive the same checks. |
+
+Summary/hash previews have finite temporary leases under §21.1.5. Durable artifact retention requires an explicit separate save choice bound to the displayed result/source versions, actor/Device, purpose, eligible local destination and current source-policy versions, with the effective retention rule and any absolute expiry. Admitted claims and Task lore retain their existing source-history/lifecycle rules. The inventory shows the approved result and its own retention authority; permitted derivatives may outlive raw media, but raw discard never grants that authority. Review, copying and retries cannot renew original source or artifact deadlines. Combining actions must preserve each approval and its failure outcome; a failed derivation cannot silently retain raw media past expiry. No cloud fallback, training use, backup or sync permission follows.
+
+Export approval binds the actor and eligible Device, immutable final artifact/payload versions, all contributing source restrictions and current policy versions, purpose, recipient, route, format/metadata, recipient retention conditions, finite approval expiry and idempotency key. A displayed finite batch may share approval; future captures and wildcard scopes cannot. State known recipient retention/deletion assurances and mark unknowns explicitly. If required protection cannot be established, deny the route. Deleting raw media, redacting text or selecting a hash never declassifies an output. Mixed-source outputs satisfy every source's restrictions; `local_only`, `no_cloud_llm`, `no_external_export` and allowed-Device/integration denials remain hard, including on derived content. UI approval cannot substitute for route authority or the existing export permit.
+
+Recheck authority, visibility, policy, artifact availability and approval bindings on every read/result release and immediately before egress, serialized with revocation/cancellation. For streamed export, recheck before each released segment and stop unsent bytes on invalidation; emitted bytes cannot be recalled. Changed content, source restrictions, recipient, route, Device or relevant policy versions invalidates approval and requires fresh permitted review. Cancel invalidates unsent approval and queued export immediately; restart cannot replay it. Expiry of material required by the operation denies execution. Retention of a separately authorized derivative does not require recreating its raw source. Report completed, failed, cancelled and delivery-unknown outcomes distinctly; retries use current checks and ordinary idempotency/outcome rules, never another recipient or changed payload under old approval. Relevant stale-sync/projection checks in §1 and disclosure/tool rules in §§21.3–21.4 still apply.
+
+Record permitted minimized action, approval/denial, policy, source/artifact lineage and cleanup outcome links through existing review/Log paths. Rejected/dismissed proposals follow §17.0 without a compulsory reason or Preference inference. Raw deletion leaves admitted claims subject to their existing append-only correction/redaction rules and marks their source unavailable; withdrawing a claim is a separate correction/revocation. Purge disallowed reconstructive derivatives, preserving only permitted correction/deletion/gap metadata. Distinguish scheduled, pending, failed and confirmed local cleanup; never imply remote recall or forensic erasure. `UBU-D0328`'s revision-pinned behavioral gates are required before exposing these controls or export routes; this specifies behavior, not shipped enforcement.
+
+Admission rules:
+
+- A user-confirmed actual action that reconciles a planned interval is recorded with `plan_realized`; if it completes, fails, or moots a Task, the corresponding Task lifecycle Log is also written.
+- A user override of the current recommendation records `decision_recorded` with `decision_kind = system_recommendation_overridden`, `authority_source = user_override`, chosen action or Task when known, optional reason, and a `user_override` recalculation trigger when planner-relevant.
+- A user-declared current state becomes a Snapshot only when it asserts observed state such as affect, availability, location category, or capacity.
+- Preferences change only through explicit accepted pairwise Preference statements. Repeated behavior and inferred reasons are not Preferences.
+- Task estimates, dependencies, status, Objective annotations, or Objective status change only after user acceptance or normal validated admission. Otherwise the item remains an unresolved review item.
+
+Undetailed periods should be represented with uncertainty rather than filled in by inference. The review UI should allow `unknown`, `private`, `rest`, `interruption`, `planned Task`, `different Task`, `quick note`, `other`, and free-text correction. UbU must not infer Preference changes, Objective failure, habit patterns, or moral meaning from unknown or private time.
+
+Before treating repeated behavior as a habit pattern, UbU must ask a clarification prompt such as: `I have seen this pattern more than once: [behavior] during [context]. Should UbU plan around it, help you change it, treat it as not a pattern, or leave it unresolved?` Valid answers are `endorse_and_plan_around`, `tolerate_but_review`, `unwanted_help_change`, `not_a_pattern`, and `leave_unresolved`.
+
+Discovery mode preserves sovereignty by remaining visible, opt-in, source-scoped, pausable, inspectable, and correctable. Users may reject, delete where retention policy permits, mark private/unknown, correct, defer, or accept evidence before it becomes canonical state. Compartment policy, `no_cloud_llm`, `no_external_export`, allowed-device, and allowed-integration denials remain hard boundaries.
+
+---
+
+## 13. Affect
+
+Affect is core in `user_mode`.
+
+Affect belongs to UniverseState.
+
+Affect is not intrinsic to organizations or machines.
+
+### 13.1 MVP affect dimensions
+
+MVP uses simplified user-reportable dimensions:
+
+- energy / tiredness
+- stress level
+- mood intensity (arousal or volatility)
+
+Values are reported on the user-facing scale from `0` to `10` (`UBU-D0304`). The sigmoid satisfaction score is separately in `[0, 1]`.
+
+### 13.2 Mood
+
+Phase 1 collects `mood_intensity` on the user-facing 0 to 10 scale. It means arousal or volatility, not whether a mood is good or bad (`UBU-D0173`, `UBU-D0304`). Mood valence — the earlier categorical `happy`, `sad`, `angry` description — is not collected in Phase 1. `interested/bored` remains a proposed independent derived dimension, not an implemented observation field.
+
+### 13.3 Affect snapshots
+
+Affect snapshots are ordinary UniverseState data produced by user query.
+
+They include:
+
+- timestamp
+- source: `user`
+- per-dimension values
+
+Phase 1 separates the affect **observation** from the affect **profile** (`UBU-D0236`). The snapshot is the observation: a per-dimension value, a `source_kind` of `live_observation` or `bootstrap_default_profile`, and `observed_at`. The standing per-dimension tolerances — `direction`, `location`, `scale`, `threshold`, and `freshness_seconds` — live in the AffectProfile, not on the observation; the planning kernel evaluates the profile against the observation, and the snapshot never carries the sigmoid parameters.
+
+The user records a check-in through `POST /affect/observation`, which writes a new immutable Snapshot with `source_kind: live_observation`, the three values, and a server-stamped `observed_at` (`UBU-D0304`). `GET /affect/observation` and store-built planning select the newest active Snapshot carrying `affect`; a newer Snapshot without affect does not hide the reading. The next explicit `POST /planning/generate` reads it; recording does not recalculate a Plan.
+
+An observation is current until replaced when no freshness limit is configured; a store that holds one, or a supplied request, still goes stale. No freshness Setting writer is added. Missing, incomplete or stale observations retain the marked stand-in fallback in `warn_only`.
+
+### 13.4 Affect confidence
+
+`UBU-D0039` describes age-dependent confidence decay, which remains unimplemented in Phase 1. The frozen Snapshot core and schema have no snapshot-level confidence field: this is the named **UBU-D0100 confidence gap**. The check-in implements an immutable user-declared observed assertion, not the full Snapshot confidence policy. Freshness checks in the planner are separate from confidence decay and still apply when a limit is configured. No new confidence field or decay algorithm is introduced by `UBU-D0304`.
+
+### 13.5 Affect collection Objective
+
+UbU may include an evergreen high-value Objective such as:
+
+> Collect affect information relevant to important usage.
+
+When affect data is missing or stale, the planning algorithm may create direct UI survey Tasks.
+
+### 13.6 Affect constraints
+
+Affect is a constraint-satisfaction concern.
+
+Burnout / affect exhaustion is modeled as a constraint violation rather than a first-class Risk object in MVP.
+
+### 13.7 Affect constraint functional form
+
+Affect constraints in the planning kernel use sigmoid-family functional form, parameterized per dimension. Piecewise-linear form is not used for the Phase 1 planning kernel.
+
+Sigmoid is mandated because:
+
+- UbU intends to eventually infer AffectProfile parameters from execution history; sigmoid parameters are directly fittable using standard logistic regression or MLE, whereas piecewise-linear fitting requires non-standard constrained optimization;
+- sigmoid models gradual saturation at extremes, preventing hard-clipping planning artifacts near constraint boundaries that piecewise-linear produces;
+- recovery curves follow an S-shape that sigmoid captures with two parameters and piecewise-linear approximates poorly with fewer than four hand-placed breakpoints.
+
+For Phase 1 MVP, the sigmoid output is a constraint-satisfaction score in `[0, 1]`. It is not a literal success probability, not durable user preference, and not canonical utility. The full per-dimension schema — including `direction`, `location`, `scale`, `threshold`, freshness metadata, and bootstrap defaults — is specified in `PLANNING_KERNEL_CONTRACT.md §6`.
+
+Phase 1 dimension directions are:
+
+- `energy`: `higher_is_better`;
+- `stress`: `lower_is_better`;
+- `mood_intensity`: `lower_is_better`, where intensity means affective arousal or volatility rather than mood valence. Positive excitement and negative agitation can both consume planning capacity.
+
+The Phase 1 `mood_intensity` direction is a simplification, not the long-term affect model. The fuller design treats mood intensity as task-dependent arousal/activation: routine tasks may favor low arousal, while creative, social, or physical tasks may require a higher optimal range. Phase 2 should add `bounded_optimum`, `optimal_low`, `optimal_high`, and task/category affect overrides.
+
+Phase 1 must not require ordinary users to edit raw sigmoid parameters. The UX should ask qualitative calibration questions and map those answers into the internal schema. Conservative bootstrap defaults are allowed as temporary planning priors and must be marked for review. Advanced users may inspect and edit raw parameters.
+
+Composite or cross-dimension affect interactions are post-MVP.
+
+See also: `UBU-D0167`, `UBU-D0173`, `UBU-D0236`, `PLANNING_KERNEL_CONTRACT.md §6`.
+
+---
+
+## 14. External Events
+
+An **External Event** is an instantaneous change in the universe.
+
+External Events have no duration and can overlap Tasks.
+
+External Events are not part of feasibility evaluation for an individual Plan in MVP.
+
+Examples:
+
+- GitHub issue comment
+- PR opened
+- CI failed
+- user receives message
+- train delay
+- another user completes dependent work
+
+External Events may trigger:
+
+- logs
+- Objective updates
+- Tasks
+- recalculation
+- worker assignment
+
+### 14.1 External References
+
+An **External Reference** is the canonical many-to-many link between an outside object, record, registry, URL, repository, contract, chat room, payment rail, or other external artifact and a UbU object.
+
+For Phase 1 GitHub dogfooding, External References are first-class objects. They are preferred over embedding all external links directly on Objectives, Tasks, or External Events. Small `external_refs` arrays may still appear on Logs or provenance payloads as convenience pointers, but they are not the authoritative external-link model.
+
+MVP required fields:
+
+- `external_reference_id`
+- `external_system`
+- `external_object_type`
+- `external_object_id`
+- `ubu_object_type`
+- `ubu_object_id`
+- `relation_type`
+- `confidence`
+- `created_by_identity_ref`
+- `created_at`
+- `last_verified_at`
+- `sync_policy`
+- `projection_policy`
+- `provenance`
+
+MVP target object types include Objective, Task, External Event, and Log entry. This allows one GitHub Issue to support multiple Objectives, one Objective to reference multiple GitHub Issues, a PR or CI run to become an External Event, and comments, reviews, or CI signals to be retained as evidence for Tasks or Objective updates.
+
+MVP relation types should be a small enum sufficient for GitHub dogfooding: `represents`, `supports`, `evidence_for`, `source_event_for`, `projection_of`, `duplicate_of`, and `supersedes`. Later integrations may add relation types through explicit schema migration rather than free-form strings.
+
+Duplicate detection uses a normalized uniqueness key over `external_system`, `external_object_type`, `external_object_id`, `ubu_object_type`, `ubu_object_id`, and `relation_type`. Importers should normalize repository identity, object numbers, node IDs, URLs, and delivery IDs before comparison. A repeated observation of the same normalized external reference updates verification metadata or logs an idempotent no-op; it does not create another external reference. Different relation types between the same objects are allowed when semantically distinct.
+
+Automation Workers may not directly create or mutate canonical External References in Phase 1. A worker may submit an external-reference mutation request when its capability grants allow `mutation_request.submit` for the relevant scope. The canonical instance validates authority, Compartment/export policy, duplicate keys, expected prior version, and provenance before applying or rejecting the request and writing the corresponding Log entry.
+
+---
+
+## 15. Plans and Calendars
+
+### 15.1 Plan
+
+A **Plan** is a finite ordered set of Tasks from a start time to an end time, satisfying Calendar Logic.
+
+A Plan includes:
+
+- Static Tasks
+- Dynamic Tasks
+- external events
+
+A Plan does not directly contain:
+
+- Containers
+- Objectives
+- Techniques
+- Recipes
+
+Those are logical/model relations outside the calendar-view layer.
+
+Once represented on a Calendar, a Plan is deterministic. It is best understood as a time-independent representation of predicted Actions, similar in shape to a future-facing Log projection. A Plan may eventually include predicted sensor states, expected UniverseState transitions, and other projected observations, but it does not internally evaluate its own probability after it has been materialized.
+
+Plan optimization and default Plan selection are separate operations. Each candidate Plan should be individually optimized for value while satisfying constraints within the modeled world-branch that produced it. The planning algorithm models uncertain parameters such as duration distributions, Task success or failure, external events, interruptions, affect uncertainty, availability changes, and sensor predictions. A particular modeled combination of those parameters can produce a deterministic candidate Plan. UbU may then ascribe a **Plan probability** to that candidate Plan: the probability mass of the modeled branch that yields that deterministic Plan.
+
+**Canonical representation and lifecycle.** A Plan is canonical, persisted, and auditable, not an ephemeral render. Its ordered steps carry their materialized timed placements — start and end times and any static anchor — so the timed schedule the user sees is itself canonical state, distinct from the `Calendar` availability windows it is placed within. A Plan carries a status lifecycle of `candidate`, `admitted`, `rejected`, or `superseded`. Recalculation does not mutate a Plan in place: it produces a new Plan that links the Plan it supersedes and marks the prior Plan `superseded`, so the full planning history is replayable (`UBU-D0235`).
+
+### 15.2 Calendar
+
+A **Calendar** is a group of possible Plans.
+
+A Calendar has a default Plan.
+
+The default Plan is the current best recommendation, not a commitment.
+
+The user controls what actually becomes historical log.
+
+### 15.2.1 Default Plan selection
+
+The default Plan is the Plan, or one of multiple tied Plans, with the highest Plan probability overall among the candidate Plans produced for the current Calendar scope.
+
+This does not mean the default Plan is an unoptimized low-value routine. The Plan itself is already value-optimized within its deterministic branch while satisfying dependencies, deadlines, affect constraints, preconditions, and other Calendar Logic. The default selection step chooses among deterministic optimized Plans by Plan probability.
+
+The default Plan is critical to UbU's user experience. Calendar preview must be able to show an ordered upcoming set of Tasks from the current time to the end of the Calendar scope, and each Task should have an explanation of why it appears there: Objective value, dependencies, deadlines, preconditions, affect constraints, worker status, risk findings, or other relevant scheduling reasons.
+
+The ideal search over candidate Plans may be NP-hard or otherwise combinatorially expensive. Practical Compact Calendar implementations should therefore use bounded finite Task instances, time-delta configuration, pruning, greedy baselines, cached subplans, GPU-friendly batch scoring/simulation, device-specific resource limits, and other heuristics. Exact ideality is a north-star property, not a Phase 1 runtime promise.
+
+**Phase 1 realization (`UBU-D0237`).** Phase 1 generates a bounded candidate set — the legitimized skeleton baseline plus deterministic slack-based perturbations seeded by `rng_seed`, capped at sixteen — and runs each candidate through the affect filter (`full_legitimize`), semi-legitimization pruning (`UBU-D0211`), and Stage 3 value scoring. Scoring composes utility, an approximate pre-rollout robustness, affect margin, and schedule diversity into a `total_score` weighted by the request's `scoring_policy`, and tags each candidate by `candidate_role` (`highest_utility`/`most_robust`/`most_schedule_diverse`). The Monte Carlo rollout (`UBU-D0238`) now runs over the top-K finalists from this bounded set, sampling correlated durations from the §3 model and the §7 correlation matrix — supplied as real per-Task duration uncertainty and correlation-group membership through the input path (`UBU-D0239`) — and folds the resulting feasibility, p10 robustness, and Wilson-interval probability into the composite, so the probability-based default selection above is realized over the rolled-out finalists rather than the pre-rollout proxy. Non-finalists are retained as alternatives marked `not_estimated`, and the robustness score is now a rollout estimate. The degraded-mode and strict-rejection paths are verified at the kernel unit level and are unreachable through the request contract by the §7 positive-definite-by-construction guarantee.
+
+### 15.2.1.1 Objective expansion and technicalizing (Phase 3)
+
+Phase 1 receives a pre-materialized `task_graph` (see `PLANNING_KERNEL_CONTRACT.md` §2): a list of `TaskSpec`s, dependency edges, and a CPU-provided topological order. The expansion of an Objective into the work Tasks that satisfy it is, in Phase 1, an unspecified pre-kernel responsibility done by the user or by manual Task entry. Phase 3 specifies it. This is the stage that fills the long-acknowledged gap of Technique-generated Tasks (§15.4), and it supersedes the eliminated `TaskFactory` object (`UBU-D0215`), whose template-expansion role is subsumed by Technique instantiation into a Container (§9, §10.6).
+
+**Where it runs.** Objective expansion runs **pre-kernel, on the CPU side**, before skeletonization. It does not run inside the planning kernel. Running it inside the kernel would break four things the kernel guarantees: the fixed `task_graph` input, the CPU-owned topological order, the absence of Objectives and Techniques from the request schema, and — critically — the kernel's determinism and no-I/O contract, which would be violated the moment Technique selection consulted an advisory LLM. Keeping expansion pre-kernel preserves all four (`UBU-D0216`).
+
+**What it does.** For each reactivated evergreen Objective (and each one-time Objective in scope), expansion selects a Technique and instantiates that Technique's Steps into a Container of `TaskSpec`s with their intra-Technique dependency edges, typed as Static or Dynamic. Static synthesized Tasks then enter skeletonization for affixing and ordering; Dynamic synthesized Tasks carry decision envelopes and are placed during candidate generation (§16.4). A synthesized "take out the garbage tonight or tomorrow morning" Task is a Dynamic Task with a placement window, handled by the same machinery as user-created Dynamic Tasks; it does not need new placement logic.
+
+**Default Technique vs. technicalizing.** Expansion has two modes:
+
+- **Default expansion (deterministic).** The Objective's default Technique instantiates into the baseline Task set. This feeds the deterministic default-Plan path (§15.2.1) and preserves determinism. An evergreen Objective is well-formed for automatic expansion only if it has a default Technique; an Objective with no Technique, or a default Technique that cannot instantiate, is a philosophical-consistency finding surfaced for user correction (`UBU-D0213`), not a hard block, unless it prevents a required baseline.
+- **Technicalizing (selection among alternatives).** When alternative Techniques exist for an Objective, expansion may enumerate a **bounded** set of instantiations (default plus alternatives) and hand them to candidate generation as competing candidates. Selection among them is a candidate-generation and value-scoring concern (§16), not a skeletonization concern. Skeletonization continues to do only dependency affixing and ordering; technicalizing does not add a selection layer inside it.
+
+**Honoring the no-invention rule.** Instantiating an already-modeled Technique's Steps into Tasks is not invention and does not violate the §15.2.2 rule against inventing a new canonical Technique to repair skeletonization. Technicalizing selects only among **already-modeled** Techniques, and any advisory LLM may rank only among them. Generating a genuinely novel Technique remains the separate, user-approved Expert-Guided DIY / Technique Commissioning flow (§10.6, `UBU-D0208`), never in-planner synthesis.
+
+**Ordering and termination.** If synthesized Tasks have their own prerequisites, the pipeline is expand → skeletonize → possibly re-expand prerequisites → legitimize, rather than a single pass. For shallow maintenance Objectives (garbage, standup) a single pre-skeleton pass suffices. The schema must not assume shallowness; a bounded expand/skeletonize fixpoint with an explicit iteration cap is the conservative default. Exact fixpoint bounds are an open item (`UBU-Q0125`).
+
+### 15.2.2 Skeleton Plans and legitimization
+
+The planning pipeline begins with a **skeleton Plan**. A skeleton Plan affixes all Static Tasks and recursively walks backward through dependency DAGs from terminal Static Tasks to dependency roots, then schedules root prerequisites before their dependents. The skeleton Plan is a causal/dependency foundation, not a complete optimized user Plan.
+
+A dependency is a requirement that some state be true before a dependent Task begins. During skeletonization, UbU must check whether that state is already satisfied by the initial UniverseState before inserting prerequisite Tasks. If a viable skeleton Plan cannot be created, the planning model is blocked, contradictory, incomplete, or impossible enough that UbU should stop ordinary planning and ask the user for clarification with a concrete diagnostic explanation.
+
+After skeletonization, UbU performs **legitimization**. Legitimization adds the minimum human-viability constraints and support Tasks needed to make the skeleton Plan plausibly executable by the user. Examples include affect constraints, breaks, recovery Tasks, meals, sleep, transition buffers, setup/teardown time, context-switch limits, and basic sustainability requirements.
+
+The legitimized skeleton Plan is the baseline feasible Plan. Phase 1 treats full legitimization as a finalist oracle: it runs for the baseline and for the small finalist set selected after cheap pruning, not inside every high-fan-out candidate-construction step unless measurements show it is cheap enough. Semi-legitimization is a conservative cheap filter and ranking signal. It may reject obvious legitimacy failures, but uncertain candidates must reach full legitimization before becoming the default Plan.
+
+Minimum skeleton Plan representation records:
+
+- Static Task placements with fixed start and end times;
+- the dependency DAG frontier used for the current planning scope;
+- prerequisite roots whose required state is not already true in the initial UniverseState;
+- ordered prerequisite chains and the dependency or precondition refs that justify them;
+- initial UniverseState assumptions, including known true, known false, assumed, and unresolved planner-relevant facts;
+- unsatisfied dependency diagnostics with the failing Task, missing state, causal chain, and clarification alternatives when available.
+
+Skeleton failure diagnostics are blocking when no valid skeleton baseline can be produced for the current Calendar scope. A diagnostic records:
+
+- `failure_class`: one of `missing_starting_state`, `impossible_dependency`, `cyclic_dependency`, `static_task_collision`, `insufficient_calendar_window`, `unavailable_resource`, `blocked_external_event`, or `unknown_precondition`;
+- severity, affected Task refs, missing or conflicting state, relevant Static Task or time-window refs, initial UniverseState assumption refs, source or External Event refs, and the shortest causal chain needed to explain the failure;
+- safe clarification alternatives, each with an action enum, required user input, and the state mutation or Plan repair it would permit.
+
+The user-facing explanation shows the failed Task or state, the immediate cause, and at most three causal-chain steps by default, with full inspector detail available. Wording frames the problem as an incomplete or contradictory model, not user failure.
+
+Safe alternatives are limited to: provide or correct starting state, mark the required state already satisfied, add a prerequisite Task, relax a deadline or Static Task constraint, extend the planning horizon, remove or moot the blocked Task, choose an already-modeled alternate Technique or Task path, wait for or record an External Event, or ask for manual decision. UbU must not invent a new canonical Resource, Skill, Technique, Preference, or external fact merely to repair skeletonization.
+
+A skeleton failure becomes an immediate blocking prompt when it prevents any valid baseline for the current Calendar, current or next recommended Task, a Static Task placement, a hard dependency or precondition, deadline feasibility, or a required Resource or External Event. It may remain a normal planning warning only when a valid skeleton exists and the failed chain is outside the current recommendation path or future horizon, in which case UbU records the diagnostic and marks the relevant Calendar, explanation, or risk report stale.
+
+Partial placement (`UBU-D0289`) refines the insufficient-window case for optional Dynamic Tasks. Once a valid baseline exists, failure to fit an optional Dynamic Task in the current horizon is a local unplaced diagnostic rather than a whole-Plan rejection. Structural failures, Static collisions, hard dependency or precondition contradictions, missing required state or resources, and any inability to place mandatory routine occurrences or required support Tasks remain blocking because they prevent a legitimate baseline or required path.
+
+Full legitimization records the constraints it enforced and any support Tasks or buffers it inserted. Its hard result is `passed`, `failed`, or `needs_clarification`. Graded fields such as `legitimacy_score`, `legitimacy_margin`, and `legitimacy_delta_from_baseline` are advisory comparison signals, not permission to violate hard legitimacy.
+
+In Phase 1, `full_legitimize` implements the **affect-feasibility filter** (`UBU-D0236`). It computes each active dimension's sigmoid satisfaction from the AffectProfile and the affect observation, marks the candidate affect-feasible only when every dimension meets its threshold, and records per-dimension satisfaction, the `violated_dimensions`, and an `affect_margin` that is the legitimacy margin while affect is the only enforced constraint. Store-built planning runs in `warn_only` while none of the calibration Settings checked by `build_affect_profile` is present, whether the observation is live or a stand-in (`UBU-D0304`); uncalibrated priors do not block an otherwise feasible Plan. Presence of any such floor or ceiling Setting makes the profile calibrated and keeps `enforce`, including an explicit value equal to a default. Missing or stale affect still falls back in `warn_only`. A supplied full request retains its own mode and freshness limits. Support-task insertion — breaks, recovery, meals, sleep, and transition buffers — and `semi_legitimize` are deferred follow-ons within full legitimization; Phase 1 legitimization is the affect filter only.
+
+The Phase 1 semi-legitimization heuristic set is affect budget, slack preservation, dependency fragility, user-mode compatibility, local repair viability, and legitimacy-delta estimate. Semi-legitimization returns `passes_cheap_checks`, `reject_obvious`, or `needs_full_legitimization`; it is not sufficient to certify a default Plan.
+
+A higher-value brittle Plan may beat a lower-value humane Plan only when it passes full legitimization, preserves minimum slack and repair envelopes, avoids destructive pressure, and does not leave the user in a worse post-plan state. Otherwise the lower-value humane Plan, or the legitimized skeleton baseline, remains the default.
+
+Recuperative support required for legitimacy is not gap-filling. Meals, sleep, rest, breaks, recovery, setup/teardown, transition buffers, affect collection, and checkpoint work inserted or protected by legitimization are ordinary Tasks or buffers with explanation lineage and protected criticality. They are placed before optional Dynamic Tasks and before `gap_fill_policy` suggestions; crowding them out invalidates or degrades the candidate.
+
+After legitimization, the minimum candidate Plan representation includes materialized Task placements, decision envelopes for movable Tasks, Plan probability metadata, value score, semi-legitimization summary when used, full legitimacy result or score, hard-validation status, protected support refs, and explanation lineage back to Objectives, dependencies, preconditions, affect constraints, worker status, risk findings, and probability inputs.
+
+### 15.2.3 Planning horizon and early preparation
+
+The internal planning horizon may exceed the user-visible Calendar window. A one-day visible Calendar may require look-ahead beyond the day to avoid cutting off dependency chains, Techniques, deadlines, or future preparation sequences.
+
+Within reasonable detailed planning windows, such as one day to roughly one week, UbU may bias fragile prerequisite work earlier when that reduces the risk of future impossible choices. This protects users from being forced to make hard tradeoffs while tired, overwhelmed, interrupted, or otherwise emotionally compromised.
+
+This is a bounded operational bias. It should not imply that all distant future work should be pulled forward. For short operational windows, time discounting may usually be treated as negligible unless explicit user Preferences say otherwise. Longer horizons require separate preference and temporal-discounting modeling.
+
+**Phase 2 operational policy (`UBU-D0349`, refining `UBU-D0128`).** Distinguish the visible Calendar interval, the detailed scheduling interval, the future dependency frontier, and the reactive branch horizon. The visible interval is a view of the Plan; `PlanningRequest.time_window` is the interval actually scheduled. The reactive horizon remains independently resolved under §16.7, normally one hour. Its coverage estimate cannot certify the whole detailed interval or future commitments.
+
+**Default and bounds.** For a one-day visible Calendar, target seven elapsed days (`604800` seconds) of detailed scheduling from `time_window.start_time`, ordinarily six additional days beyond the displayed day. Seven elapsed days is also the default upper bound for unattended detailed local planning, not a promise of optimality or a universal backend limit. Resolve explicit Calendar/user scope first, then execution-profile or Device policy, then this default. Constrained profiles may shorten the interval under task-count, time, memory, energy, or freshness limits; mobile retains §16.10.6's stewardship workload. Record the requested and effective intervals, limits, policy source, and any reduction reason in controller/Calendar provenance and show them in the inspector. Keep the visible requested interval covered or explicitly report that it cannot be certified. A shorter horizon cannot silently erase a known current obligation or make unavailable capacity appear free. Preserve Static Tasks, mandatory routines, required prerequisites and support inside the effective interval; optional work uses `UBU-D0289`'s unplaced diagnostics. Its single bounded extension attempt stays inside the resolved upper bound unless an explicit scope override permits more.
+
+**Future dependency frontier.** Beyond the detailed interval, inspect already-modeled, policy-permitted commitments and dependency chains under recorded finite traversal and compute budgets. Retain deadline/window refs, unresolved dependency state, modeled lead times and uncertainty, and any latest viable preparation interval that can be conservatively derived. A commitment weeks away may justify an already-modeled preparation Task now when its lead time or scarce opportunity reaches the detailed interval. Do not materialize a complete distant daily schedule, infer an external response, or treat completion beyond the boundary as established. Truncated, stale, missing, or withheld frontier inputs mean incomplete analysis, not future feasibility. Carry findings into explanation and risk reporting; current-path failures use §15.2.2's blocking rules, while out-of-scope findings cannot invalidate an otherwise legitimate current baseline merely by existing. Resource, Skill, and Technique expansion retain their existing implementation phases.
+
+**Fragility and early preparation.** A chain merits an earlier candidate placement when a modeled disruption can exhaust its usable slack or repair opportunity: duration variation or correlated delays, failure/rework, a narrow availability window, an unresolved external dependency, or modeled interruption/affect constraints. Explain the affected commitment, evidence/assumption refs, remaining usable slack, and recovery or alternate paths. Unknown inputs justify clarification or a qualitative warning, not an invented probability or numerical penalty. Prefer the earliest reasonably viable *stable* prerequisite completion when it demonstrably preserves repair options. Preconditions, allowed ranges, Static Tasks, recovery/support, full legitimization, accepted Preferences and final selection under §16.3 still govern. Preparation must remain useful until consumption; expiry, rework, storage/carrying cost, irreversible action, cancellation risk and displacement of more-valued work can justify later placement. With adequate modeled slack and repair options, just-in-time placement is acceptable. Apply this bias in candidate construction and existing fragility/robustness comparisons, without manufacturing a Preference, boosting canonical Task value, or authorizing external action.
+
+**Wider modes.** Detailed schedules beyond seven days require an explicit scope override, finite task/search/rollout budgets, adequate modeled inputs and CPU certification. Capable local desktop or Phase 2 user-owned workers may provide them; no subscription or cloud dependency is required. Premium hosted or third-party providers may offer greater depth under §16.8's existing authority, disclosure, Compartment and certification rules, with concrete cloud products still deferred. Worker loss returns to a disclosed shorter legitimate scope or diagnostic. Weeks/months normally use milestones, dependency envelopes and rolling refinement; years-long scenarios, speculative dependency expansion and learned temporal-value models remain research. A wider scope alone establishes neither higher certainty nor permission to route data externally.
+
+**Time discounting.** For operational comparisons within seven elapsed days, the default additional temporal discount rate is zero (multiplier `1`); waiting alone does not reduce modeled value. Deadlines, availability, duration uncertainty, success probability, affect and preparation costs still matter independently. An applicable explicitly accepted timing Preference overrides this assumption even within hours, subject to hard constraints and legitimacy. Calibration examples, inferred impatience, snoozes and revealed choices are not accepted discount parameters. Use accepted pairwise comparisons where sufficient; any numerical curve requires accepted shape/parameters, time origin, units, applicable outcomes/context and validity interval. Do not apply one curve indiscriminately to rewards, costs or all Objectives. Beyond seven days, elicit applicable timing Preferences or present scenarios without claiming a personalized temporal-value ranking. The current kernel has no placement-time discount input: preserve `UBU-D0282`'s value mapping and offer user choice when an applicable Preference cannot be represented. Automated placement-dependent scoring requires a versioned contract extension and parity checks; never silently ignore the Preference or claim it was honored.
+
+Before enabling this Phase 2 policy, require controller and enabled-backend fixtures for: a one-day view with a prerequisite for a later in-week commitment; a distant commitment whose modeled lead time requires action now; fragile versus repairable chains and an expiring prerequisite that should stay late; constrained budgets preserving mandatory work and disclosing incomplete scope; and zero-discount versus an explicit short-horizon timing Preference, including the unsupported-scoring user-choice path. Also exercise denied cloud routing and worker loss with useful local fallback. This is an accepted policy and required evidence protocol, not implemented behavior or passing runtime evidence.
+
+### 15.3 Calendar Logic
+
+Calendar Logic includes constraints such as:
+
+- no overlapping Tasks;
+- dependencies respected;
+- temporal constraints respected;
+- preconditions evaluated;
+- affect constraints respected in user mode.
+
+### 15.4 Gaps
+
+Plans may contain gaps.
+
+Gap time is discretionary. UbU may explain a gap as protected recovery, transition/setup time, user-declared free time, or a place where optional work could fit.
+
+For Phase 1, evergreen gap-fillers are UI suggestions outside the default Plan. A suggestion may be shown only after Static Tasks, predetermined Dynamic Tasks, dependencies, preconditions, legitimization support, recovery, and transition buffers have already been respected.
+
+The planner ranks eligible gap-fillers by:
+
+- hard fit to the available gap;
+- Objective-derived value and due cadence;
+- readiness from preconditions, location, material, device, and integration state;
+- affect suitability and expected affect delta;
+- cooldown or frequency policy;
+- setup and teardown cost;
+- user recency, rejection, snooze, and override evidence.
+
+Calendar preview, Log review, affect collection, review queues, light cleanup, reflection, meditation, and relationship-maintenance prompts can all be represented by ordinary Dynamic Tasks with `gap_fill_policy` when they satisfy the same rules.
+
+A gap-filler must not displace recovery, meals, sleep, transition buffers, setup/teardown, Static Tasks, deadline-fragile prerequisites, or a user-declared desire to leave the gap open. Phase 1 `autonomy_mode` is `suggest_only`: accepting or starting a suggestion records ordinary Task execution evidence and may trigger recalculation, but the suggestion is not a prior user commitment.
+
+Technique-generated maintenance Tasks are no longer deferred-and-unspecified: Phase 3 specifies them as pre-kernel Objective expansion (§15.2.1.1). Future versions may still add Gap Tasks, trusted auto-insertion policies, richer Resource/Skill readiness, and stochastic Objective recurrence.
+
+---
+
+## 16. Compact Calendar
+
+A compact Calendar is a transport/storage representation of a Calendar.
+
+It is intended to efficiently represent a large set of possible Plans.
+
+Compact Calendar support is considered important for MVP because it enables recursive self-analysis and transport between devices/workers.
+
+### 16.1 Compact Calendar concept
+
+A compact Calendar may include:
+
+- Task set;
+- Static Tasks;
+- Dynamic Tasks;
+- skeleton Plan metadata;
+- legitimized skeleton baseline;
+- ordering constraints;
+- duration distributions;
+- Task success probabilities;
+- external-event trigger distributions;
+- modeled interruption distributions;
+- affect-state uncertainty and constraints;
+- deterministic expansion grammar;
+- probability provenance expressions and correlation-group references;
+- expansion threshold(s);
+- coverage value;
+- default Plan reference or materialized default Plan;
+- stored user-previewed, risk-report, or debug Plans when policy requires them;
+- short-horizon branch cache;
+- decision envelopes;
+- protected, flexible, and disposable Task metadata;
+- cached explanations and repair recipes;
+- execution-mode metadata such as time delta, branch horizon, CPU/GPU resource limits, and privacy-routing limits.
+
+**Phase 1 surfacing (`UBU-D0238`).** The Compact Calendar surfaces the selected finalist's `display_probability` with its Wilson interval, the p10 rollout robustness, and the `probability_quality` (`full`/`degraded_numeric_jitter`/`degraded_independence`/`not_estimated`); non-finalist alternatives are surfaced with `not_estimated`.
+
+**Phase 1 surfacing (`UBU-D0240`).** The Compact Calendar and next-action also surface the risk report — the aggregated `level` and the categorized findings, with blocking findings prominent — and the six `human_complete_plan_quality` signals with their non-blaming `revision_suggestions`.
+
+### 16.2 Coverage
+
+Coverage belongs to the compact serialization, not the abstract Calendar. It is an estimated regeneration metric in Phase 1, not an exact proof.
+
+Coverage represents the modeled probability mass of possible futures covered by the compact representation within the recorded coverage scope, usually the reactive horizon. MVP coverage includes modeled duration uncertainty, Task success/failure uncertainty when success probabilities affect branch reconstruction, and modeled external-event or interruption assumptions. Objective recurrence uncertainty is not included in MVP coverage; evergreen recurrence is evaluated deterministically before Calendar generation or repair unless a later schema adds stochastic recurrence inputs.
+
+A compact Calendar stores `coverage_estimate`, `uncovered_mass_estimate`, `coverage_scope`, `coverage_threshold_used`, `coverage_inputs_summary`, `probability_quality`, and warning or diagnostic refs when inputs are unmodeled, stale, or degraded.
+
+For chunked search, covered futures are the chunk-boundary outcome states that have certified precomputed continuations. The estimate sums the modeled probability mass of those outcome states within `coverage_scope`; it does not count K decision alternatives as coverage unless they are attached to a modeled outcome state.
+
+The default Phase 1 regeneration threshold is `0.99` short-horizon branch coverage. The effective policy resolves Calendar-specific override first, then execution-profile or Device policy, then the global default. The effective threshold is stored with the compact Calendar for replayable regeneration decisions.
+
+After time advances, coverage is recalculated by conditioning the compact Calendar on elapsed time and accepted Logs, Snapshots, External Events, and user actions, then discarding expired branch mass and re-estimating the remaining covered mass.
+
+If recalculated coverage falls below the effective threshold, UbU records or batches a `low_compact_calendar_coverage` recalculation trigger and includes the finding in risk reporting. Immediate recalculation is required only when low coverage can affect the current or next recommended Task, hard feasibility, affect legitimacy, or the default Plan; otherwise marking the Calendar stale is sufficient. Low coverage does not directly create a canonical Task or worker assignment.
+
+### 16.3 Planner grammar direction
+
+Compact Calendar planning is no longer framed as a bare DFS process that directly produces the default Plan. The current architecture is:
+
+1. Build the skeleton Plan from Static Tasks and dependency DAGs.
+2. Legitimize the skeleton Plan into a minimally human-viable baseline.
+3. Generate richer candidate Plans by adding optional Dynamic Tasks, alternative placements, and alternative Techniques for the same Objectives (§16.3.1).
+4. Use semi-legitimization or full legitimization to reject unrealistic candidates.
+5. Validate finalists against hard constraints.
+6. Select the user-facing default Plan by Plan probability among deterministic candidate Plans.
+7. Package compact repair metadata for runtime use.
+
+DFS-like search may still be useful for candidate construction. BFS-like search may still be useful for near-term divergence. Greedy selection may still be useful as a deliberately unintelligent baseline. None of those algorithms is the complete planning architecture by itself.
+
+Execution profiles are additive rather than mutually exclusive. The greedy mean-duration planner is the required MVP benchmark. Local and mobile profiles must support deterministic skeletonization, conservative legitimization, exact hard-constraint checks, local repair recipes, and a short-horizon branch cache. Desktop, worker, and hosted profiles may add DFS-like candidate construction, local search, solver-backed finalist validation, and GPU-friendly scoring or simulation. GPU or learned search may propose and score candidates, but exact or conservative validation certifies the selected Plan.
+
+**Chunked search (`UBU-D0279`).** Phase 1b candidate construction partitions the horizon into chunks at capacity-occupying Static Tasks and other fixed placements. The search first assigns placement units to chunks. That is the coupled step, constrained by allowed ranges, dependencies, and state carried between chunks. It then orders each chunk's units independently and in parallel, sweeping chunks in time order and pruning at chunk boundaries. Rollouts evaluate chunks separately, sharing latent draws across chunks. The CPU reference path and the GPU engine share these semantics, and the current chunk is the unit of local repair.
+
+**Splittable Tasks (`UBU-D0284`).** Atomic Tasks and compiled decomposition segments occupy one chunk. A splittable Task may assign at most one piece to each eligible chunk, and every piece must remain inside the Task's allowed range. The chunk-assignment level chooses how much work from the Task enters each chunk; ordinary within-chunk ordering then places that piece. The first piece has no resume overhead, while each later piece reserves the Task's constant `resume_overhead_seconds` before doing more work. Rollouts draw one total work duration for the Task, spend it across pieces, and count a continuation into a later eligible chunk as feasible only when `max_pieces`, window, dependencies, and carried state still permit it. Splittable work earns proportional scheduled-work value for completed sampled work inside the horizon, but completion, effects, and outgoing dependencies still wait for the last piece. Phase 1b needs no additional interruption input beyond the split policy; later stochastic interruption modeling can use the same policy to distinguish continuation from restart.
+
+**Partial placement (`UBU-D0289`).** Candidate construction is best-effort for optional Dynamic work after Static placements, mandatory routine occurrences, baseline/support work, and prerequisites of placed work are protected. If capacity is short, optional units are omitted deterministically by lowest value, then latest deadline or `latest_finish`, then Task id. The response stays usable when at least one certifiable candidate remains, with omitted units reported as unplaced diagnostics; their dependents are deferred rather than independently scheduled. The CPU may make one policy-bounded horizon-extension attempt before deferral when extension is an allowed safe alternative, but it records whether extension was skipped, attempted, or exhausted. Under chunked search, unplaced reasons distinguish not enough total free capacity from no eligible chunk large enough for an atomic unit. Splittable Tasks may be partially placed across eligible chunks and carry remaining work forward, but completion, effects, and outgoing dependencies wait for the final piece. Unplaced diagnostics feed Plan explanation, risk reports, and next-action context; focus mode may recommend a triage action for unplaced work, but not the unplaced work itself.
+
+**Sweep mechanics and streaming (`UBU-D0280`, `UBU-D0281`).** The sweep expands each branch into up to K alternatives per chunk and keeps the best B partial plans after each chunk depth. It merges branches that reach the same state, and assigns the most constrained units first. Interactive requests stream certified chunk results, so the user can act on the first chunk while later chunks are still being searched; a streamed chunk stays provisional until the user starts it. Batch requests return only the final response.
+
+**Outcome continuations (`UBU-D0285`).** At a chunk boundary, an outcome state is the equivalence class over completed units, failed or omitted units when they affect reconstruction, splittable progress and remaining work, carried UniverseState/dependency/affect state, modeled external-event or interruption assumptions, and the next chunk cursor. Rollout frequencies under shared latent draws estimate each state's probability with recorded confidence. The sweep ranks boundary outcome states by probability and precomputes CPU-certified next-chunk continuations until `branch_coverage_target` is met inside `reactive_horizon_seconds` or the compute budget is exhausted. Decision alternatives and outcome continuations share that budget: current-chunk certification and the requested K alternatives take priority, then continuation work follows descending outcome probability with recovery-critical and deadline-fragile ties first. Deviations inside a chunk use decision envelopes and repair recipes, not intra-chunk precomputed branches. Interactive streaming may expose outcome continuations incrementally after the first certified chunk, with final coverage reported in the final response.
+
+Plan probability is represented internally as probability metadata rather than only as a display scalar. The minimum record contains a display scalar, a log probability for stable computation, an optional probability interval, provenance over the modeled probabilistic inputs, and correlation-group or scenario references when inputs are not independent. Implementations may multiply probabilities only for inputs declared independent. Correlated or unknown relationships must use joint scenarios, shared random variables, correlation groups, or conservative intervals rather than pretending independence.
+
+### 16.3.1 Multi-Technique candidate generation and outcome comparison (Phase 3)
+
+When an Objective can be satisfied by more than one already-modeled Technique (technicalizing, §15.2.1.1), candidate generation may produce competing candidate Plans that differ by which Technique satisfies which Objective. Comparing those candidates by their predicted real-world outcomes, and letting the user choose, is a premier Phase 3 capability and the demand-side driver for the Technique database (`UBU-Q0119`): the engine consumes Technique variety, so every additional Technique with a distinct cost/time/affect/Resource signature widens the achievable outcome frontier and improves personalization.
+
+**Bounded search, not enumeration.** UbU must not enumerate the full cross-product of Techniques across Objectives; that is `k^N` candidates and contradicts the bounded-search commitment (§16.1, MVP planning does not require exhaustive optimal search). The required shape is **branch-and-bound with semi-legitimization as the cheap pruner**: dominated and obviously-infeasible Technique combinations are pruned during construction using `reject_obvious` / `passes_cheap_checks` (§15.2.2), and only a small Pareto-frontier finalist set reaches full legitimization and full scoring. Dominance pruning runs as a bound during search, not as a filter after enumeration.
+
+**Dominance over the full outcome vector.** A candidate dominates another only if it is at least as good on **every** outcome axis, including robustness, affect-margin, dependency fragility, and Plan probability — not only money and time. A candidate that saves money but is more fragile or has lower completion probability is **not** dominated and must not be pruned. Pruning on a partial vector would discard exactly the robust Plans legitimization exists to protect.
+
+**Surface outcomes, not utils.** Utils are transient internal computational artifacts, not canonical user values (§2.2, §8.5). The user-facing comparison must show concrete predicted terminal UniverseState — money expended, time spent, Resources consumed, affect cost, relaxation, and Plan probability — not a util scalar. Money is shown here as a **generic cost outcome only** (e.g. "this Technique consumes $3.95"); analysis of which account is affected, balances, or overdraft thresholds requires a financial model that UbU does not yet specify and is deferred to Phase 4/5+. UbU must not imply affordability or account impact without that model.
+
+**User choice and revealed preference.** The user's declared or learned trade-off weights parameterize the existing `scoring_policy` weights (`utility_weight`, `robustness_weight`, `affect_margin_weight`, `schedule_diversity_weight`; `PLANNING_KERNEL_CONTRACT.md` §2). Two modes follow: auto-select applies the weights; ask-the-user presents a small, diverse finalist set and lets the user pick. A revealed choice is a **proposal, not a fact** (`UBU-D0217`): it may propose a weight or Preference update surfaced for explicit user acceptance, and must never silently rewrite the trade-off vector. A single choice is a weak signal (one inequality in weight-space) and must be accumulated conservatively. Because trade-offs are affect- and state-conditioned, learned weights are a function of current state, not a fixed global vector.
+
+**Confidence-gated automation.** Eventual automatic selection requires two gates in series: a confidence threshold **and** a user-granted, revocable auto-choice authority, modeled on `Auto-choice eligibility` as a governance gate separate from automation-likelihood (§3.7.1) and on the trusted-auto-publication pattern (§2.6). Confidence alone never authorizes automatic selection. Auto-selected choices remain logged, inspectable, and overridable.
+
+**Cognitive load and cadence.** The finalist comparison uses the same UX surface and roughly the same choice counts as Calendar preview (§4.1.2): present a small curated set along the most salient trade-off axis for the current decision, elicit only when the frontier is genuinely ambiguous or the trade-off estimate is stale, and auto-select via learned/declared weights otherwise. Diverging the comparison choice count or weights from Calendar-preview defaults is a user configuration. Within-noise finalists are presented as a tie with a `sensitivity_summary`, not a manufactured ranking.
+
+**Affect-conditioned introspection.** Repeated choices logged under a recognizable affect or time-pressure context may produce an introspection finding routed through habit-pattern reconciliation (§12.2), e.g. surfacing that the user has repeatedly chosen money over work-time when rushed before leaving, and offering to move the decision earlier (the night before, when less rushed). This finding must surface the observed **correlation** and offer a **context** remedy that changes when and how the decision is made; it must not assert a psychological mechanism, blame the user, or nudge toward the option UbU scores higher. Nudging toward a scored-better option would decide values for the user and violate `UBU-D0217`.
+
+### 16.4 Reactive short-horizon branch layer
+
+The default Plan is not enough for real-time use because reality can diverge from the modeled branch. UbU therefore also needs a lightweight reactive layer, likely BFS-like, policy-based, or repair-recipe-based, that starts at the current instant and maintains a short-horizon cache or reconstruction path for high-probability near-term alternatives.
+
+The reactive layer should cover near-term alternatives involving planned Tasks, duration variation, early completion, late completion, interruptions, relevant external events, affect shifts, user overrides, eligible evergreen gap-fill suggestions, and immediate recalculation triggers. The provisional default horizon is one hour. Mobile-only, low-power, or offline operation may shorten this horizon.
+
+When early completion creates a gap before the next Static Task and no predetermined Dynamic Task can be pulled forward, the reactive layer may compute a small ranked suggestion set from eligible gap-fillers. It should preserve the protected baseline and ask before starting or materializing the suggested Task in Phase 1.
+
+This layer exists to let the user's current Calendar and Log update quickly when something actually happens. It should not attempt to enumerate every possible future to the end of the Calendar scope.
+
+### 16.5 Mobile stewardship metadata
+
+A compact Calendar should carry metadata that lets constrained devices preserve legitimacy without performing full global replanning. Useful metadata includes:
+
+- protected, flexible, and disposable Task criticality;
+- decision envelopes such as earliest start, latest finish, and movable windows;
+- cached explanations for why a Task matters and what depends on it;
+- conflict severity levels;
+- last-legitimate-Plan references;
+- simple repair recipes;
+- recovery-critical and deadline-fragile markers;
+- recalculation triggers and remote-assist eligibility.
+
+The MVP-friendly subset is Task criticality, last legitimate Plan storage, simple repair rules, conflict severity levels, cached explanations, next-best-action mode, basic decision envelopes, and compact outcome-continuation refs for probable chunk-boundary outcomes. Unbounded rich branch packaging and learned local policy models are post-MVP by default.
+
+**Phase 1b mobile stewardship schema (`UBU-D0256`).** A compact Calendar stores `mobile_stewardship_metadata` for each Task or Plan segment that mobile may recommend, move, omit, or explain. The record is compact and by reference where possible; it contains `criticality`, `decision_envelope`, `conflict_severity`, `explanation_fragments`, `repair_recipe_refs`, optional `outcome_continuation_refs`, and optional `recalculation_triggers` and `remote_assist_eligible`. Unbounded rich branch packaging, learned local policy, and global re-optimization remain outside MVP.
+
+`outcome_continuation_refs` point to certified next-chunk continuations by boundary outcome digest, probability estimate, confidence summary, coverage scope, and stale-after value. Mobile uses them only after observed execution reaches the corresponding chunk boundary; inside the current chunk it still relies on decision envelopes, repair recipes, and escalation when local repair is no longer legitimate.
+
+Task criticality is:
+
+- `protected`: required for hard Calendar Logic, Static Tasks, prerequisites, dependencies, full legitimization support, recovery or safety, or a user-declared must-do commitment. Mobile must not silently drop it, shorten it below its minimum duration, or move it outside its envelope.
+- `flexible`: legitimate to move, split, or shorten within its envelope when dependencies, preconditions, affect assumptions, and hard constraints remain satisfied. Mobile may silently repair flexible Tasks only when the resulting conflict severity is `minor`.
+- `disposable`: optional or opportunistic work that may be skipped, replaced by an eligible next-best action, or left for desktop/cloud refinement when doing so does not break protected or flexible downstream commitments.
+
+The MVP criticality object is `criticality: { level, reason_refs, recovery_critical, deadline_fragile, min_duration_seconds, user_confirmation_required, disposal_effect }`. `level` is one of `protected`, `flexible`, or `disposable`; `reason_refs` point to Objectives, Static Tasks, dependencies, preconditions, legitimization support, user commitments, or risk findings; `disposal_effect` is a short enum-or-string summary such as `none`, `lost_optional_value`, `missed_deadline_risk`, or `breaks_dependency`.
+
+Task-level `allowed_time_range` is an admitted scheduling input for Dynamic Tasks. A decision envelope is later derived from a specific Plan placement, criticality, dependencies, preconditions, and repair policy so mobile can preserve or repair that Plan; it must not be treated as the source of the Task's allowed range.
+
+The MVP decision envelope is `decision_envelope: { earliest_start, latest_start, latest_finish, movable_windows, min_duration_seconds, target_duration_seconds, dependency_refs, precondition_refs, affected_static_refs, affect_assumption_refs, resource_or_location_refs, repair_budget_seconds, stale_after }`. `movable_windows` is an ordered list of `{ start, end }` intervals in which the Task may begin or occupy time, depending on the Task's duration fields. Empty or absent movable windows mean the Task is fixed or must be handled by hard Calendar Logic rather than local motion.
+
+The shared conflict severity vocabulary is:
+
+- `advisory`: stale or degraded metadata exists, but the current and next recommendation remain legitimate.
+- `minor`: a local repair inside recorded envelopes preserves all protected commitments and can be undone or inspected later.
+- `major`: the current or next recommendation remains explainable, but the user must choose, confirm, or supply missing information before mobile changes a protected commitment or meaningful tradeoff.
+- `blocking`: mobile cannot identify a legitimate current or next Task because a hard constraint, Static Task, precondition, dependency, affect legitimacy requirement, or required starting state is violated or unknown.
+
+This severity vocabulary is also the Phase 1b projection-conflict vocabulary: projection-specific classes may map into these severities, but must not invent a parallel severity ladder without a later decision.
+
+**Phase 1b projection conflict policy (`UBU-D0261`).** Projection reconciliation uses the sync conflict class `projection_conflict` with projection-specific quadrants: `known_object_edited`, `known_object_deleted`, `unknown_object_appeared`, and `expected_object_absent`. Automatic handling is allowed only when the result is deterministic, idempotent, within projection policy and decision envelopes, and does not choose between canonical user intent, protected Calendar ownership, or independently changed third-party truth.
+
+The quadrant defaults are:
+
+- `known_object_edited`: auto-resolvable only for non-authority metadata repair or for a permitted edit inside the object's explicit decision envelope. A duration edit to a flexible or disposable Dynamic Task may be `minor` when minimum duration, dependencies, affect assumptions, and Static Tasks remain valid; an edit that pins or moves a Dynamic Task to an external wall-clock time is `major` unless the projection policy already granted that editable window. Protected, Static, dependency-bearing, or precondition-affecting edits are `major` or `blocking`.
+- `known_object_deleted`: never silently tombstones or removes the canonical object. If the object is already tombstoned, withdrawn from the projection window, or awaiting idempotent projection deletion, the absence may be `advisory`; otherwise deletion of an active canonical object is `major`, or `blocking` when current/next legitimacy depends on it.
+- `unknown_object_appeared`: is contained as external evidence, import candidate, or projection diagnostic rather than admitted canonical state. It remains `advisory` or `minor` when it does not claim a user commitment or protected slot; it becomes `major` when accepting it would create or override a commitment, dependency, Static Task, or third-party-truth assertion.
+- `expected_object_absent`: is `advisory` when explained by tombstone, policy/window rotation, or completed projection deletion; it may be `minor` when UbU can retry or recreate the projection idempotently without overriding external truth. It is `major` or `blocking` when the missing external object affects a protected commitment, a current/next recommendation, a required precondition, or Calendar validity.
+
+Every automatic projection repair emits an auditable `projection_conflict_event` record with the conflict id, projection surface, quadrant, severity, canonical object ref when any, external object ref or redacted handle when allowed, observed object and policy versions, external delta digest, action taken, candidate refs when relevant, resulting mutation or projection-operation refs, and recorded time. If the action admits canonical state, it uses the ordinary mutation-envelope or tombstone path; otherwise it remains projection state, diagnostic state, or candidate metadata and is not a silent canonical mutation.
+
+When an external delta touches the same object as a still-pending candidate, admission compares both against the candidate's observed versions before either is accepted. Exact duplicates collapse; deterministic non-overlapping deltas may update the pending candidate's provenance or candidate mutation proposal. Overlapping deltas quarantine or supersede the candidate and surface a `major` review diagnostic, escalating to `blocking` when current/next legitimacy depends on resolving it. External projection evidence cannot force a pending candidate into admitted state.
+
+Cached explanation fragments are short, non-blaming strings with lineage refs. MVP fragments are `why_now`, `matters_because`, `depends_on`, `supports`, `legitimacy_reason`, `if_skipped`, `repair_summary`, and `staleness_summary`. Each fragment may reference Task ids, Objective refs, dependency/precondition refs, Static Task refs, risk finding refs, and compact Calendar provenance, but should avoid copying private details into more-disclosive replicas.
+
+A repair recipe record is `repair_recipe: { trigger, applies_to_refs, eligible_when, steps, ask_policy, fallback, explanation_fragment_ref }`. MVP triggers are:
+
+- `late_task`: condition on elapsed time and accepted Logs; keep protected Tasks and Static Tasks fixed, compress or drop only flexible/disposable work inside envelopes, then offer the next valid Dynamic Task or next-best action. Escalate to `major` or `blocking` if a protected latest finish, hard precondition, or Static Task would be violated.
+- `skipped_task`: for disposable Tasks, record omission and continue; for flexible Tasks, reschedule within the envelope; for protected Tasks, ask before omission or create a blocking diagnostic if no legitimate alternate exists.
+- `fatigue_report`: record the user report as a Log/Snapshot input, protect recovery-critical Tasks, reduce to protected and low-affect eligible work, and surface rest or clarification when affect assumptions no longer support the Plan.
+- `approaching_static_task`: preserve the Static Task, insert required transition/setup/teardown if already modeled, stop or park the current Task when necessary, and ask when the remaining time cannot satisfy a protected current Task.
+- `missing_prerequisite`: re-evaluate the deterministic precondition/dependency chain; if a modeled prerequisite Task is available, schedule or pull it forward inside its envelope; otherwise show a clarification Task or blocking prompt. Mobile must not invent a satisfied state, Resource, Skill, Technique, or external fact.
+
+The last legitimate Plan record is `last_legitimate_plan: { plan_id, plan_digest, generated_at, effective_time, horizon, execution_profile, legitimacy_result_ref, hard_validation_ref, default_segment_digest, universe_state_digest, log_cursor, snapshot_refs, external_event_cursor, compact_calendar_digest, protected_task_refs, decision_envelope_digest, explanation_lineage_digest }`. Mobile compares current reality to this record by replaying accepted Logs, Snapshots, External Events, elapsed time, and user actions since the recorded cursors, then checking whether current and next Task placements remain inside decision envelopes with dependencies, preconditions, affect assumptions, Static Tasks, and coverage still valid.
+
+Mobile may silently repair only for `minor` conflicts where the recipe is explicit, all changes stay inside decision envelopes, protected Tasks and support Tasks are preserved, failed preconditions are not hidden, and the explanation cache remains accurate enough for next-action display. Mobile asks the user for `major` conflicts, protected/discretionary tradeoffs, missing starting state, meaningful omission, or any repair that would change a user commitment. Mobile waits for desktop/cloud refinement or marks the Calendar stale when the issue is advisory, outside the reactive horizon, low coverage but not current-action-critical, or requires global optimization. It enters next-best-action mode when there is no safe default but there is at least one legitimate local Task or clarification Task to show.
+
+### 16.6 Early completion and forward-pull behavior
+
+When a Task completes earlier than expected, the default behavior should be to pull the next valid Dynamic Task forward to the present time if dependencies, preconditions, affect constraints, location constraints, and other Calendar Logic allow it.
+
+This supports a conservative duration bias: when uncertain, the scheduler may prefer duration estimates that are not overly optimistic. Early completion then becomes easy to absorb by starting the next valid Dynamic Task immediately rather than leaving useless gaps or requiring disruptive global replanning.
+
+Static Tasks retain fixed start times. If no predetermined Dynamic Task can validly fill time before the next Static Task, the planner considers evergreen gap-fill suggestions under section 15.4 and `gap_fill_policy` rather than treating the gap as unexplained failure.
+
+This forward-pull semantic is the natural counterpart to the log-normal duration model. Log-normal duration distributions are right-skewed: delays stack asymmetrically and early completions are relatively rare. The forward-pull repair handles early completion cheaply — no global replan, just pull the next eligible Dynamic Task forward — while late completion requires no special action since the distribution already biases toward longer-than-mean durations. For lay audiences, this is well described as a stop-light model: a sequence of independent delay sources where slowdowns accumulate and early green lights simply mean you move a little sooner. See also: `UBU-D0166`.
+
+### 16.7 Adaptive granularity and offline operation
+
+Compact Calendar runtime uses configurable execution profiles. The default Phase 1 presets are:
+
+- `full_detail`: 60-second delta, 3600-second reactive horizon, `0.99` branch coverage target;
+- `mobile_moderate`: 300-second delta, 3600-second reactive horizon, `0.99` branch coverage target;
+- `mobile_low_power`: 900-second delta, 1800-second reactive horizon, `0.95` branch coverage target;
+- `offline_steward`: 900-second delta, 1800-second reactive horizon, `0.95` branch coverage target, using precomputed branches and local repair metadata.
+
+The one-, five-, and fifteen-minute deltas are presets, not schema constants. Calendar policy, Device policy, user settings, and runtime conditions may choose different positive deltas, horizons, coverage targets, and compute budgets. The effective values are stored with the compact Calendar or PlanningRequest so replay and explanation use the same policy inputs.
+
+Switching to a coarser profile is allowed for `low_battery`, `low_power_mode`, `thermal_pressure`, `offline`, `expected_offline_window`, `heavy_workload`, `user_setting`, `external_worker_unavailable`, and `compute_budget_exceeded`. Returning to a finer profile is allowed when power, temperature, connectivity, worker availability, idle time, or user settings permit it. A switch records its reason in runtime or compact Calendar metadata; if it can affect the current or next recommendation, hard feasibility, affect legitimacy, or coverage threshold result, UbU records or batches a recalculation trigger using the relevant existing trigger kind.
+
+When UbU switches to a coarser delta, the user-facing explanation must disclose the active profile, reason, effective delta, reactive horizon, coverage target or estimate, expected loss of precision, guarantees that still hold, and how to request more detailed planning or wait for a finer-capability backend.
+
+Known offline windows trigger preparatory precomputation when connectivity and compute are available. The precompute package should cover the declared offline window plus the current reactive horizon when feasible, and should store the default Plan, last legitimate Plan, decision envelopes, Task criticality, cached explanations, simple repair recipes, and high-probability branch materialization or reconstruction instructions up to the effective coverage target. Precomputation is bounded by battery, thermal, user, Compartment, and compute-budget policy.
+
+Unexpected offline operation degrades to cached compact Calendar state, local explicit algorithms, coarser deltas, reduced branch horizon and coverage target, simple repair recipes, and next-best-action mode. It must not pretend cloud, worker, or LLM-assisted analysis is still available.
+
+Cached branches remain usable only while accepted Logs, Snapshots, External Events, elapsed time, and user actions stay inside their decision envelopes and while dependencies, preconditions, affect assumptions, and coverage remain valid. A branch expires when divergence leaves its envelope, a required dependency or precondition changes, a Static Task conflict appears, affect data becomes invalid for the Plan, coverage falls below the effective threshold, or the branch passes its recorded expiry.
+
+The minimum mobile-only guarantee is the core UbU loop on one local device: preserve explicit state, show one recommended next Task or a clarification Task, explain why it matters now, honor Static Tasks and hard constraints conservatively, expose affect/staleness and coverage degradation, record user feedback in Logs, and run local repair for the current or next Task. Mobile may use coarser granularity, shallower branch coverage, reduced analysis depth, and fewer LLM-assisted features; it may not hide a mandatory external compute dependency.
+
+### 16.8 GPU-aware execution backends and privacy boundary
+
+The open-core planning loop must not depend on a hidden cloud service. Mobile-only UbU must preserve the core UbU experience, but it should do so as a real-time steward of Plan legitimacy, user agency, and next-action clarity rather than as the full global optimizer.
+
+Cloud or external compute may improve performance, granularity, analysis depth, branch coverage, and expensive legitimization, but must not be a hidden mandatory dependency for the open-core planning loop. Solver selection should treat GPU suitability as a first-class criterion. CPU or conservative exact logic should certify skeleton validity, hard constraints, contradiction diagnostics, and explanations; GPU-capable search, simulation, scoring, and learned-model inference should handle large candidate sets, stochastic robustness, affect scoring, and premium cloud planning where available.
+
+Possible execution backends include:
+
+- local mobile execution;
+- local desktop or laptop execution;
+- Phase 2 user-owned worker devices;
+- dedicated user-owned worker appliances;
+- UbU corporate hosted compute;
+- third-party UbU-compatible compute providers;
+- future privacy-preserving compute services such as practical FHE-backed or comparable encrypted computation.
+
+The FOSS planner and Compact Calendar representation should be backend-agnostic. Execution providers are interchangeable through explicit APIs, capability grants, Compartment policy, provenance, and user-visible routing decisions. GPU search may propose candidate Plans, but hard constraints and final Plan validity must be certified by exact or conservative validation. Cloud planning payloads should minimize PII and transmit only the structured timing, dependency, value, constraint, criticality, and legitimacy information needed for the selected provider.
+
+**Backend trust boundary (`UBU-D0254`).** Backends beyond the controlling local instance are advisory workers behind an explicit `WorkerAuthority`; they may propose candidates, simulations, extraction or summary artifacts, projection previews, diagnostics, repair suggestions, and candidate mutations, but they do not mutate canonical state or decide their own scope. Returned artifacts are usable only after schema validation, Compartment/export admission, provenance validation, hard-constraint certification, and ordinary CPU commit or review paths.
+
+**Phase 1b local advisory worker protocol (`UBU-D0255`).** A local advisory worker is invoked through a `LocalAdvisorySubmission` with a `WorkerAuthority`, minimized by-value payload, expected result schema, timeout, compute budget, result size limit, partial-result allowance, causal parents, policy-version refs, input digests, and provider/model configuration metadata. Its `WorkerAuthority` grants only named advisory capabilities and denies canonical writes, admission decisions, direct StateStore handles, extra context fetches, authority expansion, export-policy decisions, ungranted network/tool use, credential access, and retention past the request deadline.
+
+A `LocalAdvisoryResult` echoes the authority, request, policy, input, provider, model, and configuration provenance and returns status `ok`, `partial`, `rejected`, `timeout`, `worker_error`, `malformed_result`, or `cancelled` with schema-valid artifacts, proposed candidates, proposed candidate mutations, diagnostics, safe telemetry, and deletion confirmation when required. Errors, timeouts, cancelled work, and malformed raw output are diagnostic records or quarantined digests, not candidate-state mutations; partial output is usable only artifact by artifact after schema validation.
+
+The worker receives no mutable canonical-state capability. Only the controller/admission path can translate valid advisory artifacts into candidate-queue entries, projection previews, diagnostics, or candidate mutation envelopes, and those proposals remain subject to ordinary schema, policy, provenance, hard-constraint, affect/legitimacy, mutation, and user-review checks. Later remote, rented, or multi-provider workers must preserve the same authority envelope, status semantics, provenance, payload-minimization proof, input digests, retention/deletion semantics, result-size and partial-result rules, and CPU/admission certification; transport may add encryption, signatures, attestations, or sync-carried `worker_request`/`worker_result` statements but not a second mutation channel.
+
+**Phase 1b single-Device credential custody (`UBU-D0262`).** External OAuth tokens, refresh tokens, provider API keys, client secrets, local endpoint authentication material, and worker credentials are Device-local secret values held outside the canonical StateStore. Canonical state may contain only policy metadata and opaque `SecretCapability` or secret-store handles: kind, owning integration or worker authority, operation scope, allowed `zone_id` and `compartment_ids`, version, status, retention/export class, and audit refs. This does not claim encryption at rest beyond the local platform secret store before Phase 2.
+
+The Phase 1b controller labels a credential by the Compartments whose data or external authority it can read, write, or affect; broad provider tokens inherit the broadest applicable label. A worker or projection operation may use a credential only through the controller's credential broker when its authority envelope, purpose, policy versions, and requested operation are within that secret capability. Workers do not receive or read credential material, and a worker scoped to one Compartment cannot use a credential labelled for another.
+
+Revocation and rotation are local capability-state changes. Revocation disables new use immediately on the Device; rotation creates a new credential version and disables the old version for new dispatch. Queued projection operations and advisory submissions record the credential capability id and version they expected; dispatch rechecks the current state and cancels, blocks, or asks for reauthorization rather than silently substituting credentials. Completed external side effects remain reconciled through projection records and conflict handling.
+
+Credential egress is enforced by typed secret references and central serializers, not by caller convention. Projection records, worker submissions/results, canonical payloads, logs, diagnostics, store exports, backups, and diagnostic bundles must reject reusable bearer tokens, API keys, refresh tokens, client secrets, authentication headers/cookies, local secret-store lookup material, and raw credential values; at most they may include an authorized opaque capability id/version or redacted handle.
+
+The open-core boundary includes the canonical planning schemas, Compact Calendar representation, deterministic skeletonization and precondition/effect evaluation, conservative CPU hard-constraint validation, admission and provenance checks, payload-safety validation, and enough local execution-profile support to produce a legitimate default Plan or blocking diagnostic without a hidden service. Hosted, rented, GPU, learned-model, or third-party compute may improve speed and depth, but they are replaceable request/result providers.
+
+Routing selects the least-disclosing capable backend under policy, freshness, latency, energy, and compute-budget constraints. Mobile local execution remains the stewardship fallback for current/next Task clarity and cached repair; local desktop/laptop execution is the default high-fidelity self-hosted path when available; Phase 2 user-owned workers use the sync-carried worker protocol; corporate hosted compute and third-party UbU-compatible providers require explicit policy allowance and user-visible routing disclosure. Third-party providers receive no privileged access over local execution and must use the same authority, payload-safety proof, provenance, response validation, and CPU certification boundary as UbU-hosted providers.
+
+Before external egress, the controller evaluates Compartment policy, export limits, Device or provider trust, `no_cloud_llm`-style constraints, retention rules, and purpose compatibility. Payloads are minimized `PlanningRequest`, `worker_request`, or derived context bundles over redacted Replicas; direct PII, stable object IDs, Compartment labels, secrets, integration credentials, and unrelated UniverseState are omitted, generalized, or replaced with redacted handles unless policy explicitly authorizes disclosure. Transport is encrypted, retention is bounded, diagnostics must not reintroduce stripped identifiers, and results echo policy versions, input digests or structural references, provider/model identity, safe telemetry, and required deletion confirmation.
+
+Dedicated personal worker appliances are future packaging or reference hardware for ordinary user-owned worker Devices, not a separate trust class. Practical FHE-backed or comparable encrypted compute remains strategic research until it can preserve the same authority, provenance, routing, and certification boundary with stronger disclosure properties. Idle-compute monetization, if ever supported, is an external API-enabled user opt-in with revocation, policy limits, and auditability rather than an UbU corporate marketplace or default use of personal compute.
+
+### 16.9 MVP Compact Calendar implementation
+
+The minimum Phase 1 Compact Calendar implementation stores the legitimized skeleton baseline, the default Plan, the active execution profile, coverage estimate, uncovered-mass estimate, effective coverage threshold, decision envelopes, Task criticality, conflict severity, cached explanation fragments, simple repair recipes, probability provenance, and last-legitimate-Plan record. It stores user-previewed, risk-report, and debug/reproducibility Plans only when those artifacts are actually generated or needed for audit.
+
+High-probability near-term alternatives within the reactive horizon may be stored as materialized branches or as deterministic reconstruction instructions. Non-selected candidate Plans, expensive global repairs, and low-probability branches are reconstructed on demand from the compact grammar, current UniverseState, Logs, Snapshots, External Events, repair recipes, and cached provenance.
+
+MVP planning does not require exhaustive optimal search, cloud compute, GPU execution, exact coverage proof, learned policy models, or a complete transport grammar for every post-MVP uncertainty source. The required implementation is a deterministic skeletonizer, minimum legitimizer, greedy baseline, bounded candidate expansion, hard-constraint validator, Plan probability/provenance record, compact default-Plan package, short-horizon repair cache or reconstruction path, and low-coverage recalculation trigger.
+
+### 16.10 GPU desktop execution backend
+
+The Phase 1 performance target is a local desktop/laptop GPU backend, delivered in Phase 1b as part of the planner the switch requires (`UBU-D0275`). A small CPU reference path or fixture-backed deterministic path remains required for tests, CI, and contributors without GPU access. Cloud planner backends and the full mobile planner remain deferred beyond Phase 1. Mobile already has a smaller stewardship role; its execution profile and validation contract are specified in §16.10.6.
+
+The implementation-facing contract for this section is `PLANNING_KERNEL_CONTRACT.md`. `DESIGN.md` defines the architectural intent; the contract file defines the Phase 1 schema and boundary details.
+
+#### 16.10.1 Pure function contract
+
+The GPU planning engine is a pure function. Its input is a `PlanningRequest`. Its output is a `PlanningResponse` containing ranked PlanCandidates, diagnostics, warnings, and probability-quality metadata. The engine has no canonical side effects, performs no UbU I/O, and holds no request-semantic mutable state. The CPU kernel owns all canonical state mutation. The GPU engine is advisory only: it proposes; the CPU kernel validates and commits.
+
+In Phase 1b the engine is invoked through a persistent local Python worker process owned by the CPU kernel (`UBU-D0283`). The boundary is local length-prefixed JSON frames over pipes, not a network service. This replaces the earlier in-process typed-call direction so the Rust desktop kernel keeps crash isolation from Python, CUDA, and PyTorch failures, avoids embedding the Python interpreter and its lock in the Rust process, and amortizes Python startup by reusing the worker. The framework is PyTorch.
+
+#### 16.10.2 CPU/GPU handoff contract
+
+The CPU/GPU semantic boundary is defined by two typed objects: `PlanningRequest` and `PlanningResponse`, specified in `PLANNING_KERNEL_CONTRACT.md`. Worker-spawn envelopes such as `GpuAdvisoryRequest` and `GpuAdvisoryResponse` may wrap those objects for process management, framing, cancellation, and telemetry, but they do not define separate planning semantics. Time values crossing the semantic boundary use the contract's RFC 3339 UTC timestamps; integer Unix seconds and tensor offsets are implementation-local lowerings.
+
+`UBU-D0283` now records the explicitly approved internal `stage1-atomic-v1` exception: a minimized request, CPU-derived order/masks and tagged sampling source cross the stage boundary; padded structural arrays return for CPU certification. The canonical `PlanningStreamFrame` and pure semantic boundary are unchanged. The atomic profile does not implement public chunk streaming or the full response contract, and a fallback gate is not evidence of successful tensor computation.
+
+`UBU-D0297` specifies the future worker-derived duration stream: stateless Philox4x32-10 with seed/candidate/Task/draw addressing, an exact open-unit uniform and AS241/fdlibm transform. Both implementations and near-window golden vectors must be frozen and certified before activation. The current atomic profile still receives deterministic fixed/mode placement seconds from CPU; neither the new stream nor expanded Stage 1 stochastic behavior is implemented by this design ticket. Exact duration/window/mask parity remains distinct from the unchanged named numeric/statistical profiles for later-stage scores and rollouts.
+
+`PlanningRequest` includes schema version, planner version, request ID, effective time, generated-at time, mode, RNG seed, time-window policy, horizon policy, compute budget, task graph with CPU-provided `topological_order`, UniverseState snapshot, AffectProfile, scoring policy, constraint policy, payload policy summary, and privacy/provenance payload-safety proof. Optional fields include external event assumptions, repair context, explanation request, and debug flags.
+
+`PlanningResponse` returns ranked PlanCandidates plus diagnostics, rejection counts, warnings, probability-quality metadata, optional coverage estimate, optional compute telemetry, and stage funnel counts. `K=3` PlanCandidates is the Phase 1 default:
+
+- highest-utility candidate;
+- most-robust candidate;
+- most-schedule-diverse candidate.
+
+K is user-configurable to allow power users to tune computational resource use. The Phase 1 default rollout budget is `n_rollouts = 1000` per finalist unless overridden by the CPU kernel's compute budget.
+
+Interactive requests may be answered as a stream of certified chunk results followed by the final `PlanningResponse`. Batch requests return only the final response (`UBU-D0281`). In Phase 1b the worker emits framed `PlanningStreamFrame` messages: zero or more `chunk_result` frames for interactive delivery, then exactly one `final_response` frame. Each chunk result is certified by the CPU kernel on arrival before it can become user-visible.
+
+Backend selection is CPU-owned. If policy disables GPU use, no compatible local GPU/PyTorch runtime is available, the worker fails, or the compute budget does not justify worker dispatch, the CPU reference path is used. Responses and committed Plans record backend provenance, including backend kind, invocation kind, engine version, framework, device summary when available, request id, RNG seed, tolerance profile, and CPU certification status. GPU scores and rollout estimates are reproducible within the recorded tolerance profile, not bit for bit across hardware; CPU certification and CPU reference goldens are authoritative.
+
+#### 16.10.3 Tensor layout
+
+All tensor batches use padded fixed-size shape `(N_CANDIDATES, MAX_PLANNING_TASKS, ...)` with an explicit boolean validity mask tensor marking valid task slots. Ragged tensors are not used in Phase 1.
+
+`MAX_PLANNING_TASKS = 256` is the Phase 1 planning window ceiling, defined at a single site. Future premium or wide-horizon tiers may increase this ceiling by scalar configuration, subject to memory, scenario-count, correlation-matrix, validation-cost, and backend performance limits. Linear scaling is not assumed as a mathematical guarantee.
+
+#### 16.10.4 Pipeline stages
+
+The GPU engine has four first-class pipeline stages, with semantic boundaries specified in `PLANNING_KERNEL_CONTRACT.md §5`.
+
+1. **Skeleton sampling** — parallel shifted-log-normal or fixed duration sampling across candidates with vectorized propagation over the CPU-provided topological order.
+
+2. **`affect_legitimacy_filter`** — batch sigmoid affect-constraint evaluation across surviving candidates. This stage implements only the sigmoid affect-constraint portion of legitimization. Full legitimization in UbU design is broader: it makes a skeleton Plan human-viable by respecting affect, recovery, transition, rest, sustainability, and support constraints. The `affect_legitimacy_filter` GPU stage does not replace or subsume full legitimization.
+
+3. **Value scoring** — parallel utility, approximate robustness, affect-margin, and schedule-diversity scoring across surviving candidates.
+
+Phase 1b value scoring uses CPU-computed, request-local Task value/priority metadata derived from admitted pairwise Task Preferences (`UBU-D0277`, `UBU-D0282`). Objective labels, deadlines, routine cadence, and revealed-preference evidence may inform review, risk, urgency, or later policy work, but the GPU stage receives only the bounded transient values supplied in the `PlanningRequest`.
+
+4. **Monte Carlo rollout** — joint scenario simulation for finalists using correlation-group Gaussian copula sampling with deterministic rollout seed derivation.
+
+GPU search proposes candidates. Hard constraint certification and final Plan validity are performed by the CPU kernel using exact or conservative validation.
+
+In Phase 1b the stages operate on chunked candidates (`UBU-D0279`, §16.3): skeleton sampling builds candidates chunk by chunk, and the Monte Carlo rollout shares its latent draws across chunks. Chunked search stays inside one planning invocation for the whole request; the worker may batch chunks internally to fit memory, but the CPU does not dispatch each chunk as a separate semantic request.
+
+#### 16.10.5 Stochastic duration model
+
+Task durations use either a fixed duration model or a shifted log-normal distribution. The stochastic model is parameterized by `(min_seconds, mode_seconds, p95_seconds)`.
+
+- `min_seconds` is the optimistic lower support shift used by the planner distribution; it is a subjective best-case modeling prior, not a claim about physical impossibility.
+- `mode_seconds` is the most likely duration.
+- `p95_seconds` is the high-but-plausible 95th percentile, not a hard upper cap.
+
+The shifted distribution is `D = min_seconds + LogNormal(mu, sigma)`, with the canonical conversion formula specified in `PLANNING_KERNEL_CONTRACT.md §3`. The planner may sample durations greater than `p95_seconds`; that is intentional.
+
+Fixed known durations use a separate fixed-duration model and are represented as a delta distribution. Invalid stochastic triples are rejected by schema validation rather than silently repaired.
+
+For lay audiences this is well described as a stop-light model: a sequence of independent delay sources where slowdowns stack asymmetrically and early arrivals are absorbed cheaply by forward-pulling the next eligible Dynamic Task.
+
+#### 16.10.6 Mobile execution profile
+
+Mobile is a real-time steward of Plan legitimacy (`UBU-D0126`, `UBU-D0256`, `UBU-D0290`). Its measured workload is deterministic skeletonization, exact hard-constraint checks, local repair recipes and a short-horizon branch cache from §16.5, explicitly not the full desktop chunked search.
+
+The persistent Python worker in `UBU-D0283` is a desktop invocation mechanism. A mobile backend runs in process on the device; no Python runtime is shipped on device. The pure `PlanningRequest` → `PlanningResponse` semantic boundary, CPU-owned backend selection, CPU certification and recorded provenance remain unchanged. Mobile execution records `mobile_cpu` or `mobile_gpu`, `in_process_mobile`, and its own framework or compute API. The compute API is undecided pending `UBU-Q0160`'s measurement gate.
+
+The parity rule from `UBU-D0283` applies unchanged: schema decoding, chunk partitioning, task-slot masks, dependency feasibility, hard-constraint feasibility, rejection classes and CPU-certified Plan validity agree exactly with the CPU reference path. Floating-point scores and rollout estimates use named tolerances or statistical criteria. Shared parity fixtures exercise the applicable stages; the workload benchmark remains stewardship. Every mobile-produced Plan is CPU-certified on the device before it is user-visible.
+
+Validation uses a physically connected device over `adb`, not an AVD: emulator graphics use host rendering and cannot measure the phone's driver, vendor extensions, timing or thermal response. The rooted LineageOS device procedure and mandatory pre-flight are in `docs/MOBILE_DEVICE_TESTING.md`. No device procedure may leave the phone in a state that needs a cable to recover.
+
+**Camera-first scope (`UBU-D0358`).** Retain this stewardship workload when the phone is a primary capture/review client. `UBU-D0339` (§4.2) already sets the mandatory bounded phone camera-and-voice slice, qualified operator-owned inference routes and Phase 2 coordination. Perception models produce evidence/candidates under §21.1; planning consumes admitted inputs. Perception runtime qualification and planning parity are separate gates. A passing planning benchmark supplies no capture, privacy, voice or perception-quality evidence, and a passing perception model supplies no planning parity.
+
+**API comparison gate (`UBU-D0358`).** Before running the selection trials, pin the exact physical phone/SoC/RAM, LineageOS fingerprint, driver/runtime/compiler versions, harness and CPU reference revisions, fixture digests, seeds and effective compute budgets. Freeze the candidate operation mappings, trial counts, cold/warm procedure, run order, sustained duration, numerical tolerance profile and finite acceptance limits. Include required improvement over the same-device `mobile_cpu` baseline and acceptable latency, aggregate memory, energy/battery and thermal trade-offs; do not choose thresholds after seeing a winner. Keep fixtures synthetic or expressly authorized and diagnostics policy-bound.
+
+Publish one evidence row for the CPU baseline and each candidate configuration of Vulkan compute, OpenCL on Adreno, ExecuTorch and NNAPI. Identify any runtime/delegate, actual compute API/driver and accelerator used, supported operations/dtypes, CPU-resident portions and unavailable/unsuitable operations with reasons. Treat a runtime configuration as an implementation to measure, rather than assuming its name denotes a GPU API. Demonstrate execution of the claimed accelerated operations on the selected device; API enumeration, library loading, emulation and silent CPU fallback cannot establish it.
+
+**Exact structural lowering (`UBU-D0370`).** Extend each frozen candidate operation mapping with its CPU-to-accelerator representation of time coordinates, durations, Task/branch indices and masks: units, time origin, storage and arithmetic dtypes, supported ranges, intermediate bounds and checked CPU dispatch conditions. Verify lossless encode/readback at the CPU reference path's declared resolution and preserve its exact interval, dependency and mask semantics. Internal lowering cannot silently round timestamps, quantize durations or change `planning_delta_seconds`. Keep a structural operation CPU-resident when the accelerator cannot preserve those exact semantics; declare and measure that hybrid mapping. For an otherwise valid request outside the candidate's proven bounds, select the CPU path with the unchanged request/seed under the existing budget and fallback rules, rather than reporting a semantic rejection or silently overflowing.
+
+Include shared synthetic fixtures with large absolute timestamps separated by one reference time unit; paired fixtures translating all relevant absolute times by a common offset while preserving relative constraints; endpoint comparisons immediately before, at and after equality; Task/branch index and padding boundaries; and duration sums near the declared arithmetic limits. Compare decoded/readback values and existing exact-parity outputs against the CPU reference, normalizing only the declared time origin for translated pairs. Exercise both supported-boundary inputs and otherwise valid inputs outside the accelerator's bounds, with the latter demonstrating explicit CPU routing. Freeze expected dispositions with `UBU-D0364`'s manifest and account for fallback separately. Run the claimed accelerated operations on the physical device and retain policy-permitted input, readback and comparison evidence. A numeric score tolerance cannot excuse a different exact structural or hard-constraint result, and CPU certification cannot repair a failed parity comparison. These fixtures select no representation width, API or passing backend.
+
+| Evidence | Required comparison |
+| --- | --- |
+| Semantic parity | Replay the same bounded skeleton, hard-check, repair and branch-cache fixtures against the CPU reference. Include §5 of PLANNING_KERNEL_CONTRACT.md's missing-prerequisite and endpoint-equality cases, protected Tasks, stale envelopes, all five §16.5 repair triggers, and cache hits/misses. Enumerate applicable stage outputs and justify any non-applicable stage; record exact structural/feasibility/rejection comparisons and named numeric/statistical checks before CPU certification. CPU rejection cannot turn an accelerator disagreement into a parity pass. |
+| Certified-result latency and resources | Include decoding, cold initialization/compilation, transfers, synchronization, readback and on-device CPU certification, rather than GPU enqueue time alone. Report sample counts, median, p95, maximum, misses and failures separately for cold/warm operation and each workload. Measure peak aggregate CPU/accelerator memory including caches and certification, energy/battery with method and uncertainty, temperature/throttling and performance over the declared sustained duration. Record ambient conditions, charge state and competing load. Missing evidence for a required limit prevents a pass. |
+| Shared phone budget | Repeat the proposed concurrent planning, UI and sync load with the bounded camera/voice route intended under §4.2, accounting for every participating endpoint. Apply the existing perception/retention/deadline qualification gates to that route; do not substitute planning timings for capture-to-review measurements. Report contention, stop responsiveness and resource degradation without expanding the planning workload. |
+| Fallback and recovery | Exercise unavailable operations/runtime, initialization/allocation failure, accelerator timeout/failure, interruption, low battery and thermal limits. CPU selection/fallback must preserve request/seed and semantic checks, reject late accelerator results and fit the remaining request budget; otherwise expose the planning limitation or an eligible cached/clarification path under §16.5. Record the implementation that actually produced the returned result in existing provenance. A process restart requires fresh validity checks before Plan reuse. |
+
+**In-process failure ownership (`UBU-D0377`).** Keep CPU fallback and limitation display schedulable without waiting for accelerator completion or acquiring locks held by blocked accelerator calls. Bind each submission, callback and buffer to the original request and a CPU-owned local attempt generation. Serialize expiry/cancellation with result acceptance: invalidate the accelerator attempt before starting fallback or exposing a limitation. Late results cannot publish, populate branch caches or replace the fallback result. Attempt generations are implementation bookkeeping, not new planning-contract fields.
+
+Stopping a wait establishes neither device completion nor resource release. Retain in-flight buffers and runtime handles until completion or demonstrated safe teardown; CPU fallback uses separate storage. Stop further dispatch through the affected planning runtime instance while timed-out work remains unresolved. Freeze finite invalidation-to-fallback/limitation response ceilings, outstanding-submission limits and retained-memory limits with the candidate mapping. Include unresolved accelerator work and CPU fallback together in aggregate memory, energy and sustained-load accounting; fallback still has only the original request's remaining budget. Process loss cannot count as successful CPU fallback, and restarting requires the existing fresh Plan-validity checks.
+
+Extend the frozen fault cohorts with completion after timeout, cancellation racing readback, repeated requests while timed-out work remains outstanding, and old callbacks after fallback or a new request. Exercise actual controller/adapter result and cache acceptance, buffer ownership and resource high-water marks, then demonstrate supported failure behavior on the physical device under the existing pre-flight/recovery rules. Callback injection proves controller behavior only; it supplies no driver-cancellation or resource-reclamation evidence. Report measured response times, completion/release versus still-pending resources, process loss and missed deadlines through `UBU-D0364`'s outcome accounting. A failed declared bound withholds that configuration; thread separation alone establishes no crash isolation.
+
+**Matched trials and outcome accounting (`UBU-D0364`).** Keep calibration used to propose limits separate from acceptance runs. Before acceptance, freeze a workload manifest with request/fixture digests and seed order, task and branch limits, repair inputs, cache starting state and hit/miss mix, offered-request cadence and concurrency, and expected result for each case. Apply the same manifest to the same-device CPU baseline and each candidate configuration. Include a positive minimum proportion of timely, parity-correct expected results for each ordinary cold, warm, sustained and concurrent-load condition. Declare fault/interruption cohorts and their expected degraded dispositions separately; never move failed ordinary trials into those cohorts. Changes to mappings, limits or the workload after observing acceptance results require a new comparison revision and affected reruns.
+
+For each original offered request, record acceptance or refusal, actual accelerated operations and declared CPU-resident portions, result/certification disposition, fallback and total elapsed work. Distinguish a result exercising its declared accelerated operations from full CPU fallback, expected rejection/clarification, expiry, cancellation, error and no result. An expected rejection or clarification counts as correct only under that fixture's frozen rubric; it does not count as an accelerated Plan. Count the original request once; retries and fallback share its original deadline and contribute all their time and resource costs. Exact parity remains mandatory, including on expected rejection cases.
+
+Report timely-correct results over all offered requests in each ordinary condition, with refusal, fallback, miss, error and missing-result counts. Name the population and denominator of each latency distribution; keep accelerated/hybrid results, CPU fallback and expected rejection/clarification timings separate. A request without its expected result has no successful completion latency. Include failed attempts and retries in run-level energy and resource accounting, with the existing measurement uncertainty. Compare benefit at the common frozen workload and cache mix; pooling cannot hide a failed condition, and CPU fallback cannot supply evidence of accelerated execution. Missing a declared result-rate or resource limit withholds the candidate configuration under the existing selection gate.
+
+Operator review selects only a configuration passing the declared parity and resource gates with demonstrated fallback and a justified benefit over CPU stewardship. Unavailable candidates remain visible as gaps; no accelerator winner is required. If none qualifies, retain CPU stewardship and the explicit GPU gap. This is a required evidence protocol, not a completed harness, measured result or API selection. It changes no `PlanningRequest`, `PlanningResponse`, provenance enum, contract version or switch/release criterion. Perception hardware and numeric profiles remain `UBU-Q0177`/`UBU-Q0168`; `UBU-Q0160` remains Open for planning API selection.
+
+#### 16.10.7 Correlation groups and rollout matrix
+
+Each stochastic-duration Task may carry `correlation_groups: [{group: str, strength: float}]`. In Phase 1, `strength` is a positive latent-factor loading in `[0, 1]`; negative correlations are deferred.
+
+The CPU kernel constructs a deterministic positive semi-definite correlation matrix by normalizing per-Task positive factor loadings and computing `C = L * L^T + diag(1 - row_norm(L)^2)`. Multiple shared groups combine through the dot product of normalized loading vectors. Numeric jitter may be applied for floating-point error with explicit degraded diagnostics. Silent nearest-PSD projection is not a Phase 1 semantic repair.
+
+Negative correlations are not rejected philosophically. They are deferred because signed pairwise-correlation declarations can create non-PSD matrices and confusing validation failures. Phase 2 should support anti-correlations through signed latent factors, explicit Cholesky-style parameterization, or a signed partial-correlation model.
+
+The RNG seed is an explicit required input, ensuring plan generation is reproducible for peer debugging.
+
+#### 16.10.8 Solver selection and deferred backend targets
+
+Phase 1 does not require OR-Tools, Z3, CP-SAT, SMT, MaxSMT, or another external exact solver as a runtime dependency. The mandatory certification path is the built-in CPU kernel: dependency DAG validation, deterministic precondition and effect evaluation, skeleton validity, bounded contradiction diagnostics, full legitimization, hard Calendar Logic checks, provenance validation, payload-safety validation, and final Plan commit.
+
+Solver and library candidates are evaluation targets:
+
+- built-in CPU graph and precondition validator: required reference path and certification source;
+- OR-Tools CP-SAT: optional finalist schedule-feasibility and contradiction-minimization experiment;
+- Z3 or comparable SMT/MaxSMT: optional logical contradiction-diagnosis experiment;
+- PyTorch or CPU local-search libraries: optional advisory candidate-optimization experiments;
+- learned models: post-MVP advisory ranking or parameter estimation unless CPU admission certifies the output.
+
+Phase 1 has no mobile GPU target. The required mobile fallback is CPU stewardship for current or next Task hard checks, cached last-legitimate Plan repair, decision envelopes, and simple repair recipes as defined by `UBU-D0256`.
+
+Premium or cloud GPU planning is governed by the execution-provider boundary in `UBU-D0254`, with concrete products deferred to later provider work. Any future cloud backend must preserve the same typed `PlanningRequest`/`PlanningResponse` boundary, Compartment and export gating, payload minimization, provenance, and CPU certification on return.
+
+See also: `UBU-D0166`, `UBU-D0167`, `UBU-D0168`, `UBU-D0169`, `UBU-D0170`, `UBU-D0171`, `UBU-D0172`, `UBU-D0173`, `UBU-D0174`, `UBU-D0212`, and `PLANNING_KERNEL_CONTRACT.md`.
+
+---
+
+## 17. Logs
+
+A **Log** is the canonical record of what actually happened in the universe.
+
+A Log consists of timestamped entries recording:
+
+- Task completion or failure
+- External Events that occurred
+- Observed Snapshots (user-declared or sensor-derived state)
+- Objective status transitions
+- Plan realizations
+- Decisions made and by whom
+- System recalculations
+
+Logs are immutable once written, but may be annotated or corrected through new entries.
+
+### 17.0 Counterfactual logging requirement
+
+The Log records user-facing choices that did not become the selected path. A counterfactual decision is recorded with the existing `decision_recorded` event type whenever UbU presents a meaningful option, warning, proposal, alert, or recommendation and the user rejects, dismisses, overrides, bypasses, or ignores it.
+
+Minimum MVP `decision_kind` values:
+
+- `plan_candidate_rejected`
+- `task_suggestion_dismissed`
+- `suggestion_declined`
+- `system_recommendation_overridden`
+- `worker_proposal_declined`
+- `safeguard_advisory_bypassed`
+- `alert_dismissed_or_ignored`
+
+Minimum `event_payload` fields:
+
+- `decision_kind`
+- `presented_ref` or `presented_candidate_summary`
+- `presented_at`
+- `decision_surface`
+- `available_actions`
+- `user_action`
+- `chosen_ref` when the user chose another option
+- `rejected_ref` or `rejected_refs`
+- `reason_capture`
+- `decision_context`
+- `preference_inference_allowed`
+
+`presented_candidate_summary` is a compact, redacted snapshot sufficient for review when the full candidate is transient or expensive to retain. It records identifiers, title or label, rank or recommendation status, score or explanation fragments when shown, and source or provenance refs; it must not embed denied Compartment payload.
+
+`reason_capture` records optional reason evidence without making explanation mandatory. It contains `reason_source` (`user_stated`, `user_selected_code`, `system_inferred`, or `none_given`), optional `reason_code`, optional `reason_text`, and optional `confidence` for inferred reasons. If the user skips the prompt, UbU records `none_given`. System-inferred reasons are review notes, not canonical Preferences.
+
+`decision_context` records the system state needed to understand the choice: related Calendar or Plan refs, current recommendation ref, Task or Objective refs, active Identity or acting-as context beyond `actor_identity_ref` when relevant, active Compartment or policy result refs, Snapshot or UniverseState refs, risk-report refs, worker assignment or proposal refs, safeguard or alert refs, and source External References. Context should use refs, hashes, and summaries rather than copied payload whenever possible.
+
+Counterfactual entries are append-only Log entries. They are corrected or annotated only through later `log_correction_added` or `log_annotation_added` entries. A later accepted Preference, Task update, Objective update, safeguard policy change, or worker reassignment may cite the counterfactual Log ref but does not rewrite it.
+
+Preference inference may consume only uncorrected counterfactual entries and must distinguish user-stated, selected-code, inferred, and missing reasons. Absence of a counterfactual entry is not evidence of user acceptance.
+
+### 17.1 MVP Log entry fields
+
+MVP Log entries use a shared event envelope. Required fields:
+
+- `log_entry_id`
+- `schema_version`
+- `instance_id`
+- `recorded_at`
+- `effective_at`
+- `event_type`
+- `actor_identity_ref`
+- `recorded_by_device_ref`
+- `target_ref`
+- `result`
+- `event_payload`
+- `provenance`
+
+`recorded_at` is when UbU accepted the entry. `effective_at` is when the modeled event occurred and may be earlier for imported or reconstructed events. `target_ref` identifies the primary canonical object or imported External Event. `result` is one of `success`, `failure`, `partial`, or `not_applicable`. `event_payload` is JSON-compatible event-specific data.
+
+Optional fields:
+
+- `old_value`
+- `new_value`
+- `reason`
+- `notes`
+- `confidence`
+- `related_plan_ref`
+- `external_refs`
+- `annotation_of`
+- `correction_of`
+- `idempotency_key`
+
+`old_value` and `new_value` are used for mutation-like events and may be absent for observational, external-only, or compartment-sensitive records. `provenance` records the source kind and source reference; `confidence` is stored when the entry is inferred, sensor-derived, imported, or worker-submitted.
+
+### 17.2 MVP Log event types
+
+MVP event types are:
+
+- `task_completed`
+- `task_failed`
+- `task_moot`
+- `external_event_observed`
+- `snapshot_observed`
+- `objective_transitioned`
+- `pipeline_state_transitioned`
+- `plan_realized`
+- `decision_recorded`
+- `recalculation_triggered`
+- `worker_assignment_updated`
+- `worker_mutation_submitted`
+- `worker_mutation_applied`
+- `worker_mutation_rejected`
+- `log_annotation_added`
+- `log_correction_added`
+
+All event types share the required envelope. Event-specific details live in `event_payload` and may be validated by event-specific schemas.
+
+### 17.3 Immutability, annotation, and correction
+
+Log entries are append-only. Annotation and correction never modify the original entry. They create a new Log entry with `event_type` set to `log_annotation_added` or `log_correction_added`, and with `annotation_of` or `correction_of` pointing to the original `log_entry_id`.
+
+Corrections supersede interpretation of the original entry but do not erase the original historical claim. Later queries should resolve corrected views by following correction links.
+
+### 17.4 Storage, retention, and query
+
+Canonical Logs are stored per UbU instance. Device-local Logs or queues may exist as transport and audit buffers, but canonical history belongs to the instance; each entry records `recorded_by_device_ref` when known.
+
+MVP retention is indefinite for canonical Logs. Archival may move old entries to colder local storage, but must preserve queryability and integrity. Deletion or redaction policies are governed by Compartment retention rules and remain post-MVP except where required by a hard Compartment invariant.
+
+MVP query/search is index-backed over `recorded_at`, `effective_at`, `event_type`, `actor_identity_ref`, `target_ref`, `external_refs`, and correction/annotation links. Large histories should be queried by time-windowed, cursor-paginated APIs. Derived search indexes may be rebuilt from the append-only Log.
+
+### 17.5 Automation Worker contributions
+
+Automation Workers contribute to Logs through their worker Identity. A worker may submit events or mutation requests, but the canonical instance validates authority and writes the canonical Log entry. A worker submission first creates a `worker_mutation_submitted` or operation-specific submission record when it enters the canonical instance. Accepted worker mutations create applied entries; invalid, unauthorized, stale, or policy-denied attempts create rejected entries. Requests that require human or policy review remain candidates until an authorized actor accepts or rejects them.
+
+Worker-supplied `idempotency_key`, provenance, evidence references, and confidence metadata are retained when available so duplicate submissions and stale worker results can be detected.
+
+### 17.6 Log vs Plan
+
+- **Plan**: a possible ordered sequence of future Tasks, representing prediction
+- **Log**: a timestamped record of what actually occurred, representing reality
+
+Plans are inherently multiple. Logs are singular and authoritative for the specific timeline that occurred.
+
+### 17.7 Log and Feedback
+
+Logs enable feedback loops. A Log records the gap between prediction and reality, enabling better future planning.
+
+The comparison of Logs against Plans is essential for:
+
+- detecting estimation errors
+- updating probability models
+- surfacing unmodeled constraints
+- improving forecasting algorithms
+
+### 17.8 Regular Log review
+
+Log review is a notable recurring Task. Its purpose is to keep UbU's model aligned with the user's actual behavior, later reflection, and corrections. Default cadence is at the end of a work window or at the next startup when unreconciled plan/reality differences exist, with a weekly catch-up if routine review is skipped. The user may adjust cadence through the recurrence rule on its evergreen system Objective (§7.4.1), snooze, or skip controls.
+
+A Log review Task may:
+
+- reconcile DiscoveryEvidenceItems and undetailed or under-specified time periods by accepting, correcting, rejecting, deleting, marking private/unknown, or deferring them;
+- ask whether a user override reflected a better local judgment, bad timing, missing preconditions, wrong duration estimate, stale affect data, social pressure, or changed Preference;
+- compare planned Tasks against completed, failed, moot, snoozed, rejected, or unobserved Tasks;
+- convert user-approved observations into corrected Logs, Snapshots, Preferences, Objective annotations, Task estimate updates, or recalculation triggers;
+- keep raw autonomy, competence, relatedness, social pressure, attitude, subjective norms, perceived control, and expected-execution comments as review notes unless the user accepts a concrete canonical update;
+- mark proposed habit patterns as user-endorsed, tolerated, unwanted, or unresolved.
+
+Log review should not become a blame ritual. It is a model-maintenance Task for self-governance. The minimum Phase 1 annotation boundary is resolved by `UBU-D0181`.
+
+**Phase 2 and post-MVP additions to the Log review report:**
+
+- Friction annotations: optional attributed notes, overrun prompts and duration-learning review evidence follow §17.8.1 (`UBU-D0357`); Bayesian updating remains post-MVP under `UBU-Q0116`.
+- Streak surfacing: recurring Task completion chains are surfaced as motivational signals. See `UBU-Q0111`.
+- Deferred-intent review: due `deferred_intent` Tasks surface on Log review or startup, with a default 30-day item interval and earlier review for material linked-Objective changes. The prompt offers promotion with explicit Preference commitment, keep deferred with a next review, permanent dismissal through `moot`, or Objective review; missed prompts never imply acceptance or dismissal. See §9.7 and `UBU-D0308`.
+- Circadian affect pattern report: after sufficient Log history, time-of-day patterns in affect state may be surfaced as a standard report to inform planning priors.
+
+### 17.8.1 Phase 2 friction annotations
+
+**Optional evidence (`UBU-D0357`).** Friction is a small object in `event_payload.friction`, with free-text content and no Phase 2 cause taxonomy:
+
+- `note_text`: required nonblank text, at most 2048 Unicode characters;
+- `task_ref`: required for a Task-specific `plan_realized` deviation; otherwise inherited from the Task outcome's `target_ref`. If supplied on a Task outcome, it must match that target;
+- `decision_refs`: optional list of at most eight distinct `decision_recorded` Log refs relevant to the same execution context.
+
+Support friction on `task_completed`, `task_failed`, and Task-specific deviations recorded with `plan_realized`; no new deviation event type is introduced. Other event types retain ordinary notes. The friction object may be supplied when the event is admitted, or later through `log_annotation_added` with `annotation_of` pointing to that outcome/deviation entry. Reject invalid or oversized notes without silent truncation. Each note inherits the shared envelope's actor, Device, effective/recorded times and provenance. Model explanations remain labelled advisory candidates until accepted; acceptance retains their inferred/model provenance and establishes no proven cause. Omission means no explanation supplied, not friction-free execution.
+
+Replacing or withdrawing a note appends `log_correction_added`, with `correction_of` pointing to the entry containing the superseded note and the correction explicitly scoped to its friction assertion. Originals remain unchanged; correcting friction alone cannot change completion or duration claims. On a friction-only correction, `event_payload.friction` is the replacement object or `null` for withdrawal. Review and future learning follow admitted correction links, expose unresolved competing corrections, and retain distinct attributed notes rather than selecting by latest timestamp.
+
+**Overrun prompt.** Offer one non-blocking Add note / Skip prompt for a completion without a current friction note, at completion or during regular Log review if not already offered, when comparable durations satisfy `actual_seconds >= 1.5 * planned_seconds` and `actual_seconds - planned_seconds >= 300`. This is a UI heuristic, not an outlier or likelihood rule. `planned_seconds` is the positive planned execution duration from the Plan/version used at the start of that attempt, summed across pieces for a splittable Task; retain that baseline ref rather than comparing against a subsequently revised estimate. `actual_seconds` uses the corrected admitted execution intervals for the same attempt and duration basis. Exclude `waiting_for` and deferred time; missing or uncertain coverage or baseline suppresses the automatic prompt, while manual notes remain available.
+
+Deduplicate by the completion Log ref, persist offered/skipped state across review and restart, and coalesce it on sync; concurrent offline Devices may display before learning another Device's suppression. Skipping or disabling automatic friction prompts never delays completion or Plan repair. A skipped presented overrun alert uses §17.0's `decision_recorded` with `decision_kind: alert_dismissed_or_ignored`, optional reasons and `preference_inference_allowed: false`; it creates no friction note. Failure and deviation notes are available manually without an automatic overrun prompt.
+
+**Review and learning boundary.** The Log review report shows the Task/outcome ref, original planned baseline and actual duration with their evidence/coverage, absolute and relative difference when comparable, current attributed notes and correction status, and permitted linked decisions. Offer add/correct note, inspect evidence/decision, or propose a separate Task-estimate/model correction; skipping requires no explanation. Notes, refs, reports and derived model inputs obey current source/Compartment disclosure and retention policy; denied context is never copied into a note or summary.
+
+Phase 2 captures explanatory review evidence; Bayesian updating remains post-MVP under `UBU-Q0116`. A note is neither a measurement correction nor a duration override: never infer minutes to subtract from text, automatically discard/down-weight an observation, or change distribution parameters merely because friction is present. Numeric errors require separately admitted corrections to duration evidence. Future learning consumes the corrected outcome/duration evidence with its linked current notes and provenance, counting each completion once regardless of annotation count. Failed/partial attempts and deviations are not completed-duration draws; any censored-data, grouping, covariate or outlier policy remains for `UBU-Q0116`. Missing notes establish no cause or normality. Learned `(min_seconds, mode_seconds, p95_seconds)` suggestions require explicit user review and ordinary validated admission before affecting Plans; the kernel continues to receive only admitted duration models.
+
+**User choices.** When an override or rejected recommendation contributed to friction, link its existing `decision_recorded` entry through `decision_refs`. Record any qualifying unlogged choice under §17.0, preserving optional reasons and their source; a friction note cannot replace the counterfactual record or convert inferred reasons into stated ones or canonical Preferences. A user decision alone establishes neither blame nor estimation error.
+
+Before enabling this feature, require fixtures for optional/schema-bounded notes and supported targets; immutable additions/corrections and replay without duplicate duration observations; exact threshold boundaries, missing baselines/coverage, excluded waiting/deferred time and durable Skip suppression; failure/deviation handling, model-origin provenance, linked counterfactual reasons and denied context; and review-required estimate changes. These are acceptance requirements, not passing implementation evidence.
+
+### 17.9 Authority source metadata
+
+`authority_source` is a coarse closed enum recording only the authority path for an accepted object, projection state, or candidate mutation (`UBU-D0185` as amended by `UBU-D0226`). It does not replace actor Identity, capability grants, External References, expected-prior-version checks, review policy, or Log provenance.
+
+Carrier rule: every admitted canonical record carries `Provenance.authority_source`.
+
+Values:
+
+- `user`: ordinary direct user authority.
+- `user_override`: user-mode explicit override of a proposed, delegated, automated, policy, or system-derived action, including overrides of the current recommendation, Plan, Task choice, or modeled state.
+- `delegated`: action taken under a scoped delegation by an actor other than the sovereign user. Unrelated to the `delegated` moot reason code (§9.5), which is retained unchanged.
+- `automation_worker`: Automation Worker submission under a capability grant.
+- `policy`: accepted project or organization policy/directive.
+- `system`: system-originated action, including bootstrap, fixture, configured imports, and normalized external-event admission.
+
+Information-source distinctions formerly carried as enum members — GitHub events, bootstrap/fixture/configured imports, model-generated origins — are represented in `Provenance.source` / `source_refs`, which remain required wherever source-path visibility is required, including projection reconciliation. Model-generated content is never an authority path: advisory candidates acquire authority only at admission, from the admitting actor, with the model origin recorded in provenance.
+
+`authority_source` values are schema-controlled. Specific Identity, source object, and evidence path belong in surrounding fields such as `actor_identity_ref`, `created_by_identity_ref`, `capability_grant_ref`, `source_refs`, `external_reference_refs`, `provenance`, and the append-only Log entry. Automation, policy, and system authority sources are never unconstrained user-equivalent authority.
+
+### 17.10 Completion compatibility and evidence of effects
+
+**Phase 2 evidence contract (`UBU-D0329`).** Evidence is sufficient only for a specified claim, effective time and intended use under the applicable workflow's verification requirements. It is a reviewable, defeasible basis for an admitted claim, not a guarantee of reality. The Log establishes which attributed claims and changes were admitted; recording an inference does not prove its content. Apply this contract with §21.1.1's observation bindings, qualifiers and consequence-sensitive review.
+
+| Evidence or record | Permitted meaning |
+|---|---|
+| Observation compatible with completion | Activity, elapsed time, an apparent finished object, a receipt or a worker's delivery may fit successful execution while also fitting failure, partial work or a different outcome. Retain the exact observation and alternatives as evidence; it alone establishes neither successful Task completion nor any modeled effect. |
+| Native successful completion | An admitted `task_completed` has §10.2's success semantics and applies the whole modeled mutation list. This records the accepted success assertion and contractual state update. Neither that event nor the resulting UniverseState value independently verifies the real-world effect. |
+| Sufficient evidence for a scoped effect claim | Evidence establishes the exact outcome or transition claimed, meets the reviewed consequence/workflow requirements below, and passes ordinary admission. Report the actual source and scope: operator-asserted, measured or derived. Verification never promotes the original inference's source kind. |
+| Unresolved, contradicted or revoked assessment | Withhold the affected positive effect claim and evidence-dependent use pending clarification or correction. This classification does not itself prove failure, the opposite state, or that no action occurred. |
+
+**State, transition and attribution.** Distinguish a property observed at a time, a transition during an interval, and a transition caused by a particular Task attempt. An after-state alone cannot establish a change from the prior state or who caused it. An increment/decrement requires evidence for the claimed delta, not just a plausible final number; an absence claim requires a method with adequate authorized coverage, not an omitted field or object outside the camera view. Bind identity, target, quantities/units, effective interval and relevant before/after evidence. Task attribution additionally needs an attempt-linked execution record and a verification basis that addresses alternative causes. Narrow the claim when evidence supports only current state; do not award Task execution or effect attribution for an independently satisfied condition.
+
+**Sufficiency review.** Declare the exact postcondition/transition, verification method, required scope/coverage, relevant timing/freshness limits and consequence class before accepting evidence for that use. The operator reviews these requirements; a model cannot weaken them to make its own output pass. Unknown requirements or consequence take the unresolved/consequential path under `UBU-D0324`.
+
+- Check what the source can actually reveal: occlusion, sampling gaps, measurement range/accuracy, incomplete responses, ambiguous identity and partial Replica visibility. Missing or policy-withheld evidence remains unknown. A source reliable about appearance may be unable to establish function, persistence, delivery or another hidden property.
+- Assess source identity, acquisition/knowledge basis, method, relevant reliability qualifications, effective time and contradictory claims. Authentication establishes origin, not correctness. Tool dispatch, a successful call or an acknowledgment verifies only what its documented result contract actually establishes; receipt is insufficient for an effect requiring durable commit or recipient outcome. Missing required reliability or freshness information prevents sufficiency for that scope.
+- Apply `UBU-D0324`: a bounded reversible ordinary use may rely on one actual knowledgeable operator assertion; consequential use needs relevant corroboration independent of the original interpretation and explicit operator review of sufficiency. Record what the operator knows and how. A separately obtained inspection/reading may qualify; accepting prose, repeated frames without a distinct verification basis, copied reports, another model using the same input, vote counts and confidence supply no independent basis. Unknown independence is not corroboration. One independent source is necessary for consequential perceptual use, never automatically sufficient.
+- Resolve decision-relevant contradictions and alternatives with their time/scope and reasons visible; do not vote or average them away. An applicable qualified-review or operation-specific evidence requirement still governs. Explicit review binds the exact claim, sufficient evidence and intended use. Acceptance, silence, a completion checkbox or external-action approval alone is not an attestation of every effect.
+
+**Bound assessment payload.** Reuse existing Discovery/advisory payload/evidence slots and ordinary review/Log links with the companion profile `effect-evidence/1`; this selects no new first-class object, provenance kind, Log event or kernel field. Required content is:
+
+| Binding | Required content |
+|---|---|
+| Claim | Stable claim key; Task/attempt refs where attribution is claimed; for a modeled Task effect, its Task/effect revision and mutation index/target; exact predicate, outcome or delta; `state_at_time`, `transition` or `task_caused_transition` scope; effective instant/interval and unknown timing bounds. |
+| Requirements and evidence | Versioned verification requirements and intended use/consequence; supporting and conflicting evidence/claim refs with versions, source ancestry and independence basis; source capability/reliability, coverage/freshness limits, unavailable evidence and unresolved alternatives; observed target/context/policy versions or admitted-frontier bindings. |
+| Assessment and review | `compatible`, `sufficient_for_scope`, `unresolved`, `contradicted` or `revoked`; rationale for that result and scope; actual confirmation/verification statement and actor/Device/times when present; bound review decision, resulting native Log/Snapshot/mutation refs and idempotency outcome when admitted. |
+| Lifecycle and restrictions | Supersession/correction/revocation links and all source disclosure/routing/retention restrictions. Required links must resolve within the permitted retained evidence; summaries/hashes cannot replace missing semantics or grant visibility. |
+
+Keep `FactProvenance` as `{kind, recorded_at}` under `UBU-D0293`; preserve actual asserted/measured/derived bases and the original proposed inference through `UBU-D0321`. The revision-pinned adapter must demonstrate that the payload, review and host eligibility checks survive the `UBU-Q0166` paths. Unsupported operations or lossy/unresolvable bindings remain evidence-only.
+
+**Admission and downstream use.** For the Phase 2 perceptual completion path, check the lifecycle evidence and every modeled mutation's required outcome before submitting native successful completion: §10.2 applies all mutations unconditionally, so a partly verified effect list cannot become `task_completed`. Keep partial activity/outcome evidence for review; a separately reviewed supported Snapshot may assert only the observed fields without completing the Task. This adds a gate before native completion, not conditional mutation application. Bind prior Snapshot/mutation admissions representing the same outcome; completion and reconciliation must leave that transition counted once, with no Plan using intermediate incorrect state. If the native path cannot coherently reconcile an already observed non-idempotent effect, hold completion for a supported reviewed reconciliation rather than silently skipping/reapplying a mutation. Existing direct operator success admission retains its native semantics; when its effects have only contractual/assumed support, expose that basis rather than reporting independently verified effects.
+
+Apply the scoped evidence checks in host admission and Plan-input/execution preparation, including downstream uses of completion-derived values. For a use requiring verified effects, a simulated or contractually applied value cannot satisfy the evidence gate merely because its native predicate matches; preserve the dependency blocker. Authorized explicit assumptions retain their actual assertion provenance and cannot bypass consequential evidence requirements. A Plan, simulation, summary, Lore synthesis, projection, replay or derived computation preserves its source ancestry and cannot manufacture independent corroboration. Admission atomically binds the exact approved versions, native changes, assessment/review links and idempotency outcome under `UBU-D0320`; recheck current authority, policy and evidence before use. Evidence approval and external-action approval remain separately bound decisions.
+
+**Contradiction, correction and revocation.** Material conflicting evidence, corrected/revoked claims or changed use/versions invalidate the applicable assessment before affected Plan reuse, projection or execution. Append `log_correction_added` and separately admitted replacement Snapshot/mutations where supported, retaining the original claim and why its interpretation changed. Recalculate affected Plans from the corrected admitted view. A later legitimate state change need not negate a supported historical effect at an earlier time; reassess current-state freshness separately.
+
+Withdrawing support without replacement establishes unknown, not an inverse mutation: do not negate an increment, resurrect a deleted value, reopen a terminal Task or repeat an external action automatically. Reconstruct affected current state only through a supported, validated correction from admitted history/observations; if that cannot be established, block affected evidence-dependent use pending review. Source expiry/purge or a partial Replica marks permitted unavailability and prevents unsupported renewed sufficiency, while leaving admitted historical claims intact until an actual correction/revocation. Raw media need not outlive its policy when separately authorized retained evidence is sufficient. Current Device/actor revocation blocks unauthorized new admission/use but does not itself prove all past claims false. Restricted diagnostics disclose neither denied content nor denied existence.
+
+**Required behavioral gates.** Before enabling a producer or consequential example, pin the adapter, schemas, storage/review/admission and host Plan-input/execution revisions and policy profiles. Exercise these synthetic cases through the real paths, recording exact inputs, reviews, canonical diffs and corrected/replayed outcomes:
+
+- A high-confidence completion proxy and worker `delivered` record produce evidence only; one verified mutation in a multi-mutation effect list cannot complete the Task or apply the remainder.
+- An after-state already present before the attempt supports at most the scoped state claim; missing/occluded data and incomplete query results establish neither transition nor absence. A call acknowledgment lacking durable-outcome semantics leaves that effect unresolved.
+- A bounded knowledgeable assertion supports its reviewed ordinary scope; consequential reuse needs renewed independent evidence/review. Shared-source model agreement and a Plan/summary of an assumption never count as corroboration.
+- Adequate attempt/outcome evidence plus scoped review admits exactly the supported native outcome once; changed evidence/Task/policy bindings reject stale approval, and restart/exchange replay applies no duplicate increment or other mutation. A prior Snapshot already incorporating the same transition requires a coherent reviewed handoff, not a second count or silently omitted mutation.
+- A material contradiction or linked revocation invalidates affected uses, appends correction history and triggers recalculation without an invented inverse or repeat action. A later state change preserves a valid earlier historical claim.
+- Purged evidence and a restricted partial Replica preserve only permitted gaps/history, block unsupported renewed claims and leak no denied existence. Sufficient evidence without action authority/approval dispatches nothing.
+
+These are acceptance requirements, not passing results. `UBU-Q0172` is answered as an evidence-semantics contract; host mapping, implementation and release acceptance remain separate gates. Consequential examples remain withheld until this contract is implemented and its relevant gates pass.
+
+## 18. Identities
+
+An **Identity** is the external-facing communication and authorization surface.
+
+Humans may have multiple Identities.
+
+Organizations and workers are also represented through Identities externally.
+
+UbU interacts with outside agents through Identities, not directly through metaphysical assumptions about humans.
+
+Examples:
+
+- personal identity
+- family identity
+- GitHub identity
+- pseudonymous identity
+- worker identity
+- organization identity
+
+### 18.1 Social identity boundary
+
+Social identity theory affects UbU as a boundary discipline: an Identity may present externally, hold permissions, and own accountability, but it is not the same object as a social role, self-concept statement, group membership, Compartment, or temporary mode-switching context.
+
+A `Role` records situational expectations or authority for an Identity. A `GroupMembership` records a scoped relation between an Identity and a group. A `SelfConcept` records user-declared first-person meaning. A `ModeContext` records the currently salient planning lens for recommendations or coordination. A `Compartment` remains the privacy, routing, retention, and export boundary. These dimensions may reference each other, but none of them implies another by default.
+
+Group membership can affect Objectives, Preferences, disclosure, trust, and coordination only through explicit accepted records: user-declared statements, Relationship records, Compartment policy, capability grants, organizational rules, or review-accepted observations. Membership may raise the salience of an existing Objective, select an appropriate presentation, attach coordination obligations, or constrain sharing when tied to policy; it must not create inferred Preferences, loyalty judgments, trust scores, risks, capabilities, or stereotypes merely from category membership.
+
+In-group and out-group effects are represented as inspectable contextual hypotheses or user-declared concerns, not as hard-coded judgments about people or groups. Any planner use must expose the source, scope, affected behavior, and correction path, and choices that would restrict options, disclose data, classify another person, or change coordination authority require the ordinary review and approval gates.
+
+For Phase 3 multi-user coordination, UbU needs minimal `Group`, `GroupMembership`, `RoleAssignment`, and `ModeContext` records with provenance, confidence, scope, optional Compartment refs, and review/correction support. Learned salience, norm conflict modeling, collective identity dynamics, and social-psychology interpretation remain later research.
+
+---
+
+## 19. Associations
+
+An **Association** is an Identity-scoped, perspective-bound model of an emergent group-like coordination pattern.
+
+Associations may be formal or informal, temporary or durable, economic or non-economic, intimate or impersonal, public or pseudonymous. Examples include:
+
+- friend groups;
+- parties and event cohorts;
+- amateur sports leagues;
+- FOSS projects;
+- contributor crews;
+- skill networks;
+- private or public marketplaces;
+- nonprofits;
+- companies;
+- DAO-like projects;
+- conference outreach networks.
+
+An Association is not an objective interpersonal object by default. UbU should not assume that an Association has one globally authoritative membership list, role list, boundary, or decision authority. Instead, an Association is modeled from the perspective of a particular Identity and supported by evidence, attestations, Relationships, shared Objectives, commitments, norms, Logs, and External References.
+
+A legal entity filing, GitHub organization, website, governance document, Discord server, IRC log, board meeting note, contract, or payment address may be a strong External Reference. It is still not the whole Association. It proves or supports a limited claim about an external record, not every social fact about the group.
+
+### 19.1 Association object model
+
+An `Association` is a first-class, Identity-scoped record of perceived coordination among people, Identities, projects, or groups. It is perspective-bound: it records what a modeling Identity believes, has observed, or is allowed to rely on, not an objective global fact about membership, authority, or group boundaries. An Association may exist entirely inside one user's `user_mode` model.
+
+An Association is distinct from an Organization Identity, a Relationship, and an External Reference. An Organization Identity is an accountable actor with organization-mode authority or shared operational state; a Relationship is a scoped relation between particular Identities; and an External Reference points to outside artifacts such as registries, repositories, contracts, calendars, chats, or web pages. Legal entities, institutional records, rosters, and public project pages are evidence or references for an Association, not the Association itself.
+
+A minimal Association record contains `association_id`, `perspective_identity_id`, optional `display_name`, `association_kind`, perceived participant or member claim refs, role claim refs, shared Objective refs, commitment refs, norm or rule refs, lifecycle state, lifecycle event refs, evidence and External Reference refs, confidence, Compartment refs, disclosure policy, provenance, review status, and correction or revocation links.
+
+Membership, authority, roles, commitments, and boundaries are represented as scoped claims or linked attestations, not as absolute facts inferred from a roster or category label. Association records follow Snapshot-style partial assertion semantics: omitted participants, roles, commitments, or norms do not imply absence, and corrections or revocations are append-only.
+
+Informal groups such as friend groups, parties, amateur leagues, FOSS projects, conference cohorts, mutual-aid circles, and skill networks are ordinary Associations when UbU needs to reason about coordination beyond a single bilateral Relationship. They may carry norms, expected roles, shared Objectives, commitments, and privacy rules when those are explicitly declared, observed, reviewed, or imported as evidence.
+
+Lifecycle changes such as invitations, joins, exits, revocations, dormancy, reactivation, merges, splits, and dissolution are append-only lifecycle events or AssociationAttestation records. Disclosure and projection of Association state require Compartment and projection policy; a private perceived Association must not become visible to other participants merely because UbU models it.
+
+An Association becomes formal enough to justify `organization_mode` only when it has explicit durable authority, governance or decision procedures, shared operational state, accountability for external actions, capability grants or external mutation rights, and accepted disclosure/projection boundaries. Until then, UbU treats it as a user-mode perspective model and does not grant collective authority, synthesize collective Preferences, or treat disputed membership as settled.
+
+For Phase 3, UbU needs the minimal Association record, lifecycle state, links to GroupMembership and RoleAssignment claims, Objective and commitment references, Compartment/disclosure policy, confidence, provenance, and correction/revocation paths. Cross-user reconciliation, dispute semantics, public organizational introspection, pseudonymous reputation, norm conflict analysis, collective-identity dynamics, and Skill Barter governance remain later research or separately resolved questions.
+
+Full Association implementation is not required for Phase 1. Phase 1 may represent EthConf/outreach dogfooding through existing Objectives, Tasks, Logs, Relationships, External Events, and External References, plus manually structured or fixture-backed candidate AssociationAttestations.
+
+### 19.2 AssociationAttestations
+
+An **AssociationAttestation** is a claim by an Identity, human operator, Automation Worker, parser, or LLM-assisted workflow about an Association.
+
+Possible claim types include:
+
+- membership;
+- non-membership;
+- role;
+- authority;
+- commitment;
+- objective;
+- norm;
+- governance rule;
+- capability;
+- reputation;
+- relationship;
+- operational priority;
+- mission alignment;
+- dissolution or dormancy.
+
+LLM-generated AssociationAttestations are candidate claims. They require provenance, source references, confidence, review status, and disclosure policy. They must not be treated as authoritative social truth merely because they were generated from a large corpus.
+
+An `AssociationAttestation` is an immutable, scoped claim about an Association, an Identity's relation to it, or a coordination artifact linked to it. Required claim types include `membership`, `non_membership`, `role`, `authority`, `commitment`, `objective`, `norm`, `governance_rule`, `capability`, `reputation`, `relationship`, `priority`, `lifecycle`, and `dissolution`; each records its subject refs, asserted value or polarity, scope, effective interval, evidence refs, confidence, Compartment refs, disclosure policy, provenance, review status, and dispute, correction, revocation, or supersession links.
+
+Attestation source kind is explicit. `user_authored` attestations are first-person or operator-entered claims that may become accepted through ordinary review; `imported` attestations preserve outside-source provenance and authority scope; `worker_generated_candidate` and `llm_generated_candidate` records remain candidate claims until reviewed. Generated candidates must record source locator, excerpt or payload hash, observed timestamp or interval, capture/import time, tool/parser/schema version, model and prompt/template identifiers or digests, run id, source Compartment, redaction level, and evidence item refs sufficient to audit the extraction.
+
+Confidence and trust are separate from authority. Confidence estimates support from evidence; source class explains why a source may be relied on for a claim type. Public records and legal filings can be strong evidence for filed contents or legal status without settling informal social reality; signed descriptors depend on signer identity and authority; chat logs and meeting notes are contextual evidence; LLM interpretations begin as low-authority candidates even when drawn from large corpora. Confidence never overrides explicit user declarations, accepted correction records, Compartment policy, or capability boundaries.
+
+Review status distinguishes `candidate`, `accepted`, `rejected`, `disputed`, `annotated`, `superseded`, `revoked`, and `expired`. Affected Identities or Associations may add response attestations or dispute records that accept, reject, annotate, narrow, or supersede a claim, but they do not erase the original historical assertion. Corrected query views follow the latest accepted supersession or revocation path within scope while retaining disputes, annotations, minority reports, and counter-claims as queryable records.
+
+Disclosure policy is part of the attestation. Private or permissioned attestations must carry Compartment refs, projection policy, allowed audience, redaction behavior, and whether the claim's existence may be revealed. Exported or cross-user views must not leak membership, role, relationship, non-membership, reputation, or dispute facts through notifications, IDs, counts, search results, reconciliation hints, or provenance fields unless the disclosure policy and actor capability permit that exposure.
+
+### 19.3 SharedAssociationDescriptor
+
+A **SharedAssociationDescriptor** is a future coordination artifact that multiple Identities may sign, accept, or reference.
+
+It may describe a shared label, purpose, declared mission, governance rules, public references, contribution paths, membership or participation criteria, disclosure policy, and other declared facts. It is not a God's-eye Association. It is a shared artifact that different Identities may adopt, dispute, supersede, or interpret differently.
+
+### 19.4 Organizational introspection
+
+**Organizational introspection** is the process of reviewing an Association's evidence-bearing records and asking whether actual behavior matches declared goals.
+
+Possible inputs include:
+
+- README and governance documents;
+- issue trackers and pull requests;
+- release notes and roadmaps;
+- meeting notes and board minutes;
+- public or permissioned Discord, Matrix, Slack, IRC, or forum logs;
+- calendar events;
+- grant or milestone records;
+- outreach notes and follow-up records.
+
+Outputs should be reviewable artifacts:
+
+- evidence-backed AssociationAttestations;
+- mission-alignment questions;
+- priority-drift warnings;
+- undocumented-role observations;
+- commitment-mismatch reports;
+- follow-up Tasks;
+- public or redacted retrospective artifacts.
+
+The organizational-introspection hook for outreach is: `Can your project prove from its records that it is actually committed to achieving its stated goals?` In design terms, this means operational proof through auditable evidence trails and reviewed attestations, not mathematical certainty or an LLM truth oracle.
+
+---
+
+## 20. Contextual Messaging and Message Extraction
+
+A **Message Context Envelope** is a bounded metadata wrapper around a human-readable message or external message reference.
+
+It exists because ordinary legacy messages often under-specify the planning context needed by the receiver. A flat text request such as `can you grab milk?` may imply a household Objective, a grocery Task, a route constraint, a known Relationship, a typical milk type, a soft deadline, and a low-to-medium interrupt level. Legacy systems usually transmit only the text and a small amount of transport metadata.
+
+The accepted minimum envelope schema is defined in §20.1.
+
+A **Message Extraction Result** is a candidate interpretation produced by an Automation Worker, parser, or LLM-assisted extractor from raw or semi-structured communication. It should distinguish:
+
+- facts explicit in the message;
+- facts explicit in channel or transport metadata;
+- facts inferred from thread context;
+- facts inferred from Relationship history;
+- facts inferred from Association context;
+- model guesses;
+- user-confirmed corrections.
+
+Message extraction is advisory until accepted into canonical state. The extractor may propose Tasks, Events, Objective updates, Relationship observations, AssociationAttestations, or communication-review items, but it should not silently mutate canonical state.
+
+### 20.1 Message Context Envelope
+
+A `MessageContextEnvelope` is a Phase 3 cross-user communication projection that carries enough context for triage without reconstructing the sender's private state. It is not a SyncStatement, Relationship record, Association record, Objective disclosure, or proof of authority; it is a message plus bounded metadata that the receiver may inspect and map into local suggestions.
+
+The minimum envelope record contains `envelope_id`, `schema_version`, `sent_at` or observed timestamp, `sender_identity_ref`, `receiver_identity_ref`, `source_system`, optional `source_message_ref`, `body` or `body_ref`, `message_kind`, `topic`, `priority`, `interrupt_recommendation`, `response_expectation`, optional `deadline`, `receiver_treatment_hint`, `assumptions`, `ambiguities`, `provenance`, `confidence`, `compartment_ids`, and `disclosure_policy`. `message_kind` distinguishes at least `request`, `question`, `status_update`, `blocker`, `commitment`, `decision`, and `fyi`. `receiver_treatment_hint` states whether the receiver may consider the message as a Task candidate, status update, blocker notice, commitment notice, or FYI.
+
+The envelope may reference local-only objects only through envelope-scoped opaque handles, redacted labels, or user-approved summaries. Sender-local Objective, Task, Relationship, Association, Compartment, or attestation ids are not exported as stable identifiers unless the disclosure policy explicitly permits that projection to the receiver. Hidden context must not leak through ids, counts, provenance paths, topic labels, search hints, notification text, or reconciliation metadata.
+
+Sender intent is advisory unless backed by separate authority. A sender may ask the receiver to treat a message as a Task, blocker, commitment, status update, or FYI, but the receiver's UbU records only a candidate review item until the receiver accepts it or a receiver-side policy grants authority. The envelope must not create accepted Tasks, Calendar changes, commitments, Relationship facts, AssociationAttestations, or Objective state by itself.
+
+A receiver's UbU may translate envelope metadata into local suggestions: high interrupt recommendations can create Calendar interruption or focus-review suggestions; response expectations and deadlines can create communication-review reminders; Task, blocker, or commitment hints can create Task-creation or dependency-review candidates. These mappings preserve envelope provenance and confidence and remain correctable, rejectable, and revocable according to local policy.
+
+Provenance is per-field when metadata is inferred. Inferred priority, topic, interrupt recommendation, response expectation, deadline, assumptions, ambiguities, or treatment hints must record source evidence, inference mechanism or model/template identifier, timestamp, confidence, redaction level, and review status. Confidence is advisory and never overrides explicit user declarations, accepted corrections, Compartment policy, or receiver-side authority checks.
+
+Minimum controls are export preview, per-field redaction, Compartment and disclosure-policy validation, reveal-existence control, local-only reference stripping, provenance inspection, correction/revocation after send where transport permits, and receiver-side review before local mutation. Defaults minimize disclosure: raw private context, Relationship state, Association state, Objective details, Task details, and Compartment names stay local unless the sender explicitly approves their projection.
+
+### 20.2 Native UbU-to-UbU contextual messaging
+
+Native UbU-to-UbU communication should allow a sender to disclose selected context intentionally. The receiving instance can then use that context to triage the message against the current Plan.
+
+A minimal Phase 3 implementation should support enough metadata for priority and interrupt decisions. Richer subjective Relationship context, detailed Association reconciliation, and multi-party trust semantics may remain post-MVP.
+
+The future inter-instance protocol should be a generic envelope family, not a separate protocol for every feature. Message delivery, worker assignment, status reporting, mutation-request submission, capability-grant exchange, External Event submission, and recalculation requests should share Identity, capability, Compartment, provenance, idempotency, and review semantics.
+
+Phase 1 worker communication is a narrow worker API profile of that direction, not the full Phase 3 protocol. It may use simpler local or parent-specific endpoints, but its request, status, mutation, projection, and Log-submission shapes should intentionally avoid contradicting the future protocol.
+
+Phase 3 multi-user coordination can then extend the same envelope family with Message Context Envelopes and user-to-user Identity commitments while preserving bounded disclosure. Native user messages are one protocol payload type; they do not get permission to bypass worker-style authority, validation, or admission rules.
+
+### 20.3 Legacy communication adapters
+
+Legacy adapters may ingest or emit messages through systems such as WhatsApp, SMS, email, Discord, IRC, Slack, Matrix, or similar systems when permitted by the user and the service boundary.
+
+If only one party has UbU, the message remains a flat legacy input and UbU may locally extract candidate structure. If both parties have UbU, the instances may upgrade the exchange by attaching, linking, side-channeling, or otherwise associating a Message Context Envelope with the legacy message.
+
+This is an interoperability bridge, not a reason to leak hidden local state. Each field must be filtered through Identity, Compartment, disclosure, and recipient policy.
+
+### 20.4 Message Context Extractor
+
+A `MessageContextExtractor` is the local or policy-approved model pipeline that turns unstructured direct-message or group-chat text into strict candidate UbU JSON. It is an extraction and triage layer, not an authority layer: its outputs are reviewable candidates until accepted by user action or by an explicit local policy grant.
+
+The extractor input is a `MessageExtractionBundle` containing raw body or `body_ref`, source system, channel type, channel purpose, source message and thread refs, observed timestamp, sender and receiver refs or mapping candidates, available Identity mapping evidence, Association mapping candidates, channel participant metadata, allowed thread context, allowed Relationship or history summaries, relevant Compartment and disclosure policy, locale or timezone, schema version, prompt or template version, and extraction run metadata. Raw message bodies, Relationship state, Association state, and private Objective or Task context are included only when the relevant Compartment policy permits that use.
+
+The extractor output is a `MessageExtractionResult` containing schema version, run id, candidate `MessageContextEnvelope`, message classification, topic, candidate Task suggestions, candidate Objective-link suggestions, candidate AssociationAttestation suggestions where allowed, priority, interrupt recommendation, actionability, response expectation, optional deadline, assumptions, ambiguities, per-field confidence, per-field provenance, and review status or auto-accept eligibility. Suggested structures remain candidate records and do not mutate Tasks, Objectives, Relationships, Associations, Calendar entries, commitments, or admitted state by themselves.
+
+Extractor schemas are strict JSON schemas with closed enums, required fields, explicit nullable or unknown values, and no unvalidated extra fields. A deterministic validator runs before any downstream use. A bounded repair loop may fix malformed JSON, normalize invalid enum values, or replace missing required inferences with unknown and low confidence, but it must not invent evidence, raise confidence without new support, or route around Compartment policy. Overconfident or unsupported inferences are downgraded and marked for review.
+
+Per-field provenance distinguishes `explicit_message_fact`, `source_metadata`, `channel_policy_metadata`, `thread_context_inference`, `relationship_context_inference`, `association_context_inference`, `model_inference`, and `user_confirmed_correction`. Each inferred field records evidence refs or excerpt hashes, source Compartment, redaction level, model or template identifier, parser or schema version, timestamp, confidence, and review status. User-confirmed corrections supersede extractor claims through append-only correction paths rather than editing the original extraction result.
+
+Automatic acceptance is limited to low-risk, directly evidenced, non-mutating parse facts such as source refs, timestamps, source message ids, and explicit sender-provided metadata that passes policy validation. Candidate Tasks, Objective links, AssociationAttestations, Relationship updates, commitments, priority escalation, high interrupt recommendations, deadlines, and cross-Compartment or cross-user projection require user review or a specific local policy grant.
+
+UbU should start with schema-constrained general LLMs or local models plus validation, repair, confidence calibration, and provenance inspection. Fine-tuned, distilled, or adapter-trained extractor models become appropriate only after schemas stabilize and correction logs show enough repeated examples to justify the privacy, latency, cost, or reliability tradeoff. Custom models must preserve the same schemas, validators, provenance, review gates, and authority limits as general models.
+
+Custom extractor training requires retained-with-consent training bundles, gold `MessageExtractionResult` labels, user corrections, rejected candidates, field-level provenance labels, ambiguity examples, no-action examples, hard negatives, redaction and Compartment labels, and evaluation sets split by source system, channel type, relationship context, and privacy class.
+
+The initial extractor strategy should use general LLMs or local models constrained by schemas, validation, and repair loops. A specialized fine-tuned or distilled extractor model may become valuable later after UbU has stable schemas and corrected training examples.
+
+The system should not require a new foundation model. The likely requirement is reliable structured extraction, not open-ended conversation.
+
+### 20.5 Personalized TTS and voice descriptors
+
+A **Voice Profile Descriptor** is a future optional communication metadata object that may describe pronunciation, cadence, voice style, or a reference to an approved local voice profile.
+
+The intended use is expressive and accessibility-oriented rendering: a receiver may convert text into spoken audio approximating the sender's usual style without receiving a noisy full audio recording. This can compress communication from audio to text plus metadata.
+
+Voice descriptors are sensitive. They must be opt-in, policy-governed, clearly separated from authentication, and protected against deceptive impersonation.
+
+---
+
+## 21. Agentic Interaction, MCP, and Delegation Substrate
+
+This section records the post-realtime LLM and agentic-platform design direction. The core rule is that unstructured AI can observe, converse, propose, and act under authority, but UbU remains the canonical state-transition, review, privacy, and planning layer.
+
+### 21.1 Realtime interaction sessions and candidate updates
+
+A realtime interaction session is a bounded period in which UbU receives a continuous or semi-continuous stream from text, voice, video, sensors, tools, or a model provider.
+
+Possible session modes include:
+
+- `off`;
+- `text_only`;
+- `voice_session`;
+- `meeting_logging`;
+- `discovery_mode`;
+- `local_only_realtime`;
+- `cloud_assisted_realtime`.
+
+Realtime sessions may produce candidate updates, but they do not directly mutate canonical state. Candidate update types include observed events, interruption signals, Task progress deltas, affect signals, Plan deviations, external condition changes, clarification questions, WorkItem candidates, LogEntry candidates, and AssociationAttestation candidates.
+
+A realtime model's sense of elapsed time is evidence. Planner-time semantics are determined by UbU's explicit Task, Plan, Calendar, Log, Snapshot, and recalculation rules.
+
+Realtime models are replaceable interaction backends for the primary MVP camera-and-voice surface (`UBU-D0292`), including conversation, capture, triage and short-horizon repair. UbU represents a realtime run as a lightweight `RealtimeInteractionSession`, not as a Task, Calendar event, canonical Log entry, or raw sensor stream. A session records the consented interaction context and source boundary; the model's outputs are `RealtimeCandidateUpdate` records until admitted through the ordinary planner, Log, Snapshot, Compartment, and review rules.
+
+The minimum `RealtimeInteractionSession` record contains `interaction_session_id`, `schema_version`, `instance_id`, `actor_identity_ref`, `device_ref`, `started_at`, optional `ended_at`, `session_state`, `source_modes`, `backend_ref`, `model_or_tool_ref`, prompt or template version, enabled input sources, `compartment_ids`, `disclosure_policy`, retention or redaction policy, routing mode, evidence item refs, candidate update refs, provenance, review status, and correction or revocation links. Session states align with discovery mode where applicable: `inactive`, `active`, `paused`, `ended`, and `pending_review`.
+
+The minimum `RealtimeCandidateUpdate` record contains `candidate_update_id`, `schema_version`, optional `interaction_session_id`, `emitted_at`, effective instant or interval, `candidate_type`, optional `target_ref`, payload, source evidence refs or excerpt hashes, per-field provenance, confidence, `compartment_ids`, redaction level, routing mode, review status, admission hint, idempotency key, and correction, rejection, revocation, or supersession links. The Phase 1b candidate types required for Quick UbU are `tag`, `dependency`, `preference`, `decomposition`, and `clarification_question`. Additional allowed candidate types are `interruption`, `task_progress`, `affect_signal`, `external_condition_change`, `plan_deviation`, `log_candidate`, `task_candidate`, and `association_attestation_candidate`, but each remains subject to its existing schema, authority, review, and Compartment gates.
+
+A realtime candidate never mutates admitted state by itself. A tag, dependency, decomposition, preference, Task, Log, Snapshot, Calendar, Plan-deviation, or AssociationAttestation effect becomes canonical only after user acceptance, validated admission, or a specific local policy grant for that exact mutation class. Rejected, corrected, superseded, or revoked candidates remain auditable according to the candidate lifecycle rules.
+
+Model-noticed elapsed time is represented as evidence or a candidate interval, not as planner-valid Task execution, Calendar occupancy, or Log truth. Planned time is reconciled only through accepted `plan_realized`, Task lifecycle, Calendar, Snapshot, or Log records. Unknown, private, rest, interruption, different-Task, and quick-note intervals preserve uncertainty and must not create Preference changes, Objective failures, habit claims, or moral meaning by inference.
+
+Mandatory provenance for realtime observations includes source kind, capture or observation interval, device and backend refs, model or tool identifier, prompt or template digest where applicable, parser or schema version, evidence refs or payload hashes, source Compartment, redaction level, processing route, confidence, and review status. Audio, video, screen, keystroke, raw message, raw file, raw GPS, and similarly sensitive sources also require explicit source enablement and policy-visible capture state before they can produce candidates.
+
+Routing defaults are conservative. Local-only processing is required for raw sensitive capture, `no_cloud_llm` Compartments, and sources whose policy denies external processing. Cloud processing is optional only for policy-approved, user-visible, redacted or intentionally provided inputs. Cross-user projection, external export, covert capture, broad background capture, hidden persuasion timing, and automatic external mutation are prohibited unless a later explicit mode, Compartment policy, capability grant, and user approval allow that exact behavior.
+
+#### 21.1.1 Observation, context and closed-loop execution
+
+The architecture is observation → candidate objects/facts → Identity and object resolution against permitted persistent context → candidate UniverseState/Resource implications → proposed preconditions or constraints → CPU semantic/policy/conflict validation and operator admission → planning or recalculation over admitted state. Ambiguous identity matches remain alternatives, not merged objects. The camera can suggest the relevance of an observed object to the user's life; it cannot infer intent, affect, Preference changes or ownership as self-certifying truth.
+
+Confidence helps choose high-information clarification, not bypass admission. Corroboration is consequence-sensitive: escalate evidence and human review when an interpretation could change a consequential action; unknown or incompatible evidence stays unresolved. An observation consistent with completion is not proof that the modeled effect occurred. `UBU-D0293` defines source-kind mapping; `UBU-D0320` specifies observation bindings/admission; `UBU-D0321` specifies qualifier preservation; `UBU-D0324` specifies corroboration and review below. `UBU-Q0166` retains host-mapping evidence; `UBU-D0329` specifies completion/effect evidence in §17.10. Existing candidate/Discovery records are the reuse point, not newly implemented perception schemas.
+
+The execution loop is **See → understand → plan → direct → observe → verify → learn → update**. Understanding proposes interpretations; planning remains the kernel's; direction presents an inspectable next action; new observations prompt reconciliation; verification uses the required evidence and operator review; learning proposes model corrections; only admitted updates close the loop. Inference never certifies itself by being repeated downstream. Technique guidance, observed Skill development and procedure-to-Technique capture depend on the later-phase objects and unresolved evidence/safety questions, not merely access to a camera. See [the interaction document](MULTIMODAL_INTERACTION.md) and [the security boundary](MULTIMODAL_SECURITY.md).
+
+**Observation binding profile (`UBU-D0320`).** Reuse `DiscoveryEvidenceItem` (§12.2) for captured evidence and unresolved interpretations, and per-object `AdvisoryCandidate` records (§21.2.1) for supported proposals. One evidence item may support several candidates; accepting one interpretation never accepts the others. Store the following `observation-admission/1` bindings in their existing payload/evidence slots alongside the native normalized proposal. This is a payload contract, not a new first-class perception object, candidate-kind enum or `FactProvenance` extension. A producer's version-pinned adapter must validate its mapping to the host schemas; an unsupported or lossy mapping stays unresolved and needs separate versioned review under `UBU-Q0166`.
+
+| Binding | Required content and interpretation |
+|---|---|
+| `profile` | Exactly `observation-admission/1`; retain the host record's own schema version separately. Unknown profiles cannot be admitted. |
+| `sources` | Nonempty list of `{evidence_ref, evidence_version, source_ref, session_ref, session_version, selector, effective_start, effective_end}`. The controller supplies/resolves these refs; selectors locate a retained frame, span, reading or policy-permitted summary within that source, not model-invented evidence. Endpoints are timezone-bearing timestamps with start <= end; equal endpoints denote an instant. One-shot capture also has a session ref. The captured session revision establishes source enablement at acquisition time; it is not a live grant for later processing or execution. Evidence provenance retains origin Device, source/signal kind, capture enablement and route/policy refs, backend/model/tool, parser/schema version, template digest where applicable, confidence and permitted hashes. |
+| `context` | `{context_bundle_ref, digest}` binding the exact permitted context used, or `null` only if no persistent context was consulted. Every context-based match must resolve to this bundle's supplied refs. A model cannot search denied context, mint a canonical ref, or substitute a fresh context for the one used. |
+| `subjects` | List of `{observation_key, alternatives, selection}`; observation keys are unique within the capture and are not canonical entity ids. Each alternative is either `{object_ref, object_version}` or `{candidate_ref, candidate_version, proposed_object_key}`. An empty alternatives list means unknown; `selection: null` means unresolved. Selection is either null or `{alternative_index, review_event_ref}`; only explicit operator resolution selects an alternative. Confidence, coincident labels or repeated sightings cannot merge Identities/objects or establish ownership. |
+| `proposal` and `claim_evidence` | The native normalized proposal (null for evidence without a supported proposal), plus `claim_evidence: [{field_path, evidence_refs}]` covering every proposed field change. Paths are nonempty arrays of native field names or zero-based array indices; evidence refs are nonempty lists drawn from `sources`. With no proposal, claim_evidence is empty. UniverseState implications use §11.3's `operation`/`target`/`payload` rules; proposed preconditions use §10.1. Unknown/omitted fields propose no write or deletion; a literal JSON null value must be an explicit claim. Source kinds follow `UBU-D0293`; confidence and corroboration stay in evidence, while `FactProvenance` remains `{kind, recorded_at}`. |
+| `dependencies` | List of `{candidate_ref, candidate_version, proposal_path}` for proposed-object/value links used by the proposal; paths use the same field-path syntax. Object creations also name `proposed_object_key`. Such links are candidate-local, never canonical ids. Admission must resolve them to already-admitted records/values or changes in the same validated atomic batch; otherwise defer. Native schemas that cannot express these links retain the interpretation as Discovery evidence. |
+| `observed_versions` | Ref-to-version map covering every evidence item, resolved target and context input relied on, plus referenced candidate dependencies. Where a current-state container has no internal version, bind its admitted envelope/frontier digest; do not invent UniverseState history. Creates bind a stable proposed-object key and an explicit create-only/expected-absence condition. Review also binds the candidate's own current version. |
+| `observed_policy_versions` | Ref-to-version map of all relied-on capture, routing, Compartment, retention and admission policies. Current policy, not capture-time permission alone, governs review and admission. |
+| `predecessors` | `{evidence: [{evidence_ref, evidence_version}], candidates: [{candidate_ref, candidate_version}], logs: [log_entry_id]}` using the host's correction/supersession links. Admitted-history corrections cite original Log ids under §17.3. Empty lists mean an original interpretation, not absence of earlier world events. |
+
+**Perceptual qualifier preservation (`UBU-D0321`).** Use a companion `perceptual-qualifiers/1` payload in the existing evidence payload/ref and candidate evidence/per-field slots. Keep the host schema version and `observation-admission/1` bindings separate and unchanged. These are payload requirements, not new first-class objects, candidate kinds or `FactProvenance` fields. Reuse is conditional on a validated host mapping; an opaque payload slot described in prose is not proof that its schema, serializer and store preserve the content.
+
+| Payload content | Required preservation and links |
+|---|---|
+| `profile` | Exactly `perceptual-qualifiers/1`. Unknown versions remain unresolved; adapters cannot silently discard or reinterpret them. |
+| Evidence `claims` | List of `{claim_key, content, qualifications}`. Keys are stable and unique within an evidence revision, not canonical object ids. Content retains the exact permitted source statement or structured interpretation, including target/identity alternatives, attribution, negation, conditions, quantities, units and uncertainty. A summary alone is insufficient when it drops these distinctions. Evidence without a supported native proposal still retains its claims. |
+| Claim `qualifications` | Separate entries for `observed`, `inferred`, `operator_confirmed` and `externally_verified`; several may concern the same claim. Each entry retains `{term, attribution, effective_start, effective_end, recorded_at, confidence, basis, related_claims}` and resolves to its enclosing evidence revision and the binding profile's source/session/selector. Attribution identifies the actual person, external source or model/tool and its applicable revision, using controller-resolved refs or explicit unknown metadata. Observation and recording times remain distinct. Additional relied-on sources join `sources` and `observed_versions`. These terms are evidence labels, never additions to `ProvenanceKind` or an ordered confidence rank. |
+| Qualification `confidence` | Original score, scale, meaning/method and producing source/model revision, or explicit null when unreported. Preserve differing per-claim/per-source estimates; a candidate aggregate cannot replace them. Unreported is neither zero nor certainty, and confirmation/verification cannot synthesize a confidence score. |
+| Qualification `basis` | Retain how the claim was established and the underlying kind under `UBU-D0293`. Observation cites the permitted frame/span/reading; inference retains model/tool revision, input refs, assumptions and unresolved alternatives. A personal confirmation retains the actual statement and speaker; an instrument reading retains instrument ref, reading, units, method and supplied accuracy/calibration qualifications. An actual derivation retains version-bound input facts/evidence, admitted envelope/frontier bindings for canonical inputs, rule/tool revision, parameters and result. Unreported optional details stay explicitly unknown; missing evidence of an actual instrument/reading or computation cannot justify `measured` or `derived`. |
+| External-verification basis | Additionally retain verifier/source ref, exact claim and scope checked, verification time, method, result including inconclusive/disputed outcomes, and supporting evidence refs/versions. The verifier's attestation provenance is distinct from the checked claim's underlying kind. Verification of an interpretation neither changes its original kind nor supplies an admission event. |
+| Qualification `related_claims` | List of `{evidence_ref, evidence_version, claim_key, relation}` locating claims supported, contradicted, confirmed, verified, computed from or sharing a source. Preserve source ancestry and dependency links so a repeated interpretation, copied report or reused frame cannot appear as independent corroboration. Unknown independence remains unknown; sufficiency follows `UBU-D0324` below. |
+| Candidate `field_qualifiers` | List of `{field_path, claim_refs: [{evidence_ref, evidence_version, claim_key}]}` covering every path in `claim_evidence`. Use that binding's native field-path syntax; refs resolve to claims in its version-bound `sources`. Each mapped path has nonempty claim refs. One field may have conflicting or differently qualified evidence. Evidence-only records have no candidate field mapping. A partial acceptance binds only the reviewed subset and its supporting claims; other claims remain unaccepted. |
+
+**Confirmation, review and retention.** A later confirmation, reading, derivation or verification creates separately attributed evidence and a linked candidate revision where needed; it never edits an earlier inference into a different source. Acceptance is an ordinary review event, distinct from a source confirmation. Bind the exact candidate revision, field mapping and evidence revisions to that event and its resulting mutation/Log/Snapshot refs through `UBU-D0320`'s atomic admission links. The companion payload is part of bound operation content; changing it follows the same revision, idempotency and fresh-review rules. Admitted kind follows the actual accepted assertion, reading or computation under `UBU-D0293`; `FactProvenance` remains `{kind, recorded_at}`. Review presents qualifiers, contradictions and attribution rather than only a confidence badge. `UniverseTarget` stays name-only, and unsupported value/computation paths stay evidence-only.
+
+Losslessness means preservation of the permitted retained claims, qualifications and links through normalization, storage, review and authorized exchange; it does not require retaining raw media beyond policy. Redaction, purge or an incomplete Replica must indicate only permitted unavailability/incompleteness, never imply an absent qualifier was false or reconstruct disallowed content from retained derivatives. Inherit all source restrictions. Missing required bindings block admission under `UBU-D0320`; loss of evidence neither automatically retracts nor reaffirms admitted history.
+
+**Host-mapping gate (`UBU-Q0166`).** Before enabling an adapter, pin the producer/adapter, host schemas, Rust/JSON serializers, store/review API and exchange revisions and policy configuration. Publish the exact host field paths or payload-ref mapping for every row above, with serialized fixture inputs and retrieved outputs. Compare structured values and all ids, versions, field paths, attributions, times, qualifiers and links after validation, serialization, persistence/reload, review and authorized exchange. Structural round-trip fidelity establishes preservation, not perceptual truth or evidence sufficiency. Exercise:
+
+- a visual hypothesis with both observation and inference, differing field confidences and incompatible alternatives, with no canonical write;
+- a later personal assertion, actual instrument reading and actual computation from versioned admitted facts, preserving each original interpretation and selecting only the source-appropriate admitted kind through supported paths;
+- scoped external verification, inconclusive/disputed verification and two reports sharing one original source, retaining lineage without automatic admission or independent-corroboration claims;
+- correction, partial acceptance, restart/replay, unavailable/purged evidence and policy-restricted partial exchange, retaining exact permitted links and exposing no denied content;
+- unknown profile, unsupported host fields, serializer field dropping/defaulting and dangling claim/version refs, preventing admission rather than silently flattening qualifiers.
+
+No passing host mapping or schema gap is asserted here. A mapping that cannot preserve this content stays unresolved with a policy-permitted diagnostic. A demonstrated gap needs a separately reviewed versioned schema/type/store chain change and any required pins/migration; this payload contract makes none.
+
+**Bounded host evidence (`UBU-D0323`; 2026-10-12).** These inspected Phase 2 checkout revisions identify evaluated code, not dependency-pin changes. Tracked files were clean. Offline locked builds used rustc `1.99.0 (b940084d7 2026-09-28)`; the core lockfile supplies serde `1.0.229` and serde_json `1.0.152`, and the schema validator uses jsonschema `0.46.5`.
+
+| Host path | Revision and observed carrier or limitation | Evidence scope |
+|---|---|---|
+| Candidate schema | `ubu-schemas@070d0a6f9a6ad7833dd523042925008316ce923b`, `schemas/core/advisory-candidate.schema.json`: `#/$defs/payload/oneOf/0/properties/value` accepts JSON; `#/properties/field_provenance/additionalProperties` requires strings. | Actual `tools/validate-fixtures` execution on the probes below. |
+| Candidate Rust/JSON | `ubu-core@fa26bf678977f5e077229eb97a39cc1b8b960c9b`, `src/advisory_candidate.rs`: `CandidatePayload::Inline(serde_json::Value)` and `AdvisoryCandidate.field_provenance: BTreeMap<String, String>`. Its `schemas-ref` is the schema revision above. | Actual `AdvisoryCandidate` deserialization, `validate`, serialization, deserialization and reserialization; structured output comparison. |
+| Candidate store/reload | `ubu-store@83a099f55220b1286ffb2dee3c9d19006e2090b5`, `src/candidates.rs::store_advisory_candidate` stores the serialized candidate in `advisory_candidates.payload_json`; `src/models/candidate_record.rs::CandidateRecord::candidate` deserializes it. | Source inspection only; no persistence/restart/replay fixture. |
+| Normalization/review API | `ubu-orchestrator@9fddef16990ac89d07a168c75bf04b77c35b9bc3`, `src/api/advisory.rs::candidate_response` wraps stored JSON; `src/services/precondition_review.rs::vet_result` rebuilds accepted candidates' inline payload from `normalized_proposal`. | Source inspection only; added payload content cannot be assumed to survive that normalization path. |
+| Review presentation | `ubu-ui@dda2312fd17a5dc330fef102f9def30ab88ac5bf`, `src/routes/Review.tsx`: the generic card presents confidence, evidence refs and normalized proposal without rendering `candidate.payload` qualifiers. | Source inspection only; API retention does not establish review fidelity. |
+
+**Reproducible carrier specimen.** Start from `fixtures/valid/core/advisory-candidate/proposed-precondition.json` at the schema revision above, with its `schema_version: "1.0"` and native proposal unchanged. Let `P` be:
+
+```json
+{"profile":"perceptual-qualifiers/1","field_qualifiers":[{"field_path":["preconditions"],"claim_refs":[{"evidence_ref":"synthetic:description","evidence_version":"v1","claim_key":"charge"}]}]}
+```
+
+| Probe input relative to that fixture | Canonical schema validator | Actual core validation/JSON outcome |
+|---|---|---|
+| Unchanged baseline | Accepted. | Whole structured candidate unchanged after round trip. |
+| Add `payload.value.perceptual_qualifiers = P` | Accepted. | Whole structured candidate and `P` unchanged after round trip. |
+| Replace `field_provenance.preconditions` with the object `P` | Rejected. | Rejected: `invalid type: map, expected a string`. |
+| Inline case with only `P.profile` changed to `perceptual-qualifiers/unknown` | Accepted by the generic carrier schema. | Accepted and preserved by the generic type layer; required adapter rejection remains untested. |
+
+These are candidate link-carrier probes with unresolved synthetic refs, not the full qualifier/admission fixtures above. No producer/adapter, Discovery claim/evidence resolution, normalization, store/review, admission or authorized-exchange fixture was run; no policy-authorized exchange revision/configuration or complete host mapping is established. Unknown profiles still must remain unresolved before admission. The rejected direct field choice does not establish a schema gap when an inline representation remains available for testing. Report any failure at its pinned host stage with exact expected/retrieved content; distinguish mapping/implementation defects from a minimally reproduced host-contract restriction that a compliant existing payload/ref mapping cannot satisfy. `UBU-Q0166` stays Open for the remaining evidence, with no adapter enabled by these results.
+
+**Normalization and persistence follow-up (`UBU-D0334`; 2026-10-13).** Reused the schema, core, store and orchestrator checkout revisions pinned in `UBU-D0323`; tracked files remained clean. A temporary synthetic harness called the actual public functions, linked to orchestrator libraries verified by `cargo build --locked --offline --lib`. The canonical validator was verified by `cargo build --locked --offline -p validate-fixtures`. Both builds used the rustc version above; this harness uses the orchestrator lockfile's serde `1.0.228`, serde_json `1.0.150`, sqlx `0.8.6` and tokio `1.52.3`, rather than the earlier standalone core probe's dependency versions. The schema tool still uses jsonschema `0.46.5`. No dependency pins changed.
+
+**Minimal failing specimen.** Start from the same pinned `proposed-precondition.json` fixture used above. Remove its candidate-level `confidence`, retain all other host fields, and set both `normalized_proposal` and `payload.value` to `N`:
+
+```json
+{"operation":"clear_precondition","verdict":"remove","reason":"Synthetic carrier probe.","existing_precondition":{"target":"numeric_values.synthetic.orbital_teapot_charge","predicate":"at_least","expected":25},"blocked_now":false}
+```
+
+The baseline has no companion payload. The inline case adds the exact `P` above at `payload.value.perceptual_qualifiers`; the unknown-profile case changes only `P.profile` to `perceptual-qualifiers/unknown`. A fourth case copies `P` into `normalized_proposal.perceptual_qualifiers` as well. These remain synthetic candidate link specimens, without resolved evidence or complete claim qualifications.
+
+For normalization, initialize an in-memory `AppState` with a fixed clock at `2026-09-19T09:00:00Z`, and admit only the fixture's target Task at version 1: title and description `Synthetic carrier probe.`, status `active`, preconditions `N.existing_precondition`, and ordinary user provenance. Author no UniverseState; the host supplies its default current view. Supply `precondition_review::Context` with `force: false`, one matching `ReviewTask` (the same description/tree, `existing_words` from `words`, null prior rejection reason), and empty `targets`. Obtain `submission(state, context, "synthetic-carrier-probe")`; construct an `ok` `LocalAdvisoryResult` carrying one specimen and the submission's authority/provider/policy/digest fields, with empty artifacts/diagnostics/telemetry and no deletion confirmation. Call the actual `precondition_review::vet_result` directly, without a producer/model call or enqueue/admission.
+
+| Probe/path | Actual outcome and exact comparison |
+|---|---|
+| Canonical schema validation | Baseline, inline and unknown-profile cases accepted; the fourth case rejected by the closed native `normalized_proposal`. A structured `field_provenance.preconditions = P` control also rejected. `tools/validate-fixtures` reported three valid and two invalid fixtures with their expected outcomes. |
+| Core Rust/JSON | All four cases deserialized, validated and retained the whole structured candidate through serialize/deserialize/reserialize. The fourth case's core acceptance does not override its schema rejection. |
+| Baseline through `precondition_review::vet_result` | Status `ok`, one candidate, empty diagnostics. The host recomputed `blocked_now` to `true`, set `payload.value = normalized_proposal`, and set `suppression_key` to `review:sha256:57ea73a474832a19855231c2d99b66a4ed30b1eeccc4721fe20933e462ebee96`. Other structured fields were unchanged. |
+| Inline and unknown-profile cases through the same function | The same native result as the baseline: `payload.value` is exactly `N` with `blocked_now: true`; the `perceptual_qualifiers` member is absent, rather than null or preserved. Status remains `ok`, one candidate, empty diagnostics. The expected retained member was exactly `P` (or its unknown-profile variant). The first observed loss on this tested route is `src/services/precondition_review.rs::vet_result` assigning `CandidatePayload::Inline(c.normalized_proposal.clone())`. |
+| Fourth case through the same function | Status `malformed_result`, zero candidates, diagnostic code `advisory_malformed_result` and message `The model response was not a valid precondition review; no candidates were enqueued`. Adding a companion member to the closed native envelope is not a compliant workaround. |
+| Direct store/reload control, bypassing normalization | Store the inline case with `store_advisory_candidate` in a temporary SQLite file using one ordinary user envelope. Close the pool, reconnect with `UbuStore::connect`, read via `get_advisory_candidate` and `CandidateRecord::candidate`, then retry the identical envelope/candidate. Each retrieved structured candidate equals the complete input, including `P`; one candidate and one mutation-ledger row, zero canonical objects and Logs. Changed payload with the same envelope key rejects with `idempotency_key_conflict`. This is connection close/reopen and replay, not process/crash restart. |
+| Direct review API controls, bypassing normalization | Store the same inline case in the in-memory state; call `api::advisory::candidate` and `api::advisory::queue`. Both return the complete input candidate unchanged with `state_category: "candidate_state"`. These are handler calls, not authenticated HTTP or UI presentation tests. |
+
+All normalization cases left the mutation ledger and every non-candidate table unchanged; the direct store/API controls also left canonical tables unchanged. The measured loss is specific to the tested normalization branch and mapping. The inline carrier remains schema-valid and survives the direct storage controls, so this does not establish a host-contract restriction that no compliant existing payload/ref mapping can satisfy. A future adapter using this branch must preserve the companion content and bound refs, or keep the interpretation unresolved before executable review; a native `ok` result cannot certify fidelity.
+
+Complete Discovery claims/qualifications and resolved evidence revisions, required adapter profile/ref rejection, rendered review, admission, process/crash recovery, retention/partial acceptance and policy-authorized exchange remain untested. No complete mapping, passing adapter or actual schema gap is established; `UBU-Q0166` stays Open. Only a separately reproduced governing host-contract gap warrants the versioned chain review specified by `UBU-D0321`.
+
+**Opaque reference-carrier follow-up (`UBU-D0360`; 2026-10-14).** The schema/core/store/orchestrator checkout revisions in `UBU-D0323` remained unchanged and tracked files clean. Reused the retained synthetic harness executable described in `UBU-D0334`: SHA-256 `3816056449304be7e4890395fecb800bc01d59da3c504599d3ae8cc597142072`; its inspected harness source has SHA-256 `57eb23b4cef5018dd3909f186f8cda7ad329824087fa408a639ba773f8d336dd`. This follow-up binds results to that executable; no fresh locked build or canonical schema-validator invocation was performed. Source inspection of the pinned candidate schema identifies string items at `#/properties/evidence_refs/items` and string values at `#/properties/field_provenance/additionalProperties`.
+
+**Exact reference specimens.** Start from `UBU-D0334`'s baseline with candidate confidence removed and both native proposal and inline payload set to `N`, with no companion payload. Set `evidence_refs` to `["synthetic:description", R]` and `field_provenance` to `{"preconditions": R}`. All other fields remain the baseline's. Test `R = "synthetic:qualifier-manifest@v1"` and, separately, `R = "synthetic:qualifier-manifest@missing"`. Neither token resolves to a stored manifest or evidence revision; no claims or qualifications are supplied. These tokens define no host reference grammar, and the field-provenance substitution tests string retention rather than selecting that field's meaning for an adapter.
+
+Use the same fixed clock, admitted synthetic Task, Context and direct public-function calls as `UBU-D0334`. Feed the first token's serialized normalized output into a second harness invocation for the direct persistence/API controls. The second normalization pass leaves that whole output unchanged; the application enqueue service is still bypassed.
+
+| Tested path | Actual outcome and comparison |
+|---|---|
+| Core validation/JSON, both tokens | Deserialization, `validate`, serialization/deserialization/reserialization retain the complete structured input, including both string fields. This is core validation, not a new canonical schema-validator result. |
+| `precondition_review::vet_result`, both tokens | Status `ok`, one candidate, empty diagnostics. `evidence_refs` and `field_provenance` equal their inputs exactly. The only other changes are the baseline's `blocked_now: true`, matching rebuilt inline payload and suppression key `review:sha256:57ea73a474832a19855231c2d99b66a4ed30b1eeccc4721fe20933e462ebee96`. No manifest dereference or missing-revision rejection is demonstrated. |
+| Normalized first-token output → direct SQLite storage/reload/replay | `store_advisory_candidate`, pool close, `UbuStore::connect`, `get_advisory_candidate`/`CandidateRecord::candidate` and identical-envelope replay retrieve the complete normalized output unchanged. One candidate and one mutation-ledger row; zero canonical objects and Logs in this separate database. Changed payload under the same envelope key rejects with `idempotency_key_conflict`. |
+| Normalized first-token output → direct review API reads | After direct candidate storage, `api::advisory::candidate` and `api::advisory::queue` return that complete normalized output unchanged with `state_category: "candidate_state"`. These handler calls exercise neither authenticated HTTP/disclosure middleware nor rendered review. |
+
+Normalization leaves the mutation ledger and non-candidate tables unchanged; direct candidate storage/API reads leave the seeded canonical target unchanged. The persistence control is connection close/reopen, not process/crash recovery. Retaining an opaque reference through this branch supplies a bounded carrier alternative to test, without repairing `UBU-D0334`'s inline loss or proving preservation of referenced qualifiers. Both unresolved tokens receiving `ok` underscores that this native branch cannot certify adapter resolution.
+
+Next, map a controller-resolved, policy-permitted manifest and all claim/evidence revisions to exact host paths, including candidate field bindings; validate and present that resolved content before relying on a reference mapping. Full Discovery claims/qualifications, adapter profile/ref/policy validation, rendered review, admission, process/crash recovery, corrections/partial acceptance/retention and authorized exchange remain untested in this follow-up and retain the existing host-mapping gate. `UBU-Q0166` remains Open; no passing mapping or governing schema gap is established.
+
+**Native enqueue/admission follow-up (`UBU-D0366`; 2026-10-14).** The schema/core/store/orchestrator revisions in `UBU-D0323` remained unchanged and their tracked files clean. Reverified the orchestrator library with `cargo build --locked --offline --lib` and the canonical validator with `cargo build --locked --offline -p validate-fixtures`; both exited successfully. Used the same rustc and orchestrator-lockfile dependency versions recorded by `UBU-D0334`. A new synthetic harness linked those libraries: source SHA-256 `19355fe62853767ddc7cb302e035aea8cee00a78245afdde15aef095d1332ea0`, executable SHA-256 `afdb551e19628e917a30c6e2f4a982c2df8c38e97a542deabb4a3777affd80c5`, retrieved-results JSON SHA-256 `ade139cd8e0d4f98eb5fe3484eac92abd8ecfb787a64839983b440100c01803e`. These identify retained scratch artifacts, not new dependency pins or committed host tests.
+
+**Specimens and exercised route.** Reuse `UBU-D0334`'s exact baseline, `N` and `P`: candidate confidence absent, native proposal and inline payload initially `N`. Test the baseline, inline `P`, inline `P` with only its profile changed to `perceptual-qualifiers/unknown`, and each exact `UBU-D0360` reference specimen (`synthetic:qualifier-manifest@v1` and `synthetic:qualifier-manifest@missing`). A sixth, stale control starts with the missing-token specimen. No manifest, evidence revision or claim content is stored or resolved in any state.
+
+For each input, create a separate in-memory `AppState::in_memory(ServerConfig::from_env())` using `UBU-D0334`'s fixed selection/normalization clock, admitted synthetic Task at version 1, matching Context and empty targets, with no UniverseState. Obtain the actual `precondition_review::submission`. A local `AdvisoryTransport` stub returns one specimen in an `ok` result echoing each actual child submission's authority, provider, policy and digest bindings. Call `advisory_service::run_advisory`, exercising review eligibility, `submit_reviews`, child/aggregate `validate_against`, `vet_result` and ordinary candidate enqueue. Retrieve the stored candidate, then call `advisory_service::admit_candidate(state, candidate_id, 1)`. There is no model/backend invocation. These are actual controller services, invoked directly rather than through authenticated HTTP or rendered operator review. Native admission uses its own current UTC envelope times and generated actor/Device/key refs; the fixed clock does not make those deterministic.
+
+All six inputs passed actual core deserialization, `validate` and structured serialize/deserialize/reserialize comparison. The canonical `tools/validate-fixtures` accepted 17 valid fixtures: six inputs, six retrieved enqueued candidates and five retrieved admitted candidates. It rejected the two existing controls placing structured `P` in string-valued `field_provenance.preconditions` or adding `P` to the closed native `normalized_proposal`; neither rejection establishes a schema gap. Fixture names retain the input labels and `-enqueued`/`-admitted` suffixes, with separate retrieved `-task` and `-decision` outputs for successful admissions.
+
+| Actual service control | Retrieved outcome and comparison |
+|---|---|
+| Baseline → enqueue → native admission | Run report `status: ok`, one stored candidate, zero rejected/suppressed, null validation error; the only diagnostic is `precondition_review_sound` with `1 preconditions examined; 0 judged sound.` Enqueued content equals the baseline with `blocked_now: true`, matching rebuilt inline payload and the suppression key recorded by `UBU-D0334`. Native admission clears the precondition. |
+| Known and unknown inline `P` → same route | Both enqueued candidates equal the normalized baseline exactly: `payload.value.perceptual_qualifiers` is absent. The same report and native admission succeed, without a companion-profile rejection. The first observed loss remains `precondition_review::vet_result` rebuilding the inline payload; enqueue and admission do not restore it. |
+| Each unresolved reference token → same route | Both reports and native admissions succeed. Retrieved enqueued/admitted `evidence_refs` and `field_provenance` equal their respective inputs exactly, while the Task precondition is cleared. No dereference, missing-evidence-revision rejection or claim/qualifier validation is demonstrated. |
+| All five successful admissions | Task payload equals the seeded payload with only `preconditions` removed; its current record is version 2. Candidate content equals its enqueued version with only lifecycle `admitted`, version 2 and `links.admission_ref` set to the exact Task id. One `candidate_decision_events` row binds observed candidate version 1, `proposed` → `admitted` and that resulting Task id. Its user-authority envelope's `observed_versions` contains only the Task at `v1`, with no evidence/manifest revision. Admission adds one mutation-ledger row; the only changed non-candidate/non-ledger tables are `objects` and `candidate_decision_events`; Logs remain zero. This is a native outcome link, not the full perceptual review/evidence/Log binding contract. |
+| Repeat each successful service call with observed candidate version 1 | Rejects with `precondition failed` (expected `v1`, actual `v2`); no additional candidate decision, canonical change or ledger row. This checks old-version rejection, not exact-envelope replay or crash recovery. |
+| Stale control: after enqueue, ordinarily change the Task's precondition threshold from 25 to 26, then request admission | Rejects with `The Task's precondition changed since this review; ask for a fresh review`. Candidate remains proposed at version 1; canonical rows and ledger remain unchanged from immediately before the failed call, with no candidate decision event. Native stale-value checking works independently of the unresolved token. |
+
+Enqueue changes only candidate storage and its single ledger row, leaving every non-candidate/non-ledger table unchanged in all six states. Successful native admission after silent qualifier loss, or with unresolved retained references, cannot qualify perceptual admission under `UBU-D0320`/`UBU-D0321`. The reference strings still define no manifest grammar or approved field-provenance meaning. Require a pinned adapter to resolve permitted content, reject unknown/dangling bindings and preserve the reviewed qualifier content through both enqueue and admission; native `ok` and a canonical effect cannot substitute for that gate.
+
+This follow-up demonstrates a native-service enforcement limitation, not failure of every compliant existing payload/ref mapping or a governing schema gap. Full Discovery claims/qualifications, evidence resolution, policy-bound adapter validation, rendered review, qualifier-aware admission links, process/crash recovery, corrections/partial acceptance/retention and authorized exchange remain outstanding. No producer/adapter or policy-authorized exchange configuration is qualified; `UBU-Q0166` stays Open and `UBU-D0334`'s inline loss remains unrepaired.
+
+**Mounted review follow-up (`UBU-D0373`; 2026-10-15).** Exercised `ubu-ui@dda2312fd17a5dc330fef102f9def30ab88ac5bf`, with tracked files clean before and after the probe. An in-memory harness transpiled the actual `src/routes/Review.tsx` and imported presentation components to CommonJS and mounted them with real React hooks in JSDOM. Runtime: Node `v24.4.1`, React/React DOM `19.2.7`, TypeScript `5.9.3`, JSDOM `26.1.0`; installed versions matched the UI lockfile (SHA-256 `f17aa89a8b2770b7c28e1aa38fe5a9a1b71c938f58a6bd87cb3666fd448d330f`). The `../api/client` module was mocked; no real transport or controller service ran.
+
+**Inputs and boundary.** Use `UBU-D0334`'s exact baseline input, `N` and `P`, before normalization: confidence absent, both native proposal and inline payload initially `N`. Separately mount the baseline, inline `P`, unknown-profile inline `P`, and both exact `UBU-D0360` reference specimens. A sixth positive control changes only `reason` in both native proposal and inline payload to `Synthetic visible reason control.`. For each fresh mount, fix `Date.now()` at `2026-09-19T09:00:00Z`; mock `advisoryQueue` with that single candidate, empty deferred candidates, target title `Synthetic carrier probe.` and no `review_intervals`; mock `listTasks("active")` with an empty task list. Flush effects with `act`, compare the proposal article's `outerHTML` and `textContent`, then click its Admit button and record mocked client calls. No manifest or evidence content is supplied or resolved.
+
+| Mounted control | Observed rendering and click outcome |
+|---|---|
+| Baseline, known inline profile and unknown inline profile | All three articles have identical complete DOM, including `Evidence refs: synthetic:description`, with no companion profile or field/claim mapping rendered. Article `outerHTML` SHA-256 is `00c007629815bd0e8df5270fc2b85326f140673d17ff82602507142e5f8fadfa` in all three cases. Keeping the inline member in the mocked queue response therefore does not repair this presentation path. |
+| Each unresolved reference token | Text equals the baseline except for appending `, synthetic:qualifier-manifest@v1` or `, synthetic:qualifier-manifest@missing` to the evidence-ref line. Neither token produces resolved content or a missing-reference diagnostic. |
+| Changed-reason positive control | The article renders `Model's reason: Synthetic visible reason control.`; its DOM differs from the baseline. This checks that native proposal content reaches the mounted card. |
+| All six controls | Admit is enabled. One click invokes the mocked method exactly once as `admitAdvisory("advcand_018f3c8e9b2a7c4d8f1e2a3b4c5d6e7f", 1)`, followed by queue/task reload. Before the click the only mocked calls are `advisoryQueue()` and `listTasks("active")`. This is a client-method invocation, not an HTTP request or successful native admission. |
+
+This upgrades only the generic precondition-review card's source-inspected presentation limitation to a mounted DOM/click result. It is independent of the earlier normalization loss because the mocked queue supplies the retained inline member directly. The specimens remain candidate link-carrier controls, without full claims, qualifications or resolved revisions. JSDOM supplies no browser-layout, assistive-technology, authenticated transport, policy, persistence or end-to-end evidence. No new schema/core validator or Rust build ran, and no UI or normalization repair was made. API retention and an enabled Admit control cannot qualify perceptual review. A future adapter still needs faithful permitted claim/qualifier presentation and binding checks through actual review/admission and authorized exchange under the existing gate. `UBU-Q0166` stays Open; no passing mapping or governing schema gap is established.
+
+**Supported operations.** Validate the native proposal against an already-supported candidate kind and ordinary admission operation before enqueueing an executable review proposal. Unresolved targets, unsupported object kinds and perceptual values without a supported adapter remain Discovery review evidence with the limitation visible; they cannot fall through to a generic mutation executor. `UniverseTarget` advice remains name-only under `UBU-D0296`: it cannot carry, default or admit a perceptual value. The operator may author a value through the ordinary assertion/measurement form linked to the evidence. Future perceptual value-candidate support requires its separately reviewed versioned adapter; this contract does not enable it. Intent, affect, Preferences, completion/effect claims and later-phase Resources/Skills/Techniques retain their existing source and admission gates.
+
+**Disclosure and session scope.** Evidence, candidates, alternatives, selectors, hashes and derivative review material inherit all supporting sources' disclosure/routing/retention restrictions; reference-only payloads do not waive them. Denied matches cannot leak identifiers, labels or existence through alternatives or counts. Reviewing permitted retained evidence is allowed after its capture session is paused/ended; it neither restarts capture nor transfers source consent or pending approval to another Device.
+
+**Replay and corrections.** The controller assigns stable evidence ids and capture keys scoped to source/session and source item or span. It assigns separate candidate-creation and review-operation idempotency keys, each bound to its immutable originating operation rather than later lifecycle state. Exact retries, restart and exchange preserve ids, versions, normalized content and keys; the same key with different bound content is rejected, never treated as a harmless duplicate. Distinct observations are not deduplicated by their meaning or time alone. Equivalent repeated proposals use §21.2.1's suppression/deferral rules rather than resetting rejected/deferred state. New material evidence or a correction creates a linked revision/replacement with a new key. Superseded versions and late interpretations cannot overwrite an operator correction or use an old approval. Corrections to admitted claims append §17.3 entries and any separately admitted replacement Snapshot/mutation; they never rewrite the original. Raw-media purge marks supporting evidence unavailable and obeys existing retention policy; it neither fabricates replacement evidence nor automatically retracts or reaffirms a claim.
+
+**Review and admission.** Present the source/session and observation time, permitted evidence or an explicit unavailable/redacted indicator, proposed-versus-current diff, source kind, uncertainty/contradictions, alternative matches, dependencies and resulting planning implications. Show the exact fields and batch being accepted; accepting an evidence item alone does not authorize every linked proposal. Offer resolve/edit, accept, reject, defer and private/unknown through existing Discovery/advisory review; edits record the operator's source, create a new bound revision and require fresh review. A permitted partial acceptance creates a bound revision or separate candidate for its exact subset and coherent dependency batch; unaccepted interpretations remain unresolved. If required evidence or target bindings cannot be established, retain an unresolved review item. Restricted attention defers unavailable review under §21.1.2.
+
+At acceptance, the CPU rechecks the exact candidate/target/dependency versions and evidence/context/source revisions, including whether the latter remain available and unsuperseded, dependency bindings, current authority and Device trust, current source/disclosure/admission policy and native semantic/conflict rules. Changed bindings invalidate approval; require fresh review rather than silently rebasing. Source confirmation records new evidence of the actual assertion, reading or derivation; it does not relabel the original inference as measured or derived. Commit the ordinary canonical change, review decision with actor/`authority_source`/Device/times/observed versions, resulting Log/Snapshot refs, candidate admission links and idempotency outcome as one crash-consistent unit. Rejection/deferral records only ordinary review metadata, not the proposed world state. Recalculation follows admitted planner-relevant changes. Candidate persistence, successful extraction, high confidence and queue order confer no canonical, projection or external-action authority; external execution requires its own current checks and approval.
+
+**Consequence-sensitive corroboration (`UBU-D0324`).** Assess each proposed claim against its intended planning/execution use, including downstream effects if it is wrong. The operator reviews the consequence class and intended scope. Review records the exact target, value, effective time, proposed diff, affected preconditions/capacity/commitments, credible error consequences, reversibility and uncertainty. Bound ordinary use by explicit operator cost/reversibility limits where relevant. Material financial or external commitments, safety-sensitive decisions, disclosure, irreversible changes, consequential identity/ownership attribution, and claims that release capacity or unlock dependent execution require consequential review. Unknown consequence or an unbounded downstream use takes that review path; model confidence cannot establish that a use is ordinary. No automatic confidence cutoff is selected.
+
+| Intended use | Minimum evidence and human review |
+|---|---|
+| Clarification or labelled hypothesis | Permitted evidence may order questions or explain alternatives without admission. It cannot satisfy a precondition, release capacity, establish completion/effects, certify a Plan or dispatch an action. An operator may separately admit a verification Task without affirming the disputed claim. |
+| Bounded, reversible ordinary planning change | Show the exact claim, source, uncertainty and proposed change; obtain explicit operator confirmation and ordinary version-bound admission. One actual operator assertion can suffice; no second source is required merely to clarify a low-consequence detail. Confirmation is separately attributed evidence under `UBU-D0321`, even when collected in the same interaction as acceptance. |
+| Consequential planning or execution use | Each decision-critical perceptual claim needs at least one relevant corroborating source established independently of the original interpretation, plus explicit operator review of sufficiency and the resulting change. Check identity, time, scope, method, source reliability and limitations; resolve decision-relevant contradictions and alternatives. Further verification or qualified review required by the applicable workflow still applies. A corroborating source is necessary, never automatically sufficient. |
+
+Independent corroboration requires an identifiable acquisition or knowledge basis that does not depend on the original model interpretation or merely copy its source. A direct operator inspection, independently obtained source record or actual instrument reading may qualify for the exact property checked; another Device or model is not required. Approving the same image, repeated frames without a distinct verification basis, another model interpreting the same input, copied reports, vote counts, high confidence and downstream summaries/Plans supply no independent corroboration. Operator confirmation states what the person actually knows and how; simple acceptance of model prose supplies no new source. Unknown independence is not counted as independent, and an independent but stale, irrelevant or inconclusive report does not satisfy the claim.
+
+**Unresolved evidence and sovereign authoring.** Missing, stale, policy-withheld, incompatible or insufficient evidence keeps the affected candidate/use unresolved. Show only permitted uncertainty and offer clarify, obtain evidence, edit/narrow, defer, reject or a verification Task. Do not average contradictions, infer false/free/completed from absence, or silently choose a source. Unrelated supported fields may proceed only as a separately reviewed coherent subset. An authorized operator may separately author an assertion, correction or supported explicit planning assumption through ordinary admission, recording the actual source and remaining uncertainty; this does not relabel the visual inference as corroborated or waive native semantics, required workflow evidence, authority or privacy rules. Unsupported assumption/value paths remain evidence-only.
+
+**Assessment bindings and later use.** Retain the reviewed use/scope, consequences, supporting and conflicting claim refs/versions, independence basis, unresolved issues and sufficiency rationale with existing candidate/evidence payloads and ordinary review/Log links; preserve `FactProvenance` as `{kind, recorded_at}`. Apply the check in host admission and Plan-input/execution preparation. Ordinary acceptance is not approval for a later consequential use. A changed use, material new contradiction, source correction/unavailability, or changed candidate/target/context/policy binding invalidates the applicable assessment and approval before affected Plan reuse or execution. Use the ordinary append-only correction and conflict paths; invalidate affected Plans and recalculate from admitted corrections without rewriting history or letting late model output undo an operator correction. An adapter unable to retain or enforce these links remains disabled for that use under `UBU-Q0166`.
+
+Evidence review/admission neither grants capture/export capability nor approves an external action. Immediately before execution, recheck current admitted inputs, sufficiency for that operation, Plan legitimacy, authority, Device trust, Compartment/export policy and the operation's own scoped approval. A review may present both decisions, but must record and bind them separately. Apparent completion remains evidence-only until §17.10's lifecycle/effect evidence requirements under `UBU-D0329` are met.
+
+**Required fixtures.** Before enabling a producer/adapter, pin its revision, host schemas and policy configuration, and serialize the following scenarios through the real validators, review storage and admission reducer. Fixture labels below denote distinct stable schema-valid ids. Record exact input payloads/versions, decisions, candidate/evidence links, expected canonical diffs/Logs and replay outcomes. These are required acceptance cases, not passing implementation results.
+
+| Fixture input and action | Required outcome |
+|---|---|
+| Evidence `E1@v1`, session `S1@v1`, frame selector `frame:12`, `proposal: null`; evidence payload contains a visual hypothesis `{"operation":"set_fact","target":"facts.project.ubu.build_result","payload":"passed"}`; no value adapter or confirmation | Discovery review evidence only; no UniverseState, Snapshot, Task, Plan, Calendar or projection effect. Existing UniverseTarget advice still contains no value. |
+| Supported precondition proposal `C1@v1` for `T1@v7` (prior precondition absent) uses `E1@v1`, context `B1`, policy `P1@v3` and a recorded target; capture session S1 has ended. Proposes `{"target":"facts.project.ubu.build_result","predicate":"equals","expected":"passed"}`, operator edits expected to `"reviewed"` and accepts the bound revision | Only T1's precondition becomes that leaf with expected `"reviewed"`; the fact's value is unchanged. Ordinary decision/Log links are admitted once. Review restarts no capture; repeat submission, restart and exchange produce no second effect. |
+| Observation key `person:1` has permitted alternatives `I1@v2` and `I2@v4`, selection null, confidence 0.99; operator leaves unresolved or selects `I2` | Unresolved creates no merge/ownership/fact; selection affects only the newly reviewed proposal bound to `I2@v4`, without accepting other interpretations. |
+| A proposal references proposed-object key `o1` from `C2@v1`, or a value from `C3@v1`; the dependency is pending, rejected, or admitted | No phantom object, dangling value link or planner use of a candidate value. Pending/rejected dependency prevents dependent admission; an approved atomic dependency batch or fresh review against admitted refs/values resolves it exactly once. |
+| Between presentation and acceptance, `T1@v7` becomes `v8`, evidence/context is superseded, policy changes, or the originating/acting Device is revoked | No stale/unauthorized admission. Preserve only permitted review material and require the ordinary fresh-review, rejection or conflict path. |
+| Duplicate `E1/C1` with identical keys/content; then the same key with changed value/target; then a genuinely new observation `E2` | Exact replay collapses; changed-content key reuse rejects; `E2` remains distinct and cannot automatically revive a rejection or satisfy corroboration by repetition. |
+| Crash before or after the canonical-change/review/idempotency transaction; retry the same approval operation | Either no effect or the complete single admitted effect and its linked review/Log/outcome; never an orphan mutation, false admission acknowledgment or duplicate effect. |
+| Operator corrects `E1/C1` before a delayed result arrives, and separately corrects an already-admitted claim | Late result cannot restore the superseded claim. Unadmitted replacement needs fresh review; admitted correction appends links and any accepted replacement without editing historical records. |
+| Supporting raw evidence is purged, or a partial Replica lacks/denies a required source/target; manual text replaces capture | Show only permitted unavailable/incomplete metadata and no denied identifiers or Compartment labels. Missing bindings block that admission; a new operator-authored submission uses its actual source and fresh bindings without recreating deleted media or widening disclosure. |
+| Missing required binding, unknown profile/schema, model-invented ref, malformed native proposal or hard routing/Compartment denial | No dispatch/admission; only policy-permitted evidence and an unresolved/rejected diagnostic through existing machinery. |
+| Explicit operator assertion, instrument reading and actual derivation through supported ordinary authoring/computation paths; high-confidence apparent Task completion without the required effect evidence | Admitted kinds follow `UBU-D0293` with unchanged FactProvenance fields and retained original candidate links; unsupported derivation paths remain evidence-only. Apparent completion alone creates no lifecycle/effect update, inferred affect/intent or Preference. |
+
+**Corroboration acceptance cases.** In addition to the fixtures above, pin the host admission, Plan-input and execution paths and demonstrate the following. These are enablement gates, not reported passing results.
+
+| Case | Required outcome |
+|---|---|
+| A bounded ordinary edit with an explicit operator assertion; the same claim later supports a material commitment | Ordinary review may admit the first use without a second source. The later use requires a new consequential assessment and scoped review; prior acceptance is insufficient. |
+| Consequential inference with high confidence, two models using one frame, copied reports or unknown lineage; then an independently obtained matching reading/inspection | The first set cannot satisfy independent corroboration. The new evidence preserves ancestry and may support a freshly bound review, without automatic admission or execution. |
+| Independent but stale/inconclusive evidence, contradictory target/value/time, denied evidence or unresolved identity | The affected claim/use remains unresolved with policy-safe alternatives; no source voting, capacity release, precondition satisfaction or dependent dispatch. |
+| New contradiction or operator correction after acceptance, changed use/versions/policy, and delayed model output | The old assessment/approval cannot authorize affected Plan reuse or execution; admitted corrections append history and trigger recalculation, and the late result cannot overwrite them. |
+| Sufficient evidence and admitted candidate, but no external-action approval or a revoked grant; apparent completion without effect evidence | No external dispatch or inferred completion/effect. Evidence sufficiency cannot replace action authorization or §17.10's completion/effect requirements. |
+
+`UBU-D0321` specifies qualifier content and fidelity gates; `UBU-D0324` specifies consequence-sensitive corroboration and review; `UBU-Q0166` retains revision-pinned host-mapping evidence and demonstrated schema-gap review. `UBU-D0326` specifies segmentation and scoped local analysis in §21.1.5; `UBU-D0327` and `UBU-D0328` specify raw-media retention and operator controls in §12.2; `UBU-D0329` specifies completion/effect evidence in §17.10. This contract freezes bindings, reuse, corroboration and admission behavior without claiming the remaining questions or implementation acceptance are complete.
+
+#### 21.1.2 Restricted-attention audio envelope
+
+**Embodied Audio Interaction (`UBU-D0309`).** Activity mode is separate from the realtime session's source/routing mode and from `compartment_ids`: for example, `Mode: Driving` with `Compartment: UbU Project / Public Outreach`. Activity constrains interaction; Compartment policy constrains disclosure and authority. Neither grants permission supplied by the other.
+
+The initial activity vocabulary covers driving, bicycling, walking, running (including jogging), stationary exercise, resting, cooking, housework, showering, passenger transit, user-defined and unknown contexts. Operator selection establishes the intended mode. Explicitly enabled coarse activity evidence may tighten restrictions, but never starts capture or relaxes them. Driving, bicycling and conflicting or uncertain high-risk activity use the high-risk envelope; stopping motion alone does not establish parked review readiness.
+
+A controller-owned, session-local `InteractionBudget` records:
+
+- budget id and version, session and Device refs, activity mode, source/freshness of context, applicable policy refs, `compartment_ids` and expiry;
+- permitted input/output channels and audio endpoint, manual availability, visual attention, locomotion risk, interruptibility, working-memory budget, intellectual/emotional bandwidth and social-risk tolerance;
+- finite maximum prompt and response lengths, turn duration, choices and clarification count, permitted operation classes, confirmation policy and deferral policy.
+
+Capacity and affect are user-declared or unknown, never a model-certified assessment of intelligence or readiness. Unknown capacity uses the conservative profile; observations may reduce the budget, not expand permissions. Effective permissions are the intersection of the reviewed activity profile, current channel/attention limits, Compartment policy and scoped capability grants. Missing, expired or conflicting authority prevents model/tool dispatch; pause, stop and silence controls remain available. Numeric profile defaults remain in `UBU-Q0128`; the exact initial-envelope serialization is specified below (`UBU-D0311`). A profile cannot ship without finite caps.
+
+**Serialized budget (`UBU-D0311`).** `InteractionBudgetV1` is the controller's immutable snapshot for the initial envelope, not an LLM result, capability grant, capture consent or portable approval. All keys are required and all objects are closed. Reject duplicate keys, trailing content, non-finite numbers and unknown schema versions without repair. References identify controller artifacts or existing records; referenced versions use opaque revision tokens such as `v12`, preserving existing version conventions. `budget_version` and `interaction_epoch` are session-local integer counters. The model receives only a purpose-limited projection of effective limits through its ContextBundle, never authority to edit or return this object.
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object", "additionalProperties": false,
+  "required": ["schema_version", "budget_id", "budget_version", "session_ref", "device_ref", "interaction_epoch", "profile", "activity_mode", "context", "compartment_ids", "policy_versions", "grant_versions", "input_channels", "output_channels", "audio_endpoint", "readiness_declaration", "attention", "limits", "allowed_operations", "confirmation_policy", "deferral_policy", "issued_at_ms", "expires_at_ms"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "budget_id": {"$ref": "#/$defs/ref"},
+    "budget_version": {"type": "integer", "minimum": 1, "maximum": 9007199254740991},
+    "session_ref": {"$ref": "#/$defs/ref"},
+    "device_ref": {"$ref": "#/$defs/ref"},
+    "interaction_epoch": {"$ref": "#/$defs/uint"},
+    "profile": {"$ref": "#/$defs/versioned_ref"},
+    "activity_mode": {"enum": ["driving", "bicycling", "walking", "running", "stationary_exercise", "resting", "cooking", "housework", "showering", "passenger_transit", "user_defined", "unknown"]},
+    "context": {
+      "type": "object", "additionalProperties": false,
+      "required": ["source", "evidence_versions", "observed_at_ms", "expires_at_ms"],
+      "properties": {
+        "source": {"enum": ["operator_selected", "operator_and_coarse_evidence", "coarse_evidence", "unknown"]},
+        "evidence_versions": {"$ref": "#/$defs/ref_set"},
+        "observed_at_ms": {"$ref": "#/$defs/uint"},
+        "expires_at_ms": {"$ref": "#/$defs/uint"}
+      }
+    },
+    "compartment_ids": {"type": "array", "maxItems": 32, "uniqueItems": true, "items": {"$ref": "#/$defs/ref"}},
+    "policy_versions": {"$ref": "#/$defs/ref_set", "minItems": 1},
+    "grant_versions": {"$ref": "#/$defs/ref_set"},
+    "input_channels": {"type": "array", "minItems": 1, "maxItems": 2, "uniqueItems": true, "items": {"enum": ["speech", "local_controls"]}},
+    "output_channels": {"type": "array", "maxItems": 1, "uniqueItems": true, "items": {"const": "speech"}},
+    "audio_endpoint": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/versioned_ref"}]},
+    "readiness_declaration": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/versioned_ref"}]},
+    "attention": {
+      "type": "object", "additionalProperties": false,
+      "required": ["manual_availability", "visual_attention", "locomotion_risk", "interruptibility", "working_memory", "intellectual_bandwidth", "emotional_bandwidth", "social_risk_tolerance"],
+      "properties": {
+        "manual_availability": {"enum": ["none", "limited", "available", "unknown"]},
+        "visual_attention": {"enum": ["none", "glance", "available", "unknown"]},
+        "locomotion_risk": {"enum": ["low", "high", "unknown"]},
+        "interruptibility": {"enum": ["none", "brief", "available", "unknown"]},
+        "working_memory": {"$ref": "#/$defs/capacity"},
+        "intellectual_bandwidth": {"$ref": "#/$defs/capacity"},
+        "emotional_bandwidth": {"$ref": "#/$defs/capacity"},
+        "social_risk_tolerance": {"$ref": "#/$defs/capacity"}
+      }
+    },
+    "limits": {
+      "type": "object", "additionalProperties": false,
+      "required": ["max_capture_ms", "max_stt_utf8_bytes", "max_model_input_utf8_bytes", "max_model_output_utf8_bytes", "max_spoken_prompt_utf8_bytes", "max_spoken_response_utf8_bytes", "max_speech_ms", "max_turn_ms", "max_choices", "max_clarifications"],
+      "properties": {
+        "max_capture_ms": {"$ref": "#/$defs/uint"},
+        "max_stt_utf8_bytes": {"$ref": "#/$defs/uint"},
+        "max_model_input_utf8_bytes": {"$ref": "#/$defs/uint"},
+        "max_model_output_utf8_bytes": {"$ref": "#/$defs/uint"},
+        "max_spoken_prompt_utf8_bytes": {"$ref": "#/$defs/uint"},
+        "max_spoken_response_utf8_bytes": {"$ref": "#/$defs/uint"},
+        "max_speech_ms": {"$ref": "#/$defs/uint"},
+        "max_turn_ms": {"$ref": "#/$defs/uint"},
+        "max_choices": {"$ref": "#/$defs/uint"},
+        "max_clarifications": {"$ref": "#/$defs/uint"}
+      }
+    },
+    "allowed_operations": {"type": "array", "minItems": 3, "maxItems": 8, "uniqueItems": true, "items": {"enum": ["capture_candidate", "session_pause", "session_stop", "session_silence", "media_pause", "media_resume", "media_skip", "media_rewind"]}},
+    "confirmation_policy": {"const": "candidate_review_only"},
+    "deferral_policy": {"const": "ordinary_review_no_auto_dispatch"},
+    "issued_at_ms": {"$ref": "#/$defs/uint"},
+    "expires_at_ms": {"$ref": "#/$defs/uint"}
+  },
+  "$defs": {
+    "ref": {"type": "string", "minLength": 1, "maxLength": 128},
+    "uint": {"type": "integer", "minimum": 0, "maximum": 9007199254740991},
+    "capacity": {"enum": ["none", "low", "available", "unknown"]},
+    "versioned_ref": {
+      "type": "object", "additionalProperties": false, "required": ["ref", "version"],
+      "properties": {"ref": {"$ref": "#/$defs/ref"}, "version": {"$ref": "#/$defs/ref"}}
+    },
+    "ref_set": {"type": "array", "maxItems": 32, "uniqueItems": true, "items": {"$ref": "#/$defs/versioned_ref"}}
+  }
+}
+```
+
+**Budget semantics.** JSON shape validation is followed by these controller checks; no missing value is defaulted into permission:
+
+- The budget must be the current controller-issued id/version for this session, Device and interaction epoch. Referenced profile, context evidence, policies, grants and endpoint revisions must match current permitted records; each ref set has at most one version per ref. Include every policy/grant used to determine this envelope; metadata overflow fails closed rather than omitting restrictions. Context sources and readiness declarations must match the kind of evidence referenced. `user_defined` requires an explicitly reviewed profile, rather than a free-form label selecting permissions. Coarse evidence may only maintain or tighten the operator-selected mode. Unknown or conflicting activity cannot relax the high-risk envelope.
+- Times are integer milliseconds since the Unix epoch. Require `context.observed_at_ms <= issued_at_ms <= now`, and `now < min(expires_at_ms, context.expires_at_ms)`; profile, policy and grant expiry further shorten validity. Bind the remaining lifetime and turn deadline to the local monotonic clock. Clock discontinuity or restart invalidates the snapshot; wall-clock rollback cannot extend it. A new Device recomputes a budget under its own current policy.
+- Attention fields are engagement bounds, not diagnostic scores. Known working-memory, intellectual/emotional bandwidth or social-risk tolerance requires the referenced, fresh user declaration; otherwise those fields are `unknown` and the conservative profile supplies finite limits. Profiles may tighten declared limits, never infer improved capacity. Driving, bicycling, high/unknown locomotion risk or conflicting high-risk evidence requires the high-risk envelope, `manual_availability = none`, `visual_attention = none`, `max_choices = 0` and `max_clarifications <= 1`. Zero choices prohibits menus, not one permitted brief reference clarification.
+- Every limit is an explicit nonnegative integer; zero disables the corresponding resource. Positive values must be within the reviewed profile and current policy, channel and grant ceilings. Quantitative profile values remain in `UBU-Q0128`; absent ceilings prevent dispatch. These wire bounds are not usability defaults or evidence of driving safety.
+- Counters belong to the original user turn, outside the model result. `max_capture_ms` and `max_stt_utf8_bytes` bound total authorized user audio and STT text for that turn. Model byte caps cover the complete normalized invocation (instructions, context, grammar and tool declarations) and complete outputs, cumulatively across that turn; apply the output cap before parsing. Spoken prompt/response byte caps and `max_speech_ms` cover cumulative controller prompts/acknowledgments, measured in UTF-8 bytes and elapsed speech time. `max_turn_ms` runs from the first user audio frame through final speech/dispatch, including waits and clarification; renewal or clarification never resets counters or revives an invalid binding. Exceeding a cap stops that processing/output path and leaves only already-authorized unresolved evidence for review, without truncating text into an executable interpretation or retrying automatically.
+- `local_controls` and all three session-control operations are mandatory; immediate local pause/stop/silence remains available even without a valid budget. Speech input still needs the session's explicit source consent. Speech output requires a non-null fresh endpoint, nonzero speech limits and current disclosure permission; a known endpoint is not proof of privacy. Empty output channels mean silence. Zero model limits prevent model invocation; zero clarification allowance removes that branch from `AudioInterpretationV1`.
+- `allowed_operations` is only a cached intersection of the initial envelope and current authority, rechecked at dispatch. `capture_candidate` maps to either existing capture variant; session and media names map to their exact v1 operations. Media requires the scoped integration grant and fresh request-bound playback target. `candidate_review_only` leaves capture unadmitted while permitted session/media controls need no admission; `ordinary_review_no_auto_dispatch` retains unsupported or prohibited requests for fresh ordinary review. No operation admits canonical state or authorizes consequential external execution.
+
+Issue a superseding budget/version and invalidate request bindings on material context, mode, Device, endpoint, profile, policy or grant change, or on expiry. Synchronized/audit copies cannot restore a live budget, microphone consent or pending approval. Before enabling this contract, exercise missing/extra fields, non-integer/negative limits, stale revisions, replay after restart/handoff, clock rollback, missing endpoint permission, unknown readiness and high-risk menu/clarification violations. This specifies the serialization and enforcement boundary; numeric profiles, richer actions and device-specific tuning remain open.
+
+**Numerical profile qualification (`UBU-D0365`).** Select restricted-attention limits from revision-pinned calibration followed by acceptance of a frozen profile. Extend §§21.1.3–21.1.4's access, timing and outcome evidence with attention-specific trials; fast recognition alone cannot qualify an activity profile. Bind each proposed profile to activity/risk envelope, declared-or-unknown readiness, Device/OS/controller, STT/TTS/model/template revisions, language, input source, output route and operating conditions. Publish an explicit value for every `InteractionBudgetV1.limits` field, context/route freshness ceiling and supported session duration. Keep unavailable combinations visible; a resting or ordinary-attention result cannot qualify driving, bicycling or unknown high-risk activity.
+
+Before acceptance, freeze participant/condition coverage, matched tasks, trial counts/order, all proposed caps and pass/fail rules. Include a positive minimum useful-outcome proportion over offered user-initiated requests, finite correction/clarification and user-reported burden limits, and finite absolute and baseline-relative primary-activity error/delay limits. For scenarios expecting speech, also require a positive minimum acknowledgment-comprehension proportion over all requests expected to receive it; absent output or answers cannot count as comprehension. Silent profiles require no speech-comprehension score. State the comparison method and treatment of uncertainty in advance. Calibration and failed acceptance results remain separate; changing a cap, template, speech rate, rubric or supported condition requires a new profile revision and affected trials.
+
+Use consented user trials in safe simulations, with matched primary-activity-only and primary-activity-plus-UbU conditions and counterbalanced order. Simulated driving/bicycling trials involve no real traffic; other trials introduce no hazardous equipment or exercise. Exercise the initial capture/control envelope only, including road/breath/household noise, competing audio, unknown readiness, missed or interrupted turns, uncertain STT, and repeated turns over the proposed maximum session. Test the longest permitted templates and maximum clarification allowance. Measure actual rendered speech duration and comprehension separately from UTF-8 byte limits; rate changes, truncation or omitted qualifications cannot make over-budget speech eligible.
+
+| Evidence | Required measurement and disposition |
+|---|---|
+| Useful capture/control | Reconcile every offered request with refusal, retained candidate, confirmed control, unresolved/deferred, interruption, error or unknown outcome. Report correction effort and wrong/missing referents separately; retained evidence is not admitted state, and unknown transport is not success. Use §21.1.4's complete outcome accounting. |
+| Understandability | After a trial, check whether the participant understood what was retained, deferred or actually controlled, and could stop or disengage. Collect comprehension and burden during eligible review, without adding quiz prompts to the restricted turn. Missing answers remain missing; model confidence, task completion and silence establish no comprehension or individual capacity score. |
+| Primary activity and cumulative burden | Report scenario-defined primary-activity errors/delays against the matched baseline, speech exposure, clarification/correction counts, user-requested stops and reported burden over the complete session. Preserve results by activity, readiness, language and tested route/condition; pooled averages cannot conceal a failed required condition. Resting trials include ability to remain disengaged; require no minimum interaction frequency or productivity, and permit silence/end without repeated invitations. |
+| Enforcement | Exercise exact byte/time/choice boundaries, including equality and exceedance, and interruption/route loss during maximum-length speech. Caps, high-risk deferral, local controls and fresh-binding rules must hold independently of useful-outcome scores; no unauthorized, wrong-target, stale or repeated effect can pass. |
+
+Publish the frozen values, counts/denominators, missing outcomes, baseline comparisons, uncertainty, failures and passing scope in the existing support matrix, with operator approval bound to the evidence and profile revisions. Missing required evidence or a missed limit withholds that combination while preserving immediate local controls and permitted saved evidence. Simulation results establish only their tested scope; real driving/bicycling support requires a separate use-specific human-factors assessment and operator release review, and remains unqualified here. This selects a numerical-profile qualification method, not numerical defaults or a safety claim. Both v1 schemas, the initial action envelope and §4.2's MVP-release minimum remain unchanged; `UBU-Q0128` stays Open for measured values and its other remaining slices.
+
+**Initial permissions.** Every restricted-attention mode starts with user-initiated local candidate capture, a bounded acknowledgment, pause/stop/silence, and optional explicitly granted media transport (`pause`, `resume`, `skip`, `rewind`) against one fresh, unambiguous playback target. Capture produces existing evidence/candidate records, including Task proposals; it does not create an admitted Task, Snapshot, Preference or Calendar change. Media transport uses the current integration grant and policy checks; it never authorizes sharing, purchases or broader app access. Richer read-only and short-drafting profiles remain open.
+
+Driving, bicycling and uncertain high-risk contexts additionally prohibit generated drafting, reflective/coaching dialogue, spoken menus and visually dependent review. Permit at most one brief clarification per request; an unresolved target or unanswered clarification leads to capture/deferral without retry prompts. External sends, financial actions, legal commitments, deletion, multi-party communication and scheduling changes are deferred. Neither a capability grant, a generic “yes”, an action-specific spoken confirmation nor a model's `safe_for_mode` claim overrides this envelope. UbU may remain silent or suggest user-selected existing media/rest; it must not repeatedly solicit work or queue review prompts while attention is restricted.
+
+**Controller boundary.** Consented local STT yields evidence, then the harness assembles a purpose-limited `ContextBundle` under §21.3 and requests an interpretation/candidate through §21.2. Include only the permitted current referents, relevant admitted state and scoped playback/context versions needed for that operation. Model confidence, risk estimates and confirmation suggestions are advisory. Deterministic validation checks schema, semantics, current budget, Compartment route, grants, object versions, ambiguity and idempotency before invoking an allowlisted control or creating a review candidate. Recheck immediately before dispatch and speech output; a local processing route alone does not authorize reading private content aloud on a shared audio endpoint. Raw AV stays local under §12.2; an unavailable local backend never creates cloud-fallback authority.
+
+**Speech evidence finalization (`UBU-D0372`).** Apply the controller assembly profile `audio-stt-evidence/1` before `audio-context/1` for the initial restricted-attention interpretation. It reuses existing STT/Discovery evidence payloads, source manifests and request bindings; it adds no canonical object, provenance kind or v1 wire field. Existing explicit source consent and user initiation remain prerequisites. Recognizer output is evidence, not proof of the speaker's identity or intent.
+
+| Gate | Required controller behavior |
+|---|---|
+| Acquisition boundary | Bind the original turn/request, session interaction epoch, Device, consented source/epoch, exact acquired spans and coverage gaps, and the acquisition-close event/reason. A profile pins its supported user-end or endpoint-detection rule. A segment-final callback or silence alone cannot establish whole-utterance completion; expiry, cancellation, route loss and a cap cutting off acquisition mark incomplete input. Bound endpoint waiting by the original capture/turn limits. |
+| Recognizer completion | Require a terminal result tied to that acquisition boundary and accounting for all its accepted audio spans. Pin adapter/recognizer/language/configuration revisions and the completion/coverage mapping. Streaming hypotheses and individually final segments remain provisional until this barrier. Missing, failed or unprovable completion defers interpretation; it never supplies an empty command or executable prefix. |
+| Sealed evidence | Seal one immutable exact transcript revision with its evidence/source selectors, completion binding and quality indicators before assembling the interpretation ContextBundle. Keep provisional text visibly provisional wherever exposed. The model receives only the permitted complete text and uncertainty/partial-input flags under `audio-context/1`; internal source and completion metadata stay on the controller. Raw audio may expire under §12.2 without being recreated or retained merely to prove completion. |
+| Quality disposition | The pinned adapter policy maps clipping, gaps, overlapping speech, recognizer uncertainty and unavailable required indicators to uncertain/partial input. Preserve supplied confidence with its scale/method or explicit unknown; an absent score is not certainty, and a numeric score alone cannot clear a flagged defect. Uncertain/partial sealed evidence permits only the existing clarification/deferral branches. An adapter unable to establish its required quality disposition withholds actionable interpretation. Sealing establishes stable input, not recognition correctness or admission. |
+
+Do not feed provisional hypotheses into `AudioInterpretationV1` or select a command-bearing prefix from a longer utterance. Preserve negation, qualifications and self-corrections in the exact permitted transcript; the interpretation model cannot replace the capture text or remove controller uncertainty flags. An unclear turn may retain only separately authorized unresolved evidence. No model repair, hidden retranscription, automatic retry, prior-dialogue completion or fetching broader context follows.
+
+A permitted `repeat_request` clarification collects a complete restatement as separate evidence and marks it as the active request for subsequent interpretation. The earlier uncertain text remains linked with its original flags; it cannot supply missing words or override the restatement. An `identify_playback_target` reply remains distinct target evidence, paired with the unchanged original command only within the same uninterrupted turn. Bind both roles/revisions explicitly and retain the original counters/deadline. Missing completion, exhausted allowance or interruption defers without another prompt. Ordinary later correction follows the existing attributed evidence/candidate revision path.
+
+Bind the sealed evidence revision to the ContextBundle and original invocation. Serialize recognizer callbacks, evidence invalidation, result acceptance and dispatch. An identical callback for the same segment/revision is a duplicate; changed content under that identity is a conflict. Earlier provisional revisions arriving out of order cannot replace or extend sealed evidence. Any changed sealed text or completion/quality binding invalidates affected pending interpretation, clarification and speech/dispatch. Retain only permitted correction/conflict links and require a fresh user request with fresh bindings; do not silently reseal and rerun. If a control already dispatched, a later recognition correction cannot undo it, replay it or issue a compensating control: record the actual or unknown outcome and use the existing reconciliation path. Immediate local Pause/Stop/Silence remains independent of this model-interpretation barrier.
+
+Before enabling this profile, pin controller, recognizer/adapter, completion/quality policy, Device/source and template revisions. Exercise the actual evidence assembler, grammar construction and dispatch path with delayed, reordered and duplicate callbacks:
+
+- A provisional or segment-final `skip` followed by further speech, negation or a revised target cannot invoke interpretation or transport before whole-utterance sealing. A complete clear capture and an explicitly scoped media command provide positive controls; capture remains unadmitted and transport occurs at most once against the bound target.
+- Acquisition timeout/cap, mid-word clipping, missing spans, overlap and unavailable required quality metadata yield the pinned incomplete/uncertain disposition despite a high recognizer/model score. Include breath/road/household noise with both clear and uncertain recognition; noise alone establishes neither failure nor correctness. No partial command dispatches or receives a false success acknowledgment; retain only permitted unresolved evidence.
+- Identical completion callbacks cause no second invocation, clarification, acknowledgment or control. Conflicting segment content and changed sealed evidence before result acceptance or immediately before dispatch invalidate the old binding; a late change after dispatch creates no replay or automatic compensation.
+- A budgeted restatement and target clarification use distinct evidence and the original cumulative caps. A suffix after interruption, source/route change, restart or handoff cannot complete an old request; delayed recognizer/model results remain invalid.
+- Revocation, raw-media expiry and unavailable evidence preserve current source/retention checks; completion metadata neither reacquires media nor restores consent. Stop controls and the policy-permitted manual/review alternative remain usable.
+
+These are required behavioral fixtures, not passing results or an accuracy guarantee. Measured noise/recognition quality and condition-specific usefulness remain subject to `UBU-D0365`; source ownership, platform qualification and numerical profiles remain open. This answers only the input-finalization and transcript-revision slice of `UBU-Q0128` subquestion 9, with both v1 schemas, action permissions and §4.2's MVP-release minimum unchanged.
+
+**Initial interpretation context (`UBU-D0371`).** Apply the logical assembly profile `audio-context/1` to `AudioInterpretationV1` invocations. Record it through the existing ContextBundle purpose/minimization metadata and source manifest; this adds no canonical object or wire-schema field. The controller assembles the model-visible projection from the following allowlist before invocation. Admission, ordinary review and richer future profiles keep their separate context rules.
+
+| Projection | Maximum permitted content for the initial interpretation |
+|---|---|
+| Control envelope | Request id, instantiated v1 grammar, effective activity/risk and declared-or-unknown attention bounds, allowed operation branches and remaining turn limits. Keep credentials, full policy/grant records, stored readiness-declaration text and internal Device/Compartment identifiers outside model input. |
+| Current utterance | Exact permitted local STT text and supplied evidence aliases for this request, with its uncertainty/partial-input flags. Include an original request and its budgeted clarification reply only within the same uninterrupted turn. No raw AV, prior dialogue, archived notes or unrelated evidence. |
+| Capture subjects | Zero subject aliases by default; at most four operator-selected subjects for this request, with only aliases, object kinds and minimum permitted distinguishing labels. Task lore, fact values, Calendar contents, Relationship/Association evidence and message bodies are excluded. Unselected names remain in the utterance for later resolution; aliases still confer no Identity/ownership resolution or admission. |
+| Media transport | At most one playback alias resolved under `UBU-D0322`, its minimum permitted distinguishing integration/target label, playing/paused state and allowed bounded operation/step semantics. Keep full item/queue records, media titles/content, transcripts, catalogs and libraries outside the projection; exact revisions and dispatch authority remain in controller request bindings. |
+
+These are ceilings, not required disclosures. Include optional subject or playback content only when the current request needs it and policy permits it. An unresolved reference supplies no alias; apply the existing clarification/deferral rules without fetching broader context. Recognized local Pause/Stop/Silence continues through its immediate controller path without a model call. User-dictated content remains scoped STT evidence; mentioning a detail authorizes no lookup of related records. Interpretation-time access to a label or transcript grants no permission to speak it.
+
+Keep fixed controller instructions and grammar separate from typed source data. Speech and labels may describe a requested operation, but cannot change instructions, permissions, source scope or available branches. The interpretation invocation exposes no callable MCP tools, search, filesystem/network retrieval or backend chat history. Controller-mediated reads supply all context; enforce runtime isolation and prior-job cleanup under `UBU-D0336`. A model request for more context cannot trigger a read or broader rerun. Persistent matches needing excluded material wait for ordinary review.
+
+Bind the exact supplied fields, aliases and source revisions to the immutable ContextBundle and existing request binding. Keep its full policy-filtered audit metadata on the controller; exclusions cannot reveal denied identifiers, counts or existence to the backend or user. Check the complete normalized invocation, including instructions and grammar, against the remaining cumulative model-input byte cap before dispatch. If required text or grammar cannot fit, defer without truncating, summarizing away negation/qualifications or automatically retrying. Recheck source availability, policy and binding freshness immediately before invocation and result release.
+
+Before enabling this assembly profile, pin controller/adapter/runtime/template and policy revisions and demonstrate:
+
+- Complete note/Task capture with no subject aliases and a permitted scoped media command produce valid v1 outcomes using only the allowlisted projection; capture stays unadmitted and transport uses its bound target.
+- Synthetic details planted in excluded lore, fact values, messages, denied labels and prior-job context appear in neither actual backend inputs nor observed reads/releases. Include a permitted-detail control; generated omission alone cannot prove isolation.
+- Hostile transcript/label instructions cause no additional context read, tool access, branch widening or direct speech. Interruption, restart/handoff and prior dialogue cannot restore a missing referent; only an eligible same-turn clarification retains its original budget.
+- Over-budget complete input and policy/source changes between assembly and invocation withhold dispatch without truncation, hidden retrieval or cloud fallback; delayed results cannot use the invalidated bundle. Immediate local controls and permitted unresolved evidence remain available.
+
+This answers the initial-envelope context-selection slice of `UBU-Q0128` subquestion 5. These are required fixtures, not passing results or a performance claim. Both v1 schemas, action permissions and the MVP-release minimum remain unchanged; measured qualification, richer context/action profiles and the question's other remaining slices stay Open.
+
+**Audio routes and peripherals (`UBU-D0359`).** Bind input and output independently. The existing `InteractionBudgetV1.audio_endpoint` ref/version resolves to a controller-owned output-route record; microphone identity remains in session/source consent and request bindings. These local artifacts add no model-output field or canonical object. A qualified route record must establish:
+
+| Binding | Required content |
+|---|---|
+| Route identity | Owning execution-enclave Device, adapter/profile revisions, controller route-generation token tied to observed platform state, exact input source or complete output sink set, observation time and finite freshness ceiling. A friendly name, pairing record or default-device setting cannot establish current route identity. |
+| Disclosure scope | Current source/Compartment policy versions, operator-selected output route and declared audience, and permitted content scope. Treat car speakers, phone/watch speakers and undeclared audiences as shared or unknown. Headphones alone cannot establish privacy; every sink in a mirrored route must be permitted. |
+| Enforced controls | Demonstrated source/stream binding, prevention of automatic microphone/speaker fallback, finite queued-audio bounds and measured stop-to-output-quiescence/resource-release ceilings under §§21.1.4–21.1.5. Missing route observability or enforceable bounds leaves the affected audio direction unavailable. |
+
+Attaching a microphone, headset or car speaker does not itself register a UbU Device. A phone/watch/car app executing UbU work in another enclave requires its own Device trust, qualified endpoint and authenticated policy-authorized route. Pairing, proximity and ownership supply no capture, processing, storage or disclosure authority. Peripheral/platform buffering and copies remain within the qualified route's retention and resource envelope; an accessory cannot become an implicit inference backend.
+
+Before acquisition, verify the selected input source against current source-scoped consent and pin the stream to it. Inability to prevent silent microphone fallback disables speech acquisition. Before speech, and before releasing each bounded speech segment, verify the selected output route/generation, complete sink set, current disclosure permission and remaining budget. Bind the stream to that route; do not send to a platform default that can migrate to another speaker. The adapter must prevent queued audio from falling back to an unreviewed sink, including before a delayed route-change callback. If it cannot, speech on that profile remains unavailable. Speech content and endpoint metadata inherit source restrictions; a neutral acknowledgment also requires a permitted output route.
+
+Disconnect, input/output replacement, mirroring change, loss of reliable route state or a platform audio-focus interruption invalidates affected turn/output bindings locally. Stop affected acquisition and speech, discard unsent speech queues and invalidate pending interpretations, playback referents and confirmation through the existing epoch rules. Do not splice microphones into one utterance, infer an action from its partial transcript, switch to speaker, resume old speech, replay transport or resume an interrupted turn automatically. Audio focus, ducking or a system call establishes no media-control request. Already released samples cannot be recalled; report quiescence against the measured bound rather than claiming instant physical silence.
+
+Reconnection, even under the same friendly name, needs fresh route evidence and explicit user selection/resumption. Recompute the budget and permissions; a changed input source also needs fresh source-scoped consent. A new user request uses fresh bindings and retains existing unresolved evidence only where authorized. A cross-Device handoff transfers permitted candidates through ordinary exchange, never a live microphone, partial executable turn, queued speech or approval. Keep local Pause/Stop/Silence usable and preserve permitted saved evidence; indicate unavailable audio through an eligible remaining surface without requiring visual interaction while attention is restricted.
+
+Before enabling a route, pin Device/OS/adapter/controller and policy/profile revisions and exercise queued and active speech during headset unplug, car disconnect/reconnect, same-name endpoint replacement, speaker/default-route changes, mirrored output and delayed/duplicate route callbacks. Also exercise input fallback during an utterance, platform audio-focus loss, source/output revocation, offline operation and phone/watch handoff. Require no unconsented acquisition, release to an unreviewed sink, post-invalidation release, partial-utterance dispatch, automatic resumption or repeated effect; demonstrate bounded quiescence and retained-evidence/manual-control behavior. Include permitted-route controls so silence alone cannot pass. These are required qualification cases, not passing results, supported accessories or a driving-safety claim. This answers the input/output route and handoff subset of `UBU-Q0128` subquestion 17; numeric profiles and platform-specific qualification remain open.
+
+**Playback referents and vague commands (`UBU-D0322`).** For the existing transport envelope, resolve the audio domain and target before offering a playback alias. This is controller-owned request context, not a new canonical object or an expansion of `AudioInterpretationV1`. An explicit target must resolve uniquely within the permitted integration scope. An implicit media reference requires one user-selected playback target in this session, current integration evidence that it remains the target, and no competing UbU speech or other permitted audio source. Foreground-app status, most-recent playback, project relevance and model confidence cannot select a target. Clear implicit referents on interruption, material mode/Compartment or endpoint change, restart or Device handoff; retained/audit copies cannot restore them. If the available permitted evidence cannot establish uniqueness, clarify or defer without inspecting denied apps or revealing their existence.
+
+Bind the selected integration/target, item and queue/control revision, playing/paused state, Device/output endpoint, current grant/policy versions, observation time, finite freshness deadline and the operation's integration-declared step semantics in the existing request binding. A paused target can support explicit resume while its binding remains fresh; selecting it grants no new playback or disclosure authority. Ordinary position advancement within the same item does not change the control revision; item/queue replacement, seek, playback-state change, endpoint switch or loss of reliable state does. Changes before dispatch invalidate the pending interpretation. A dispatched control's confirmed transition records its outcome and invalidates other outstanding bindings; its acknowledgment still rechecks the current budget, endpoint and disclosure permission. Transport must address the bound integration and target with its expected control revision, rather than a global command to whichever player is active at dispatch. An adapter unable to enforce that binding cannot enable transport. Constrain producer branches to the routing decision below and recheck it at dispatch; a model's action label cannot supply a missing target or operation.
+
+| Utterance in the initial envelope | Controller routing |
+|---|---|
+| Recognized local pause/stop/silence, or `pause that` while UbU is speaking | Take the immediate local session-control path and stop UbU output. Do not pause another app as an inferred second effect. Consented speech input or local controls remain required. |
+| `pause that` with UbU silent and exactly one fresh selected media referent | Propose `media_transport/pause` for that alias, subject to the existing budget and dispatch checks. With an unknown or competing referent, use the one permitted target clarification or defer. |
+| Explicit `pause/resume/skip/rewind [target]` | Resolve the named target uniquely and bind that request; do not change the session's default target implicitly. Skip/rewind permit only the adapter's declared single bounded step. Unsupported quantities or semantics defer. |
+| `go back` | Keep unresolved: a prior track, a seek, UbU readback and UI navigation have different effects. A current player alone does not choose the operation. The v1 clarification vocabulary cannot clarify this operation; defer for ordinary review or a fresh explicit command. |
+| `save this` | Retain only the authorized utterance as unresolved capture evidence. Do not bookmark/download media or treat a deictic reference as captured content. A self-contained dictated note may use the existing evidence-bound capture action. |
+| `what was that?` or `what did I miss?` | Defer readback, replay and summarization requests; v1 has no such action. Do not substitute a rewind or speak generated content. |
+| `remind me about this` | Retain the authorized utterance as unresolved evidence for note/Task review, with its missing referent visible. Do not admit a Task, schedule a reminder or fetch content to fill the gap. |
+
+Target clarification uses only `identify_playback_target` and the remaining turn budget; no spoken menu or generic `yes` selects an app. Its answer must uniquely identify a permitted target. Bind the original command and clarification evidence within the same uninterrupted turn, retaining its original counters/deadline; an interruption cannot resume that exchange. A new explicit request needs fresh evidence and bindings. Partial/uncertain STT or mixed supported/unsupported requests cannot yield media dispatch; retain authorized unresolved evidence. Immediate local pause/stop/silence remains available.
+
+Media apps retain playback/position ownership. UbU records only policy-permitted target/control metadata and confirmed outcomes needed for routing and audit; transport grants do not permit transcript, catalog or library retrieval. Do not issue app transport automatically when UbU speaks, is interrupted or reconnects. An unknown dispatch outcome is reconciled through permitted state reads and audit metadata, never by replaying the transport or claiming success from silence. State reconciliation alone does not prove a relative command succeeded. A subsequent effect requires a fresh user request.
+
+Before enabling this routing slice, pin the adapter/controller and policy revisions and exercise: two players or no reliable target; UbU speech overlapping media; an explicitly named app differing from the selected default; denied-source metadata; paused-target resume; ordinary position advancement versus item/queue/seek changes between interpretation and dispatch; stale/offline state and endpoint/Device handoff; ambiguous `go back`, `save this` and reminder references; and duplicate or unknown skip/rewind outcomes. Require no wrong-target, inferred second or repeated effect, no denied-context leakage, no canonical planning-state change without ordinary admission and no false success acknowledgment. These are acceptance requirements, not passing results. This answers initial-envelope referent routing in `UBU-Q0128` subquestions 9, 14 and 15; richer media operations, numerical profiles and device-specific integration remain open.
+
+**Initial typed interpretation (`UBU-D0310`).** `AudioInterpretationV1` is the closed JSON result for the initial envelope only. All keys are required; `null` or `unknown` represents an unavailable estimate. References are opaque aliases supplied in this request, not model-authored object identifiers. This is the schema template; the controller instantiates a conservative producer grammar under §21.2. Matching it does not establish permission. Apply the budget's finite response-size cap before parsing one complete JSON object; reject duplicate keys, non-finite numbers and trailing content.
+
+```json
+{
+  "type": "object", "additionalProperties": false,
+  "required": ["schema_version", "request_id", "intent", "entities", "confidence", "ambiguity", "cognitive_load_estimate", "action_risk", "proposed_action", "required_confirmation", "clarification_request", "defer_reason", "safe_for_mode"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "request_id": {"$ref": "#/$defs/ref"},
+    "intent": {"enum": ["capture", "session_control", "media_transport", "clarify", "defer", "no_op"]},
+    "entities": {"type": "array", "maxItems": 4, "items": {"$ref": "#/$defs/entity"}},
+    "confidence": {"type": ["number", "null"], "minimum": 0, "maximum": 1},
+    "ambiguity": {"type": "array", "maxItems": 6, "uniqueItems": true, "items": {"enum": ["uncertain_stt", "partial_utterance", "unresolved_reference", "multiple_targets", "stale_context", "other"]}},
+    "cognitive_load_estimate": {"enum": ["minimal", "low", "moderate", "high", "unknown"]},
+    "action_risk": {"enum": ["none", "low", "high", "unknown"]},
+    "proposed_action": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/capture"}, {"$ref": "#/$defs/session_control"}, {"$ref": "#/$defs/media_transport"}]},
+    "required_confirmation": {"enum": ["none", "clarification", "ordinary_review"]},
+    "clarification_request": {"enum": [null, "repeat_request", "identify_playback_target"]},
+    "defer_reason": {"enum": [null, "unsupported_operation", "mode_prohibits", "budget_exceeded", "policy_denied", "ambiguous_input", "stale_context", "user_requested"]},
+    "safe_for_mode": {"type": ["boolean", "null"]}
+  },
+  "allOf": [
+    {"oneOf": [
+      {"properties":{"intent":{"const":"capture"},"proposed_action":{"$ref":"#/$defs/capture"},"required_confirmation":{"const":"ordinary_review"},"ambiguity":{"maxItems":0},"clarification_request":{"type":"null"},"defer_reason":{"type":"null"}}},
+      {"properties":{"intent":{"const":"session_control"},"proposed_action":{"$ref":"#/$defs/session_control"},"required_confirmation":{"const":"none"},"ambiguity":{"maxItems":0},"clarification_request":{"type":"null"},"defer_reason":{"type":"null"}}},
+      {"properties":{"intent":{"const":"media_transport"},"proposed_action":{"$ref":"#/$defs/media_transport"},"required_confirmation":{"const":"none"},"ambiguity":{"maxItems":0},"clarification_request":{"type":"null"},"defer_reason":{"type":"null"}}},
+      {"properties":{"intent":{"const":"clarify"},"proposed_action":{"type":"null"},"required_confirmation":{"const":"clarification"},"clarification_request":{"not":{"type":"null"}},"defer_reason":{"type":"null"}}},
+      {"properties":{"intent":{"const":"defer"},"proposed_action":{"type":"null"},"required_confirmation":{"const":"ordinary_review"},"clarification_request":{"type":"null"},"defer_reason":{"not":{"type":"null"}}}},
+      {"properties":{"intent":{"const":"no_op"},"proposed_action":{"type":"null"},"required_confirmation":{"const":"none"},"ambiguity":{"maxItems":0},"clarification_request":{"type":"null"},"defer_reason":{"type":"null"}}}
+    ]}
+  ],
+  "$defs": {
+    "ref": {"type": "string", "minLength": 1, "maxLength": 128},
+    "entity": {
+      "type": "object", "additionalProperties": false, "required": ["role", "context_ref"],
+      "properties": {"role": {"enum": ["subject", "playback_target"]}, "context_ref": {"$ref": "#/$defs/ref"}}
+    },
+    "capture": {
+      "type": "object", "additionalProperties": false, "required": ["kind", "candidate_kind", "evidence_span_ref"],
+      "properties": {"kind": {"const": "capture_candidate"}, "candidate_kind": {"enum": ["note", "task_candidate"]}, "evidence_span_ref": {"$ref": "#/$defs/ref"}}
+    },
+    "session_control": {
+      "type": "object", "additionalProperties": false, "required": ["kind", "operation"],
+      "properties": {"kind": {"const": "session_control"}, "operation": {"enum": ["pause", "stop", "silence"]}}
+    },
+    "media_transport": {
+      "type": "object", "additionalProperties": false, "required": ["kind", "operation", "playback_ref"],
+      "properties": {"kind": {"const": "media_transport"}, "operation": {"enum": ["pause", "resume", "skip", "rewind"]}, "playback_ref": {"$ref": "#/$defs/ref"}}
+    }
+  }
+}
+```
+
+Before offering the grammar, the controller constrains `request_id` to the invocation's id, replaces each context/evidence/playback reference site with an enum of supplied aliases, and removes action branches or media operations outside the current envelope and grants. An empty alias set forces the related entity list empty or removes the related action branch; no remaining clarification allowance means the `clarify` branch is unavailable. Uncertain or partial STT permits only clarification or deferral, while the already-authorized evidence may remain unresolved. Static intent/action consistency is encoded in the schema; dynamic semantic and policy checks still run at dispatch.
+
+Semantic validation repeats these constraints and checks current context:
+
+- `capture`, `session_control` and `media_transport` require the matching non-null action kind, empty `ambiguity`, null `clarification_request` and null `defer_reason`. Capture requires `ordinary_review`; session and media controls require `none`. These labels never perform admission or confirmation.
+- `clarify` requires a non-null `clarification_request`, `required_confirmation = clarification`, and null action and defer reason. `defer` requires a non-null defer reason, `ordinary_review`, and null action and clarification request. `no_op` requires null action, clarification request and defer reason, and `none`. Nonempty ambiguity permits only `clarify` or `defer`.
+- Entity aliases must occur in the permitted ContextBundle and match their declared role; they suggest associations without resolving Identity or ownership. Capture must cite a supplied STT evidence span belonging to the current utterance. The controller retains that evidence as an existing unresolved candidate; a model cannot supply replacement note text, admit a Task, or invent evidence. `note` routes to existing quick-note/Discovery evidence and `task_candidate` to existing Task proposals; these routing tags do not extend candidate-type or provenance enums.
+- Media transport must name the one fresh playback alias whose integration, target and state version the controller bound to this request. `skip` and `rewind` each mean one integration-declared bounded step; requested quantities or other unsupported arguments defer rather than being silently approximated. The result cannot contain arbitrary tool names, destinations, credentials, message payloads or executable code.
+
+**Request binding.** Outside the producer result, the controller binds each invocation to its request id, session, Device, STT evidence/version, ContextBundle, budget and policy versions, scoped grants, playback target/version when applicable, session interaction epoch, finite deadline and idempotency key. The echoed `request_id` must match that invocation's original binding; it cannot select another request. Interruption or a material mode, Device, endpoint, target, payload, policy or grant change invalidates outstanding bindings and advances the epoch. The controller serializes invalidation, result acceptance and dispatch decisions. Late results cannot speak, dispatch or supply a new clarification; a fresh request needs fresh evidence and current context.
+
+The controller rechecks the binding and operation permissions before both speech and dispatch. Confidence, load, risk, confirmation and `safe_for_mode` are advisory; the controller may tighten or defer, never widen the envelope. Load describes the proposed interaction, never the user's intelligence, affect or capacity. A clarification uses a controller-owned bounded template and consumes the request's remaining clarification allowance. Acknowledgments report only confirmed capture/control outcomes; a capture acknowledgment means that a review artifact was retained, without confirming its content. The model result is never spoken directly. Recognized pause/stop/silence controls take an immediate local path without waiting for an LLM; local stop/silence controls remain available if model processing fails.
+
+Reject malformed, truncated, oversized, unknown-version, extra-field, forged-reference or semantically inconsistent results without repairing them into executable actions. Preserve only already-authorized evidence as an unresolved review item, without automatic model retries or repeated prompts. Duplicate results reuse the original idempotency key and are ignored after the first acceptance, including speech and clarification; an uncertain media outcome requires state reconciliation and a fresh user request, never automatic repetition of a relative skip/rewind.
+
+Before enabling v1, include negative fixtures for unknown action kinds, foreign evidence/playback aliases, inconsistent intent/action pairs, late replies after interruption or handoff, and duplicate/unknown media outcomes. Valid capture stays in candidate state; every consequential external request remains deferred under the initial envelope. This specifies a contract, not a shipped schema or implementation. Numeric mode profiles, external-action confirmation grammar and richer output extensions remain in `UBU-Q0128`.
+
+**Interruption and deferral.** Partial/uncertain STT, ambiguous recipients or “this/that” references, stale media state and false conversational continuity never select an action by confidence alone. Ask at most the budgeted clarification count, then retain an unresolved candidate or defer. Interruption cancels unfinished speech and pending confirmation; it cannot complete an utterance or replay an action. A mode, target, payload, policy or Device change invalidates pending approval. Leaving a restricted mode only makes a deferred item available for ordinary review: it never dispatches it. Any later consequential action needs fresh admission under current authority and confirmation bound to the exact operation, recipient, payload/version and expiry; the ordinary-review single-recipient message slice follows below, while other external-action grammars remain open.
+
+**Deferred message confirmation (`UBU-D0333`).** The controller profile `audio-send-review/1` defines an additional confirmation requirement for an already-permitted, ordinary-attention review of one plain-text message to one recipient. It enables no sending workflow and adds no operation to `AudioInterpretationV1` or `InteractionBudgetV1`. Every external send remains deferred in the initial restricted-attention envelope. Group/multi-party sends, attachments, financial/legal commitments, high-stakes messages and unknown consequences are outside this profile.
+
+Returning to ordinary attention requires explicit operator selection and a fresh eligible review context; stationary motion, reconnection or a Device change is insufficient. Open the deferred item only on user request, with permitted evidence and a newly reviewed recipient and draft. Missing references stay unresolved. The captured request, an accepted Task/note, a draft, a tone suggestion and earlier spoken approval authorize no send.
+
+**Complete review and binding.** Resolve one permitted recipient and exact destination; never select by relationship closeness, recent contact or model confidence. Present the sending Identity/account, recipient's distinguishing label and actual address/number, integration/route and complete final message. An abbreviated readback cannot approve omitted content. Audio-only review requires a revision-pinned rendering that preserves decision-relevant spelling, punctuation, numbers and other literal content; unsupported rendering or content exceeding the finite review budget defers to an eligible ordinary review surface. Do not silently shorten content, split it into unbounded turns or read it on an unauthorized endpoint. Review of the draft and authorization of its external send remain separate decisions.
+
+Before a confirmation prompt, bind the review id/version, actor and authenticated session, Device, interaction epoch, activity/readiness and review-profile versions, input source and output endpoint revisions, recipient ref/version and exact destination, sending account/integration/route versions, immutable complete payload/version, source/context/policy/grant versions, completed review presentation, finite monotonic deadline and the originating send's idempotency key. Store these in the controller's existing review/AgentAction bindings, outside model output. A reviewed Device/profile must supply finite input, readback, prompt, speech and total-review limits; missing limits or bindings prevent the prompt. Budget renewal, replay and restart cannot extend the deadline or complete an interrupted readback.
+
+**English confirmation grammar.** Instantiate exactly one permitted token sequence for the current review:
+
+```text
+confirm send to <recipient_phrase> code <digit_word> <digit_word> <digit_word> <digit_word>
+```
+
+`recipient_phrase` is the controller-reviewed, unique spoken label for that exact recipient/destination, shown or spoken during complete review; it is not an LLM alias or a way to choose a recipient during confirmation. Each `digit_word` is one of `zero one two three four five six seven eight nine`. The controller samples a fresh four-digit code, does not reuse it within the review session and keeps at most one live challenge; code exhaustion disables this confirmation route. For example, `confirm send to Morgan mobile code four seven two six` matches only the currently bound message. The code associates a reply with a review; it is not actor authentication, a secret capability or proof of comprehension.
+
+The controller generates the expected phrase, never the model or message body. Match the complete final STT token sequence after only ASCII case-folding, collapsing ASCII whitespace and removing one terminal sentence mark (`.`, `?` or `!`). Require spelled-out digit words; do not repair digits, synonyms, approximate names or homophones into a match. This English profile permits no other locale grammar. Generic `yes`, `send it`, a partial phrase, extra instructions, an incorrect code, uncertain STT or an ambiguous speaker/source cannot approve. Input must be consented and explicitly initiated for this same uninterrupted review exchange after presentation/prompt output has ended. Prior recordings/transcripts, TTS echo, media and model/tool output cannot supply confirmation; input ownership must be established independently of phrase matching or this route remains unavailable.
+
+Stop/cancel/silence immediately invalidates the challenge. Interruption, expiry, incomplete presentation or a material change to any bound actor/session, Device, mode, endpoint, recipient, account, route, payload, context, policy or grant invalidates it as well. A new user-requested exchange needs fresh review and a new challenge, with no automatic retry prompt. Matching text records approval evidence only; serialize cancellation, approval consumption and dispatch, recheck all current bindings and authority immediately before egress, and persist the consumed approval and ordinary attempt record before external dispatch. Duplicate callbacks cannot create another attempt. Failed or unknown delivery follows ordinary outcome reconciliation/idempotency rules in §21.8, never blind replay or a success acknowledgment inferred from silence. Fresh approval cannot bypass unresolved delivery reconciliation.
+
+Reuse existing review, evidence, AgentAction and append-only Log links for permitted recipient/payload versions, presentation completion, challenge id/epoch, confirmation evidence, policy checks, invalidation/consumption and delivery outcome. No mandatory raw recording, full transcript, message-body copy or retained plaintext code is added. Synchronized review artifacts carry no live challenge, microphone consent or execution approval.
+
+Before enabling this confirmation route in a separately released sending workflow, pin controller/STT/TTS/adapter, Device/profile, rendering and policy revisions and demonstrate:
+
+- A fully reviewed permitted message and exact fresh phrase yield one bound attempt; generic assent, wrong/partial code, approximate recipient, uncertain speech, TTS/media echo and an unowned source yield none.
+- Same-name contacts, changed destination/account/route or payload, incomplete/oversized readback and denied endpoint/context require fresh review or deferral without wrong-recipient disclosure or dispatch.
+- Stop/interruption/revocation between presentation, confirmation and egress, expiry, restart/handoff and delayed/duplicate callbacks produce no stale or repeated attempt; unknown delivery remains explicitly unknown and is reconciled before any retry.
+- Driving, bicycling and every other initial restricted-attention mode still defer external sends even with a grant and a correctly spoken phrase.
+
+These are required acceptance cases, not passing implementation results or authentication guarantees. This answers the ordinary-review single-recipient send slice of `UBU-Q0128` subquestions 10, 13 and 18. Other external-action grammars, future restricted-mode execution permissions and richer messaging integrations remain open.
+
+Audit records link the session, evidence/candidate, budget and policy versions, ContextBundle, resolved target/version, policy decision and reason, approval/deferral/rejection, invocation/result and idempotency key. They retain minimized summaries or permitted refs, not a mandatory recording or full transcript. Raw-media retention remains under §12.2 and `UBU-Q0170`–`UBU-Q0171`. Device handoff rechecks capture, context, output route and authority; synchronized candidates never carry live microphone consent or pending execution approval.
+
+**Release boundary.** Before enabling a restricted-attention slice, demonstrate that interruption stops output, uncertain references do not dispatch, high-risk sends remain deferred despite confirmation, mode/Device changes do not execute queued work, and offline operation preserves local-only denials. This is a design contract, not an implementation or a claim of validated driving safety. `UBU-Q0183` retains the delivery sequence and device allocation under `UBU-D0292`; richer media/narration and profile tuning remain later answers, without restoring a Phase 3 gate.
+
+#### 21.1.3 MVP interaction coverage and alternatives
+
+**Product contract (`UBU-D0319`).** Realize `UBU-D0292` through a common planning/review surface: showing a concrete concern and speaking about it produces a reviewable proposal or an explicit unresolved result with a useful next step. A camera preview, transcript or conversation alone does not satisfy delivery. Text and forms are directly reachable before capture or permission requests, without a full inventory or later-phase Resource/Skill/Technique setup.
+
+**Source choice.** Camera, microphone and speech output are independently selectable; opening the surface starts none of them. Before acquisition, disclose purpose, active Identity/Compartment, enabled sources, local route and effective retention limits. Keep capture state, pause/stop, silence and switch-to-text controls available during capture and processing. Permission to use hardware is not session consent. A remembered surface choice is a user-controlled UI setting, not an inferred planner Preference; declining capture must not cause recurring permission prompts. Guided acquisition explains the missing information, offers another view, and allows stop or an alternative.
+
+**Guided acquisition (`UBU-D0338`).** Offer optional help for a user-selected target, such as acquiring a label. Explain the detail needed and give one short positioning or lighting instruction at a time through the user's selected usable output: text, optional speech or supported assistive technology. Make direction references explicit and let the user repeat or skip a cue. Nonvisual use must not require interpreting the preview. Distinguish an observed framing problem from a suggestion; use only current permitted source evidence and keep uncertain or unreadable details explicit. Present extracted names and values for exact correction during ordinary candidate review; framing success and model confidence cannot establish factual correctness. Each enabled profile declares finite guidance-time and retry limits. Stop immediately on request; at its limit or when useful feedback is unavailable, offer another eligible view, manual entry or deferral without restarting capture. Guidance starts no source, renews no consent and extends no media deadline.
+
+**Access across routes.** Make source controls, guidance, exact-value correction, uncertainty, candidate diffs and accept/reject/defer actions usable through the supported keyboard, screen-reader and switch-access routes. Expose control names, roles, state, focus and errors; no essential action depends solely on color, a pointer gesture, speech or seeing the preview. Apply the continuity rules below when changing channels. Permit text/forms with camera, microphone and speech output disabled and models unavailable. Let users choose channels and assistance without disclosing a diagnosis or inferring disability, intent or planner Preferences. Speak private source details only through a currently permitted user-selected output route; otherwise offer private text or defer. Apply §21.1.2's attention budget to guidance and review: unavailable safe attention or output defers affected interaction, and an access setting cannot widen action permissions.
+
+**Ordinary-attention coverage.** All routes use the same admitted-state operations, validation and review authority; provenance follows the actual source. Camera input is useful where observation is relevant, rather than required for every operation.
+
+| Workflow | Camera/voice route | Text/form route |
+|---|---|---|
+| First useful concern or quick capture | Show relevant context and describe the concern; propose a note or Task with uncertainty visible. | Type the concern or enter minimal note/Task fields without a media attachment. |
+| Clarify or correct | Ask about consequential ambiguity; let the operator identify the target, correct interpretation or leave it unresolved. | Select permitted existing targets and edit exact names, values, dates, durations or constraints; retain unknown/private or unresolved answers without inventing field values. |
+| Next action and explanation | Request the next legitimate Task and inspect or hear why it is recommended. | Read the same Task, explanation, constraints and permitted evidence, or the reason no legitimate recommendation is available. |
+| Review a proposal | Discuss its source, uncertainty, exact proposed diff and effects; explicitly accept, correct, reject or defer the identified item. | Inspect the same candidate and diff, edit fields, and accept, reject or defer without speaking or capturing media. |
+| Act, override and reconcile | Report action, override or progress; observations remain candidates for actual-versus-planned reconciliation. | Use Task controls and interval/status entry, including unknown/private time, under the existing Log, Snapshot and recalculation rules. |
+| State a Preference | Speak an explicit pairwise statement and review it before acceptance. | Enter and accept the same pairwise statement; channel choice or repeated behavior creates no planner Preference. |
+
+**Continuity and degradation.** Changing surfaces preserves permitted user-authored drafts and retained candidate/version/evidence links, distinguishes operator corrections from model interpretations, and shows unsaved input. It neither admits a candidate nor duplicates an operation, starts another source, changes Compartment or extends raw-media retention. Changed source/context bindings invalidate pending interpretations and approvals; late results cannot overwrite manual corrections. Missing, declined, revoked, noisy or poorly framed sources and failed or over-budget local backends leave the remaining routes useful. Explain the limitation without claiming recognition and offer text/forms; do not retry capture repeatedly or reroute local AV to cloud processing. With camera and microphone disabled and models unavailable, manual capture/editing, existing Plan inspection, candidate review and action/override recording remain usable through ordinary validation. Forms expose precision on demand without requiring internal-ontology entry; labels, errors, focus and review actions work with keyboard and screen reader, with speech output optional.
+
+**Acceptance evidence.** Before claiming the primary surface delivered, attach revision-pinned scenario results on the qualified hardware profiles required by §4.2 (`UBU-D0339`) and selected under `UBU-Q0177`, identifying enabled sources/backends, policy configuration, outcomes and permitted candidate/admission references. Demonstrate:
+
+- A shown concern plus voice uses a visible detail and permitted context to produce a useful candidate or consequential clarification, followed by operator correction, admission and a legitimate next action or explicit planning limitation. Exercise the other voice workflows and repeat every table row using only text/forms with both capture sources disabled. Equivalent accepted meanings produce matching canonical effects and recalculation, with source-appropriate provenance.
+- Camera/microphone absence, denial or revocation; noisy speech or unsuccessful framing; offline/local-model failure and resource exhaustion allow manual completion without lost permitted input, fabricated observations, false saved-state acknowledgments or cloud fallback.
+- Keyboard-only and screen-reader completion of text/form entry, exact-value correction and review with speech output disabled; guided acquisition can be stopped or replaced without repeated unexplained capture requests.
+- Start, pause, resume, stop and revocation accurately control acquisition and visible state. Raw AV stays local; context and output respect Compartment denials, and export requires its separate authority. Retention behavior matches the approved policy rather than a documentation claim.
+- Switching surfaces during a delayed interpretation, duplicate submission/replay, and material context, policy or Device change cause neither stale admission nor duplicate mutations. Preserved candidates carry no live capture consent or pending execution approval across Devices.
+- Ambiguous objects, high-confidence interpretations and apparent completion remain unresolved/candidate evidence until required review and validation. Unknown/private intervals and channel choices create no inferred intent, affect, Preference, habit or completion claim. Restricted attention obeys §21.1.2: defer unavailable review rather than demand visual/form interaction or widen permissions.
+
+**User-tested access evidence (`UBU-D0338`).** Before enabling or claiming these guided-access workflows, extend the acceptance evidence with consented user sessions involving people who use the proposed access routes and experience the relevant vision, hearing, speech or dexterity constraints; developer simulations alone are insufficient. Predeclare participant/condition coverage, tasks, Device/software/assistive-technology versions, finite time/attempt and assistance-burden limits, and useful-outcome criteria. Include label framing with blur, glare and cropping; guidance without visual preview; unavailable speech or hearing; limited camera handling; keyboard, screen-reader and switch access; capture declined for privacy; and restricted attention in safe simulations. Use matched tasks to compare guidance, unguided capture and the user's preferred alternative where usable; report unavailable routes and user-reported burden without forcing capture. Repeat entry, exact correction and review with capture and speech output disabled. Exercise private-output denial, stop, retry exhaustion and switching during a delayed interpretation.
+
+Report completion, correction, unresolved, rejected and failed outcomes, time, retries and required assistance by tested condition and route; distinguish useful manual fallback from successful guided acquisition. Require reachable source controls and exit, preserved permitted drafts, faithful uncertainty/review, ordinary admission and no unauthorized acquisition or disclosure. A failed mandatory access/privacy gate or missed declared usefulness limit withholds the affected workflow for that combination; keep its fallback and remaining gap visible. Publish policy-safe results and limitations alongside the support matrix, with explicit participant consent for research retention separate from capture permission and no compulsory diagnosis or raw-media retention. Public access claims name only the tested workflows and combinations; passing one route or population sample cannot establish universal accessibility. These are release evidence requirements, not passing results; hardware qualification, numerical profiles and delivery allocation retain their existing questions.
+
+This resolves interaction coverage and acceptance, not implementation. `UBU-D0339` sets capture-mode/device-role allocation and delivery sequence in §4.2; `UBU-Q0177` retains measured hardware selection and `UBU-Q0160` retains the mobile workload/API choice; `UBU-Q0128` retains numeric restricted-attention profiles and richer actions; `UBU-Q0166`–`UBU-Q0172` retain exact evidence, corroboration, latency, segmentation and retention contracts. Apply the existing evidence, policy and attention gates to each enabled slice. No particular backend, hardware support, latency target or later-phase planning object is established here.
+
+#### 21.1.4 Latency classes, freshness and interruption
+
+**Class contract (`UBU-D0325`).** Use four interaction latency classes. A snapshot capture is a bounded one-shot input; it does not itself admit a canonical Snapshot. Receipt, permitted durable saving, interpretation, candidate admission, planner certification and verification of an executed effect are separate outcomes. A receipt may say "Received" or "Processing"; "Saved" requires the relevant durable write, and neither message implies admission or execution.
+
+| Class | Clock and useful result | Deadline/degradation behavior |
+|---|---|---|
+| `snapshot_capture` | From controller acceptance of a one-shot capture request through acquisition, interpretation and presentation of a reviewable candidate or explicit unresolved result. | End acquisition and cancel unfinished interpretation at the job deadline. Preserve permitted saved evidence/drafts and show any unsaved input; offer an explicit retry or text/form entry. |
+| `conversational` | From acceptance of a completed user turn to the first substantive response or clarification, with a separate total turn deadline. | A missed response deadline ends waiting with an unavailable/deferred explanation; stop pending speech and interpretation. A new request uses fresh bindings and budgets. Restricted attention uses §21.1.2 rather than demanding visual review. |
+| `streamed_supervision` | From each permitted observation window to a usable candidate update, with a maximum observation age at presentation and a maximum gap since the last usable update. | On excessive age, gap or backlog, withdraw live guidance and show "Updates delayed/paused". Bound acquisition and queued work; expose permitted coverage gaps rather than replaying old observations as current supervision. This class supplies no safety-critical monitoring guarantee. |
+| `retrospective` | From job enqueue to a reviewable report over a pinned historical interval/source manifest, with bounded progress intervals and a total job deadline. | Yield to interactive work. On exhaustion, pause at a permitted durable checkpoint under §21.8 where supported, otherwise stop with retained sources. Label analyzed and missing scope; explicit continuation rechecks current policy and bindings. Partial work cannot claim full coverage. |
+
+**Deadline policy.** Before enabling a class on a Device/backend/mode, require a controller-owned versioned profile with finite local-acknowledgment, first-useful-result and total-job ceilings, applicable source/context-age ceilings, and, for streams, update-gap and backlog ceilings. Enabled work uses positive elapsed ceilings with acknowledgment <= first useful result <= total job. Declare finite concurrency, calls/work, prompt/result, memory/buffer and storage limits plus battery/thermal pause and recovery conditions. Missing or unsupported limits prevent that class's dispatch while manual routes and stop controls remain available. These are policy requirements, not new wire-schema fields or measured defaults.
+
+Bind elapsed deadlines to the local monotonic clock at the table's start event; include queueing, acquisition where applicable, preprocessing, generation, validation and presentation. Progress text, tokens, retries and intermediate frames cannot reset deadlines or count as a substantive result. Before waiting, show the active response/wait limit and fallback in the permitted channel; expiry produces the named degraded outcome and cancels outstanding work. The effective limits are the intersection of that profile, remaining session consent, current policy and §21.1.2's attention/turn budget where applicable. They may tighten during work; continuing beyond them requires a new explicit request and fresh bindings. Restart or clock discontinuity invalidates active jobs rather than extending their deadlines.
+
+**Clock qualification (`UBU-D0367`).** Pin the elapsed-clock API, units/resolution, boot/source epochs and sleep/suspension behavior in each profile. Count Device sleep and controller suspension against the original elapsed deadlines, consent lifetime, applicable evidence ages and stream gaps. Demonstrate continued enforcement in permitted operating conditions, or enforce stopping affected work before an unsupported condition. A mode unable to establish elapsed time or meet its fallback, output-quiescence and resource-release bounds remains unavailable for that condition; checking only on return cannot establish those bounds. Before queued output/actions or displayed live guidance become available on return, recheck time and generation. Expired or invalidated work requires an explicit new request or permitted continuation with fresh bindings; returning to the foreground cannot rebase its deadline.
+
+For source-to-controller and inter-Device clock mappings under §21.1.5, pin the epochs, finite maximum timing-error bound including drift, and validity interval. Evaluate applicable elapsed deadlines and evidence-age ceilings against the greatest elapsed time/age consistent with the mapping and clock resolution. Keep elapsed-deadline expiry at equality and the profile's declared evidence-age comparator. Unknown, expired or inconsistent mappings cannot establish live eligibility. Equal timestamps, worker receipt, transfer or remapping cannot replace the original start/observation event or renew budgets. Permitted historical use and later review retain their existing rules.
+
+Extend `UBU-D0335`'s actual-controller fixtures with a paused clock while an independent fixture clock advances past deadlines/gaps, queued callbacks on foreground return, wall-clock jumps, and mapped-age bounds wholly within, touching and crossing the declared ceiling. Demonstrate Device sleep/controller suspension and applicable worker-route timing on the pinned deployment, or the mode's enforced exclusion. Record independent elapsed evidence, clock/mapping revisions and uncertainty bounds with expected/observed outcomes; simulated elapsed time supplies no deployment performance evidence. Suspension cannot postpone the separate fallback/quiescence/release measurements or remove unplanned gaps from declared active stream-time accounting under `UBU-D0361`. Failed required bounds withhold the affected mode; this selects no clock API, numerical profile or passing Device.
+
+**Freshness and authority.** Bind results to their original observation interval, source/session/context and target versions, policy versions and controller job/turn generation. Current guidance/dispatch requires a live generation and applicable age checks; unknown age or uncertainty that cannot prove compliance with the applicable ceiling cannot establish freshness. Review/admission rechecks evidence, context, targets and current policy under ordinary review bindings. Reopening retained material establishes fresh review bindings rather than reviving a cancelled job. New generation timestamps and repeated summaries cannot refresh old evidence. Historical analysis may use permitted older evidence within its declared interval; applying findings to current state still requires current evidence and admission. Stale/superseded results remain labelled historical material only where retention permits, and cannot overwrite corrections, satisfy current preconditions or use expired approvals.
+
+Capture updates and planner streaming have separate timing traces. A planner chunk can reach the user only after CPU certification of its current request under PLANNING_KERNEL_CONTRACT.md §4; incomplete/final transport status does not establish an executed effect. Slow processing cannot waive evidence, hard validation, Compartment policy or `UBU-D0324`'s corroboration requirements.
+
+**Offline, battery and thermal degradation.** Keep local pause/stop/silence, visible source state, permitted draft handling and the manual admitted-state loop independent of model/network completion. Defer retrospective work first, reduce streaming rate or analysis scope within a declared profile, then offer bounded one-shot capture or text/forms; pause capture/analysis when limits cannot be met. Disclose the active class, reason, retained/unsaved work and freshness limitation without leaking denied source existence. Resource pressure never extends media retention, silently evicts accepted input/history or starts another source.
+
+Offline operation uses available permitted local backends and manual routes; no hidden cloud fallback. Cached Plan guidance is usable only after §16.5–§16.7's legitimacy/envelope/freshness checks. If those checks fail, show the planning limitation or eligible clarification rather than an obsolete next action. Returning connectivity, power or temperature may permit a finer compute profile, but cannot restart paused/stopped acquisition, speech or queued actions without current consent and fresh controller bindings.
+
+**Interruption.** Pause, stop, silence, cancellation, a superseding turn, source/Compartment or Device change, and consent revocation invalidate the affected pending output/action bindings locally without waiting for a backend acknowledgment. Stop the affected acquisition/output and request cancellation; reject late callbacks for live guidance or dispatch even while the backend finishes. Require bounded cancellation/resource release under its permitted lifecycle; an adapter without that bound cannot enable the class. Preserve already-admitted state, permitted durable sources/drafts and ordinary idempotency outcomes. Interrupted work does not establish an effect or authorize external-action replay; existing outcome/idempotency rules still apply. Reviewing retained candidates later neither resumes capture nor restores approval; restart/handoff requires new local bindings and ordinary review.
+
+**Deadline-boundary qualification (`UBU-D0335`).** An outstanding elapsed deadline expires when the controller's monotonic time is at or beyond its bound. Recheck time and current generation when releasing live output or dispatching; a delayed timer callback cannot make an expired result eligible. Serialize interruption/invalidation with release: an already-observed cancellation or superseding turn wins over a queued result. Pin separate finite expiry-to-visible-fallback, local-stop-to-output-quiescence and cancellation-to-resource-release ceilings; backend acknowledgment cannot delay local invalidation.
+
+For streams, start each permitted observation window's processing clock when that window closes, before queueing, using its mapped controller-monotonic timestamp; an unknown mapping cannot establish live freshness. Bound the acquisition window and consented session separately. Before the first usable update, the first-useful-result deadline bounds waiting. Afterward, only presentation of a fresh, valid usable update resets the update-gap clock; progress, stale results and dropped windows do not. Crossing an age, gap or backlog limit invalidates affected pending live output and withdraws displayed guidance. Resumption needs explicit restart/resume, a fresh generation, current consent and a fresh usable update before showing live guidance.
+
+Run the following fixtures against the actual controller with a deterministic clock and delayed/duplicate adapter callbacks, then demonstrate the corresponding behavior in the pinned real-device trials. Place events immediately before, exactly at and immediately after each applicable elapsed deadline; for age/backlog ceilings, exercise both equality and exceedance under the declared profile comparator.
+
+| Class | Required boundary fixture | Required disposition |
+|---|---|---|
+| `snapshot_capture` | Queueing/acquisition consumes the budget; interpretation or retry returns at/after expiry. | Acquisition ends, late live output rejects, permitted saved input survives and unsaved input is identified; retry cannot renew the original deadline. |
+| `conversational` | Tokens precede a missed useful-response deadline; silence or a superseding turn races with queued speech/results. | Tokens never satisfy the useful-result gate; old speech/results cannot resume or overwrite the new turn, and the bounded fallback remains available. |
+| `streamed_supervision` | No first update; then stale/duplicate updates, a gap and queued/in-flight overload, followed by apparent backend recovery. | Bound initial waiting and aggregate backlog; withdraw live guidance, expose permitted coverage gaps and reject old updates without automatic resumption. |
+| `retrospective` | Progress/checkpoint activity and competing interactive work straddle total-job expiry. | Progress/yielding cannot renew the deadline; pause at a permitted checkpoint or stop, retaining sources and truthful partial coverage. |
+
+Each fixture report binds profile/implementation/policy revisions, minimized job/generation and source-epoch aliases, clock basis/resolution, relevant event offsets, queued/in-flight high-water marks, and expected versus observed disposition. Include acknowledgment, useful presentation, invalidation, fallback, output-quiescence and resource-release offsets where applicable. Diagnostics inherit source restrictions and do not require retained media or a new Log/wire schema. Release of expired/cancelled live output, stale admission/dispatch, renewal of the same job's deadline, unauthorized resumption or loss of permitted saved input fails that profile's enforcement gate; aggregate timing percentiles cannot excuse it. Later ordinary review of retained candidates with fresh bindings remains permitted. Deterministic fixtures establish controller behavior only, not achieved latency or hardware support.
+
+**Measured enablement gate (`UBU-Q0168`).** Select numeric ceilings only from revision-pinned evidence on each proposed Device/backend/mode; record OS/runtime/model/template, implementation and policy revisions, source/context sizes, load and instrumentation. Measure controller acceptance, acknowledgment, first useful result, completion, observation age at presentation, stream gaps and stop/output-quiescence separately from admission, first CPU-certified planner chunk and final planner response. Report sample counts, median and tail distributions, misses, errors/degraded outcomes, memory/storage, battery/energy where observable, and sustained thermal behavior; unavailable metrics stay explicit. Report successful interpretations separately from unresolved/degraded outcomes; latency alone establishes neither correctness nor usefulness.
+
+Exercise cold and warm operation, competing work and sustained streams; offline/backend loss, low battery and thermal/resource exhaustion; interruption during acquisition/inference/output; queue overload and deadline expiry; source/context changes, corrections, revocation, restart/handoff and delayed/duplicate results. Demonstrate bounded waiting/backlog, working manual fallback, truthful saved/coverage/freshness status, no stale admission/dispatch and no hidden rerouting. Publish the selected finite ceilings and demonstrated fallback for each enabled class; an unmeasured class remains unavailable. Hardware selection remains `UBU-Q0177`, restricted-attention numeric profiles remain `UBU-Q0128`, and delivery sequence remains `UBU-Q0183`. `UBU-Q0168` stays Open for these numerical profiles and measured acceptance; this contract asserts no implementation, supported hardware or achieved latency.
+
+**Profile selection and outcome accounting (`UBU-D0361`).** Keep revision-pinned calibration runs used to propose numeric ceilings separate from acceptance evidence. Before acceptance runs, freeze the candidate profile, scenario/source-size/load envelope, useful-outcome rubric, trial counts and pass/fail rules. Include a positive minimum proportion of timely useful outcomes for each ordinary cold, warm and sustained-load condition and, for streams, a positive minimum fraction of declared active time covered by fresh usable guidance, alongside the finite latency, freshness, resource and degradation limits already required. Retain `UBU-D0331`'s minimum trials/durations and `UBU-D0336`'s deployed isolation costs. Acceptance observations cannot justify widening ceilings, lowering usefulness requirements or removing failed cases; changes require a new profile revision and affected qualification runs.
+
+For each predeclared cohort, reconcile all offered workload requests with controller-accepted requests, refusals before dispatch and terminal outcomes. Count an original request once for the timely-useful proportion; retries consume its original elapsed/work budgets and add no extra successes or denominator entries. Keep successful interpretations, corrected results, consequential clarification/explicit unresolved results, expiry, interruption, errors and manual/degraded fallback distinguishable. Clarification or unresolved output counts as useful only when it meets the frozen scenario rubric, and never becomes a successful interpretation. Receipt, progress or a fast unavailable explanation cannot count as useful completion. Fault/interruption cohorts test their predeclared degraded disposition separately from ordinary usefulness; cases cannot move cohorts after their outcomes are known.
+
+Report the timely-useful numerator over all offered requests in each ordinary cohort, plus refusal, miss, error and degraded counts. Latency percentiles name their observed-outcome population and denominator; absent useful output has no successful completion time and stays visible as a missing outcome. Report time to fallback separately, rather than substituting it into useful-result timings. For streams, report independent session counts, all permitted observation windows and dropped/missing/stale updates, startup waiting, longest gap, backlog high-water marks and the proportion of declared active-session time with fresh usable guidance. Include startup and delayed/paused coverage in that time denominator; planned inactive periods are declared before trials. Many correlated windows in one session cannot establish independent-session coverage.
+
+Publish a per-class, per-condition acceptance table linking the frozen profile and trial plan to counts, distributions, coverage, each limit and pass/fail/unknown. An unknown required metric or missed mandatory limit withholds the affected profile; pooled results cannot hide a failed condition. Passing cancellation/fallback fixtures cannot compensate for missed ordinary usefulness, and rapid ordinary results cannot compensate for failed enforcement, privacy or retention gates. Publish calibration results separately and obtain operator review before enablement. This adds an evidence-selection gate, not measured values or a new wire schema; `UBU-Q0168` remains Open.
+
+**Stream presentation order (`UBU-D0374`).** Within each scope of streamed guidance and live generation, the controller binds observation windows before dispatch to the broker's original source epochs, sequence/sample positions and intervals under §21.1.5. For each required source, the presented observation frontier is the latest presented window end in that source's original ordered sample timeline; no frontier is presented initially. Retries preserve window identity; callback arrival, worker completion and model timestamps cannot define observation order. At release, an update must advance at least one required source's frontier and regress none, while satisfying every required source's freshness and ordinary release checks. An identical window cannot advance the frontier through regenerated wording. Different sources/epochs have no shared sequence order; unknown ordering cannot establish live eligibility, and source-epoch changes use the existing invalidation and fresh-generation rules.
+
+Reject duplicate or regressing updates for current guidance even when their elapsed deadlines and age limits still pass. They cannot overwrite newer guidance or reset the update-gap clock. A newer eligible update may bypass unfinished older windows without waiting for an ordered backlog; queueing or completion alone never advances the presented frontier. Before any useful presentation, an older window may still qualify if a newer window failed or remains pending and all original limits and bindings hold. Existing withdrawal, explicit-resume and historical-review rules continue to apply.
+
+Count live-guidance coverage as the union of intervals during which the scoped guidance is available as current and remains fresh and usable, beginning at actual eligible presentation and ending at the earliest applicable age/gap expiry, invalidation or withdrawal. Overlapping updates cannot multiply covered time; rejected or duplicate callbacks cannot extend it, and later analysis cannot backfill time before presentation. Keep `UBU-D0361`'s declared active-session denominator and report analyzed observation coverage separately.
+
+Extend `UBU-D0335`'s actual-controller fixtures with two still-fresh windows A then B whose results return B then A; duplicate/retried B callbacks; a failed or pending B followed by eligible A before the first result; overlapping windows; and multi-source updates that advance one required source while regressing another, including equal timestamps across sources. Assert eligible presentations and frontier changes, rejected live releases, unchanged gap deadlines on rejection and exact covered-time intervals. Include release races with expiry and interruption, then demonstrate the behavior in the pinned deployment trials. Incorrect ordering or inflated coverage fails the affected stream profile; simulated timings select no numerical profile. Record minimized window/frontier aliases and expected/observed outcomes in the existing fixture reports without a new canonical object or wire-schema field.
+
+#### 21.1.5 Local AV segmentation and scoped analysis
+
+**Architecture contract (`UBU-D0326`).** Adopt a controller-owned local media broker with the logical adapter profile `local-media/1`. Session consent enables only named sources on eligible execution-enclave Devices on the operator's own hardware; sharing hardware grants no access between enclaves. Capture controls remain visible under §12.2 and §21.1.3. Models and agents can request analysis of supplied media spans, but cannot start/resume capture, enumerate sources, renew consent or enlarge a grant. This profile specifies an interface boundary, not an implemented MCP service, frozen wire-schema change or new planner entity.
+
+**Segmentation and buffering.** Maintain a separate bounded transient ring for each consented source epoch. Seal immutable chunks at the first configured duration or byte ceiling, or earlier on pause, stop or a source/consent/Identity/Compartment boundary. Bounded chunks are the storage/read units; utterances and detected events are separate span references that may cross chunks only within authorized continuous coverage. A detector's proposed boundary cannot extend acquisition or retention. One-shot requests end acquisition at their requested bound; they never become continuous sessions.
+
+Before enabling a source, pin a controller-owned Device/backend/mode profile with positive finite chunk duration/bytes, raw-buffer age/bytes, total raw/decoded/intermediate memory, queue count/age, concurrency/calls, decode work, frame dimensions/count, event/span/result sizes, job deadline, cancellation grace and artifact/scratch lifetime. Use §21.1.4's measured deadline/resource gate and current source-retention policy; missing limits deny acquisition/dispatch. Include pinned chunks and worker copies in aggregate accounting. Evict only eligible unpinned transient material and record coverage gaps; pins cannot extend retention or exceed quotas. If eligible eviction cannot satisfy limits, pause acquisition and cancel/defer affected work visibly. Never spill to unapproved storage, silently discard acknowledged durable evidence or reroute to cloud processing.
+
+**Timeline and coverage.** Each sealed chunk/span manifest binds session, source, Device, source epoch, sequence, immutable content/version reference, half-open interval `[start, end)`, actual sample/frame positions, capture provenance, policy/retention versions and permitted gaps. Preserve media sample/PTS offsets separately from acquisition monotonic offsets, with their clock mapping, wall-time anchor and uncertainty when known. Capture elapsed time and live deadlines use a local monotonic clock; historical intervals retain their original time basis. Ingestion, interpretation or emission times cannot replace observation time. Restart, source replacement and clock discontinuity create new epochs. Unknown mappings stay unknown: do not align different sources or Devices by timestamp equality, sequence or nominal frame rate. Audio/video alignment requires explicit permitted clock mappings and uncertainty. All selectors state the source epoch, time basis and units; reject nonfinite, reversed or out-of-range bounds. Missing, dropped, expired or sampled-out intervals never establish silence, no event or a continuous observation.
+
+**Access and invocation.** Effective access is the intersection of current session/source consent, actor and adapter Device eligibility, capability grant, declared Task/Objective/workflow purpose, source policy and finite profile. The grant names allowed operations, sources/epochs and read intervals, context selectors, recipient adapter, expiry and aggregate work/output limits. Opaque handles are audience- and scope-bound references, not authority by possession; recheck current policy on every dereference. Broker-mediated reads and worker isolation must prevent ambient camera/microphone, unrelated filesystem/context, network and credential access. Physical locality alone does not satisfy this boundary.
+
+Bind each request to its id, actor/grant and versions, session/source epochs, pinned manifest/evidence/context versions, operation/finite selectors, requested read/output intervals, minimized ContextBundle, adapter/model/profile revisions, policy versions, job generation, monotonic deadline and idempotency key. Check these before reading, invoking and releasing each result. Requests may select only supplied permitted aliases; arbitrary paths, URLs, device discovery, executable instructions and unbounded selectors are unavailable. Current denials fail closed with policy-safe errors that do not reveal denied existence or Compartment identity. An exact retry shares the original budget/deadline and idempotency outcome; changed-content key reuse rejects. A retry cannot reacquire expired media or widen scope; expired result artifacts return unavailable rather than a cached disclosure.
+
+A bounded result envelope echoes the request/generation and original manifest bindings, reports complete/partial/unavailable/cancelled/denied status, analyzed/missing coverage, permitted artifact refs/expiry, work used and transform/tool/model provenance. Validate size, profile, references, intervals and bindings before release; malformed or oversized results reject without repair into a usable output. Errors and metadata obey the same disclosure boundary as media.
+
+| Logical operation | Required bounded input | Output and boundary |
+|---|---|---|
+| `media.frames.extract` | Pinned source spans plus explicit timestamps or sampling interval, finite frame count, dimensions and optional crop within the grant. | Selected frame payloads/leased handles with original sample positions, actual observation times, transform provenance and gaps. No fabricated/interpolated frames or reads outside the authorized read scope. |
+| `media.events.detect` | Pinned audio/video spans, an allowed detector/label set and finite window/work/event limits; only purpose-required context. | Advisory event hypotheses with source spans, detector/model revision, confidence/uncertainty and analyzed/missing coverage. No detection means only no reported match in analyzed coverage; it is not evidence of real-world absence, completion or an effect. |
+| `media.sections.isolate` | Explicit subintervals or validated event-span references within already authorized sources, with finite section count, duration and bytes. | A manifest of selected spans and, when authorized, a leased local clip handle. Relevance is a proposed selection, not a capability grant; suggestions cannot fetch adjacent or new sources outside the original scope. |
+
+Codec dependency frames or audio padding may be decoded internally only within the declared authorized read scope and decode budget; return only the requested output interval and disclose any permitted padding/coverage limitation. Otherwise return unavailable/partial coverage rather than silently broadening the read. Multi-source results carry every parent span and satisfy the intersection of their disclosure/retention policies. Overlapping windows and derived copies preserve sample lineage and cannot count as independent corroboration.
+
+**Cancellation and revocation.** Serialize pause/stop, source or policy change, grant expiry/revocation, job-generation invalidation, reads and result release in the controller. Invalidation immediately prevents further reads and acceptance of late callbacks; stop affected acquisition and request backend cancellation without waiting for acknowledgment. After the finite cancellation grace, terminate the isolated worker if needed and reclaim its leases/resources. An adapter unable to enforce isolation and bounded release remains unavailable. Resume/restart/handoff uses fresh local consent and bindings; synchronized candidates and persisted handles never restore live access. Later review of permitted retained evidence is a new bounded job, not revival of the cancelled one.
+
+**Intermediate artifacts and audit.** Decoded frames/audio, crops, thumbnails, temporary clips, transcripts, embeddings, prompts and model caches inherit source restrictions. Scratch expires on completion/cancellation; returned temporary artifacts have a finite non-renewing result lease bounded by applicable source policy. Any permitted disk scratch is policy-protected, inventoried with expiry and cleaned before reuse after restart; there is no implicit durable spool, training use or general-purpose cache. Explicit or already-scoped policy authorization is required to retain selected evidence beyond its temporary lease, through ordinary Discovery/candidate storage with lineage and its own allowed purpose/retention. Reads and retries cannot silently renew raw/intermediate retention.
+
+Revocation/purge invalidates disallowed handles and removes app-controlled disallowed copies and reconstructive derivatives under current policy. Already-admitted history follows ordinary append-only correction/redaction rules; raw expiry does not edit a historical claim or prove it false. Record permitted minimized invocation, source-span, policy, budget, gap, cancellation/cleanup and candidate links rather than mandatory raw media, transcripts or hashes. Scene/OCR/transcript text is untrusted data, never an instruction, permission or grant. Results use §21.1.1's Discovery/advisory bindings and ordinary review/admission; they cannot directly mutate canonical state, certify a Plan or authorize external action. Export or a different Device/recipient requires its separately permitted route and approval under §§21.3–21.4.
+
+**Enablement evidence.** Before exposing an adapter, pin implementation, OS/runtime/backend/model and policy/profile revisions and demonstrate:
+
+- Variable frame rate, audio/video clock uncertainty, timestamp discontinuity, chunk-crossing events, overlapping samples and dropped/expired spans preserve original times, lineage and explicit analyzed/missing coverage.
+- Forged/foreign/expired handles, wrong purpose/actor/Device, mixed-policy sources, unbounded selectors, codec dependencies outside scope and hostile scene/transcript instructions expose no unauthorized media/context or tool capability.
+- Sustained capture, slow consumers, oversized decode/output, pinned-buffer exhaustion and disk pressure respect aggregate limits, pause/defer visibly, preserve permitted saved evidence and leave manual/stop controls usable without cloud fallback.
+- Cancellation/revocation during read, inference and result delivery; delayed/duplicate callbacks; source changes, restart and handoff produce no stale release, revived consent or duplicate candidate effects, and release workers/artifacts within the configured bound.
+- Normal completion, expiry, crash/restart and policy purge remove disallowed scratch/caches/derivatives; separately retained evidence remains correctly policy-bound and ordinary review is required before canonical effects.
+
+These are required gates, not reported passing tests or physical-erasure claims. `UBU-Q0169`'s architecture is answered; numeric latency/resource acceptance remains `UBU-Q0168`, default raw-media retention follows §12.2 (`UBU-D0327`), and operator discard/summary/hash/clip/export controls follow §12.2 (`UBU-D0328`). Continuous capture cannot be enabled with unresolved effective retention policy. Host fidelity, proof-of-effect semantics and delivery sequence retain their existing gates.
+
+#### 21.1.6 Realtime guidance stops and professional review
+
+**Release envelope (`UBU-D0330`).** Camera access, fluency, confidence and prior assisted success establish neither domain competence nor safe conditions. Before enabling procedural direction, declare a controller-owned, versioned envelope of supported workflows/steps, required context, evidence/freshness and Skill/Resource prerequisites, finite clarification limits, verification/fallback conditions and appropriate professional roles. Missing envelopes and unclassified consequences withhold procedural direction. Models cannot add permitted steps or weaken requirements.
+
+MVP procedural direction is limited to explicitly released, bounded reversible ordinary steps. Individualized clinical diagnosis/treatment, hazardous electrical/gas/structural/machinery procedures, professional legal/financial determinations and safety-critical monitoring are outside this release envelope. Scheduling, recording user-provided information and preparing questions for a professional retain their ordinary planning/review paths. Rich Technique execution and any later domain expansion require their own implemented objects, qualified domain review and release evidence.
+
+**Stop conditions.** Check eligibility before the first and each subsequent step, before output/dispatch, and on material observation, context, policy or attention changes. Withhold the affected step whenever a required condition cannot be established from permitted evidence:
+
+| Condition | Required response |
+|---|---|
+| Unsupported domain/step or required professional judgment | Stop procedural direction and identify the appropriate domain professional, such as a clinician or qualified trade specialist. More camera input cannot authorize diagnosis, on-site assessment or specialist oversight. |
+| Missing context or hazardous uncertainty | Missing/ambiguous target identity, measurements/units, site state, Skill/tools, safety prerequisites, source coverage or freshness remain unknown, including withheld, occluded or expired data. A bounded non-invasive clarification is allowed only within the released workflow and attention budget. If consequential uncertainty cannot be resolved safely, require relevant professional assessment before affected guidance; ordinary low-risk ambiguity may instead defer to manual entry. |
+| Contradictory observations, unexpected change or failed verification | Pause the affected guidance; preserve conflicting sources and the unmet condition. Do not average away disagreement or use confidence, repeated frames or model agreement as verification. A safety-relevant conflict that remains unresolved, or a professional-stop fallback, requires appropriate professional review. |
+| Possible immediate serious harm | A user report or observed warning may require urgent escalation. Withdraw procedural guidance and give a concise message to seek appropriate local emergency assistance now, without diagnosis, waiting for more images or diagnostic questioning. Uncertain location must not produce an invented contact number. |
+| Stop/revocation, unavailable safe attention or controller/source failure | User stop, invalid consent/policy/bindings, unavailable private output, forbidden restricted-attention interaction, delayed/lost sources, backend failure or exhausted limits stop affected work under §§21.1.2–21.1.5. A technical failure alone does not require a professional; hazardous unresolved prerequisites do. |
+
+Hazard judgments are fallible. A stop explains the reported/observed concern or missing requirement without claiming a diagnosis, proven danger or guaranteed detection. No warning detected does not mean safe. This bounds the guidance service; it neither controls the user's physical actions nor turns §22.4's advisory behavioral judgments into product hard constraints.
+
+**Visible stop behavior.** The controller immediately invalidates affected job/step approvals, stops queued speech/procedural output, pauses affected live acquisition/analysis and requests bounded cancellation without waiting for the model. Reject late callbacks and procedural replay. Use the existing paused/ended session lifecycle, not a new canonical state. Show "Guidance stopped", the permitted reason and affected scope, what remains unknown, whether capture is paused, and the appropriate next route. Preserve permitted drafts/evidence and distinguish saved from unsaved input. Offer End, ordinary manual planning/notes or operator-initiated professional contact. Restricted attention permits only its brief output envelope; defer menus and visual review.
+
+Escalation confers no contact, disclosure, export or action authority. Calls, evidence sharing and other external actions still require their separate current permissions and operation-bound review; a stop never admits completion, a world-state correction or a professional handoff. Minimal expert-handoff packets remain `UBU-Q0175`.
+
+**Fresh resumption.** Dismissing a notice, accepting risk, changing channels, rephrasing, restart or Device handoff cannot supply missing eligibility. Resume only after a fresh explicit request, renewed local consent/bindings and review establishing that each stop reason is resolved within the released envelope. Where qualified review is required, retain the reviewer's attributed identity/role and qualification basis, exact findings, inspected evidence, scope/time and conditions; a model's claimed expert opinion cannot satisfy it. Unknown qualifications or unsupported advice remain unresolved. A corrected false-positive signal may clear through ordinary evidence review. Recheck current context/evidence/policy versions before the next step; professional advice cannot expand the release envelope. Unrelated manual workflows retain their normal gates.
+
+**Evidence and enablement.** Reuse existing session, Discovery/candidate and review/Log links for envelope/version, affected step, triggering evidence/time, unknowns/contradictions, stop reason, presented options, required professional role and resolution/resumption bindings. Source restrictions apply to diagnostics and records; do not reveal denied content, identifiers or existence. Record operator dismissal/override through §17.0 without inferring Preferences or requiring justification. No new kernel field, provenance kind or Log event is selected.
+
+Before enabling a guidance workflow, pin controller/backend/model, envelope and policy revisions and demonstrate:
+
+- Ordinary ambiguity safely clarifies or defers; high confidence, missing/occluded/stale context, contradictory readings and failed verification withhold affected steps and route hazardous uncertainty to professional review.
+- Unsupported domains, unknown consequences and absent professional qualifications stay unavailable despite disclaimers, risk acceptance or model-supplied clearance; possible urgent harm receives brief emergency escalation without additional diagnostic acquisition.
+- Stop/revocation during acquisition, generation and speech cancels locally; delayed callbacks, retries, channel changes, restart and handoff cannot resume instructions or execute queued effects.
+- A reviewed correction or scoped qualified assessment permits only a freshly requested eligible step; changed evidence/context/policy invalidates that review. Manual alternatives remain usable.
+- Restricted attention and policy-denied evidence remain protected in prompts, notices and audit; escalation causes no automatic call, upload, completion or evidence export.
+
+These are required behavioral gates, not passing results or guarantees of safety. `UBU-Q0174` is answered as a process contract; measured timing, host fidelity, expert packets and release sequencing retain their existing questions and gates.
+
+#### 21.1.7 Interruption, escalation and session consent
+
+**Product contract (`UBU-D0350`, Phase 2).** Apply this policy to realtime/discovery notices, clarification and short-horizon repair alongside `UBU-D0201`/`UBU-D0272` and §§21.1.2–21.1.6. A model may propose an interruption; the controller decides whether to queue it, present it, ask a bounded question or stop an affected service. Presentation permission grants no canonical mutation, Plan adoption, external action, disclosure or additional capture authority.
+
+**Modes and consent.** Display interaction mode separately from processing route, activity/attention and Compartment. The existing mode vocabulary has these operational meanings:
+
+| Selection | Consent boundary |
+|---|---|
+| `off` | Realtime/discovery acquisition, model interaction and unsolicited interaction output are off. Manual planning/review and required inline operation checks remain available. |
+| `text_only` | Use intentionally submitted text/forms; microphone, camera and sensor acquisition remain disabled. |
+| `voice_session` | Explicitly start a finite session with named sources and independently selected speech output. The name enables neither camera nor background microphone capture. |
+| `discovery_mode` | Explicitly select a Task/workflow purpose, finite duration and permitted sources; observations remain reviewable evidence under §12.2. |
+| `meeting_logging` | Show as unavailable until separately released participant-consent, source, retention and disclosure gates pass. One operator's consent cannot authorize other participants or cross-user projection. |
+| `local_only_realtime` | Show the named qualified endpoint and eligible local route. Another execution-enclave Device requires its own trust, authenticated route and source-policy checks; ownership alone grants no access. |
+| `cloud_assisted_realtime` | Show as unavailable until separately qualified for the exact policy-approved input and destination. No implicit cloud fallback or raw-AV export follows; MVP raw AV remains local. |
+
+Before acquisition, bind explicit consent to actor, capture Device, source selectors, session/source epoch, Task/workflow purpose, Compartment and policy versions, named processing endpoints/route, retention limits and a finite session deadline. Hardware permission, opening a surface, remembered settings and silence are insufficient. Adding a source, widening purpose or changing Identity, Compartment, Device or route requires fresh permitted review/consent; policy tightening invalidates affected work immediately. Resume is explicit and starts a fresh source epoch. Restart, handoff, recovered connectivity and synchronized records never restore live consent. Delivery sequence and qualification remain §4.2 (`UBU-D0339`).
+
+Pause stops affected acquisition, analysis and output; Stop ends the session. Silence stops speech immediately without implying that capture has stopped: show any sources still active and keep Pause/Stop reachable. These controls operate locally without a model, network or valid interaction budget. Pending review may remain after capture ends, within its own retention authority.
+
+**Interruption permission.** Unsolicited realtime/discovery alerts are off by default. A user may enable a versioned local rule for a named condition and scope. Bind the rule to actor/Device, Task/Objective/workflow, permitted evidence/source refs, trigger predicate and uncertainty treatment, freshness limit, allowed presentation channel/endpoint, quiet periods, finite aggregate alert/clarification ceilings, a finite response window when recording nonresponse, cooldown, expiry and allowed resurfacing conditions. Include a finite session/work-window cap across producers, not just a cap per detector. Missing limits or authority permits only policy-allowed review queuing. Capture consent and a sender's interrupt recommendation supply no such rule. Models cannot change these bindings or urgency.
+
+A response/clarification within the current explicit user request uses its remaining interaction budget. Unsolicited delivery additionally needs the rule above. In both cases recheck current consent where relevant, permitted evidence and policy versions, target/context bindings, freshness, attention budget, output privacy, suppression and remaining limits immediately before presentation. Unknown attention uses §21.1.2's conservative envelope; an interruption category cannot widen it.
+
+| Condition | Permitted response |
+|---|---|
+| Imminent deadline failure | An enabled rule may notify when permitted current admitted Task/commitment data and a labelled risk calculation cross its reviewed lead-time/slack threshold. Explain the threatened outcome, uncertainty and remaining repair option; lateness or Plan deviation alone does not justify repeated prompting. |
+| Blocked Task or loss of Plan legitimacy | For the current/selected work, show the failed precondition or relevant blocker and offer review/repair. Withhold an ineligible recommendation or dispatch regardless of alert settings; unrelated blocked Tasks stay in ordinary review unless separately monitored. |
+| Unexpected external event | An enabled rule may notify of an evidenced material change to selected work or commitments. Imported/inferred claims retain their candidate/uncertainty labels; notifying never admits the claimed event or changes the Plan. |
+| Significant inferred affect shift | Affect inference alone justifies no unsolicited interruption, emotional label or capacity/Preference change. A separately requested, scoped check-in may ask for a user declaration within its finite budget; declining or leaving state unknown ends that prompt. |
+| User-requested monitoring | Evaluate only the named predicate, sources, interval and delivery rule. Show freshness and gaps; absence of an alert proves neither coverage nor safety. No safety-critical monitoring guarantee or broader surveillance follows. |
+| Clarification | Ask only for a decision-relevant missing detail in the current request or an enabled monitored condition, within the remaining finite clarification allowance. Offer unknown/private, defer or manual entry; unanswered or ambiguous input never becomes consent. |
+| Guidance hazard or professional stop | Apply §21.1.6: stop affected procedural guidance and route unresolved hazardous prerequisites to qualified review. Possible immediate serious harm in a permitted active workflow receives its concise emergency-assistance notice only through a currently allowed output/attention envelope. It starts no monitoring, contact, export or additional acquisition. |
+
+A stop explanation within a currently requested workflow is a service response, not permission for background alerts. Required controller/service stops do not wait for an alert grant: invalid consent, policy, bindings, freshness, evidence prerequisites or resource limits stop the affected processing/guidance under §§21.1.2–21.1.6. Quiet/silence and dismissal cannot permit an otherwise forbidden operation. Keep its policy-safe inline status discoverable without recurring speech or modal prompts; no urgent label overrides revoked output, silence, denied disclosure or unavailable attention. A stop constrains UbU's service, not the user's physical actions or Task lifecycle.
+
+A notice offers an explanation and a next choice, not a command. Repair candidates stay outside admitted state; recalculation uses admitted inputs and CPU certification, and relying on a replacement default Plan follows ordinary Plan/Calendar review. Neither an interruption nor failure to respond authorizes Task completion/failure, Calendar changes, automatic Plan switching or external escalation.
+
+**Delivery and suppression.** Prefer review queuing, then an allowed turn/Task boundary and the least disruptive enabled channel. Immediate service invalidation remains independent. Coalesce notices by Device, permitted scope, condition episode and materially relevant evidence; new model/template versions, rewritten wording, age, restart and repeated observations do not create a new episode. A resolved condition must have permitted evidence before a later recurrence can form a new episode. Aggregate budgets also limit genuinely new conditions.
+
+Offer Dismiss until material change, Snooze until a user-selected time/condition, Disable this rule and Review later, without a compulsory reason. Persist minimized local suppression across views/restart under retention policy, alongside ordinary candidate rejection/deferral under §21.2.1. Material change can reopen a dismissal only within the existing rule and limits; snooze follows the user's selected reopening condition. Expiry, unavailable evidence or exhausted budgets never create retry prompts or new capture. Nonresponse never increases frequency, urgency, volume, channel or audience. Mandatory eligibility/conflict checks remain visible at the affected operation; dismissing their notice does not resolve the blocker.
+
+**Overrides and calibration.** Record a presented notice's dismissal, snooze, disablement or nonresponse through §17.0's existing `decision_recorded`/`alert_dismissed_or_ignored` path; a bypass or changed action uses its existing applicable decision kind. Link the permitted notice/candidate/version, trigger/evidence and policy versions, presentation time/channel, selected control, suppression scope/deadline and any separately admitted change. Explicit override records identify the actor and `authority_source = user_override`. Reasons remain optional with `none_given` when absent; `preference_inference_allowed = false` for these records. Record nonresponse only after established presentation and the rule's finite response window, distinguishing it from unknown delivery; it proves no attention, assent or rejection of the underlying claim.
+
+During user-requested review, permitted minimized history may support proposals to reduce false positives, improve timing or revise explicit monitoring rules. Show uncertainty, corrections, unanswered notices and user-reported burden; do not optimize compliance, engagement, inferred emotional susceptibility or surveillance. Calibration cannot silently expand sources, channels, thresholds, frequency or authority. Policy changes need explicit acceptance as interaction settings; planner Preferences still require their separate accepted statements. Monitoring/override history grants no training or secondary-use consent.
+
+**Visible status.** Keep a compact, accessible indicator of actual session/source state and pending review, with details on demand: active Identity/visible Compartment, each enabled source and capture Device, named processing endpoint/route, session expiry, effective raw-buffer/artifact retention deadlines and cleanup state, current delayed/paused coverage, enabled alert rule/quiet state and remaining limits. Distinguish transient capture, authorized saved evidence, unresolved candidates and admitted updates; show receipt/saving/admission separately. Policy-filter counts, labels, reasons and even existence. Pause/Stop/Silence, switch to text, inspect permitted evidence and reject/defer controls remain usable independently of processing; retention/deletion actions follow §12.2.
+
+**Enablement evidence.** Before exposing interruption behavior, pin controller/adapter, Device/mode, policy/rule and finite profile revisions. Exercise:
+
+- Opt-in deadline/blocker/event rules with current versus stale/denied evidence; absent consent, missing limits and affect-only inference produce no unsolicited delivery, mutation or capture.
+- Repeated/rewritten candidates, many distinct detectors, unanswered notices, dismiss/snooze/disable and restart respect coalescing, aggregate ceilings and durable suppression; a permitted material change or chosen snooze deadline reopens only under the current rule.
+- Stop/Silence/revocation and deadline expiry racing with queued speech/results, source changes and Device handoff invalidate locally; late callbacks cannot speak, resume capture, reuse approval or overwrite corrections.
+- Restricted attention and private-output denial defer unavailable prompts; an active-workflow professional/urgent stop supplies no automatic call, upload, diagnosis, Task update or expanded monitoring.
+- Overrides require no reason and create only the correct minimized decision/suppression records; nonresponse/unknown delivery stays distinct, and calibration creates no inferred Preference or silently broader policy.
+- Disabled alerts preserve required operation checks and useful manual review/repair; displayed capture, route, retention, review and pause/silence state match actual behavior without denied-context leakage.
+
+These are acceptance requirements, not passing implementation or safety evidence. `UBU-Q0128` retains numerical restricted-attention profiles; `UBU-Q0168` retains measured timing/resource ceilings. Existing host, retention, endpoint and mode-release gates remain required; this policy adds no kernel field, Log event type or capture-release commitment.
+
+### 21.2 Structured-output admission pipeline
+
+LLM, parser, worker, and agent outputs should follow an admission pipeline:
+
+```text
+output
+  -> schema validation
+  -> semantic validation
+  -> Compartment and policy validation
+  -> provenance and confidence attachment
+  -> conflict detection
+  -> user-review classification
+  -> accepted canonical object or rejected candidate
+```
+
+This applies to structured message extraction, realtime observations, AssociationAttestations, Tasks, Log candidates, Plan repairs, Delegation Substrate packets, and agent outputs.
+
+**Producer grammar rule (`UBU-D0299`).** Every shape offered to a producer must satisfy its unchanged semantic validator for the matching context. An intentional, documented and independently tested conservative subset is allowed; the producer grammar need not equal the full authoring validator. Schema membership is only the first gate, and does not confer canonical truth or authority.
+
+#### 21.2.1 Phase 1b advisory candidate lifecycle
+
+An `AdvisoryCandidate` is the first-class object form for Phase 1b review-queue proposals, including tag, dependency, preference, decomposition, clarification-question, and other advisory outputs before admission. It is `candidate_state`, not admitted state, until an admission decision creates the ordinary canonical mutation or review event.
+
+The minimum record contains `advisory_candidate_id`, `schema_version`, `candidate_kind`, lifecycle state, object version, target or scope refs, normalized proposal shape, payload ref or redacted payload summary, source evidence refs or hashes, confidence, per-field provenance, proposed/effective time or interval, proposing actor or model/tool metadata, origin Device and execution-context provenance, idempotency key, optional suppression key, `compartment_ids`, a review-visible Compartment label or redacted label, disclosure and retention policy, review order metadata, and correction, rejection, deferral, resurfacing, supersession, admission, or archive links. Candidates are per-object records rather than aggregate queue blobs so each candidate can be versioned, replicated, redacted, and reviewed under its own Compartment policy.
+
+The normalized proposal shape for a `Decomposition` candidate contains the target Task ref, proposed Container summary or inherited original-intent fields, ordered proposed child Tasks with stable proposed-child keys, titles, duration models, child-specific constraints and provenance, and split markers after child positions. The advisor proposes split markers only at natural pause points or where child-specific hard constraints require a boundary; review may edit child text, durations, constraints, order, and split markers before admission. Until admitted, these proposed segments remain candidate-state preview material and never become hidden planner constraints.
+
+Lifecycle states are `proposed`, `deferred`, `resurfaced`, `admitted`, `rejected`, `superseded`, and `archived`. New candidates start as `proposed`; `proposed` candidates may be admitted, rejected, deferred, superseded, or archived. Deferred candidates may become `resurfaced`, rejected, superseded, or archived. Resurfaced candidates may be admitted, rejected, deferred again, superseded, or archived. Admitted, rejected, and superseded candidates remain historical records and may later be archived according to retention policy; archiving is not erasure unless a separate redaction or deletion policy permits it.
+
+Unadmitted candidates may influence only review surfaces: ordering, grouping, explanations, deduplication diagnostics, clarification prompts, local suggestions, and explicitly labeled preview diffs. They must not mutate Tasks, tags, dependencies, decompositions, clarification answers, Preferences, Logs, Snapshots, Plans, Calendars, Relationships, Associations, projection state, capability grants, disclosure policy, external messages, or external actions. They must not become hidden planner constraints. Enforcement is by requiring admitted-state reducers, planners, projection writers, and mutation call sites to consume only admitted canonical objects or explicit preview inputs, while candidate reads remain scoped to review APIs that preserve candidate-state labels and Compartment policy.
+
+Deferral preserves an unresolved proposal without treating it as false. A deferred candidate may resurface only on materially new evidence, user request, a policy-triggered review interval, a relevant accepted change to the candidate target or dependencies, or arrival of a clarification or external reference that directly changes reviewability. Resurfacing links the prior deferral, trigger evidence, and reason the old deferral no longer controls; it creates a review item and never admits the candidate automatically.
+
+Rejection is durable correction metadata. A rejected candidate retains a privacy-minimized suppression record containing candidate kind, normalized proposal shape, target and scope shape, Compartment and redaction class, evidence hashes or source fingerprints, extractor/model/schema version, prompt or template digest when relevant, rejection reason or user correction, deciding actor Identity, `authority_source`, decided-at time, retention or purge policy, and the suppression key. The rejected payload may be redacted or purged under retention policy once the suppression record is sufficient; retaining the key must not make the rejected proposal accepted, exportable, more visible, or usable as evidence that the rejected content was true.
+
+Admission, rejection, deferral, resurfacing, supersession, and archival decisions are first-class review events carrying actor Identity, `authority_source`, origin Device, observed candidate version, observed policy versions when policy is relied on, effective time, recorded time, idempotency key, and links to resulting canonical mutations or replacement candidates. Admission emits the ordinary sync-ready mutation envelope for the admitted object change; rejection emits the decision event and suppression record without creating the proposed canonical state.
+
+Review order never changes state category. Proposed and resurfaced candidates may be prioritized ahead of deferred or archived records, but a contested region remains `candidate_state` or `pending_state` until an admission or conflict-resolution event is itself admitted. UI, APIs, derived previews, and reports must label candidate diffs as candidate or preview material and must not present them as `admitted_state` merely because they are high priority, old, repeated, or uncontested in the queue.
+
+#### 21.2.2 Implemented precondition and vocabulary advice
+
+`UBU-D0294` records admitted-precondition review: explicit replacement/clear candidates, stale-value checks, finite escalating holds, admission-reset escalation and the blocking-now seed cap. Rejecting a newly proposed precondition instead durably suppresses that proposal for that Task. These are separate dismissal semantics. Later field reviewers inherit the contract; only precondition review is implemented today.
+
+`UBU-D0295` records the local precondition producer's title/optional-description and recorded-target-name inputs, with no fact values/provenance sent. Every leaf names an existing target, including `absent`; the controller validates before enqueue and admission. Precondition and vocabulary proposal producers consider at most 25 Tasks, return at most three proposals, and refuse when ten or more of their own kind are proposed/resurfaced. Deferred candidates do not count; a permitted batch can cross the refusal threshold, which is not a hard queue ceiling. `UBU-D0296` keeps UniverseTarget proposals name-only, with only operator-authored values admitted.
+
+### 21.3 ContextBundle
+
+A `ContextBundle` is a governed package of context assembled for a model, tool, worker, agent, or long-context review. It is the auditable boundary between UbU's explicit state and an execution backend.
+
+Minimum fields:
+
+- `context_bundle_id`;
+- `schema_version`;
+- `purpose`;
+- `requested_operation`;
+- `actor_identity_ref`;
+- `related_task_refs`, `related_objective_refs`, or workflow refs when applicable;
+- `route_request_ref` and `route_decision_ref` when the bundle is used for LLM routing;
+- `destination_ref`, including provider/tool/worker, provider class, model or tool ref, and boundary classification;
+- `source_refs`;
+- `source_selectors`, time ranges, object ranges, or repository paths included;
+- `source_snapshot_refs` or hashes sufficient to identify the assembled version;
+- `compartment_refs`;
+- `compartment_policy_results`;
+- `identity_refs_exposed`;
+- `association_refs_exposed`;
+- `relationship_refs_exposed` when applicable;
+- `data_categories_exposed`;
+- `sensitivity_summary`;
+- `token_or_size_estimate`;
+- `redaction_policy`;
+- `minimization_rules_applied`;
+- `excluded_source_summary`;
+- `prompt_injection_exposure_summary` when the bundle includes untrusted external text, webpages, messages, documents, or repository content;
+- `retention_policy`;
+- `training_or_secondary_use_policy`;
+- `user_visible_summary`;
+- `approval_state`;
+- `approval_log_ref` when approval or denial was recorded;
+- `created_at`;
+- `expires_at`;
+- `invocation_refs`;
+- `supports_candidate_refs`;
+- `exposure_summary_ref`;
+- `log_refs`.
+
+ContextBundles may contain raw payload only when the task requires it and policy allows it. The preferred representation is references, selectors, summaries, hashes, redacted excerpts, or structural fields that let the model perform the requested work without copying unnecessary private material. Repository and archive-scale bundles should record path or object selectors and excluded material, not merely a broad repository or archive name.
+
+Compartment policy is checked before assembly and again before invocation. If any included source is denied for the destination, UbU must either exclude that source and record the exclusion or deny the bundle. A mixed-Compartment bundle inherits the most restrictive applicable route. User approval, capability grants, workflow settings, and provider preferences cannot override `no_cloud_llm`, `no_external_export`, `local_only`, or other hard Compartment denials.
+
+User approval is required before routing a ContextBundle when the bundle sends protected payload, low-security un-compartmented content beyond structural references, Relationship evidence, Association evidence, private messages, broad repository or archive content, or other long-context bulk material to a cloud provider, external provider, remote worker, managed gateway, third-party tool, or different Identity/Association boundary. Approval is also required when the provider, model, operator, region, retention/training profile, data categories, minimization policy, or source scope differs materially from an already approved workflow template.
+
+Policy-based approval is allowed only when a prior user-approved rule names the workflow, destination class, allowed Compartments or data categories, maximum source scope, minimization rule, retention profile, cost limits when relevant, expiry, and review requirement. The rule must still fail closed on hard Compartment denials or materially broader context than the rule allowed. Local-only deterministic processing or local model use may proceed without per-run approval when existing local policy permits it and the bundle does not cross a new disclosure boundary.
+
+After invocation, UbU should create or update a context exposure summary. The summary records the actual provider/model/tool used, invocation refs, source counts and categories, Compartments, Identities, Associations, and Relationships exposed, raw-versus-summary/reference volume, redactions and exclusions, retention/training profile, prompt-injection exposure notes, approval and routing Log refs, downstream candidate refs, and any denied or omitted context that affected output quality. The summary is a review artifact and must not contain secrets or unnecessary raw payload.
+
+ContextBundles are immutable after use. Corrections, narrower reruns, broader reruns, or provider changes create a new bundle or a superseding revision linked by Log entries. Candidate updates, AssociationAttestations, Log candidates, Plan repairs, Delegation Substrate packets, worker mutation requests, and other downstream outputs must carry `originating_context_bundle_refs` or equivalent provenance. Logs for approval, denial, invocation, output admission, and rejection should link back to the relevant ContextBundle.
+
+### 21.4 MCP-style client and server boundary
+
+UbU as an MCP-style client may call external tools and services. UbU as an MCP-style server may expose narrow tool surfaces to external agents.
+
+Phase 1 server tools are query or candidate-submission tools only:
+
+- `plan_summary.read`;
+- `objective_status.query`;
+- `task_candidate.create`;
+- `log_candidate.submit`;
+- `plan_repair.submit`;
+- `clarification.request`;
+- `delegation_packet.prepare`;
+- `projection_preview.submit`;
+- `association_attestation_candidate.submit` for fixtures or manually reviewed Association-introspection dogfooding.
+
+Phase 1 server tools do not directly create, update, or delete canonical Objectives, Tasks, Logs, UniverseState, External References, Plans, Calendars, projection state, credentials, or external systems. Any write-like request becomes a candidate, worker-style mutation request, projection request, clarification request, or review artifact admitted by the canonical instance.
+
+A minimum `MCPToolCapabilityGrant` includes grant ID, issuing parent instance, actor Identity, integration or agent identity, allowed tool names, operation kinds, payload schema refs, object refs or object-type scopes, Objective subtree refs, Task set or Container refs, Compartment constraints, Identity/Association disclosure constraints when applicable, integration or destination refs, time window or expiration, rate and cost limits, review requirement, idempotency/version requirement, audit policy, lifecycle status, and revocation refs. Compartment policy is a hard upper bound; a tool grant cannot override `local_only`, `no_cloud_llm`, `no_external_export`, allowed-integration, allowed-device, identity-isolation, or EvidenceUsePolicy denials.
+
+Every external-agent write-like tool call uses a candidate envelope with tool call ID, capability grant ref, actor Identity, target refs, operation, payload, expected prior version when applicable, idempotency key, provenance, evidence refs, originating ContextBundle refs when any, Compartment policy result, confidence when relevant, and review requirement. The canonical instance validates schema, semantics, authority, Compartment policy, idempotency, expected version, assignment or workflow status, and review policy before applying, rejecting, or leaving the candidate pending.
+
+Tool invocations that reach UbU are logged as append-only audit records with redacted argument summary or hash, policy decision, source and destination Identity, Compartment result, cost and rate counters when relevant, result refs, denial or failure reason when safe, and downstream candidate refs. Denied calls fail closed. Retries require the same idempotency key or an explicit superseding request. Rollback is append-only repair through compensating mutation, Log correction, supersession, Task moot transition, projection repair, or AgentAction mitigation metadata; prior invocation and candidate records are not rewritten.
+
+The minimum dogfooding fixture is a local loopback MCP adapter over synthetic or redacted UbU project data. It exposes the Phase 1 server tools, exercises capability grants and Compartment denials, writes only candidate/review artifacts and audit Logs, and supports a dry-run client path for calling external tools without live external mutation.
+
+### 21.5 Delegation Substrate
+
+A Delegation Substrate packet prepares a Task for execution by making the work explicit enough to hand off, automate, review, or perform oneself with less ambiguity.
+
+#### 21.5.1 Task brief and packet ownership
+
+The MVP contract (`UBU-D0342`) keeps reusable intent on Task and a version-bound handoff in a separate `DelegationPacket`. Task remains the canonical owner of its Objective links, description, status, timing, dependencies, preconditions, effects, External References, and Compartment/privacy metadata.
+
+Task may carry an optional `execution_brief` with `purpose`, `intended_executor_type` (default `self`), `expected_output`, `completion_criteria`, `required_evidence`, `self_authority_note`, `review_requirement`, and `escalation_notes`. It may also link `delegation_packet_refs`. Purpose explains why the work matters; expected output names the artifact or outcome and an optional output schema ref; completion criteria describe what must be checked; required evidence names the evidence kinds needed, rather than claiming evidence already exists. An explicit empty evidence list means an authorized completion declaration recorded in Logs is sufficient only where the applicable operation policy permits it.
+
+These fields are optional for ordinary solo capture and do not change §9.3's schedulability invariant. Missing fields remain visibly unknown. Before automated dispatch, purpose, expected output, completion criteria, an explicit evidence rule, and review requirement must be resolved. Description prose and brief fields supply no hidden planner constraints: any typed timing, dependency, precondition, or effect change needs ordinary Task admission.
+
+A packet binds one Task. An Objective-only or Container-level preparation is a preview until ordinary admission creates or selects an executable Task; multi-executor work uses ordinary child Tasks and Container lineage. Packets contain a frozen brief snapshot and versioned source refs, not a second editable Task description or Task lifecycle. Task edits never silently rewrite a dispatched packet. Sensitive details in briefs and packets use policy-gated source refs rather than ordinary WorkItem payload.
+
+#### 21.5.2 Minimum packet schema
+
+All rows below are required on an admitted packet. Lists are explicitly empty when no applicable sources, grants, tools, or routes exist; optional limits may be absent. Draft candidates may remain incomplete and cannot execute.
+
+| Fields | Meaning and requirement |
+| --- | --- |
+| `delegation_packet_id`, `schema_version`, `packet_version`, `task_ref`, `expected_task_version` | Stable packet identity and the admitted Task version being prepared. |
+| `execution_brief_snapshot`, `source_refs` | Resolved brief plus versioned input/evidence refs or hashes. Protected source payload is accessed through policy-gated context, not embedded in ordinary Task structure. |
+| `executor_type`, `executor_ref` | Execution class and concrete Identity, worker, tool, or provider endpoint ref; the ref may be null during preparation, but must resolve before dispatch. |
+| `authority_source`, `authority_scope`, `capability_grant_refs`, `allowed_tools` | Who authorizes the work, permitted operations and object/integration scope, current grants, and tool allowlist. Worker dispatch requires active parent-issued grants covering its operations. A solo self-authority note is descriptive; it grants no tool or external-action authority. |
+| `review_requirement` | `{ mode, reviewer_identity_ref?, policy_ref? }`, with mode `self_review`, `human_review`, or `policy_review`. Human review requires a reviewer ref; policy review requires a previously admitted operation-scoped policy ref. Worker output defaults to human review; self review is for solo work. The effective rule is also recorded in the brief snapshot and cannot weaken Task or operation review requirements. |
+| `privacy_scope`, `compartment_refs`, `originating_context_bundle_refs`, `route_decision_refs` | Source classification, allowed disclosure/destination scope, retention-policy refs, and context/routing provenance; each field inherits applicable source restrictions. Lists may be empty for an un-compartmented local self-reminder; boundary-crossing work requires the applicable ContextBundle and policy/route decisions. Un-compartmented content is explicitly `security_level: low`. |
+| `execution_limits` | `{ max_elapsed_seconds?, max_calls?, deliver_by?, cost_limit? }`; automated work requires positive finite elapsed-time and call limits. `deliver_by` is an optional UTC output deadline. This record does not replace Task timing constraints or the assignment's lease/heartbeat deadline. |
+| `failure_path`, `escalation_path` | Stop/clarify/review behavior on invalid output, denial, timeout, or unmet criteria, and the responsible reviewing Identity. Default: stop and return the unresolved work to the assigning user for review. Retry uses §25.1.2; escalation grants no contact, broader context, reassignment, or subdelegation authority. |
+| `created_by_identity_ref`, `created_at`, `provenance`, `idempotency_key`, `status`, `supersedes_packet_ref` | Authorship, audit/version lineage, deduplication, and preparation state; supersedes ref is null for the first revision. |
+
+Packet `status` is preparation state only: `not_delegated` for an admitted self-reminder, `prepared` for an admitted non-self preparation, and `superseded` or `cancelled` when retired through ordinary admission. Preparing a packet does not offer or assign work. An invocation binds the packet id/version; used packet content is immutable. Changes require a new revision, fresh bindings and any renewed approval. Retirement is recorded in append-only history; retention, redaction, and purge follow source policy.
+
+Execution status, lease, delivery, and assignment outcome remain in §25.1.2's assignment record, linked to the packet id/version. Cancelling a preparation does not silently cancel an active assignment; the parent must admit and log its assignment transition. Actual output/evidence and its admission or rejection remain linked candidates and Logs, not mutable claims in the brief.
+
+#### 21.5.3 Executor types and self-reminders
+
+Preserve `self`, `local_agent`, `remote_agent`, `tool`, `human_identity`, `association`, `general_contractor`, and `external_provider`. The type describes intended execution, not authority or trust. Agent types distinguish execution location; cloud inference used by a local agent still needs §2.11 provider routing. An external provider references its descriptor/endpoint, while any assigned worker remains a separately identified actor under a parent-issued grant.
+
+Phase 1 implements self-reminders and explicitly configured agent/tool/provider routes only to the depth required by dogfooding. Worker execution uses the existing assignment contract regardless of executor type. Human-Identity and Association handoff, General Contractor coordination/subdelegation, discovery, bidding, settlement, and marketplace lifecycles remain future work; preparing those types cannot dispatch unsupported execution.
+
+For `self`, no separate packet is required: display the Task brief as "For me", with purpose, expected result, evidence/checklist, constraints, and escalation notes. An optional saved packet uses `not_delegated`, resolves to the user's Identity, and creates no offer, worker lease, notification, recurring reminder, or external disclosure. Starting and completing the Task use ordinary Task/Log admission. A user-selected switch to a worker requires a prepared packet, policy checks, disclosure/approval where required, and explicit parent assignment.
+
+#### 21.5.4 Dispatch, review, and Phase 1 dogfooding
+
+`delegation_packet.prepare` produces a candidate under §21.4; it cannot dispatch work. Before context assembly and again before invocation, the parent validates packet/Task versions, current grants and their versions, allowed operations/tools, executor eligibility, ContextBundle bindings, Compartment policy, disclosure approval, limits, and review policy. Approval binds the packet revision, source versions, destination and relevant policy/grant versions; material change invalidates it. Capability grants, packet notes and user approval cannot override hard Compartment, Identity-isolation, or EvidenceUsePolicy denials. Credentials remain scoped secret references in the existing provider/integration stores, never packet payloads.
+
+Outputs carry packet id/version, assignment ref when applicable, originating ContextBundle refs, evidence/provenance, idempotency key, and expected target versions through §21.2/§25.1.3 admission. Receipt, delivery, or assignment completion alone does not complete a Task, admit modeled effects, or satisfy an Objective. Those changes need separately validated evidence and authorized canonical admission. Assignment failure/expiry leaves work unresolved under §25.1.2; duplicate, stale, revoked, and denied submissions cannot silently change it. Handoff alone never automatically marks the Task moot.
+
+The Phase 1 slice is the optional Task brief, versioned packets for assigned work, worker Identity/grant and assignment links, minimized context and policy decisions, candidate output review, and append-only audit Logs. GitHub dogfooding reuses External References for Issue/PR inputs and returns analysis, patch artifacts, reconciliation reports, or projection previews. Live writes still require §27.3 approval; model-committee retains §3.10's advisory boundary and cannot apply canonical patches or mutate GitHub.
+
+Before claiming this slice implemented, require fixtures covering a solo brief without handoff, explicit worker assignment and delivery pending review, duplicate/stale/revoked or expired submissions, Compartment-denied handoff, permitted disclosed cloud routing, unsupported executor rejection, timeout/escalation without authority expansion, and GitHub preview without live mutation. These are acceptance requirements, not passing runtime evidence.
+
+### 21.6 General Contractor
+
+A General Contractor coordinates multiple subordinate executors to satisfy an Objective or complete a Container of Tasks.
+
+A General Contractor may be a human Identity, agent, or Association. The role may decompose work, assign subtasks, monitor status, request evidence, and submit candidate updates, but only within explicit authority and Compartment bounds.
+
+#### 21.6.1 Coordination mandate
+
+The post-MVP contract (`UBU-D0343`) represents the role as a versioned `CoordinationMandate`, distinct from an executor type, Task, packet, or capability grant. A `general_contractor` packet still binds one executable coordination Task and resolves its executor to the actual actor; a `coordination_mandate_ref` binds the role and mandate version. Objective/Container scope does not make an Objective or Container executable.
+
+| Required fields | Meaning |
+| --- | --- |
+| `mandate_id`, `schema_version`, `mandate_version`, `root_mandate_ref`, `parent_mandate_ref` | Stable identity and versioned lineage; root points to itself and parent is null at the root. |
+| `contractor_actor_ref`, `accountable_identity_ref`, `originating_identity_ref`, `originating_association_ref`, `authority_source_refs` | Concrete executor, accountable actor, and issuing principal with accepted authority evidence; Association ref is null when absent. |
+| `coordination_task_ref`, `coordination_packet_ref`, `objective_refs`, `container_refs` | Versioned work scope and the coordination packet id/version; lists may be explicitly empty. |
+| `capability_grant_refs`, `coordination_operations`, `subdelegation_policy` | Versioned grants, explicit permitted coordination operations (decompose, select executors, request assignments/grants, collect evidence, report status, submit candidates), and delegable operations, executor/destination scopes, and maximum delegation depth. Empty delegation scope grants no subdelegation. |
+| `privacy_scope`, `compartment_refs`, `context_policy_refs`, `settlement_constraint_refs` | Applicable source, disclosure, retention, tool/route and work-agreement restrictions; settlement refs may be empty and grant no payment authority. |
+| `aggregate_limits`, `budget_refs`, `allocation_refs` | Finite expiry, total descendant Task/attempt count, active-execution count and aggregate automated call/time ceilings; finite cost ceilings per currency/resource, including explicit zero where spending is forbidden. |
+| `review_requirement`, `reserved_rights`, `reporting_rule`, `failure_path`, `escalation_path` | Named reviewer or admitted scoped review policy, retained inspection/pause/revocation rights, finite report cadence or milestone deadlines, and responsible escalation Identity. |
+| `created_by_identity_ref`, `created_at`, `provenance`, `idempotency_key`, `status`, `supersedes_mandate_ref` | Audit and revision lineage; lifecycle is derived from append-only admission/transition Logs. |
+
+Mandate states are `proposed`, `active`, `paused`, `revoked`, `expired`, and `completed`. Only an active, currently authorized mandate can support dispatch; preparation or a role label grants no authority. Activation requires originator approval bound to the mandate, packet, source, grant and policy versions. For an Association, accepted governance evidence must identify the issuing/reviewing Identities and their authority under §§19.1 and 26.3; perceived membership or a roster cannot authorize action for participants.
+
+#### 21.6.2 Subdelegation and execution links
+
+Subdelegation is denied by default. An approved policy may permit direct subordinate execution at depth one; another contractor requires an explicitly larger finite depth and its own admitted mandate. For every child, effective authority is the intersection of the root mandate, every ancestor's delegable scope, the child mandate/packet, current capability grants and operation policy. Apply all source restrictions and the strongest applicable review requirements. A child cannot outlive an ancestor, add tools/destinations, weaken evidence/review, or enlarge a budget. Authority from another mandate cannot be combined to widen this chain.
+
+The contractor may propose decomposition, executor selection, reassignment or child grants only for explicitly permitted operations. The authorizing UbU instance admits Tasks, links, assignments and narrowed grants through ordinary validation; the contractor cannot mint credentials or self-authorize a grant. Grant issuance and each dispatch recheck the complete versioned authority chain, source/Task versions, current policy, executor eligibility and allocations. Missing, stale, paused, expired or revoked ancestors deny dispatch. A stale or partial view unable to establish current chain or allocation eligibility cannot dispatch the affected work. Reassignment requires a new executor/packet binding and cancellation or expiry of the old execution slot.
+
+Each admitted `SubdelegationLink` records its id/version, root and parent mandate versions, parent coordination Task/packet, child Task/version, child packet id/version, child executor/accountable Identity, grant refs, allocation refs, assignment or execution/commitment ref, optional child mandate ref, provenance, idempotency key and Log refs. Each child has its own Task and packet. Multiple executors use separate child Tasks or named assignment roles; one active executor owns each slot. Authority links must be acyclic and have exactly one parent; ordinary Task dependencies may cross branches but confer no authority.
+
+Tasks and Containers retain §25.1.2's ordinary structure, including Task-to-Container replacement where applicable. Workers retain its assignment/lease/retry semantics. Human or Association execution additionally requires an accepted scoped work commitment naming the accountable Identity and withdrawal/escalation terms; an offer or mandate cannot impose acceptance. Tool/provider execution binds its invocation to the child packet and grants. Unsupported executor or commitment protocols remain unavailable.
+
+#### 21.6.3 Shared limits, privacy and settlement
+
+All coordination overhead, descendants, retries, reassignment attempts and nested contractors consume the root's aggregate limits as well as their branch limits. Revisions and retries retain cumulative counters and original deadlines; they cannot reset them. A limit increase or renewal requires fresh originator approval and current bindings.
+
+Reserve child cost/resource/call/time allowances atomically against the root and branch budgets before dispatch: consumed plus outstanding reservations must remain within every ceiling. Allocation records bind the mandate/packet versions, quantity and currency/resource unit, reservation id, idempotency key and consumption/release evidence. Concurrent siblings, replay and restart cannot spend an allowance twice. Unknown charges/outcomes keep their reservation until reconciled; release only unused allowance established by evidence. Missing enforceable bounds, unavailable reservation serialization or insufficient allowance denies the affected dispatch. Budget authority never authorizes a commitment, payment or external write.
+
+Each subordinate gets a separately minimized, destination-bound ContextBundle and route decision under §§2.11 and 21.3–21.5; access to the parent's context is not inherited automatically. Derived reports and evidence retain every contributing source's restrictions. Hard Compartment, Identity-isolation and EvidenceUsePolicy denials remain binding on contractors, descendants, logs and review views. An Association principal or reviewer sees only policy-permitted information, including metadata; omit identifiers, counts or even existence when denied.
+
+Propagate accepted work-agreement and settlement restrictions through versioned refs, including permitted counterparties, amounts/units, milestones, dispute/review and settlement destinations when applicable. No payment, escrow release, bargaining, agreement revision or transfer follows from coordinating work or reporting completion. Such actions need separate explicit operation authority and current approval through a supported route; unresolved Skill Barter/settlement workflows remain `UBU-Q0065` work.
+
+#### 21.6.4 Evidence, review and bounded failure
+
+A status report is an immutable candidate carrying report id, reporter Identity, mandate/version, as-of time, child Task/packet and assignment/link refs, claimed status, evidence/provenance, ContextBundle refs, unresolved failures, budget observations and coverage/omission notes where disclosure permits. Preserve subordinate attribution and distinguish reported, validated and admitted outcomes. Contractor summaries cannot replace source evidence or turn missing/withheld reports into success. Corrections or withdrawals append linked records.
+
+The originating user or authorized Association reviewers retain inspection of permitted lineage, grants, limits, evidence and audit outcomes; pause, revocation, rejection, correction and approved reassignment paths; and final acceptance of the aggregate result. Final review defaults to that user or a named Association reviewer; any policy review must be previously admitted and operation-scoped. The contractor cannot weaken these rights or approve its own aggregate result merely by holding the role. Child delivery or assignment completion never alone completes the parent Task or satisfies an Objective; ordinary evidence, version and canonical-admission checks remain required.
+
+Pause, revocation, expiry or exhausted limits invalidate new dispatch and unreleased results across the affected subtree. The authorizing instance records explicit cancellation/expiry transitions for live assignments and requests cancellation of active invocations; it never treats packet retirement as assignment cancellation. Recheck the chain before each privileged action, disclosure/result release and output admission, serialized with invalidation. Late output remains quarantined candidate evidence; use needs fresh authority and ordinary review. Revocation ends UbU execution/disclosure authority without erasing accepted commitments, incurred obligations or dispute rights. Already disclosed data or irreversible external effects cannot be recalled by revocation and require explicit mitigation/dispute records.
+
+Denial, missed reports, timeout, disputed evidence or failed executors stop affected automatic work and return unresolved scope to the named reviewer. Independent branches may continue only within current authority and reservations. Escalation cannot broaden disclosure, contact another party, spend more, replace an executor or renew authority implicitly. Finite depth, descendant/attempt, concurrency, call/time, cost and expiry bounds apply transitively; no automatic renewal, recursive self-appointment or unbounded retry is permitted.
+
+#### 21.6.5 Enablement boundary
+
+This resolves the post-MVP role/data-model contract, not implementation conformance. Phase 1 retains §21.5's configured execution subset and cannot dispatch `general_contractor` packets. Association governance, human coordination and marketplace operation still require their supported later-phase protocols.
+
+Before enabling a supported contractor path, require fixtures for a valid two-executor chain; no delegation permission, excess depth and cycle rejection; child scope/tool/review/Compartment widening denial; concurrent sibling reservation contention and duplicate/restart accounting; cumulative retry/nested overhead and uncertain-charge handling; human/Association acceptance and authority defects; source-linked partial/withheld reports; independent final review; and ancestor revocation/expiry during dispatch, release and admission, including stale versions, cancellation failure and late output. Fixtures must preserve unresolved parent work and prevent authority expansion on failure. These are acceptance requirements, not passing runtime evidence.
+
+### 21.7 Skill Barter marketplace direction
+
+The Skill Barter marketplace is a future specialization of Association coordination, Delegation Substrate, Resource/Skill readiness, and Technique evidence. It is not a Phase 1 public marketplace.
+
+The private Skill model should come first. A user must be able to model, learn, test, refresh, and use Skills for their own life logistics before UbU exposes those Skills to other Identities. Once private skill evidence and Delegation Substrate packets are useful, Skill Barter can become a voluntary exchange layer rather than a generic labor marketplace.
+
+A mature Skill Barter system may support privacy-preserving skilled-work exchange, pseudonymous capability claims, reputation without unnecessary doxxing, scoped work agreements, private or selective-disclosure evidence, lawful user-controlled settlement references, dispute workflows, and human/agentic executor discovery.
+
+For EthConf and cypherpunk outreach, Skill Barter is useful as a future-direction signal: UbU can preserve cryptocurrency-native values of voluntary coordination, sovereign identity, privacy, FOSS development, open markets, economic self-sufficiency, and lifelong skill acquisition without becoming token-first or speculation-first.
+
+The preferred framing is an open, user-sovereign skill economy or a self-reinforcing ecosystem for skill acquisition, task execution, and voluntary exchange. Avoid calling it a closed ecosystem, because that implies platform captivity rather than user sovereignty.
+
+### 21.8 AgentAction and BackgroundProcess
+
+An `AgentAction` is one bounded attempted action by an agent, model, worker, or tool against an external or privileged surface. A `BackgroundProcess` is the durable controller object that decides when zero or more `AgentAction`s should be proposed, run, retried, cancelled, or escalated without necessarily occupying user Calendar time.
+
+`AgentAction` fields describe a single dispatch or candidate dispatch:
+
+- `agent_action_id`;
+- optional `background_process_ref`;
+- `actor_identity_ref` and `agent_or_tool_ref`;
+- purpose, related Objective/Task/workflow refs, and originating ContextBundle refs;
+- target surface, operation kind, payload summary or hash, expected prior external version, and idempotency key;
+- authority source, capability grant refs, credential or secret-capability refs by opaque handle and version, Compartment refs, Identity/Association disclosure constraints, and provider/tool route decision refs;
+- prompt-injection exposure assessment and containment policy;
+- compute, rate, money, and privacy-budget estimate plus actual usage when known;
+- side-effect class, reversibility, dry-run/candidate status, review requirement, and approval state;
+- result status, external result refs, downstream candidate refs, completion evidence, Log refs, and failure or denial reason when safe;
+- rollback or mitigation metadata for any external effect that cannot simply be ignored.
+
+`BackgroundProcess` fields describe standing permission and scheduling policy:
+
+- `background_process_id`, owner Identity, purpose, lifecycle status, created/updated/disabled refs, and policy version;
+- trigger spec, recurrence or polling rule, event subscriptions, manual-start affordance, run window, deadline when any, expiry, concurrency limit, retry and backoff policy, cancellation policy, and maximum catch-up behavior after downtime;
+- allowed action kinds, target surfaces, provider/tool classes, capability grants, credential handles, Compartments, and ContextBundle templates;
+- compute, rate, money, and privacy-budget caps per action, per period, and lifetime;
+- prompt-injection risk ceiling, required isolation mode, review threshold, output-admission policy, and candidate-update policy;
+- notification policy, quiet-hours behavior, escalation path, failure threshold, and required user-visible summary;
+- Calendar projection policy, audit/logging policy, retained evidence refs, and cleanup or mitigation obligations.
+
+**Phase 1b advisory batch runner (`UBU-D0264`).** The minimum Phase 1b advisory batch runner is a narrow `BackgroundProcess` whose allowed action kind is local advisory candidate generation through the `LocalAdvisorySubmission`/`LocalAdvisoryResult` boundary. Its durable process record contains `background_process_id`, owner Identity, purpose, lifecycle status, operation kind, eligibility filter, interval or manual-start policy, run window, concurrency limit of one unless explicitly raised, per-run and per-object pass caps, retry/backoff and cancellation policy, maximum catch-up behavior, `WorkerAuthority` ref, secret-capability refs by id and version, Compartment and ContextBundle template refs, compute/rate/money/privacy caps, prompt-injection ceiling, output-admission policy, notification/escalation policy, Calendar projection policy of `none` by default, audit policy, and retained evidence refs. Dispatch rechecks lifecycle, eligibility, object versions, Compartment policy, credential version, capability grants, budgets, and prompt-injection ceiling immediately before each object attempt.
+
+Per-object progress is canonical process state, not a single aggregate blob. A `BackgroundProcessObjectState` is keyed by background process, target object ref, operation kind, and policy or prompt/template version when that version affects eligibility. It records lifecycle status, observed object version, eligibility reason, pass count, success and failure counts, last attempted/succeeded/failed times, last result status, next eligible time, last `AgentAction`/worker-result refs, candidate refs when any, and safe diagnostic refs. Updating this state uses ordinary mutation-envelope/idempotency rules so later sync can version and replicate each object's progress independently.
+
+Run control is event-sourced. Each run records append-only audit events such as `background_process_run_started`, `object_attempt_started`, `object_attempt_succeeded`, `object_attempt_failed`, `run_interrupted`, `run_resumed`, `run_cancelled`, and `run_completed`, with checkpoint cursor, object counts, budget use, interruption reason, actor or signal source when safe, and Log refs. Resumption reads durable object state and the last run event; in-memory cursors are only caches. A graceful interrupt records the checkpoint before exit, and retry uses the same per-object idempotency keys rather than reprocessing successful objects.
+
+The Phase 1b advisory process creates candidate artifacts only; it does not occupy Calendar time merely because it consumes compute, credentials, or wall-clock duration. Operator surfaces show elapsed time, compute/resource use, credential/capability versions used, candidate counts, per-object pass counts, failure counts, and last-run status in process state or summaries. Calendar entries are created only for user attention, review deadlines, reminders, or escalation Tasks, not for the unattended compute itself.
+
+A batch over operator-authored lore plus external message content is never below `medium` prompt-injection exposure. It is `high` whenever untrusted external text is mixed with private context, can influence candidate content materially, or could affect tool choice, routing, credential use, or arguments without containment. Phase 1b containment is source separation, instruction stripping or quoting for untrusted text, narrowed ContextBundles, allowlisted no-network local advisory calls, candidate-only writes, credential brokering by the controller, result schema validation, and human review for admitted state. `Critical` exposure fails closed; Phase 1b does not permit advisory batch content to drive external mutation, spending, credential disclosure, or policy expansion.
+
+Default notification is summary-only for a clean run that creates candidates or for a clean no-op with no eligible work. The process must notify or escalate when dispatch is denied by policy or credential state, the run fails, every attempted object fails, malformed results dominate the run, budgets are exhausted, prompt-injection exposure exceeds the ceiling, or a configured no-output threshold is reached. For shutdown chaining, exit success means only that the process reached a terminal clean state: `completed`, `completed_no_eligible_work`, or `completed_no_candidate_output` with no escalation-required failures. A run that attempted eligible objects and all failed, was interrupted before checkpoint, exceeded policy, or ended with unknown result exits nonzero and records escalation; power-off automation must not treat that as successful work completion.
+
+Prompt-injection exposure is scored before dispatch and updated after execution. The score combines source trust, whether the agent consumed untrusted webpages, messages, documents, tool outputs, or mixed-Compartment content, the amount of raw private context exposed, whether untrusted text can influence tool choice or arguments, and the authority at risk: credentials, spending, external mutation, privacy export, or user-facing commitments. The minimum qualitative bands are `low`, `medium`, `high`, and `critical`. `High` exposure requires containment such as instruction stripping, source separation, allowlisted tools, candidate-only writes, narrowed ContextBundles, or human review. `Critical` exposure fails closed unless a specific approved policy permits the run and the action remains inside hard Compartment, credential, cost, and review gates.
+
+External side effects carry a side-effect class: `read_only`, `local_candidate_only`, `externally_reversible`, `compensating_action_possible`, `externally_irreversible`, or `unknown`. Anything outside `read_only` or `local_candidate_only` must record expected external prior state when available, idempotency keys, evidence to reconcile the result, and the review gate that admitted the effect. `Compensating_action_possible`, `externally_irreversible`, and `unknown` actions require mitigation metadata before dispatch: mitigation owner, user notification rule, cancellation or revocation path, compensating operation when one exists, external support/contact path when relevant, deadline for mitigation, and the Log or candidate records that should be written if mitigation is needed.
+
+Background processes are Calendar items only when they reserve or require the user's attention, represent a user commitment to another party, or make the user's availability materially unavailable. Compute-only work, polling, sync, advisory analysis, candidate generation, projection reconciliation, and scheduled external checks remain separate process state. They may surface Calendar overlays, deadlines, reminders, or review Tasks, but those projections do not become user time blocks unless the user must attend, decide, travel, meet, or be unavailable.
+
+All AgentAction and BackgroundProcess mutations remain candidate/admission workflows unless an accepted integration policy gives narrower automatic authority. Dispatch rechecks current Compartment policy, credential version, capability grant, budget, lifecycle status, and expected external version immediately before use. Logs are append-only: failed, denied, cancelled, mitigated, and superseded actions are recorded rather than rewritten.
+
+### 21.9 State-transition cockpit
+
+The long-term UX should present the current state transition and its evidence, constraints, expected effects, authority, privacy scope, and available actions.
+
+Phase 1 proves this through one recommended next Task and an inspectable explanation. Later cockpit surfaces may include message triage, Log review, Plan repair, Delegation Substrate packets, agent approvals, AssociationAttestation review, organizational introspection, and projection publication.
+
+#### 21.9.1 First-person frame and shared inspector
+
+**Product contract (`UBU-D0351`, Phase 2).** Keep one current choice as the default surface, phrased around the user's purpose: what I am moving forward, why now, and what this choice would change. Open a focused review surface from a Task, message, review item or user request; keep the next Task and full Plan reachable without requiring a dashboard tour. Use the same summary, inspector and action area across workflows. Chat, voice and forms reach these same controls and admission paths.
+
+Show the acting Identity, current Device/local Replica scope, permitted Compartment or `security_level: low` label, and relevant freshness or incomplete-view limits. Link to the existing sync/session indicators; opening review starts no capture. Filter the entire surface before display or model context assembly, including counts, badges, evidence selectors, labels and notifications. If existence is denied, omit the item rather than showing a revealing placeholder. A visible unavailable/redacted indicator is allowed only when policy permits it.
+
+The compact summary states the purpose, current state, proposed change, main constraint or uncertainty, expected consequence and exact decision requested. Expand these inspection groups on demand, with decision-critical denials, uncertainty and irreversible effects visible before approval:
+
+| Inspector group | Required presentation |
+| --- | --- |
+| Current and proposed state | Read-only current admitted values beside the exact proposed field/artifact diff, affected scope and versions. Omission proposes no change; unknown and private stay explicit. Distinguish a derived Plan preview from a proposal to mutate its input objects. |
+| Evidence | Source links/selectors, observation and recording times, attribution, explicit assertion versus inference, per-field qualifiers/confidence when supplied, contradictions and permitted evidence gaps. Model prose, repetition and confidence confer no authority. Apply §21.1.1's corroboration rules where relevant. |
+| Constraints | Relevant dependencies, preconditions, timing, availability, affect/staleness, risk findings and policy limits, with their source and whether they are hard checks or advisory findings. Show the reason a recommendation or action is unavailable. |
+| Expected effects | Separate the immediate admitted change, predicted planning consequences and any external action. Label assumptions and uncertain outcomes; Task/worker completion or an accepted recommendation does not prove a modeled effect occurred. |
+| Authority and disclosure | Who proposes, who reviews and who executes; applicable authority/grants and current denials; recipient, provider/route, exposed data and relevant cost/retention limits. Acceptance of a claim, Plan choice, packet preparation and external-action authorization remain separately identified decisions. |
+| Recovery | What can be cancelled before dispatch, what can be corrected afterward, mitigation owner/path and any irreversible or unknown effect. Local repair appends a correction, supersession or compensating mutation; external mitigation is a separately authorized action. Never promise erasure, recall or restoration that the adapter cannot establish. |
+
+This is a presentation contract over existing records, review events and operation bindings, not a new canonical transition object, lifecycle enum or planning-kernel input.
+
+#### 21.9.2 Candidate and admitted state
+
+Use explicit text and structural separation: `Current (admitted on this Device)` and `Proposed (not applied)`, with a labelled diff region. A draft or candidate can be displayed beside current state but cannot replace its values in the ordinary Task, Calendar or Objective view. Previews remain labelled through drawers, timelines, search and reports. Use redundant text, icons/borders and accessible state descriptions; color alone cannot distinguish state.
+
+Display each record's actual lifecycle from §21.2.1 or its native contract, including deferred, rejected, disputed, superseded or revoked states. Queue order, confidence, age and an uncontested appearance never change state category. Pending/conflicted sync material is not admitted input. Admitted state is this Replica's policy-scoped view, not a claim that all Devices agree or that an accepted social claim is universal truth.
+
+Keep saving, admission and execution outcomes separate: `Draft saved`, `Accepted update`, `Awaiting review`, `Delivery unconfirmed` and a verified external outcome appear only when the corresponding durable/result evidence exists. A CPU-certified Plan preview is still a recommendation, not a commitment or proof of execution. Show the resulting diff and linked review/Log outcome after success; on failure or uncertainty preserve permitted drafts and report the actual outcome without a success badge.
+
+Offer Inspect, Edit/resolve, Accept the displayed change, Reject, Defer and Cancel where supported. Name consequential controls for their operation, such as `Accept Task changes`, `Use reviewed Plan` or `Approve this send`; avoid a generic approval that hides multiple effects. A permitted batch lists every included change and dependency, with nothing preselected for unrelated admission. Partial acceptance requires a coherent separately bound subset. Rejection/deferral needs no compulsory explanation and creates no inferred Preference.
+
+Edits produce a new bound proposal revision and renewed review. Immediately before admission or dispatch, the controller rechecks candidate, target, evidence/context, dependency and relevant policy/grant versions, current authority, Device eligibility, native semantics and idempotency. Material changes invalidate approval; show the changed scope for fresh review rather than silently rebasing. Reviewing retained candidates after restart or Device handoff conveys no live capture consent or execution approval. Cancel invalidates pending approval/unsent work; already-dispatched effects follow their actual reconciliation and mitigation path.
+
+#### 21.9.3 Core workflow surfaces
+
+All surfaces use the shared inspector, with the workflow-specific decision below. Unsupported operations remain visibly unavailable or evidence-only; a polished screen cannot enable them.
+
+| Surface | Focus and decision boundary |
+| --- | --- |
+| Next Task | One legitimate recommended Task, served Objective, why now, duration, readiness and risk; preserve §4.1.2's start/done/snooze/reject/decompose/override controls and full-Plan inspection. Starting is distinct from completion and verified effects. |
+| Message reply | Incoming source and explicit/inferred metadata beside the exact reply, sending Identity/account, recipient/destination and disclosed fields. Saving or accepting a local Task/draft never authorizes send; external send uses its own released workflow and operation-bound approval. |
+| Log review | Planned versus observed intervals and original entries beside proposed annotations/corrections, including unknown/private time. Accept an explicit correction or separately reviewed Snapshot/Task change; preserve original history and avoid inferred Preferences or blame. |
+| Plan repair | Failed assumptions/blockers, current Plan legitimacy and candidate repair with changed ordering, placements, omissions and risks. Review input corrections separately from choosing a CPU-certified replacement Plan; no silent default switching or external dispatch. |
+| Delegation packet | Show the Task brief as `For me` or the frozen packet/version, executor, output/evidence requirements, limits and failure path. Preparing/saving grants no handoff; assignment, delivery and output admission remain distinct under §21.5. |
+| Agent action approval | Exact target, operation/payload, grant, route, prompt-injection exposure, cost and side-effect/recovery class. Bind authorization to that action and current versions; show attempted, confirmed, failed or unknown outcomes without treating output as admitted state. |
+| AssociationAttestation review | Scoped claim, perspective, attribution, evidence/counterclaims, confidence versus authority, and disclosure policy. Accept, narrow, dispute or supersede through §19.2; acceptance grants no capability or publication authority. |
+| Organizational introspection | Reviewed mission/commitment evidence versus observed behavior, dissent, uncertainty and gaps. Findings and suggested follow-up Tasks are separate candidates; approval cannot synthesize collective Preferences, settle disputed authority or publish the report. |
+| Projection publication | Exact final payload/artifacts and metadata, audience/destination, managed scope, source/input versions and redactions. Preview/export review, operation approval, dispatch and verified reconciliation are distinct; §1's stale-view choice and §27.3's managed-write rules still apply. |
+
+The Phase 2 shell extends available Task, Log, candidate, Plan, worker and projection workflows. Message/Identity coordination, full Association/governance/introspection and other richer surfaces retain their existing Phase 3+ or separately released gates. Phase 1's manual/fixture-backed outreach review remains possible without full Association automation. This decision enables no new ingestion, capture, executor, sending or publication route.
+
+#### 21.9.4 Bounded generative presentation
+
+Generation may supply candidate explanations, evidence summaries, clarification wording, checklists and comparisons, or suggest an arrangement of known inspector widgets. Use a versioned, closed declarative widget vocabulary with finite layout/content limits and deterministic validation. Generated content is labelled with source/model provenance and remains inspectable against the permitted underlying records; an explanation cannot invent evidence or promote a candidate.
+
+The controller owns navigation, state labels, exact diffs, authority/denial text and approval/reject/cancel controls. Generated layouts cannot hide or reorder these required review elements, change their meaning, preselect admission, create executable controls, call tools or supply scripts/HTML. Unknown widgets, invalid references, lost qualifiers or ungrounded summaries fall back to the fixed inspector with original permitted content. Generative presentation uses the same ContextBundle, provider routing and Compartment gates as other advisory output.
+
+Keep the fixed text/form inspector usable with models, camera, microphone and speech output disabled. Preserve permitted drafts, exact corrections and version links when changing surfaces; late generation cannot overwrite user edits. Support keyboard and screen-reader inspection and controls, predictable focus and accessible errors. Apply §21.1.2's attention envelope: defer unavailable review rather than compressing consequential approval into a generic spoken assent.
+
+#### 21.9.5 Phase 1 minimum
+
+The Phase 1 cockpit seed is the already frozen §4.1.2 loop: one Task with title, Objective, duration/work window, status and provenance; a compact why-now explanation covering timing, dependency/blocker, affect/staleness and top risk/opportunity; visible worker/projection state where relevant; and one-action access to the full Plan, considered alternatives/constraints and permitted evidence. Explain what each control records, distinguish recommendation from commitment and predicted effects from observed outcomes, and expose the existing review/correction and projection-preview paths. Label fixture/mock behavior explicitly.
+
+The richer inspector, generative layout and later workflow inventory do not add a Phase 1 blocker, require a new bootstrap interview or reopen the frozen feature set. Broader cockpit implementation proceeds only for supported slices under their existing release gates.
+
+#### 21.9.6 Acceptance evidence
+
+Before claiming a cockpit slice delivered, pin UI/controller, schema/adapter and policy revisions and exercise these cases through the real supported review/admission paths:
+
+- From one next Task, reach its Plan, constraints, evidence and proposed change, then return without losing context. In user review, ask what is current, what is proposed, who acts, what approval changes and what recovery is possible; report comprehension gaps and tested scope.
+- Preview, edit, reject, defer and cancel admit none of the proposed world-state effects. Exact bound acceptance produces only the displayed coherent changes and linked review/Log outcomes once; duplicate submission/replay adds no effect.
+- Target/evidence/policy changes, revocation, delayed model results, restart and Device handoff cannot use stale approval or overwrite corrections. Current partial/stale Replica limits stay visible without implying global agreement.
+- A denied-existence item leaks no count, label, identifier, notification or generated context. An allowed evidence gap stays explicitly unavailable; confidence and repeated claims bypass no gate.
+- Log repair preserves the original entry; packet preparation dispatches nothing; delivery does not admit output or complete a Task; publication preview causes no external write. Unknown external outcomes remain unknown and follow reconciliation rather than blind retry.
+- Invalid/generated layouts cannot hide diffs, uncertainty, denials or action scope. Model/capture failure and keyboard/screen-reader use preserve useful fixed review, exact editing and cancellation; restricted attention defers prohibited review.
+- Cancellation before dispatch prevents unsent work; after dispatch the UI reports remaining effects and the actual compensating/irreversible limits rather than claiming undo.
+
+These are product acceptance requirements, not passing implementation evidence. Existing per-operation corroboration, host fidelity, sync, access, retention and release requirements continue to govern each slice.
+
+## 22. Relationships
+
+A **Relationship** is structured UniverseState data representing the relationship between Identities as modeled by a particular UbU instance. Relationships are not globally objective social truth. They are perspective-bound, Compartment-governed, evidence-backed models that help the user reason about communication, obligations, trust, scope, boundaries, and maintenance.
+
+MVP Relationship data remains intentionally narrow:
+
+- identity refs for the relevant parties;
+- at least one Identity controlled by the user;
+- user-stated affect or stance toward the other Identity where the user chooses to record it;
+- inferred/speculated hypotheses about the other Identity's stance only as candidate, reviewable, evidence-backed claims;
+- ordinary references to Logs, External Events, Tasks, Compartments, or External References when source policy permits.
+
+Communication and maintenance metadata are not stored directly on Relationship in MVP. Cadence policy for "keep this relationship warm" lives on an evergreen Objective's recurrence/reactivation rule. Observed interactions live in Logs, External Events, Task history, or Compartment/external references, depending on source and sensitivity.
+
+Objectives attach to Relationships indirectly through UniverseState or explicitly through `RelationshipScopeTransition` targets. A relationship-maintenance Objective points at the Relationship or relationship-relevant UniverseState key, and its Tasks mutate ordinary UniverseState or append events. A scope-transition Objective points at a `RelationshipScopeTransition` target and uses ordinary Techniques, Steps, and Tasks to plan user-controlled actions.
+
+Neglect risk is not stored on Relationship in MVP. It is a risk-report finding derived from the maintenance Objective's recurrence rule plus observed interaction history and current Plan state.
+
+### 22.1 Epistemic asymmetry and perspective decomposition
+
+Relationships have **epistemic asymmetry**. The user has first-person access to the user's own declarations and experiences, but even the user's self-model can conflict with observed behavior, affect history, and later reflections. The counterparty's perspective is never known directly by UbU; it is represented only as evidence-backed hypotheses about how the counterparty may understand, value, or scope the relationship.
+
+The richer post-MVP Relationship model should lazily decompose the user's side rather than treating `ownPerspective` as a monolith:
+
+- `ownDeclaredPerspectiveHistory`;
+- `ownObservedBehaviorRefs`;
+- `ownAffectHistoryRefs`;
+- `ownReflections`.
+
+`ownDeclaredPerspectiveHistory` preserves admitted user declarations as history. Phase 2 uses §22.1.1's scoped records and review rules; new declarations preserve earlier declarations and observed evidence.
+
+The counterparty side should use domain- and scope-tagged hypotheses rather than a single `speculatedPerspective`:
+
+- `claim`;
+- `domain`;
+- `scope`;
+- `evidence_refs`;
+- `counterevidence_refs`;
+- `confidence`;
+- `status`;
+- `last_reviewed`.
+
+Domain examples include `technical_collaboration`, `emotional_availability`, `professional_boundary`, `money_and_value`, `authority`, `reciprocity`, `trust`, `intimacy`, and `conflict_style`. UbU may detect internal tension between hypotheses as a finding about the user's model, not as a claim about the counterparty's inner state.
+
+#### 22.1.1 Declaration history and scope drift
+
+**Phase 2 contract (`UBU-D0344`).** Lazily attach declaration records or policy-protected references through `ownDeclaredPerspectiveHistory`; Phase 1's minimal payload and Objective-based maintenance remain under `UBU-D0076`. Each admitted declaration records the user's own perspective. Imported or generated interpretations remain candidates until the user confirms their meaning through ordinary admission.
+
+Each immutable record carries:
+
+- `declaration_id`, `schema_version`, `relationship_ref`, and the user-controlled `declaring_identity_ref`;
+- `domain`, explicit `scope`/context conditions, the dimensions asserted (such as boundaries, availability or obligations), and `assertion_role`: `current_participation` or `desired_participation`;
+- exact user-stated content or a policy-protected `content_ref`, with source/version provenance; optional rationale and permitted `evidence_refs`;
+- `recorded_at` and a half-open effective interval `[effective_from, effective_until)`, allowing an open end; unknown effective time stays explicit rather than defaulting to recording time;
+- `record_kind`: `statement`, `correction` or `withdrawal`; `supersedes_refs` naming prior declaration ids and the affected dimensions, context and interval; optional `transition_ref` and `objective_ref`;
+- ordinary actor/Device, authority, admission/Log or SyncStatement provenance, observed source versions and causal references, plus Compartment, disclosure, retention, redaction and evidence-use policy references.
+
+A new statement coexists with compatible complementary statements or declarations for different contexts, dimensions or intervals. Supersession requires an explicit, user-authorized replacement or withdrawal of identified records for the same Relationship and declaring Identity. Only the named overlap is superseded; unaffected dimensions and intervals remain applicable. Desired participation cannot supersede current participation. Editing content, scope, times or links appends a new record. Withdrawal ends applicability without asserting the opposite. Reject cyclic or invalid supersession references, stage unavailable required references, and deduplicate replay through ordinary admission.
+
+Derive applicability from admitted records rather than updating an old record's content, end time or active flag. Offer both effective-time and known-as-of-history views. Known-as-of queries use the Replica's admitted causal frontier/checkpoint; recording timestamps are provenance, not cross-Device ordering authority. A late correction or retrospective clarification may change today's interpretation of an earlier interval, but preserves what was declared and known before the correction was recorded. A new declaration does not erase observed behavior, establish counterparty consent, authorize disclosure, or retrospectively remove a boundary violation.
+
+Incompatible overlapping declarations without explicit resolution, including concurrent replacements of the same prior declaration, require ordinary conflict review. Never select a winner by wall-clock time, arrival order or Device. Preserve both source records; the contested interpretation remains pending/candidate until an admitted resolution establishes applicability under DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md §§9 and 17. Recheck authority, relevant declaration/frontier versions and policy before admission. Partial, stale or restricted views label permitted coverage and uncertainty; unavailable history cannot prove absence of a declaration or absence of drift. Diagnostics and links must not reveal denied content or identifiers.
+
+Compare declaration changes separately from observed scope divergence. A `ScopeAssessment` compares admitted current-participation declarations with permitted behavior for the same dimensions, context and effective interval, using the declaration applicable when the behavior occurred. Desired participation is shown separately. Unknown effective times or ambiguous scope selectors require clarification before an authoritative comparison. A drift finding binds the compared declaration ids/versions, comparison interval and scope, behavior/evidence and counterevidence refs, relevant affect/reflection refs, source provenance, coverage limits, uncertainty and review status. Search for supporting as well as disconfirming evidence where permitted; missing or conflicting evidence yields an explicit unresolved comparison. Affect may motivate review, but negative affect alone establishes neither scope change nor dysfunction. Agreement between declarations and behavior cannot establish the counterparty's perspective.
+
+Distinguish reviewed scope evolution from possible unnoticed scope creep through explicit user review: ask whether the observed change was intended, when it began, and which dimensions the user now endorses. A user-confirmed declaration or scoped review annotation can document intentional evolution of the user's participation. Expansion without matching reviewed intent is only a candidate discrepancy, not proof of unconscious intent or wrongdoing. Reviewing evolution preserves earlier discrepancies and uncertainty about mutual scope. Under `UBU-D0273`, accepting a finding admits a separate scoped observation, annotation or correction; changing the declaration baseline additionally requires an explicit user declaration/correction. Rejection retains the existing privacy-minimized suppression record. Findings cannot silently update scope or become hidden planner constraints. Proactive evidence-count, recency and salience thresholds remain `UBU-Q0089`; typed evidence-policy enums remain `UBU-Q0092`.
+
+A deliberate transition binds its `scope_history_context` to baseline declaration ids/versions and records a separate desired scope. Any resulting declaration explicitly links the transition, Objective and permitted review/Log evidence; Relationship reverse references retain transitions across active, completed, abandoned, declined and superseded states. Starting, completing or declining an Objective never automatically changes current participation. A process-successful invitation with a refusal leaves the current declaration intact unless the user separately declares a change in the user's own participation. Retrospective clarification records its effective interval and later recording time. Transition identity, Objective ownership, reverse references and provenance follow §22.3.1 (`UBU-D0345`); process/outcome details follow §22.3.2 (`UBU-D0346`).
+
+Before claiming implementation conformance, require fixtures for complementary scopes, partial supersession at interval boundaries, withdrawal, future/desired declarations, late correction with both historical views, concurrent offline replacements and replay, behavior/affect disagreement, incomplete or denied evidence, and completed/declined transitions without automatic declaration changes. Verify preserved source history, policy-safe views and ordinary review/admission outcomes. History retention follows current policy; authorized redaction/purge removes disallowed dependent content and leaves only permitted gap metadata.
+
+### 22.2 Extrospection
+
+**Extrospection** is relationship-scoped, evidence-backed review of the user's counterparty-perspective hypotheses, Relationship scope declarations, trust boundaries, reciprocity assumptions, affective impact, and functionality assumptions. It reuses the attestation pattern from introspection and AssociationAttestation, but its attestation target is weaker: the user's hypothesis about another party, not the other party's actual perspective and not a value the other party necessarily declared.
+
+Extrospection should confront the user with evidence in tension rather than produce authoritative resolution. A review may surface supporting evidence, disconfirming evidence, ambiguity, insufficient evidence, clarification prompts, possible model updates, and possible introspection handoffs. Disconfirming evidence requires a confirming-evidence search when permitted by the corpus; if no confirming evidence is found, UbU should say so rather than fabricate balance.
+
+Durable extrospection records should prefer Compartment-aware `EvidenceRef`s, selectors, summaries, redaction policy, retention policy, and EvidenceUsePolicy over copied private excerpts. Raw excerpts may be displayed or retained only when source policy permits. Evidence from old interactions should decay in salience unless reactivated by new evidence, user review, or a current Objective. Cross-Relationship inference is prohibited by default.
+
+Extrospection assessments should be separated rather than collapsed into a single health score:
+
+- `ScopeAssessment`: is the relationship operating within the declared or intended scope?
+- `BoundaryAssessment`: are privacy, trust, money, labor, intimacy, authority, and Identity boundaries being respected?
+- `ReciprocityAssessment`: are obligations, benefits, attention, and effort consistent with the declared relationship type?
+- `TrustCalibrationAssessment`: is the user's level of trust evidence-calibrated, including over-trust and under-trust?
+- `AffectiveAssessment`: how does the relationship affect the user?
+- `FunctionalityAssessment`: is the relationship serving its intended role without unsustainable cost or boundary violation?
+
+`ScopeAssessment` logically precedes the other assessments because a wrong or stale scope can make other evaluations use the wrong frame. Negative affect is not equivalent to dysfunction; UbU should distinguish hedonic valence from normative alignment. A user may record `userAcceptedDiscomfort` when discomfort has been reviewed and accepted as value-aligned, with reopening only when new evidence, changed capacity, or changed values justify it.
+
+Extrospection findings use an explicit lifecycle:
+
+- `candidate`;
+- `deferred`;
+- `resurfaced`;
+- `reviewed_accepted`;
+- `reviewed_rejected`;
+- `superseded`;
+- `archived`.
+
+Unreviewed findings must not silently update durable Relationship state. Rejected findings should remain durable enough to suppress repeated bad framings. Deferred findings may resurface when materially new evidence accumulates. High-frequency extrospection sessions without model updates may trigger a rumination advisory, but such behavioral-risk detection is advisory by default.
+
+#### 22.2.1 Typed Relationship evidence policies
+
+**Phase 2 contract (`UBU-D0352`).** Each Relationship `EvidenceRef` binds versioned retention, redaction and evidence-use policies. These are hard authorization/storage boundaries under §§2.11, 21.3 and 23, not bypassable behavioral safeguards. Phase 1 retains `UBU-D0074`'s narrower promise; recording a policy is not evidence of enforcement. Unsupported policies make the affected capture, retention or use unavailable.
+
+**Retention.** `EvidenceRetentionPolicy` separates `lifetime: EvidenceRetentionLifetime`, `retained_form: EvidenceRetainedForm` and `review: EvidenceRetentionReview`; summary-only storage and review requirements do not replace a deletion deadline.
+
+| `EvidenceRetentionLifetime` | Required binding and behavior |
+|---|---|
+| `indefinite` | Explicit authorized retention choice; no evidence-specific deadline, but source expiry, revocation and stricter policy still apply. |
+| `until_relationship_closed` | Bound Relationship and an explicit authorized admitted closure marker/rule; expire on that marker, with a finite fallback `expires_at`. No inference from silence, refusal or Objective completion. Unsupported closure tracking makes this mode unavailable. Reopening cannot restore expired content. |
+| `session_only` | Bound session and finite non-renewing `expires_at`; expire at session end or the deadline, whichever comes first. No durable evidence payload, including summaries. Restart cannot resume the lease. |
+| `delete_after_duration` | Positive finite `duration_seconds`, fixed `collected_at` and derived `expires_at`; reading, copying, retrying or summarizing cannot restart the clock. |
+
+`EvidenceRetainedForm` is `reference_only`, `summary_only` or `selected_content`. `reference_only` stores only permitted refs, bounded non-content selectors and necessary provenance. `summary_only` additionally permits a derived summary, never copied excerpts. `selected_content` additionally permits purpose-required bounded source text only when redaction and source policy allow it. Each retained artifact has an explicit lifetime within its source-policy bounds; selecting summaries never grants them indefinite retention. Evidence-copy expiry does not itself delete an independently managed upstream archive or prove a historical claim false. Deadlines remain bound to originating capture/session, never another Device's receipt time; inability to establish an unexpired grant fails closed.
+
+`EvidenceRetentionReview` is `not_required` or `required`. `required` blocks durable capture until explicit user approval binds source/evidence versions, retained form, lifetime, scope and policy versions. Pending previews obey finite session-only limits. `not_required` needs an existing scoped user-approved retention rule. New policies default to `session_only`, `reference_only` and `required`; absent or unknown policies grant no access or reuse.
+
+**Redaction.** `EvidenceRedactionPolicy` is a maximum permitted representation for a named purpose, actor and audience/destination, not a claim that an artifact is harmless.
+
+| Value | Permitted representation |
+|---|---|
+| `full_text_permitted` | Minimum task-required selected source text and permitted supporting fields; no automatic full-archive access or durable copy. |
+| `summary_only` | Permitted summary and necessary provenance refs/metadata; no excerpt or content-bearing selector. |
+| `selector_only` | Permitted source ref and bounded non-content selector; no source text or summary. |
+| `reference_only` | Authorized opaque reference with necessary minimal provenance; no selector, summary or source text. |
+| `metadata_only` | Allowlisted non-reconstructive metadata; no source handle, selector, summary or source text. |
+| `prohibited` | No evidence disclosure to that consumer, including refs, metadata or existence. |
+
+Modes such as summary-only and selector-only are not interchangeable levels. Intersect the actual permitted fields and operations across all contributing policies; if no useful safe representation exists, exclude or deny. Selectors, hashes, source ids, times and Compartment labels are protected data, not inherently safe metadata. A selector containing quoted text counts as source payload. Approved redaction transforms carry provenance; ordinary summarization cannot relax inherited restrictions or turn a private summary into an exportable structural reference.
+
+**Use.** `EvidenceUsePurpose` is `review`, `extrospection`, `introspection`, `association_attestation`, `planning`, `export` or `model_training`. `EvidenceUsePolicy` maps each purpose to `deny`, `allow` or `require_review`, with Relationship/Identity/Association scope, allowed audience/destination, expiry and permission-basis refs. Missing/unknown purposes or decisions deny. New policies deny reuse until an authorized scoped rule is supplied. `allow` permits only the named use within current source authority; `require_review` additionally requires operation-bound approval; `deny` cannot be bypassed by review. Revising a policy requires authority over its source restrictions.
+
+Extrospection permission cannot authorize an introspection handoff, another Relationship, AssociationAttestation, planning or export. Handoffs recheck both purposes and scope; cross-Relationship inference remains denied by default. Attestation and planning permissions do not admit findings, establish counterparty intent or create planner constraints: ordinary candidate review, authority and admission still apply. `export` covers clipboard, download, projection and disclosure outside the authorized Identity/Association or execution boundary. Such disclosure additionally requires export permission; replica sync separately checks replication policy and destination-specific evidence scope. Existing Compartment routing/replication and ContextBundle approval requirements apply even when use is `allow`. In Phase 2, `model_training` must be `deny`, including fine-tuning and provider training/secondary reuse; an inference approval cannot enable it. Destinations whose effective training/secondary-use behavior cannot satisfy this restriction are unavailable for Relationship evidence.
+
+**EvidenceRef and derivation.** Minimum fields are `evidence_ref_id`, `schema_version`, `relationship_refs` and perspective/actor Identity refs; source kind/system and policy-protected `source_ref`; pinned source version/snapshot and optional policy-permitted digest; bounded typed selector and half-open source timestamp range with timezone/clock basis or explicit unknown/not-applicable values; `collected_at` and `recorded_at`; `compartment_ids` (empty means explicitly low-security, not protected); versioned retention/redaction/use-policy refs; permission-basis authority/grant/consent refs and their scope/expiry; and actor/Device, admission/Log/SyncStatement and originating ContextBundle provenance when applicable. Broad archive names alone are insufficient selectors. Required unavailable source/version bindings block use rather than resolving to the latest text.
+
+An optional `generated_summary_ref` identifies a separately policy-bound derivative with source ids/versions/selectors, generation time, transform/model/template versions, coverage gaps, uncertainty and review state. Link corrections/supersession and all contributing parents; summaries and duplicate refs to the same interaction are not independent evidence or corroboration. Purpose-specific transition/Objective links preserve §22.3.1's attribution. Source-policy changes constrain existing derivatives immediately; a saved permission basis is provenance, not a perpetual grant.
+
+**Transient excerpt review.** Fetch a bounded excerpt from the currently authorized pinned source through a purpose/actor/Device-bound finite view lease. Display it as temporary source text with permitted provenance and an expiry indicator. A raw preview requires source/read authority and `review` permission, and does not imply retention, downstream-use or export permission. Do not embed preview text in durable findings, Task descriptions, Logs, saved prompts, search indexes, telemetry, autosave, backups or default clipboard content. A copy/save/export request is a separately checked operation under the corresponding policies.
+
+Inventory and bound view/runtime buffers, scratch and caches, including applicable assistive buffers. End/lock, expiry, revocation, cancellation and crash/restart invalidate leases and clean disallowed app-controlled copies before reuse; reads never renew deadlines. If the deployed path cannot meet effective retention requirements, disable that raw-preview path and offer a permitted reference/summary. This controls UbU copies, not arbitrary screenshots, a compromised OS or forensic erasure.
+
+**Enforcement and audit.** Recheck current authority, source and policy versions, expiry, purpose, scope, Device eligibility and destination before read/assembly, before invocation or disclosure, and before derivative admission, sync or export. Approval binds those versions, selected representation and actual destination/profile; material changes invalidate it. Multi-source artifacts inherit every parent's restrictions and earliest applicable deadline unless a separately authorized proven redaction transform establishes a permitted artifact policy under the existing Compartment contract. Missing, conflicted or unavailable policy/authority fails closed. Local inference and user approval cannot override hard denials.
+
+Expiry/revocation first blocks reads, release and reuse even if physical cleanup is pending. Authorized redaction/purge removes disallowed payload and reconstructive derivatives, including summaries, embeddings, indexes, cached context and dependent prose, using ordinary correction/redaction statements. An immutable used ContextBundle does not mandate retaining its raw payload. Keep only policy-permitted minimized decision, gap, causal and idempotency records; audit must not become a second private-text archive or reveal denied existence. Track cleanup outcomes per Device; offline/unreachable copies remain unconfirmed under DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md §18. Neither logical deletion nor an unconfirmed cleanup proves physical erasure.
+
+Before claiming enforcement, require paired allowed/denied fixtures for every lifetime/form/review mode and use purpose; summary/selector/reference/metadata boundaries and denied existence; changed-source/policy approval races; mixed Compartments and hard route denials; rejected introspection/Association/planning handoffs and training destinations; excerpt expiry, lock, cancellation and crash/restart without durable preview copies; derivative/index/cache purge, replay without lease renewal, and unconfirmed offline cleanup. Verify policy-safe Logs and unchanged candidate/admission boundaries. These are required implementation gates, not reported passing tests; this decision resolves the typed Phase 2 contract only.
+
+### 22.3 RelationshipScopeTransition
+
+Users may deliberately create Objectives to change their own participation in a Relationship, invite or test mutual scope changes, or clarify whether another party is willing to enter a different scope. Examples include exploring whether a friend is open to a romantic scope, downscoping a close friendship to a formal-acquaintance scope, formalizing an observed professional collaboration, or clarifying an ambiguous drift.
+
+The valid target is not control over another person's feelings, decisions, or Identity. UbU may plan ethical user-controlled actions such as disclosures, invitations, boundary-setting, availability changes, communication changes, and clarification attempts. Counterparty response remains autonomous evidence.
+
+`transition_type` distinguishes:
+
+- `unilateral`: the user changes the user's own availability, disclosure, communication, or participation;
+- `exploratory`: the user makes a disclosure, invitation, or proposal to test whether the counterparty is open to a scope change;
+- `mutual`: both parties have already indicated interest and the transition is being coordinated;
+- `retroactive_scope_clarification`: the relationship has drifted or become ambiguous and the user seeks explicit clarification of the operating scope.
+
+Consent-dependent or mutual transitions separate `process_success_criteria` from `outcome_observations`. The user can reach a terminal process-successful state even if the counterparty declines. Valid outcome observations include `accepted`, `declined`, `ambiguous`, `insufficient_evidence`, and `no_response`.
+
+All actionable Steps and Tasks in a RelationshipScopeTransition must be anchored to user-controlled behavior. A Step is malformed if its completion criterion requires a counterparty mental state, feeling, or decision. An exploratory transition should have a single disclosure or proposal, one clarification if ambiguous, and termination of the current Objective on authentic refusal. A future re-opening requires materially new evidence, a new Objective, and stronger review.
+
+Prohibited strategy types should be typed rather than freeform. The taxonomy includes:
+
+- `artificial_urgency`;
+- `false_scarcity`;
+- `vulnerability_exploitation`;
+- `incremental_boundary_erosion`;
+- `strategic_information_withholding`;
+- `emotional_state_manipulation`;
+- `leveraging_privileged_affect_knowledge`;
+- `manufactured_dependency`;
+- `social_pressure_via_third_parties`;
+- `retaliation_or_threat`;
+- `coercive_leverage`;
+- `deceptive_self_presentation`;
+- `repeated_pursuit_after_refusal`.
+
+The affect-knowledge firewall is central: extrospection-derived affect knowledge may be used for harm avoidance, not persuasion optimization. For example, UbU may advise that a stressed counterparty should not be pressured with a scope-change disclosure now; it should not recommend that the user's request is more likely to succeed because the counterparty is vulnerable.
+
+`counterparty_autonomy_acknowledgment` records that the counterparty may decline, decline is valid, decline is not user failure, and an authentic refusal terminates the current exploratory Objective. A graceful nonachievement path should define a valid terminal state, relationship model update options, counterparty-hypothesis review, introspection handoff, affective support, and cooling period. Immediate factual logging may occur after an emotionally intense transition attempt; deeper interpretive extrospection should generally wait until after the interaction concludes.
+
+Romantic, professional, and dependency-heavy transitions may have stronger default advisory safeguards because they can involve asymmetric vulnerability or power. `power_asymmetry`, `power_asymmetry_basis`, `vulnerability_profile`, and `pacing_constraints` should be represented explicitly. Pacing constraints may include minimum time between Steps, mandatory observation periods, cooling periods after decline, evidence required before the next Step, and maximum prompt frequency.
+
+#### 22.3.1 Objective target, reverse history and provenance
+
+**Phase 2 model boundary (`UBU-D0345`).** One admitted `RelationshipScopeTransition` represents one deliberate attempt concerning one Relationship and its user-controlled Identity, owned by one `one_time` Objective. The Objective carries a typed `target_ref` to the transition; the transition carries the reciprocal `objective_ref`. Ordinary Objectives, Techniques, Steps and Tasks own value, recurrence, execution and scheduling. Transition records hold the attempt's scope, intent, review context and provenance.
+
+The versioned transition record carries:
+
+- `transition_id`, `schema_version`, `relationship_ref`, `acting_identity_ref` and `objective_ref`; the acting Identity must be the Relationship's user-controlled side;
+- `transition_type`, scoped `transition_intent`, `desired_scope` and `user_controlled_changes`, with protected content refs where needed; the existing type vocabulary and review payload remain under §§7.5 and 22.3;
+- `scope_history_context`: baseline declaration ids/versions (an empty set requires an explicit unknown/coverage reason), domain/context/dimensions and effective interval, the admitted causal frontier/checkpoint used, and permitted coverage/uncertainty; `current_scope` is a derived, policy-safe view of that baseline;
+- separate `process_success_criteria` and `outcome_observations` slots, permitted review/Log and `evidence_refs`, and derived `resulting_declaration_refs` identifying separately admitted declarations;
+- optional `supersedes_transition_ref` or `reopens_transition_ref` with reason and permitted supporting evidence; these identify earlier attempts, not declaration supersession;
+- ordinary object-version, actor/Device, effective/recorded-time, authority, admission/Log or SyncStatement, causal and idempotency provenance, plus Compartment, disclosure, retention, redaction and evidence-use policy refs.
+
+Admit the reciprocal Objective/transition linkage as a coherent batch; stage it if required dependencies are unavailable. Stable refs identify objects, while review, planning and admission bind exact observed versions. Ownership, Relationship and acting Identity cannot be rebound to a different attempt. Scope, intent, baseline and evidence changes create admitted revisions retaining prior versions. Missing baseline history stays explicitly unknown; a changed applicable declaration requires renewed review before relying on the old baseline, never silent rebasing.
+
+**Relationship reverse history.** Lazily expose `scope_transition_refs` as a policy-filtered index of admitted transitions whose `relationship_ref` names this Relationship. Attach the reverse association at attempt admission, including attempts that produce no scope change. Its source is the admitted transition linkage; a materialized index is rebuildable and carries no independent lifecycle or scope authority. Relationship retains its descriptive Identity, affect, declaration and observation histories; transition intent, criteria, safeguards and scheduling do not move onto Relationship. Concurrent attempts for different contexts may coexist; incompatible admitted changes use ordinary conflict review.
+
+Retain stable reverse refs through active, completed, abandoned, superseded and invalid Objective states, subject to current retention policy. Lifecycle views follow the owning Objective's §7.3 status and append-only `objective_transitioned` Logs. `declined` is a separate outcome/history filter supported by an admitted scoped response observation, not an Objective status or proof of process failure; it can coexist with a terminal process-successful Objective. Never derive refusal from silence or missing evidence. A superseding attempt records the prior owning Objective's ordinary §7.3 supersession transition and retains both reverse refs. Terminal attempts do not reactivate; reopening uses a new transition and new Objective with lineage, materially new evidence and the existing stronger-review rule. Reject cross-Relationship/Identity lineage and lineage cycles. Detailed criteria and terminal-status mappings follow §22.3.2 (`UBU-D0346`).
+
+**Declaration changes.** A transition may propose a §22.1.1 declaration; only a separate explicit user declaration/correction admitted under `UBU-D0344` changes `ownDeclaredPerspectiveHistory`. Bind the new declaration to `transition_ref`, `objective_ref` and permitted review/Log evidence; validate matching Relationship and declaring/acting Identity on those links. Derive the transition's `resulting_declaration_refs` index from those admitted records. Preserve effective/recorded times and scoped supersession/coexistence. Desired scope, Task or Objective completion, abandonment, refusal and transition supersession cannot themselves replace current participation. A completed attempt may have no resulting declaration; a declined attempt may still accompany a separately declared change to the user's own participation.
+
+**Logs and evidence.** Use §17's append-only envelope and appropriate existing event types. Keep a Task or Objective event's primary `target_ref`; its `event_payload` additionally binds `transition_ref`, owning `objective_ref`, `relationship_ref`, relevant observed versions and permitted Step/Task, declaration and evidence refs. Record admissions, revisions and corrections with ordinary provenance and idempotency, preserving original events. Transition-generated EvidenceRefs, or transition-scoped associations for reused evidence, bind the same transition/Objective/Relationship refs to source id/version, selector or interval, purpose, provenance and applicable policy. Linking evidence does not rewrite its source or make generated summaries independent evidence. Adding links to existing Logs uses annotations/corrections.
+
+Target links, reverse indexes, Logs, EvidenceRefs, declarations and cached views inherit source restrictions. Recheck current authority, object/source versions and policy before admission, read, sync or export. Partial or denied views cannot prove absence of an attempt or declaration; omit denied identifiers, counts and existence. Authorized redaction/purge removes disallowed dependent content and leaves only permitted gap/causal metadata. Concurrent incompatible revisions or links require ordinary admitted conflict resolution under DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md §§9 and 17, with no wall-clock, arrival-order or Device winner.
+
+**Delivery boundary.** MVP hooks are optional typed target/reverse-reference and provenance bindings through ordinary Objective, Task and Log mechanisms. Phase 1's required Relationship payload and maintenance cadence remain under `UBU-D0076`; ordinary Relationships need no transition object or empty history array. A supported Phase 2 attempt must meet this core contract before admission. Dedicated relationship-management UI, automated multi-stage orchestration and personal CRM behavior are post-MVP work. Process/outcome semantics follow §22.3.2 (`UBU-D0346`). Step validation and autonomy follow §22.3.3 (`UBU-D0347`). Manipulation taxonomy, affect use and transparency follow §22.3.4 (`UBU-D0348`). Transition types and review gates follow §22.3.5 (`UBU-D0354`); power, pacing and support follow §22.3.6 (`UBU-D0355`); typed evidence policies remain `UBU-Q0092`.
+
+Before claiming implementation conformance, require fixtures for reciprocal linkage and rejected mismatched owners, reverse-index rebuild/replay without duplicates, all retained lifecycle views including a completed process with a declined outcome and no declaration change, explicit resulting declarations and retrospective correction, stale baselines, concurrent offline revisions, lineage cycles and reopening with a new Objective, Task/Log/EvidenceRef attribution, and denied/partial views plus derivative purge. This accepts the model boundary, not passing fixtures or shipped transition orchestration.
+
+#### 22.3.2 Process success, response observations and terminal closure
+
+**Phase 2 data-model contract (`UBU-D0346`).** Refine `UBU-D0155` within §22.3.1's attempt/Objective bindings. Process success evaluates the user's actions against admitted criteria; response observations describe scoped evidence about an autonomous counterparty. Neither dimension substitutes for the other, and completing the process does not assert that the desired mutual scope was achieved.
+
+**Process criteria.** `process_success_criteria` is a nonempty, versioned set of criteria with `criterion_id`, `scope`, a user-controlled `action_or_check`, `applicability_condition`/`closure_branch`, and permitted `evidence_requirements`. Bind criteria and assessments to the attempt's exact baseline and criteria versions. User attestations may supply evidence where ordinary policy permits; Task completion satisfies only criteria supported by its admitted evidence. Distinguish a communication attempt from verified delivery or receipt. A criterion may require checking available consent evidence before acting, but cannot require obtaining assent, a response, a feeling or an Identity change. Such a check supplies no action authority: applicable authorization/policy still governs consent-dependent actions, and an unresolved-outcome closure branch remains available.
+
+Each attempt specifies finite closure conditions and an authorized way to stop without claiming unmet criteria were satisfied; where waiting is relevant, bind a user-selected observation window. Define response-dependent branches before relying on them; do not retrospectively waive unfulfilled user actions to award success. Branch selection may depend on admitted response evidence, but every branch's required action remains user-controlled. Behavioral reviews retain §22.4's advisory or user-required policy; this contract creates no new classifier-based hard gate.
+
+| Existing transition type | Valid process criteria |
+| --- | --- |
+| `unilateral` | Decide and carry out the user's own scoped availability, disclosure, communication or participation change; communicate or record it where the admitted criteria require. Counterparty approval is unnecessary for the user's own participation and supplies no authority over the counterparty. |
+| `exploratory` | Make the scoped disclosure/proposal, record permitted response evidence or uncertainty, and close the attempt. Preserve §22.3's single proposal and at most one clarification after ambiguity; a refusal branch requires ending pursuit, not obtaining a different answer. |
+| `mutual` | Check the scope and currency of reported agreement before each consent-dependent action, carry out the user's own coordination commitments where eligible, and record results. Provide a closure branch when agreement is withheld, withdrawn or unresolved; another party's promised performance is never a user completion criterion. |
+| `retroactive_scope_clarification` | Identify the disputed dimensions and historical interval, make any applicable clarification attempt, and record what remains known or unresolved. A separately chosen declaration/correction follows §22.1.1; agreement with the user's historical interpretation and retrospective authorization are never required or implied. |
+
+**Response observation records.** Append `outcome_observations` with stable observation ids, the §22.3.1 transition/Objective/Relationship and source-version bindings, attributed responding Identity, proposal/scope version, domain/context/dimensions and conditions, exact content or protected source refs, evidence and counterevidence refs, effective/observed and recorded times, coverage/uncertainty, and review/admission provenance. Unknown times and uncertain attribution remain explicit. Corrections or scoped replacements name earlier records and preserve them under current retention policy. Distinguish an attributed user report from a direct or authenticated imported statement; a generated interpretation remains candidate and a summary is not independent evidence.
+
+The `observation_kind` vocabulary is:
+
+- `accepted`: evidence of expressed assent to the identified proposal, scope and conditions at that time; it is neither blanket/continuing consent nor proof that the scope change was implemented;
+- `declined`: evidence of expressed refusal of that proposal or identified part of it; it does not establish rejection of the user or the whole Relationship;
+- `withdrawn`: evidence that earlier expressed assent was retracted for identified scope, linking the earlier observation; earlier assent remains historical evidence;
+- `ambiguous`: available response material supports multiple readings that cannot yet be resolved;
+- `insufficient_evidence`: permitted evidence cannot support a response classification, including unavailable, unreliable or incomplete coverage;
+- `no_response`: no response was observed in named channels during a declared finite interval, supported by a known communication attempt and evidenced response-observation coverage. Record delivery/receipt status separately, including unknown; this classification cannot prove the message was read. Incomplete or withheld response coverage requires `insufficient_evidence`.
+
+Silence, elapsed time, affect and missing records never establish acceptance, refusal or withdrawal. Split partial/conditional responses into scoped observations rather than labeling an entire proposal accepted. Unilateral attempts may have no applicable response observation; an empty history is not `no_response`. Later responses append evidence without erasing earlier uncertainty or unanswered intervals. Preserve incompatible observations and counterevidence; current scoped interpretations require ordinary review/conflict resolution, never a timestamp, arrival-order or Device winner.
+
+**Assessment and Objective status.** A versioned `process_assessment` on the transition records an assessment id, `result` (`met`, `not_met` or `undetermined`), bound criteria/baseline versions, selected closure branch and its basis, per-criterion judgments, permitted evidence refs, coverage/uncertainty, and authority/review/Log provenance. `met` requires evidence for every applicable criterion, including closure. `not_met` requires evidence that at least one applicable user-controlled criterion was unfulfilled. Otherwise, missing evidence for any applicable criterion yields `undetermined`. Inapplicable branches record their scoped reason. Assessments append revisions and cannot silently change the criteria.
+
+Use §7.3's existing one-time statuses. Admit `active` → `completed` with a reviewed `met` assessment, even with `declined`, `withdrawn`, `ambiguous`, `insufficient_evidence` or `no_response` observations. If the user stops before satisfying applicable process criteria, use `abandoned` with the actual assessment and reason; neither label is a judgment of personal failure. `invalid` remains for a malformed/impossible process Objective or mistaken admission, and `superseded` for ordinary replacement. A counterparty refusal alone supplies neither invalidity nor a `task_failed` event.
+
+An admitted authentic refusal ends the current exploratory attempt under §22.3: use `completed` when its refusal-closure criteria are met, otherwise `abandoned` with `not_met` or `undetermined`. Retire remaining pursuit Tasks through ordinary admission and invalidate/recalculate affected Plans. Log terminal transitions with the assessment, criteria versions, scoped observations and closure reason under §22.3.1. A graceful nonachievement path records this closure branch and optional later reflection/review; emotional recovery or acceptance of an interpretation is not a completion requirement. Late evidence, including withdrawn assent, may change action eligibility and trigger ordinary Plan invalidation, but cannot reactivate a terminal attempt or rewrite its historical assessment. Renewed pursuit follows §22.3.1's new Objective/transition and lineage rules.
+
+**Relationship evidence and hypotheses.** Link admitted observations into the Relationship's permitted evidence history through §22.3.1's associations. They support or challenge only domain-, scope- and time-matched counterparty hypotheses. Propose hypothesis revisions with evidence, counterevidence, confidence/uncertainty and review provenance under `UBU-D0273`; unreviewed interpretations cannot silently become durable Relationship state or planner constraints. An observation establishes what was reported or expressed, not privileged knowledge of feelings or motives. Process success and refusal cannot overwrite affect or declarations. Current participation changes only through §22.1.1's separate explicit user declaration/correction. All observations, assessments, links and derivatives inherit §22.3.1's admission, concurrency, Compartment and purge rules.
+
+Before claiming implementation conformance, require fixtures for all four types and rejection of assent-dependent success criteria; completed/met with scoped refusal and no declaration change; abandoned with independently unfulfilled criteria; ambiguous versus insufficient versus covered silence; conditional/partial assent and later withdrawal; retrospective clarification without retrospective consent; late responses without reactivation; stale criteria/evidence, replay and concurrent conflicting observations; and denied coverage plus derivative purge. These are required checks, not passing implementation evidence. Detailed Step/refusal validation follows §22.3.3 (`UBU-D0347`); manipulation taxonomy, affect use and transparency follow §22.3.4 (`UBU-D0348`); transition types and review gates follow §22.3.5 (`UBU-D0354`); power, pacing and support follow §22.3.6 (`UBU-D0355`); typed evidence policies remain `UBU-Q0092`.
+
+#### 22.3.3 Step validation and counterparty autonomy
+
+**Phase 2 data-model contract (`UBU-D0347`).** Refine `UBU-D0155` using §§22.3.1–22.3.2. Validate the instantiated Technique's entire Step/Task graph, including optional branches, decompositions and generated replacements. Desired counterparty outcomes remain hypotheses or observations; they cannot become user completion requirements through dependencies, asserted Task effects or nested criteria.
+
+**Step/Task bindings.** Attach a versioned transition-specific binding to every actionable Step and Task, without enlarging the universal Phase 1 payload. Each binding carries:
+
+- a stable binding id, schema version, transition/Objective/Relationship refs, acting Identity, and exact Technique, Step/Task, baseline, process-criteria and acknowledgment versions;
+- scoped `action_or_check`, `completion_test` and permitted `evidence_requirements`, identifying what the user can do and what evidence supports only that action;
+- `applicability_condition`/`closure_branch`, linked process criterion ids, relevant scoped response-observation refs, and a finite stop condition or observation window;
+- a versioned validation assessment with per-binding and graph findings (`conformant`, `malformed` or `needs_review`), reasons, coverage/uncertainty, source versions and ordinary review/admission/Log provenance.
+
+Review asks whether the user can perform each applicable action if the counterparty never responds, refuses or changes their mind. A response may select a branch or supply evidence checked before a consent-dependent action; obtaining that response or a particular answer cannot complete a Step. Every reachable branch needs finite closure independent of assent, including stopping with unmet criteria under §22.3.2. Evaluate the user's coordination commitments separately from another party's performance. Completion evidence cannot assert unobserved delivery, receipt, understanding, affect or scope implementation.
+
+| Malformed completion test | User-controlled alternative |
+| --- | --- |
+| “They feel safe, attracted, grateful or no longer upset.” | Make the scoped disclosure or offer; record permitted evidence and uncertainty without claiming an inner state. |
+| “They agree, reply yes, forgive me or choose the new scope.” | Make the proposal once; record the scoped response or uncertainty and perform the applicable closure action. |
+| “They become a partner, collaborator or a different kind of person.” | Carry out the user's eligible commitments; retain desired mutual status separately. |
+| “They understand/read the message” or “they perform their promise.” | Attempt the authorized communication or perform the user's own commitment; record delivery, receipt or counterparty performance only as supported observations. |
+| “Keep asking until they agree” or “complete only after they explain their refusal.” | End pursuit on refusal; close unresolved outcomes at the admitted finite limit without requiring reasons. |
+
+Deterministic checks enforce required fields, matching Identity/owner refs, version bindings, branch coverage and declared communication limits. Reject invalid structured bindings or stage unavailable required inputs through ordinary admission. Natural-language judgments about control, refusal meaning or persuasion remain reviewable findings under §22.4, with uncertainty; they are not new classifier-based hard gates. User review establishes the interpretation used for a conformance assessment. An advisory bypass cannot make an unmet criterion `met` or turn a malformed binding into a conformant one. Revisions, generated Tasks and material baseline/evidence/policy changes require renewed applicable checks before reliance; retain prior assessments.
+
+**Autonomy acknowledgment.** `counterparty_autonomy_acknowledgment` is a versioned record, not an unqualified Boolean or a claim of counterparty consent. It carries `acknowledgment_id`, `schema_version`, transition/Objective/acting-Identity refs, bound proposal/scope, baseline and criteria versions, and a required set of invariant codes: `response_is_autonomous`, `decline_is_valid`, `decline_is_not_user_failure`, `refusal_closes_exploration`, `clarification_is_bounded` and `reopening_is_new_attempt`. Record `review_status` (`candidate` or `user_confirmed`), confirming actor, recorded time and ordinary authority/review/Log and policy provenance. Generated text cannot supply user confirmation. Confirmation acknowledges the model assumptions, supplies no action authority and does not attest to the counterparty's feelings. Changed bound inputs require renewed confirmation before claiming conformance.
+
+**Authentic refusal.** For this contract, refusal means a reviewed, sufficiently attributed expression declining the identified proposal or part of it, or requesting that pursuit stop. “No,” a polite refusal, “not now” for this attempt, or an explicit no-contact boundary can qualify without reasons, repetition, a harsh tone or proof of sincerity. Authenticity concerns attribution and scoped meaning, not privileged knowledge of inner intent. A user-attested report may suffice under ordinary evidence policy; recordings or counterparty authentication are not mandatory. Preserve the distinction between a report and a direct source. Uncertain attribution or genuinely unresolved meaning stays `ambiguous` or `insufficient_evidence`; silence and affect cannot supply refusal or consent. The user may stop without resolving that classification.
+
+Admission of an authentic refusal closes the current exploratory Objective, including when only part of the proposal was declined. Preserve any assent to other dimensions as separate scoped evidence; it does not authorize continued pursuit of the refused scope. Apply §22.3.2's `completed` with `met`, or `abandoned` with `not_met` or `undetermined`, retire remaining pursuit Tasks and invalidate/recalculate affected Plans through a coherent ordinary admission. Do not leave the Objective active pending an explanation, another reply, reflection or emotional recovery. Unrelated maintenance and the user's own boundary-setting remain separate work subject to current contact and authority constraints. Corrections and later evidence preserve historical closure and never reactivate the attempt.
+
+**One clarification after ambiguity.** An exploratory attempt permits one logical disclosure/proposal and at most one optional clarification, only when a reviewed `ambiguous` response leaves the same proposal's scope or answer unclear and no applicable refusal/stop boundary is established. Bind clarification to that response and the original proposal versions. It asks what was meant; it cannot add persuasion, inducements, expanded scope, demands for justification or another request to reconsider. Refusal, `no_response` and `insufficient_evidence` do not themselves authorize clarification. Remaining ambiguity after that clarification uses the finite unresolved closure branch.
+
+Track communication attempts with stable ids, purpose (`proposal` or `clarification`), source Step/Task and proposal versions, observation basis, dispatch-slot reservation/idempotency and ordinary Log provenance. Count across Tasks, revisions, channels and Devices for the whole attempt; copying, decomposing or superseding a Task cannot reset the limit. Draft regeneration is not another communication. A transport retry is permissible only when non-delivery is established or the route demonstrably deduplicates the same logical delivery; unknown delivery cannot justify a possible second solicitation. Reserve each communication slot through serialized ordinary admission before dispatch. An incomplete or concurrent view unable to establish exclusive dispatch eligibility leaves communication pending; missing history cannot establish an unused budget. This is an explicit attempt contract, not a classifier claim that UbU prevents harassment.
+
+**Reopening after refusal.** Use a new transition and new one-time Objective with §22.3.1's same-Relationship/Identity lineage and a versioned `reopening_basis`: prior terminal attempt and refusal refs, permitted new evidence/source versions, affected scope, comparison with the earlier basis, why it materially changes willingness or a stated condition, current contact boundaries, and fresh explicit user-review provenance. An unsolicited, scope-matched counterparty invitation or an independently evidenced change to a condition the counterparty expressly identified may support review. Elapsed time, a cooling period, renewed user desire, inferred feelings, rewording, duplicate evidence or a new model interpretation alone cannot. Changed circumstances supply no consent and cannot override a continuing no-contact boundary.
+
+Stronger review explicitly revisits the refusal, evidence materiality, scope, permitted contact, renewed criteria/acknowledgment and closure path; it is not ordinary continuation of the old plan. Use §22.4's stronger default advisory safeguards, with additional blocking gates only where user-required policy or an applicable hard/external boundary supplies them. Unresolved evidence remains a candidate basis; no automatic reopening or pursuit Task generation follows. Power, pacing and support follow §22.3.6 (`UBU-D0355`); manipulation taxonomy/firewall follow §22.3.4 (`UBU-D0348`) and general review UX remains `UBU-Q0101`.
+
+All bindings, acknowledgments, communication histories, reopening records and derivatives inherit §22.3.1's version, replay, conflict, Compartment and purge rules. Before claiming implementation conformance, require fixtures for indirect/nested assent requirements; all four transition types with finite unresolved closure; false claims of receipt or understanding; missing/stale/generated-only acknowledgment; polite, conditional, partial and reported refusal with attribution uncertainty; refusal closure without reflection; one clarification versus repeated persuasion or silence-based resend; Task copies, replay and concurrent Device dispatch without budget reset; idempotent versus uncertain transport retry; new-attempt reopening with qualifying evidence versus elapsed time/desire/reinterpretation; continuing no-contact boundaries; advisory bypass without false conformance; and partial/denied history plus derivative purge. This accepts the model contract, not passing fixtures or shipped orchestration.
+
+#### 22.3.4 Manipulation taxonomy, affect knowledge and epistemic transparency
+
+**Phase 2 product contract (`UBU-D0348`).** Refine `UBU-D0155` within §§22.3.1–22.3.3 and preserve `UBU-D0156`/`UBU-D0165` and §22.4. Prohibited strategies are outside conformant transition Techniques. Fallible findings about them remain default-on advisory checks; a taxonomy label alone supplies no unconditional execution veto.
+
+**Typed taxonomy and review bindings.** `prohibited_strategy_types` binds the complete following vocabulary and a `taxonomy_version`; it records the applicable policy, not which strategies a classifier detected. Multiple types may apply to one action.
+
+| Strategy type | Meaning in a transition |
+| --- | --- |
+| `artificial_urgency` | Inventing or exaggerating a deadline to rush a scope decision. |
+| `false_scarcity` | Fabricating limited availability, alternatives or opportunities to induce assent. |
+| `vulnerability_exploitation` | Using distress, insecurity, isolation, impairment or dependency to weaken autonomous choice. |
+| `incremental_boundary_erosion` | Staging escalating requests or omissions to cross an expressed limit without explicit scope review. |
+| `strategic_information_withholding` | Concealing or distorting choice-material proposal terms or facts to obtain assent. |
+| `emotional_state_manipulation` | Deliberately inducing guilt, jealousy, fear or other affect to constrain the response. |
+| `leveraging_privileged_affect_knowledge` | Selecting timing, wording or leverage from private or inferred counterparty affect to improve assent. |
+| `manufactured_dependency` | Creating avoidable reliance or isolating alternatives so refusal becomes costly. |
+| `social_pressure_via_third_parties` | Recruiting peers, authorities or an audience to pressure the counterparty into the desired scope. |
+| `retaliation_or_threat` | Threatening or imposing punishment for declining, withdrawing or setting a boundary. |
+| `coercive_leverage` | Using power over essential resources, employment, standing or safety to make declining the proposed scope unsafe or infeasible. |
+| `deceptive_self_presentation` | Misrepresenting the user's intentions, identity, commitments or circumstances to shape the decision. |
+| `repeated_pursuit_after_refusal` | Continuing solicitation of refused scope, including disguised, indirect or cross-channel retries. |
+
+Review distinguishes genuine disclosed deadlines and resource limits, honest emotion, freely chosen mediation, transparent negotiation and the user's own boundary-setting from these strategies. Context, attribution and counterevidence matter; a word, emotional tone, power difference or vulnerability alone establishes no violation. Legitimate privacy reservations follow the transparency rule below.
+
+A versioned assessment binds `assessment_id`, `schema_version`, `taxonomy_version`, transition/Objective/Relationship/acting-Identity refs, exact Technique graph, proposal, baseline, source and policy versions. For every type, record `finding` (`suspected`, `not_detected` or `not_assessed`), reasons, permitted source refs/content spans, counterevidence, coverage and uncertainty, plus classifier/model/template provenance or a manual-review marker. Record `review_status` (`candidate` or `user_reviewed`), per-finding reviewed disposition (`upheld`, `rejected` or `unresolved`) and ordinary actor/Device/review/Log provenance. Generated assessments cannot claim user review. Missing evidence or unfinished checks remain explicit; `not_detected` is no safety certificate. Unknown taxonomy codes require a versioned extension before claiming supported coverage. Validate shape, refs and versions through ordinary admission; semantic classification follows §22.4. Material graph, source or policy changes require renewed applicable review.
+
+**Authentic self-expression support.** Technique generation and draft ranking use fidelity to user-stated intent, clarity, accurate proposal terms and pressure avoidance. They may help the user express genuine feelings, reasons, invitations or boundaries and adapt for readability or accessibility. The user confirms the meaning before a draft is represented as their authentic expression; generated first-person claims supply no evidence of their feelings. Keep desired participation distinct from current scope and assent. Exclude predicted acceptance, emotional susceptibility, simulated counterparty reactions and response-contingent persuasion sequences as optimization targets. Do not select scripts or variants by which is most likely to obtain a yes. Internal drafting for accuracy remains bounded by §1 and never enlarges the communication allowance.
+
+**Affect-knowledge firewall.** Bind `affect_knowledge_firewall` to source/derivative refs and versions, current evidence-use/access policy, the permitted purpose `harm_avoidance`, authorized recipients and output scope, coverage/uncertainty and review provenance. This covers counterparty affect hypotheses and vulnerability profiles derived through extrospection, including summaries, embeddings, cached context and user/imported restatements of the same knowledge. Apply the same purpose restriction to equivalent counterparty affect/vulnerability data supplied directly by the user or imports. Relabeling a source or copying its content cannot remove its restrictions.
+
+Supply such inputs only to a policy-authorized harm-avoidance review. Ordinary drafting, candidate ranking and scheduling receive only permitted, minimized cautions such as avoiding pressure, omitting a harmful topic, deferring or stopping, while preserving the transparency requirement below, with uncertainty and review bindings; they receive no raw affect profile or susceptibility/acceptance score. A stressed-counterparty hypothesis may support recommending deferral or a lower-pressure expression. It cannot identify a more receptive moment, framing, channel, incentive or sequence for securing agreement. Keep the same restriction when sources are combined with calendars, response history or other data. Explicit communication/availability preferences remain ordinary scoped evidence for coordination; affect-based willingness predictions cannot replace them. A caution remains an advisory candidate; durable state changes or scheduling constraints need separate ordinary user review/admission under `UBU-D0273`.
+
+Enforce declared source access, purpose and disclosure restrictions in context assembly, routing, tool retrieval and artifact release under §22.4, including after an advisory bypass. Missing required lineage/policy bindings leave the affected route pending or unavailable while eligible affect-free drafting/manual work remains available. A model's stated intention or a `harm_avoidance` label alone cannot establish permitted use. Retain policy-safe input/output manifests for checking the supplied context and released derivatives. Whether natural-language advice actually exploits affect remains a fallible, reviewable judgment; this firewall establishes no universal manipulation detector.
+
+**Epistemic transparency.** `epistemic_transparency_requirements` binds exact proposal/draft and Technique versions to a reviewed account of choice-material assertions and their source spans: user intent, reported/observed facts, hypotheses, unknowns, scope, proposed commitments, material costs/conditions and genuine deadlines. Preserve qualifications and distinguish current agreement from desired scope. The communication should give accurate information sufficient for the counterparty to decide autonomously, including the invitation's scope and freedom to decline or withdraw without retaliatory penalty. Do not imply certainty about their feelings, agreement or the outcome.
+
+Transparency concerns the proposal's accuracy and material terms; it does not authorize disclosure of private notes, affect hypotheses, source identifiers or protected third-party content. The user may openly reserve private details while avoiding misleading claims or omissions of choice-material terms. If unknowns or disclosure restrictions prevent sufficient accuracy, offer a narrower proposal, user clarification, deferral or stopping and retain an unresolved transparency finding. Bind the assessment to what the user actually authorizes to communicate, rechecking substantive edits. Completion evidence can establish an authorized communication attempt and its content; receipt, understanding and autonomous choice remain separate uncertain observations under §§22.3.2–22.3.3.
+
+**Single iteration.** Reuse §22.3.3's attempt-wide communication ledger: one logical exploratory disclosure/proposal and at most one clarification of a reviewed ambiguous response to that same proposal. Clarification cannot introduce persuasion, inducements or expanded scope. Refusal closes the attempt; silence and insufficient evidence supply no clarification allowance. Drafts, Task copies, channels and Devices cannot reset the budget. Transport retry and new-attempt reopening retain §22.3.3's evidence, idempotency and stronger-review rules; relabeling pursuit as coordination cannot evade them.
+
+**Advisory warnings.** Say what may be concerning, the scoped permitted basis and counterevidence, what remains unknown and an autonomy-preserving alternative. For example: “This draft may create pressure by linking the invitation to continued support. Review can misread context or miss risks; consider stating the invitation separately.” Distinguish suspected findings, reviewed interpretations and deterministic policy denials. Expose missing coverage and fallibility; no finding means no guarantee, and uncalibrated classifier scores cannot be presented as risk probabilities or proof of intent.
+
+Offer review/revision and the permitted bypass or disablement under §22.4; a user-required gate or applicable hard/external boundary retains its own authority. Log bypass with `decision_recorded`/`safeguard_advisory_bypassed`, bound finding/input/policy versions and optional reason under §17.0. Bypass neither establishes conformance nor authorizes forbidden data use. Introspection consequences remain candidate evidence, with no forced explanation, punitive Tasks or silent Preference/state changes. General safeguard UX, repetition and values review remain `UBU-Q0101`.
+
+All assessments, manifests, cautions, drafts and derivatives inherit §22.3.1's authority, version/replay/conflict, Compartment/disclosure, retention and purge rules. Restricted views omit denied content, identifiers and existence.
+
+**Delivery and conformance.** MVP reserves optional transition-scoped taxonomy, assessment, purpose/provenance and transparency hooks through ordinary Techniques, Tasks and Logs, validating their structured bindings when used; Phase 1's required Relationship payload stays under `UBU-D0076`. Before enabling transition-specific generation or claiming a supported Phase 2 attempt, require the applicable contract and fixtures below. Full graph/semantic validation, dedicated UI and richer orchestration remain post-MVP.
+
+Require paired concerning and legitimate-context fixtures for all 13 types, multi-type findings, unknown enums, incomplete scans, uncertain attribution and false-positive/false-negative review; faithful accessible expression versus acceptance-ranked variants and invented user feelings; accurate material terms versus omissions, uncertainty and protected-content disclosure; permitted harm-avoidance deferral versus persuasion timing using raw, summarized, cached and restated affect; and context/tool/output inspection with authorized controls, denied routes and derivatives, policy revocation and purge. Exercise stale/concurrent bindings, bypass without false conformance or expanded access, and §22.3.3's refusal, bounded clarification and cross-Device communication fixtures. Inspect actual supplied inputs and releases; plausible prose or model assurances alone cannot pass the firewall. These are required checks, not passing implementation evidence. Transition-type gate selection follows §22.3.5 (`UBU-D0354`); power, pacing and support follow §22.3.6 (`UBU-D0355`); typed evidence-policy vocabulary remains `UBU-Q0092`.
+
+#### 22.3.5 Transition types and pre-action review gates
+
+**Phase 2 data-model contract (`UBU-D0354`).** The four existing `transition_type` values are sufficient for the supported attempt model. They describe the user's process intent; romantic, professional, dependency-heavy and power-asymmetric contexts are composable review overlays, not additional transition types or risk verdicts.
+
+`unilateral` includes withdrawing, downscoping or changing the user's own boundaries and availability; it cannot authorize changes to another party's obligations. `exploratory` covers an invitation or proposal whose mutual scope remains uncertain. `mutual` coordinates scope-matched indications of interest already recorded under §22.3.2; the label establishes no continuing consent or authority for a particular action. `retroactive_scope_clarification` clarifies historical or ambiguous scope, preserving effective/recorded times and uncertainty without retrospective consent. A clarification that proposes a new scope uses exploratory semantics for that proposal.
+
+Choose one type per admitted attempt version through explicit user review. A type revision renews affected criteria and reviews under §§22.3.1–22.3.3; it cannot retrospectively waive criteria, erase refusal, reset the communication allowance or reopen a terminal attempt. Mixed Techniques retain each branch's actual consent and review conditions regardless of the primary type; splitting or relabeling work cannot evade those conditions. Additional types require a versioned extension.
+
+**Review vocabulary and defaults.** Use the check codes `introspection`, `extrospection`, `trust_calibration`, `power_vulnerability`, `pacing`, `graceful_nonachievement`, `manipulation_risk` and `epistemic_transparency`. The base recommendation is introspection of intent/values, extrospection of the scoped declaration baseline and permitted evidence, manipulation-risk review under §22.3.4, accurate communication/material terms, and a finite stop/alternative path. A check may be inapplicable, such as communication transparency for an entirely private participation decision; record the scoped applicability basis rather than fabricate evidence. Reviewing unknowns can suffice for an advisory review, but is no safety finding or action authority.
+
+| Type | Default advisory recommendations before the affected action |
+| --- | --- |
+| `unilateral` | Base checks; add trust calibration and power/vulnerability review when changing obligations, reliance or support, and pacing review for staged changes. Review what the user can change and any applicable existing commitments; counterparty approval is not required for the user's own participation. |
+| `exploratory` | All eight checks. Review current-versus-desired scope, evidence and counterevidence, freedom to decline, accurate proposal terms, one proposal/at most one eligible clarification, and refusal or unresolved closure. |
+| `mutual` | All eight checks. Review scope/conditions/currency of reported interest, the user's coordination commitments, ability to withdraw and the stop path. Recheck applicable consent evidence before each consent-dependent action under §22.3.2. |
+| `retroactive_scope_clarification` | Base checks and trust calibration; add power/vulnerability and pacing review when dependencies or an outward clarification are involved. Compare the applicable historical baseline with behavior, preserve ambiguity, and separate clarification from a proposed declaration correction or new invitation. |
+
+Recommend the applicable checks before the first communication or participation change and before later actions affected by materially changed scope, proposal, evidence or policy. Local drafting and review can proceed within current source authority. These recommendations create no automatic Task dependencies, waiting periods or hidden planner constraints. Extrospection uses only permitted, scope-matched evidence; a missing corpus leaves coverage unknown.
+
+**Context overlays.** Use user-confirmed context or permitted evidence, with provenance and uncertainty; generated context labels remain candidates. Do not infer sensitive context as canonical or treat unavailable evidence as absence. Any of the following contexts adds trust-calibration, power/vulnerability, pacing and graceful-nonachievement review where absent, with the indicated emphasis:
+
+- Romantic: desired versus current intimacy, disclosure/privacy, uncertainty about interest, room to decline or withdraw, and support after nonachievement.
+- Professional: role and employment authority, conflicts of interest, confidentiality, existing obligations and any evidenced institutional constraints. A work label alone establishes no prohibition.
+- Dependency-heavy: financial, housing, caregiving or other essential reliance; effects of proposed changes on alternatives and continuity of support, without manufacturing dependency or making assent the price of support.
+- Power-asymmetric: the evidenced basis of influence, practical freedom to decline, retaliation/leverage concerns and whether a less pressured route or independently chosen consultation would help.
+
+Combine overlays by union of applicable checks and scoped review depth. Greater review depth remains advisory; a context label or classifier score cannot impose a delay, external reviewer or execution veto. Recommend pacing and optional consultation without selecting moments or wording to exploit affect. Review must preserve the user's ability to set boundaries or disengage, including promptly when needed. Power/vulnerability values, pacing, support and external-review conditions follow §22.3.6 (`UBU-D0355`).
+
+**Versioned checkpoints and self-imposed requirements.** `review_checkpoints` carries stable checkpoint ids/schema version; check code, applicability condition/basis, action/Step/Task scope; transition/Objective/Relationship/acting-Identity refs; exact baseline, type, proposal/Technique, evidence and safeguard-policy versions; review/evidence refs, coverage/uncertainty and ordinary actor/Device/admission/Log provenance. `review_status` is `pending`, `reviewed`, `bypassed` or `not_applicable`. Generated reviews remain candidates until user confirmation; reviewed concerns can remain unresolved. Inapplicability must satisfy the bound applicability condition, not merely reflect unavailable evidence. Safeguard review cannot delay permitted factual logging, refusal closure or abandonment; those retain ordinary admission and authorization requirements.
+
+`safeguard_policy` records versioned per-check rules with `mode` (`advisory`, `required` or `disabled`), configuring Identity, transition/context/action scope, an inspectable completion requirement, permitted exception/disablement authority and Log refs. Applicable defaults use `advisory`. The user may make any of the eight checks required, individually or together, for one attempt or an explicitly scoped future rule. Requirements may name explicit manual review, acknowledgment, a reviewed closure plan or an authorized reviewer attestation; they cannot require a favorable classifier verdict or counterparty assent. Model availability alone must not prevent an eligible manual review.
+
+While a required check is unsatisfied, hold its affected workflow pending until satisfaction, an explicitly authorized scoped exception, or an admitted policy change. Offer bypass only if that rule permits it; otherwise offer review, authorized configuration change or cancel. A policy exception is distinct from ordinary advisory continuation and must bind its authorized scope. A one-time bypass covers only its bound operation or reviewed batch; disablement persists only within the admitted rule scope. Disabling or relaxing a rule requires explicit authorized admission and preserves the old rule/decision history; executing the Task cannot silently disable it. All checks remain subject to §22.4's independent hard/external constraints and §§22.3.2–22.3.4's conformance requirements. Passing review or bypass supplies no consent, data/export permission, repaired malformed binding or proof of safety.
+
+Recheck current authority, relevant input/checkpoint/policy versions and exception scope before relying on a review or executing an affected action. Material changes invalidate affected satisfaction/bypass bindings and require renewed applicable review or choice. Unavailable required bindings leave the affected workflow pending; concurrent incompatible policy or review revisions use ordinary admitted conflict resolution, with no timestamp/Device winner. Unaffected authorized work remains available.
+
+**Bypass records and introspection.** Explicit bypass-once records `decision_recorded`/`safeguard_advisory_bypassed` under §17.0 and §22.3.1, preserving the primary Task/Objective target. In addition to the ordinary presented option, available actions and choice, bind transition/Objective/Relationship, checkpoint/check codes, advisory versus authorized required-gate exception, operation/reviewed batch scope, exact presented findings/coverage and input/policy versions, and any authority/exception refs. Reasons are optional with `none_given` supported; set `preference_inference_allowed: false`. Log explicit disablement/relaxation with the same decision kind, identifying the action and old/new rule versions rather than representing it as completed review. Silence, nonresponse or a missing Log never counts as bypass, review or permission.
+
+Keep permitted decisions discoverable in transition history and user-requested introspection. An introspection candidate about a values conflict requires separately authorized introspection use, an identified applicable user-declared value and permitted behavioral evidence, with uncertainty and a correction/rejection route. Bypass or repetition alone proves no conflict, intent or Preference. No mandatory explanation, punitive Task, forced introspection or automatic canonical update follows. General repetition, suppression and values-review UX remain `UBU-Q0101`. Checkpoints, policy rules, Logs and derivatives inherit §22.3.1 and §22.2.1 restrictions; denied content, identifiers and existence stay undisclosed, and purge removes reconstructive derivatives.
+
+**Delivery and conformance.** Phase 1's minimal Relationship payload remains under `UBU-D0076`; MVP reserves optional typed review/policy/Log hooks. Supported Phase 2 attempts require this contract; dedicated UI and richer orchestration remain post-MVP. Before claiming conformance, require fixtures for all four default matrices and composed overlays; type revision without budget reset or retrospective consent; inapplicable versus unknown coverage; advisory continuation versus required review/authorized exception/disablement; manual review with models unavailable; stale/materially changed and concurrent bindings; refusal closure without delaying for review; independent hard/evidence-use denials after bypass; optional reasons and policy-safe Log attribution/replay; and values-linked candidate introspection without automatic changes, including denied evidence and derivative purge. These are required checks, not passing implementation evidence.
+
+#### 22.3.6 Power, vulnerability, pacing and graceful nonachievement
+
+**Phase 2 product contract (`UBU-D0355`).** Refine §§22.3.1–22.3.5 without changing §22.4's advisory boundary. Assess practical influence and exposure for this attempt's scope and interval, separately for each party; a context label or vulnerability is neither a diagnosis nor proof of coercion or consent.
+
+**Power and vulnerability records.** `power_asymmetry` uses `not_assessed`, `unknown`, `none_identified`, `user_advantaged`, `counterparty_advantaged` or `mixed`. `not_assessed` means no applicable assessment was performed; `unknown` means coverage or conflicting evidence prevents a directional judgment; `none_identified` means no difference was identified within explicitly reviewed coverage, never proven equality. Direction identifies practical leverage over the proposed scope or the cost of declining, not personal worth. `mixed` preserves opposing advantages in different dimensions without netting them into a score. The summary names the exact basis-record versions; missing basis cannot be presented as `none_identified`.
+
+`power_asymmetry_basis` is a set of versioned records, not a free-text verdict. Each records a stable id, basis code, holder/affected Identity refs (including an external actor or explicit unknown where applicable), scoped mechanism of influence, directional assessment, consequences of decline/withdrawal, alternatives or their unknown availability, permitted evidence/counterevidence, effective interval, coverage/uncertainty and user-review provenance. Generated assessments remain candidates. The basis vocabulary and corresponding vulnerability dimensions are:
+
+| Code | Review focus |
+| --- | --- |
+| `romantic_exposure` | Unequal disclosure, intimacy, rejection or outing exposure; romantic interest or disappointment alone establishes no leverage. |
+| `financial_dependence` | Control of income, debt or essential funding and practical alternatives. |
+| `employment_authority` | Hiring, pay, evaluation, assignments, dismissal or professional opportunity. |
+| `housing_dependence` | Control of accommodation, tenancy or access to a home. |
+| `caregiving_dependence` | Reliance on care, assistance or access to essential services; assess both recipient and caregiver burdens. |
+| `emotional_dependence` | Reported reliance on emotional support or isolation; do not diagnose dependency or infer inner states. |
+| `social_status` | Reputation, network access, group influence or exclusion with an evidenced mechanism. |
+| `age_or_life_stage` | Relevant experience, developmental context or authority; age difference alone proves no incapacity, consent or prohibition. |
+| `platform_control` | Account, moderation, visibility, audience, data or access control. |
+| `other_declared` | An explicitly described additional mechanism; extensions retain version and review bindings. |
+
+`vulnerability_profile` contains separate versioned entries with stable entry ids/schema version, subject Identity, dimension code, `exposure_status` (`not_assessed`, `unknown`, `none_identified` or `present`), exposed interest, possible consequences, dependencies, available alternatives/support or explicit unknowns, and permitted evidence/counterevidence. Vulnerability can be present for both parties without a power advantage. Each profile and power assessment binds transition/Objective/Relationship, proposal/baseline, source and policy versions, effective/recorded times and ordinary admission provenance. Preserve corrections and prior assessments. Collect only purpose-needed information; missing, withheld or disputed evidence remains unknown. Do not demand private financial details, exact ages or counterparty disclosures to fill a profile. Counterparty vulnerability and affect derivatives retain §22.3.4's harm-avoidance firewall; no susceptibility score or persuasion timing follows.
+
+**Review, deferral and consultation.** Compose §22.3.5's overlays and checkpoints using these defaults:
+
+| Scoped finding | Default advisory response |
+| --- | --- |
+| Relevant context with unknown or disputed power/exposure | Stronger review of missing coverage, freedom to decline and the closure path; uncertainty is not evidence of safety or wrongdoing. |
+| Evidenced leverage or unequal exposure | Stronger power/vulnerability, trust, transparency and pacing review; consider a less pressured route and optional deferral. |
+| Essential income, housing or care at stake, direct authority, threatened retaliation or serious disclosure consequences | Strongly recommend independent consultation and deferring the affected proposal while reviewing alternatives and continuity of support. Review removing the user's own leverage without making support conditional on assent. |
+| A user-required rule or evidenced applicable external constraint requires waiting or reviewer attestation | Hold only the covered action under that rule's authority, satisfaction and exception terms; preserve independent hard denials. |
+
+No finding automatically imposes a delay or external reviewer. Consultation is chosen by the user and may involve a trusted advocate, qualified adviser or mediator; no third party is contacted automatically. Required external review exists only through an explicitly admitted self-imposed rule or applicable external constraint, not a model severity threshold. Bind the reviewer/role, independence or conflict limits, review scope, required attestation, currency and authority to current versions. External constraints additionally record source, scope and enforcement path under §22.4; this contract asserts no particular legal or institutional rule. Reviewer approval supplies no counterparty consent and cannot authorize prohibited disclosure. Lack of an available reviewer leaves a genuinely required action pending, with cancel or authorized policy-change routes; optional consultation does not block it.
+
+**Pacing records and defaults.** `pacing_constraints` contains versioned rules with stable ids, `kind`, affected Step/Task/action scope, anchor refs and observed versions, parameters, finite stop/closure conditions, rationale, coverage/uncertainty, and §22.3.5 safeguard-policy/checkpoint refs. Identify whether a recommendation, admitted user-required policy or independent external constraint supplies enforcement authority. Use these kinds:
+
+- `minimum_step_gap`: a finite nonnegative `duration_seconds` after a named admitted action completion; zero requires an explicit no-gap choice. Apply to identified later actions, not every Step.
+- `observation_window`: named channels/evidence coverage, communication-attempt anchor and finite positive `duration_seconds`; expiry selects the admitted unresolved closure branch subject to ordinary assessment/admission, never assent. `no_response` still requires §22.3.2's coverage evidence.
+- `cooling_period`: finite nonnegative `duration_seconds`, a named interaction/terminal-closure anchor and the particular later review or independently eligible new attempt it concerns. Expiry only removes that time condition.
+- `evidence_before_action`: named criterion/source requirements, scope/currency and a finite deadline with a stop alternative. It checks permitted evidence, never requires persuading the counterparty or collecting additional private material.
+- `prompt_budget`: an explicitly enabled UbU reminder rule with finite positive `window_seconds`, positive integer `max_prompts`, channels, quiet periods, suppression and budget scope. It governs prompts to the user, not permission to contact the counterparty.
+
+No universal waiting duration is asserted. Before relying on a timed rule, the user chooses its finite parameters and anchor, or reviews a source-bound external requirement. Unchosen durations stay unset, not silently zero; advisory review may continue with that uncertainty. Recommend deferral of deeper interpretation until the interaction concludes. Essential-reliance and power findings may justify recommending a longer user-chosen interval, never a window selected for receptivity. Immediate permitted factual logging, refusal closure, abandonment and the user's prompt boundary-setting/disengagement are outside these pacing holds; independent authority and external constraints still apply.
+
+A recommendation becomes a planner restriction only through explicit authorized admission of the corresponding Task input or required rule. Resolve admitted temporal anchors to absolute UTC lower bounds and existing Task `allowed_time_range`/`TaskSpec.window` inputs on the CPU/controller side, intersecting other admitted limits. Required unresolved anchors or evidence leave only affected actions pending; empty windows leave them unplaced. Do not add fake waiting Tasks, lag fields or relationship-risk scores to the kernel. Recheck eligibility before execution and invalidate/recalculate affected Plans on material changes. Elapsed-time checks require a trustworthy elapsed/UTC basis; clock uncertainty cannot establish that a required interval passed. Causal admission, not wall-clock time, orders concurrent revisions.
+
+Transition reminders default off; enabling them requires explicit finite attention limits. Count automatic prompts across Tasks, channels and Devices within the admitted budget scope; copies/restarts do not reset it. Reserve slots through serialized ordinary admission with stable prompt ids/idempotency before delivery. An incomplete view cannot establish an unused slot; unavailable budget history withholds automatic prompts while requested inspection remains available. Honor dismissal, snooze and disablement without escalation for silence; a behavioral-review bypass cannot expand an attention budget. General safeguard repetition/UX remains `UBU-Q0101`. Pacing, observation and cooling never add to §22.3.3's one proposal/one eligible ambiguity clarification, authorize silence-based resends, erase refusal or provide materially new evidence for reopening.
+
+**Graceful nonachievement.** `graceful_nonachievement_path` is a versioned closure plan bound to the attempt, criteria/branch, proposal/baseline and review/policy versions. Record triggering scoped observations or unresolved deadline, terminal mapping and assessment requirements, remaining pursuit-Task retirement/Plan invalidation, permitted model-update options, optional introspection/support choices and optional delayed-review timing/suppression.
+
+Reuse §22.3.2: `completed` requires `met`; stopping with `not_met` or `undetermined` uses `abandoned`. Authentic refusal closes exploration immediately through ordinary admission, including partial refusal, without waiting for cooling, support, reflection or emotional recovery. Preserve scoped assent/uncertainty separately. Desired mutual outcome nonachievement is not user failure; no personal-failure score or refusal-derived `task_failed` follows.
+
+Offer keeping the current model, recording permitted observations, reviewing scoped hypotheses with counterevidence, or separately declaring a change in the user's own participation under §22.1.1. None is automatic; refusal cannot overwrite affect, current scope or counterparty feelings. An introspection handoff uses §2.10.1.1's optional linked candidate and current purpose-specific authority; accepting the handoff admits no interpretation or blame. Optional affective support may acknowledge user-reported disappointment and offer rest, ordinary practical work or user-chosen support without diagnosis, mandatory counselling or another persuasion plan. Support and deeper review may be declined independently with no explanation.
+
+Delayed review is opt-in at a finite user-selected time or on user request, with a cooling rule only if chosen. It reviews permitted evidence/model questions, does not reactivate the terminal Objective or generate pursuit Tasks, and may be cancelled or deferred. A new attempt still requires §22.3.3's materially new evidence, lineage, current contact boundaries and stronger fresh review; elapsed time and feeling better are insufficient.
+
+**Delivery and conformance.** Phase 1 payload/maintenance remain unchanged; MVP reserves optional typed assessment, pacing, closure and Log hooks. Supported Phase 2 attempts require applicable records and finite closure; eligible manual review remains available with models absent, and dedicated orchestration remains post-MVP. All records, consultation packets, Logs and derivatives inherit §§22.3.1 and 22.2.1 version, conflict, purpose, Compartment and purge rules; consultation and introspection require separate current disclosure/use authority.
+
+Before claiming conformance, require fixtures for every basis code, both advantage directions, mixed and two-sided vulnerability, unknown/denied coverage and corrections; age or romantic context without automatic incapacity/prohibition; advisory deferral versus explicit required/external review and unavailable reviewers; unauthorized consultation disclosure; finite gaps/windows/cooling with stale or uncertain clocks, unmet evidence and empty Task windows; immediate boundary-setting and refusal closure despite pacing holds; prompt budgets across copies/Devices and suppression; completed/met with declined outcome versus abandoned/unassessable process; optional support/introspection and delayed review without forced recovery or reopening; materially new-evidence reopening versus elapsed time; and denied existence plus derivative purge. These are required enablement checks, not passing implementation evidence or a claim that UbU prevents coercion.
+
+### 22.4 Advisory safeguards and hard boundaries
+
+Relationship-transition review gates are default-on advisory safeguards unless the user has configured them as self-imposed required gates or an external constraint makes them unavoidable. UbU should recommend pre-action introspection, extrospection, TrustCalibrationAssessment, power/vulnerability review, pacing review, graceful nonachievement planning, and manipulation-risk review where relevant. The user may bypass or disable such safeguards. Bypass decisions may contribute to optional, authorized introspection candidates; bypass alone establishes no conflict between behavior and declared values.
+
+Hard boundaries are narrower. They cover structurally enforceable product invariants and explicit policies: Compartment boundaries, privacy policy, data-access authorization, EvidenceUsePolicy restrictions, export prohibitions, identity/Compartment isolation, provenance integrity, audit-record integrity, integration authorization, and unavoidable provider/platform/legal constraints. Provider, platform, app-store, integration, and legal constraints should be recorded as external constraints with source, scope, affected workflow, and enforcement path when known.
+
+Behavioral-risk checks such as manipulation, coercion, harassment, stalking, deception, power-asymmetry risk, rumination risk, or relationship-transition ethics are fallible classifier judgments. Treating them as hard gates would risk false positives that override legitimate user autonomy, false negatives that create misplaced trust, and a false impression that UbU can reliably prevent misuse or illegal behavior. They should generally be default-on, uncertainty-aware, user-overrideable advisory checks with optional authorized introspection review when bypassed.
+
+A user-configured required gate for a RelationshipScopeTransition is not reclassified as a product hard boundary. It is a self-imposed policy gate that may block the current workflow while enabled and should record the configuring Identity, scope, review requirement, bypass or disablement authority, and relevant Log refs.
+
+Relationship documentation must not claim that UbU prevents coercion, harassment, stalking, manipulation, or illegal behavior. It may claim that UbU preserves structural privacy and authorization boundaries, surfaces advisory behavioral-risk findings, records bypasses as introspection-relevant evidence, and refuses actions only when a product hard boundary, user-required gate, or external constraint applies.
+
+#### 22.4.1 Uncertainty and the presented finding
+
+**Phase 2 product contract (`UBU-D0356`).** Apply this contract to advisory behavioral safeguards in Relationship review, extrospection, introspection and transition workflows. Use existing AdvisoryCandidate, checkpoint, policy and Log envelopes; introduce no new kernel constraint or automatic state mutation.
+
+Bind each presented assessment to the check/rule and version, governance category, affected operation or reviewed batch, input/evidence/policy versions, model or reviewer provenance, analyzed scope, missing coverage, supporting and disconfirming evidence, and uncertainty. Distinguish a suspected concern, a user-reviewed interpretation, no concern identified within analyzed coverage, and an unavailable or incomplete assessment. Disabled or unperformed checks have no result; missing evidence never becomes a clean assessment.
+
+Give a short, neutral explanation of what may be concerning, the permitted basis and counterevidence, unknowns, and an optional alternative. State that a check can flag legitimate conduct or miss concerning conduct, and that no finding guarantees safety. Model confidence is neither proof of intent nor a probability of harm. Numeric risk probabilities or false-positive/false-negative rates require linked, applicable calibration/evaluation evidence with its population, workflow, version, coverage and uncertainty; unavailable rates remain unknown. Evaluated aggregate error rates establish no verdict about this action.
+
+#### 22.4.2 Review, continuation and configuration
+
+Advisory findings create no automatic delay, Task dependency, planner constraint or execution veto. A flagged, unavailable or disabled assessment leaves otherwise eligible work available through ordinary authorization. Present the category and any actual blocker separately from the advisory finding. Use concise inline review with details on demand, neutral labels and usable text/assistive-technology controls. Do not require a justification, countdown, repeated confirmation or introspection completion for an ordinary advisory choice.
+
+| Control | Effect |
+| --- | --- |
+| Review / revise | Inspect permitted evidence, correct or dispute the finding, revise the affected action, or defer/cancel it. Correction preserves source and review history through ordinary candidate and Log correction paths. |
+| Continue once | Explicitly bypass the advisory for the exact operation or reviewed batch. This acknowledges the presented uncertainty; it neither endorses the finding nor completes the recommended review. |
+| Disable this check | Show and explicitly confirm the selected check, Identity/workflow/project scope and duration (until re-enabled or a selected expiry), then admit the authorized policy change. Keep effective disabled status and Re-enable discoverable; preserve history. |
+| Configure required review | Explicitly admit a self-imposed rule with configuring Identity, scope, inspectable completion condition and exception/disablement authority under §22.3.5. Manual review must remain eligible without a model; a favorable classifier verdict is not a completion condition. |
+| Dismiss / snooze | Suppress presentation until material change or a user-selected deadline, respectively. This changes notification state, not action authorization or a required gate. |
+
+Continue once is available only when independent product boundaries, required-gate policy and external constraints permit execution. If blocked, show the permitted reason/source and offer review, an authorized scoped exception or configuration change when available, and cancel. A required-gate exception is labeled separately from advisory continuation; no advisory control disables a hard boundary.
+
+Bind continuation and policy changes to current authority and relevant operation/input/evidence/policy versions; recheck before execution/admission. Material changes affecting the decision invalidate that one-time choice, not unrelated choices or an admitted disabled mode. Unknown required bindings and incompatible concurrent changes use ordinary pending/conflict handling. Bypass supplies no consent, export/data-use authority, conformance or safety certification.
+
+#### 22.4.3 Decision history, declared values and optional introspection
+
+Use §17.0's `decision_recorded` with `safeguard_advisory_bypassed` for explicit continuation, authorized required-gate exceptions and disablement/relaxation, distinguishing the action and old/new rule versions under §22.3.5. Bind the actual presented options/finding/coverage, affected operation, actor, current versions, exception authority when applicable and suppression scope/deadline when relevant. Dismissal/snooze uses `alert_dismissed_or_ignored`; correcting or rejecting a finding retains its independent candidate disposition. User-mode explicit overrides carry `authority_source: user_override`. Reasons are optional with `none_given`; infer no reason when none is supplied and set `preference_inference_allowed: false`. Nonresponse, unknown delivery and absent Logs are never bypass, completed review or assent.
+
+Disablement changes the admitted safeguard configuration, not the user's declared respect, care, autonomy, safety or trust values. The user need not renounce a value to disable a check. A declared value alone cannot silently create a required gate or re-enable a disabled rule. Show existing explicit value-linked rules when configuring the check; any rule, value, Preference, Objective or Task revision needs separate explicit review/admission.
+
+Bypass history may contribute to an optional per-object introspection candidate only with current purpose-specific authority for every source and derivative. A proposed values conflict must identify an applicable user-declared value/version, independently permitted behavioral evidence and its scope/time, supporting and disconfirming evidence, uncertainty and alternative explanations such as a false positive, changed circumstances or competing priorities. Bypass or repetition alone proves no conflict, motive or Preference. Keep the recommendation, the user's choice and any observed outcome separate; the warning is not independent corroboration of misconduct.
+
+Offer inspect, correct, reject, defer and optional review of warning quality/configuration or declared values. Opening review admits no claim. Exact observations or changes need ordinary separate admission; generate no compulsory review Task, blame label, compliance score, punitive Plan/ranking change, privilege reduction or external escalation from an override. Follow §§21.2.1 and 2.10.1.1 for linked candidate dispositions and suppression. Reads, generation, display, sync and export retain current evidence-use, Compartment, disclosure, retention and ContextBundle rules, including denied existence and derivative purge; audit retention itself grants no introspection or training authority.
+
+#### 22.4.4 Repetition and suppression
+
+Repeated bypasses are discoverable during user-requested, authorized review; they create no default unsolicited values-review prompt. A separately enabled review-reminder rule may use a user-selected finite count/window for named checks and scope, with finite cadence/attention limits under §§21.1.7 and 22.3.6. Count distinct bound operations, not replayed Logs, repeated clicks, copied Tasks or Device/view changes. Show the permitted window/count and history gaps; partial or disabled coverage cannot establish a complete behavioral pattern. Threshold crossing offers review of warning quality or configuration; a values-conflict candidate still needs §22.4.3's declared baseline and behavioral evidence. No universal bypass count establishes inconsistency.
+
+Coalesce equivalent findings and review offers by check, subject/scope and material evidence. Persist permitted dismissal, snooze, disablement and candidate rejection across views/restart within their admitted scope; do not evade them with new wording, model version, copied work or an introspection handoff. Reopen a dismissal/rejected claim only for relevant material evidence or a user request, explaining the change; snooze follows its chosen deadline. A disabled check requires authorized re-enablement or its explicitly selected expiry. When an advisory is presented, Continue once covers only its bound operation/batch. Suppression changes notice presentation only; it supplies no consent, required-gate exception or external-action approval. Nonresponse and repeated bypasses cannot increase urgency, frequency, audience or channels. Mandatory blocker diagnostics remain available. Broader proactive extrospection and rumination thresholds remain `UBU-Q0089`.
+
+#### 22.4.5 Delivery and enablement evidence
+
+This resolves the Phase 2 product/UX contract; dedicated orchestration and passing implementation evidence remain separate. Before enabling these controls or claiming conformance, require paired legitimate-context/flagged and concerning-context/missed fixtures; incomplete, disabled and uncalibrated results; all controls with model absence, optional reasons and unchanged canonical values; advisory versus required/authorized-exception versus product/external denial; stale/materially changed and concurrent bindings; replay and copied/cross-Device operations without duplicate counts or prompts; dismissal/snooze/rejection/disablement persistence and authorized re-enablement; opt-in reminder limits, nonresponse and incomplete history; and authorized versus denied introspection/evidence routing, denied existence and derivative purge. Verify exact decision Logs and no compulsory Tasks, silent Preferences or punitive effects. These are required checks, not passing results or a claim that UbU prevents behavioral harm.
+
+---
+
+## 23. Zones, Devices, and Compartments
+
+### 23.1 Device
+
+A **Device** is an execution enclave, not necessarily physical hardware. A physical machine, app install, browser session, and worker process are substrates or runtime contexts; they become UbU Devices only when admitted as separately identifiable execution enclaves with their own `device_id`, trust state, capability profile, Zone membership, and effective Compartment access.
+
+Examples:
+
+- OS user profile
+- container
+- VM
+- secure enclave
+- browser profile or session
+- worker process or worker runtime
+
+One physical machine may host multiple Devices when each enclave is intentionally registered, isolated enough for its trust and capability claims, associated with an authorized Identity, assigned to exactly one Zone, and granted only the Compartments it is allowed to know about. App installs and browser sessions that merely render or project another Device's state are projection surfaces or execution contexts, not Devices. Workers are Devices only when they hold independent execution authority under policy; otherwise they are child processes of the controlling Device.
+
+In Phase 1b, the dogfooding installation has exactly one registered Device: the operator-controlled execution enclave that owns the local StateStore and admission path. The desktop UI, CLI invocation, unattended batch runner, and local advisory worker are execution contexts under that Device unless a later registration explicitly grants one of them independent Device authority. Every mutation they emit or propose carries the same `origin_device_id`; execution-context identifiers may appear as provenance but do not create authority.
+
+The Phase 1b `device_id` is a stable registered identifier restored from operator-controlled local registration material, such as a config or secret-store record outside the ordinary mutable database. It is not derived from physical hardware, app installation identity, database contents, Google authorization, or other external integration credentials. Reinstalling the app, resetting the database, or reauthorizing integrations therefore preserves the Device only when the registration material is preserved or restored; otherwise the installation must register as a new Device rather than claiming continuity.
+
+The minimum Phase 1b Device registry may contain a single entry, but it uses the same shape required for later registries: `device_id`, label/kind, registration metadata, registered Identity association, trust state, sync state, exactly one Zone membership for the Device, capability profile, effective Compartment access summary, and last-seen or local-observed timestamp. Missing Compartment access is implicit denial, and no code path may special-case the registry cardinality as proof that the Device is canonical, omniscient, or authoritative over projected surfaces such as Google Calendar.
+
+The Phase 1b mutation envelope is part of every canonical mutation before the mutation reaches the StateStore writer. The envelope fields are `idempotency_key`, `observed_versions`, `origin_device_id`, `actor_identity_id`, `authority_source`, `created_time`, `effective_time`, and `recorded_time`; it also carries policy-version observations when the mutation relies on Compartment, Zone, projection, or routing policy.
+
+`observed_versions` is an object-id-to-version-reference map over the current canonical objects whose version or absence the mutation relies on. Existing Phase 1b integer object versions are serialized as stable references such as `v17`; object creation records an explicit absence precondition for the newly claimed object id when absence is part of the operation.
+
+Mutation call sites do not choose a clock or sync ordering algorithm. They obtain the envelope from the admission-owned causality/idempotency issuer, which may use a local monotonic stamp in Phase 1b and later supply the Phase 2 hybrid-logical-clock and causal-parent fields without changing domain mutation APIs.
+
+`created_time` records when the mutation artifact was first assembled, `effective_time` records the domain time the mutation asserts for the changed fact or decision, and `recorded_time` records when the controlling Device durably records the mutation for admission. For an unattended advisory run that proposes overnight and is admitted the following morning, created and effective times may remain overnight while recorded time is the morning admission time.
+
+A replayed `(origin_device_id, idempotency_key)` with the same canonical payload returns the already recorded result and does not increment object versions, emit another mutation, or recalculate derived artifacts as a new cause. The same key with a different canonical payload is an `idempotency_key_conflict` and is not admitted without an explicit conflict-resolution mutation.
+
+Derived artifacts such as Plans, Calendars, reports, risk summaries, and projection previews are `derived_state`: they carry lineage, provenance, input digests, and freshness data, but not the canonical mutation envelope unless a later operation admits a derived artifact itself as canonical state. The mutation that records or invalidates derived state carries the envelope.
+
+Phase 1b deletion of canonical objects is lifecycle mutation, not row removal. Retired Tasks, removed Tasks, decomposition-retired parents, and admitted discarded candidates become tombstones with stable object id, object kind, current version reference, lifecycle state/reason code, envelope/provenance reference, created/effective/recorded lifecycle timestamps, policy-safe Compartment refs needed for local enforcement, and any decomposition, supersession, audit, or projection-deletion refs needed for replay. Tombstones do not retain active payload fields, private evidence, cached explanations, human-readable Compartment labels, or sensitive reason text after those fields are redacted or purged.
+
+Decomposition undo follows `UBU-D0278` and §9.4, superseding `UBU-D0259`'s former un-tombstoning rule. Undo is another admitted structural replacement: it creates a restored Task with a new handle carrying the original intent and valid prior schedulable fields, marks the Container and children superseded or moot, and retains the original Task's retirement and history. Purged or redacted payload is never reconstructed without an authorized restore source. Projection deletions caused by tombstones remain queued idempotent obligations in projection_state; their retry or confirmation never replaces the canonical tombstone.
+
+### 23.2 Zone
+
+A **Zone** is a workspace-like UbU instance context.
+
+A Device belongs to one Zone.
+
+A Zone may have many Devices.
+
+Zones maintain explicit allowlists/denylists of Compartments, defaulting to deny.
+
+### 23.3 Compartment
+
+A **Compartment** is a first-class data containment object.
+
+Compartments enforce hard invariants that the user cannot casually override.
+
+Hard invariants may include:
+
+- storage backend constraints
+- device eligibility constraints
+- identity disclosure constraints
+- export/integration constraints
+- retention constraints
+- audit constraints
+
+#### Phase 1 Compartment baseline
+
+Phase 1 implements Compartments as explicit classification and routing guardrails, not as the complete Phase 2 multi-device containment system. The minimum Phase 1 promise is:
+
+- Compartment-marked content stores a `compartment_ref` and is handled through references rather than embedded in ordinary WorkItem structure.
+- A Compartment may declare `local_only`, `no_cloud_llm`, `no_external_export`, `allowed_integration_refs`, and `allowed_device_refs` policies.
+- Content in a `no_cloud_llm` Compartment must not be sent to cloud LLM routes. Content in a `no_external_export` Compartment must not be exported, projected, or handed to workers except as redacted structural references.
+- Other Compartment-marked content may cross a boundary only through an allowed route and a user-visible action. Boundary-crossing attempts that reach UbU are recorded in Logs as allowed or denied.
+- In Phase 1, device eligibility is limited to the current single local Device / execution enclave and configured allowlists. Hardware attestation, cross-device partial replication enforcement, and cryptographic isolation are not MVP claims.
+- Phase 1 does not promise automated retention deletion or redaction for Compartment content. Retention policies may be recorded, but enforcement beyond append-only Log retention is post-MVP unless separately implemented and disclosed.
+
+Phase 1 public messaging must describe this as a minimal Compartment guardrail layer. It must not claim complete privacy isolation, complete retention enforcement, secure multi-device Compartments, or protection from a malicious local administrator.
+
+### 23.4 Sensitive content
+
+WorkItems must remain structurally usable without dereferencing sensitive content.
+
+Sensitive Compartment data should be referenced by link/reference, not embedded in WorkItem structure.
+
+Un-compartmented content is treated as low-security and may require per-integration prompts.
+
+In Phase 1, un-compartmented content is explicitly labeled `security_level: low`. Low-security content may be used by configured integrations or cloud LLM-backed Automation Workers after a user-visible integration or worker action, but UbU must not market that content as compartment-protected.
+
+### 23.5 Phase 1 local-first and cloud LLM disclosure
+
+Phase 1 can honestly claim that canonical planning state, Logs, and source-linked project model data live in the local single-user UbU instance by default. It cannot claim Phase 2 local-first sync, conflict handling, partial replication, or secure multi-device Compartment propagation.
+
+Phase 1 can honestly claim that cloud LLM usage is optional, explicit, and advisory. Cloud LLMs may be used by configured Automation Workers, Super Automation flows, or bootstrap tools such as model-committee, but they are not the canonical planner and must not receive `no_cloud_llm` Compartment content. When a workflow uses cloud LLMs on un-compartmented low-security content, the UI or run artifact must disclose that routing before or at execution time.
+
+### 23.6 Shared-authority compartments
+
+Most Compartments are solely user-set. Some Compartments may carry policy that is not solely user-set — accepted from an employer, counterparty, Association, or other external authority. For these shared-authority Compartments, sovereignty is preserved at the device boundary rather than at the field level.
+
+**Eject-not-override (`UBU-D0221`).** The user can always destroy or eject a shared-authority Compartment wholesale, but cannot selectively override its external policy while retaining that Compartment's data. A voluntarily-accepted, always-destroyable container keeps the sovereignty claim intact; a Compartment the user cannot destroy is the line at which UbU would become the thing it opposes.
+
+**Protective shared-authority compartments (future direction, `UBU-D0222`).** An inversion of corporate device management: a user's private affect or stress state may constrain a counterparty's behavior — for example, a work scheduler that refuses to book deep-work meetings against high modeled stress — while the counterparty never reads the raw signal. Control flows in the protective direction, which extends the sovereignty thesis rather than betraying it. The viable form requires eject-not-override plus a strict asymmetry: private state is constraint-only, never report-only, and that asymmetry must be structurally guaranteed rather than merely promised. Two gating conditions are not solved by cryptography and are tracked in `UBU-Q0127`: consent under employment power asymmetry (which some data-protection regimes already treat as generally invalid), and inference leakage, since a policy's observable behavior reveals something about the state it acts on.
+
+---
+
+## 24. External Identity and Access Standards (IAM)
+
+Accepted in `UBU-D0219`. UbU adopts external identity-and-access standards — IAM — by layer, with deliberately asymmetric treatment: a standard adopted for external interoperability is surfaced verbatim at the boundary, while a standard used only as an internal engine stays below the design vocabulary. The organizing reason is that these standards earn their keep precisely where work crosses from the user's own control plane to a counterparty — at the Delegation Substrate, federation, worker, hosted-planning, marketplace, boundary-agent, and commercial-wire boundaries — and add only overhead inside the local single-user core.
+
+**SPIFFE/SPIRE — conformance target (outward-facing).** SPIFFE is adopted at the Delegation Substrate, federation, worker, hosted-planning, marketplace, boundary-agent, and commercial-wire boundary so that workload identity, execution provenance, and authority evidence are cryptographically attestable and externally auditable. Because the point is interoperability and external audit, SPIFFE terms appear unaliased at that boundary: trust domain, SPIFFE ID, SVID, node/workload attestation, federation. SPIFFE represents UbU-controlled workloads, worker instances, Devices when exposed as execution enclaves, Compartment-scoped boundary agents, hosted services, and delegation endpoints. It does **not** replace human Identity or user-sovereign Identity. SPIFFE is not built into the local single-user core, and the SPIRE attestation profile must avoid leaking hardware, cloud, device, or namespace metadata that would undermine privacy-first or Compartment non-correlation.
+
+**OPA — implementation substrate (inward-facing).** OPA may realize the policy checker, but it is an engine, not a vocabulary. Its terms — Rego, PDP, PEP, bundle, and especially "decision" — are realization notes only and never enter core vocabulary. OPA can return structured policy outputs, but conventional allow/deny authorization patterns are the wrong product vocabulary for UbU's graduated model: it must not flatten semi-legitimization, full legitimization, needs-clarification states, or bypass-as-introspection-evidence into a boolean gate. Where OPA backs the checker, affect margin and revealed-preference state live in the data layer and OPA is treated as a pure execution engine.
+
+**SAML/OIDC — boundary-only enterprise compatibility.** External enterprise authentication may be supported at the commercial wire when required, with OIDC/OAuth2 preferred for greenfield federation. External IdPs never become the source of truth for user-sovereign Identity.
+
+### 24.1 UbU-to-SPIFFE mapping
+
+| UbU concept | SPIFFE/SPIRE concept | Notes |
+|---|---|---|
+| user control plane / sovereign root | SPIFFE **trust domain** candidate | Root of cryptographic trust if the single-domain or hybrid model is chosen; alternatives open in `UBU-Q0126` |
+| Identities + Compartments | SPIFFE ID namespace paths, per-Compartment trust domains, or purpose-scoped federation | Granularity open in `UBU-Q0126`; no mapping may weaken Compartment non-correlation |
+| workload / worker / boundary agent identity | SPIFFE **ID** backed by an **SVID** | Authenticates the executor or boundary agent, not the human source of authority |
+| `authority_source` (Task/envelope field) | backed by SVID plus UbU-native provenance and grants | Field name unchanged; authority requires capability grants, `authority_scope`, Compartment policy, Log provenance, and admission checks |
+| SVID (claim type) | **JWT-SVID** / **X.509-SVID** | JWT-SVID for portable / marketplace reference; X.509-SVID for transport |
+| claim register | verifiable-claim store | Stores SVIDs as one claim type; no parallel structure |
+| IdentityAttestation | SPIFFE **node + workload attestation** | "Prove what you are" → workload/boundary-agent credential issuance |
+| Human / UbU Identity | *(not replaced by SPIFFE)* | User-sovereign Identity remains UbU-native; may be bound to workload claims only through approved provenance |
+| AssociationAttestation | *(not SPIFFE)* | Relationship attestation between parties; must not merge with IdentityAttestation |
+| Delegation Substrate cross-party executor identity | SPIFFE **federation** | Attested provenance for delegated Technique execution; pairs with the Ethereum settlement layer |
+| FOSS-core / commercial-wire split | **SVID scoping** plus UbU capability grants | Wire presents only SVIDs scoped to granted authority; cryptographic auditability does not by itself create authorization |
+
+At a delegation, federation, worker, hosted-planning, boundary-agent, or commercial-wire boundary, `authority_source` may be backed by one or more verifiable claims, including an SVID identifying the executing workload or boundary agent. The SVID authenticates the workload; UbU capability grants, Log provenance, Compartment policy, task-specific `authority_scope`, expected-prior-version checks, and review/admission rules establish whether that authenticated actor is authorized for the action. The SVID is stored as a claim type in the claim register rather than as a parallel structure, and the surrounding evidence fields remain authoritative.
+
+When a Delegation Substrate packet crosses to an external executor, the executing workload or boundary agent may present a SPIFFE-attested identity (SVID) under the applicable trust domain. The SVID gives cryptographic provenance for the executor, while `authority_source`, `authority_scope`, capability grants, Compartment policy, and Log provenance establish whether that executor is authorized for the delegated action. This pairs with the marketplace settlement layer without collapsing human authority into workload identity.
+
+Whether Compartments map to a single sovereign SPIFFE trust domain, to per-Compartment trust domains for cryptographic non-correlation, or to a hybrid control-plane root with purpose-scoped / pairwise / Compartment-scoped boundary federation is open in `UBU-Q0126`; whichever is chosen must not weaken the Compartment non-correlation promise.
+
+This section fixes vocabulary and adoption posture only. No SPIFFE, SPIRE, OPA, OIDC, SAML, SVID issuance, enterprise federation, or commercial-wire identity implementation is required for Phase 1 dogfooding.
+
+SPIFFE IDs, SVIDs, trust-domain names, federation bundles, issuance logs, and boundary telemetry are potentially correlating identifiers. Any SPIFFE/SPIRE profile must treat namespace shape, SVID lifetime, bundle exposure, logging, and federation scope as privacy-critical design parameters.
+
+---
+
+## 25. Automation Workers and Super Automation
+
+### 25.1 Automation Worker
+
+An **Automation Worker** is a worker-mode UbU instance or compatible execution unit that performs delegated work.
+
+Automation Workers may:
+
+- run LLM queries;
+- process photos or screenshots;
+- label GitHub events;
+- perform external API actions;
+- run document analysis;
+- submit authorized mutations to a canonical UbU instance.
+
+A worker-mode instance is externally represented as an Identity.
+
+### 25.1.1 Worker identity and capabilities
+
+A worker Identity may receive only explicit capability grants. The Identity stores stable external identity metadata and credential references; authority lives in separate capability-grant objects attached to that Identity and issued by a specific parent UbU instance. A grant names allowed actions, scope limits, lifecycle state, issuance time, expiration time when present, and audit/provenance metadata.
+
+Phase 1 capability verbs are:
+
+- `task.read`;
+- `objective.read`;
+- `universe_state.read_subset`;
+- `external_event.append`;
+- `snapshot.submit`;
+- `mutation_request.submit`;
+- `recalculation.request`;
+- `projection.github.request_update`.
+
+Workers do not directly mutate canonical Task, Objective, UniverseState, `pipeline_state`, or GitHub projection state in Phase 1. They may submit mutation requests or projection update requests, and the canonical instance validates those requests, writes accepted changes, and logs applied or rejected outcomes. Task creation, Objective creation, Task mutation, Objective mutation, `pipeline_state` mutation, and direct external writes are represented through `mutation_request.submit` or a narrower projection request rather than through direct write authority.
+
+Worker endpoints are the Phase 1 worker profile of the future inter-instance protocol. They should carry the same envelope concerns the later protocol will need: parent instance, worker Identity, capability grant reference, payload kind, target refs, expected prior version or idempotency key where relevant, provenance, Compartment/export decision, and review requirement. Phase 1 does not need to expose native user-to-user messaging or generic remote instance discovery through this API.
+
+Capability grants may be scoped by object ID, Objective subtree, Task set, Compartment, external integration, operation kind, and time window. Compartment policy is a hard upper bound on worker authority: a capability grant cannot authorize access, export, or worker handoff that the relevant Compartment forbids.
+
+A worker may be revoked by disabling or deleting its capability grants, rotating or invalidating credentials, and rejecting later submissions from that grant. Revocation does not rewrite prior Logs. Credential rotation creates a new credential version linked to the same worker Identity and capability grants unless the grant is also changed.
+
+A single worker-mode instance may serve multiple parent organization-mode or user-mode instances only through separate parent-specific capability grants, credentials, and audit trails. Cross-parent data sharing is forbidden unless each parent explicitly grants a route and all relevant Compartment policies allow it. Workers may operate for user-mode instances, but affect and other personal data require especially narrow read-subset grants and must respect `no_cloud_llm`, `no_external_export`, and low-security disclosure rules.
+
+### 25.1.2 Worker assignment lifecycle
+
+Phase 1 worker work discovery is explicit assignment by the parent UbU instance. A worker may poll a parent-specific assignment inbox or receive pushed notifications, but the inbox returns only work that the parent has already assigned or offered to that worker Identity. Worker check-ins may advertise health, availability, local resource state, and granted capability metadata so the parent can choose an eligible worker; they are not an open task-claim or marketplace mechanism.
+
+A worker assignment is a scoped execution lease that binds one Task or Delegation Substrate packet to one worker Identity for one active executor slot. The minimum assignment record includes `assignment_id`, parent instance ref, `task_ref`, worker Identity ref, capability grant ref, assigned-by Identity or authority source, assignment status, lease or heartbeat deadline, expected output summary, review requirement, idempotency key, and provenance. The assignment may reference Compartment decisions or ContextBundles when the work handoff exposes protected or low-security content.
+
+The minimum Phase 1 assignment statuses are `offered`, `accepted`, `in_progress`, `clarification_requested`, `delivered`, `completed`, `rejected_by_worker`, `cancelled`, `expired`, and `failed`. `delivered` means the worker has submitted output or evidence for parent review; `completed` means the canonical instance accepted the assignment outcome or otherwise determined that no further worker action is required. Task status remains canonical on the Task itself and is not replaced by assignment status.
+
+Multiple workers may observe the same Task only through explicit read grants, observer roles, or separate review assignments. Observation does not confer execution authority. In Phase 1, only one worker may hold the active execution lease for a given executor slot on a Task. If apparently parallel work is needed, UbU should model separate child Tasks or separate named assignment roles rather than allowing anonymous workers to compete for the same Task. Competitive worker claiming, work stealing, and marketplace-style bidding are deferred.
+
+Every assignment lifecycle transition is logged. Phase 1 extends the Log event-type set with `worker_assignment_updated`; its payload records the assignment id, old and new status when applicable, worker Identity, Task ref, capability grant ref, lease deadline, reason, evidence refs, idempotency key, and whether recalculation was requested. Assignment events that affect the current or next recommended Task, worker bottleneck risk, or Plan feasibility create or batch a `recalculation_triggered` Log entry using the existing trigger taxonomy.
+
+Workers may reject assignments by returning `rejected_by_worker` with a reason and evidence when relevant. Rejection does not mutate the Task directly. The canonical instance decides whether to reassign, ask the user, mark the Task blocked, revise the Delegation Substrate packet, or leave the Task available for manual work.
+
+If a worker disappears mid-Task, the parent marks the assignment `expired` after the heartbeat or lease deadline, logs the transition, and treats the Task as still unresolved unless separate accepted evidence proves completion or mootness. Late worker submissions after expiration are stale by default and must pass expected-prior-version, idempotency, authority, and review checks before they can affect canonical state. The parent may then reassign the Task, create a retry or repair Task, request clarification, or surface the worker bottleneck in risk reporting. Retry construction follows the worker retry semantics below.
+
+Workers may request clarification by submitting `clarification_requested` status or an authorized mutation/request payload. The canonical instance may convert that into a clarification Task, user prompt, revised assignment packet, or rejection of the request.
+
+#### Automation child Task structure
+
+An Automation/Super Automation Task that expands into multiple canonical children is structurally replaced by a separate Container. The Task itself is not reused as the Container handle. The original Task usually becomes `moot` with reason code `replaced_by_new_plan_structure`.
+
+Automation child Tasks are ordinary Tasks, normally Dynamic Tasks. Phase 1 does not define an automation-step subtype. A child may be Static only when it independently has fixed start and end times under ordinary Static Task rules.
+
+Workflow-level automation metadata belongs on Container lineage and provenance. Child-specific automation metadata belongs on ordinary Task delegation fields, Delegation Substrate packets when present, worker assignments, capability-grant refs, worker mutation request refs, originating ContextBundle refs, External References, and Logs.
+
+Workers may propose child Tasks or the restructuring Container only through authorized mutation requests. The canonical instance validates scope, expected prior version, Compartment/export policy, idempotency, review policy, and External Reference changes before admitting canonical children.
+
+Retries use the worker retry semantics below: a failed child stays failed, and retry work is a new sibling Task under the same Container or lineage with retry metadata.
+
+#### Worker retry semantics
+
+A failed worker-created child Task is not mutated back to `active`. The failed attempt remains a failed Task with its own assignment, evidence, and Logs. When retry is warranted, UbU creates a new retry sibling Task with a new `task_id` under the same parent Container or lineage when one exists, linked by `retry_of_task_ref`, `retry_root_task_ref`, `attempt_number`, `retry_policy_summary`, and failure or evidence refs.
+
+Worker assignment failure on an existing Task may leave the underlying Task unresolved when no attempt Task was created. In that case retry or repair work is represented by a new assignment or retry/repair Task; accepted completion evidence or mootness is required before the underlying work stops being planned.
+
+The effective retry policy resolves from Task or Delegation Substrate packet, then parent Container or Objective, then worker or integration default, then global Phase 1 default. Worker and integration defaults cannot exceed capability grants, Compartment/export policy, assignment leases, idempotency, expected-prior-version, or review policy.
+
+The Phase 1 global default is at most three total attempts per retry root, including the initial attempt. No automatic retry is created for policy denials, authorization failures, Compartment/export denials, invalid mutation requests, missing required human review, or stale expected-prior-version conflicts.
+
+Each retry attempt has its own assignment, idempotency key, status transitions, and Task outcome Logs. Failure is logged with `task_failed`, assignment changes with `worker_assignment_updated`, worker request failures with `worker_mutation_rejected` when applicable, and retry-sibling admission through the normal Task creation or mutation-request admission path. Retry metadata must keep the attempt chain queryable without rewriting prior attempts.
+
+When attempts are exhausted, UbU stops automatic retry creation, leaves the latest attempt failed unless another accepted lifecycle transition applies, and routes the parent work to human review, clarification, reassignment, repair, or a moot/supersession decision through ordinary admission rules.
+
+Worker failure affects derived reports and recalculation. Failed, expired, rejected, repeated, or exhausted worker attempts feed `worker_or_automation_bottleneck`, may increase dependency fragility or deadline risk, and create or batch recalculation triggers when they can affect the current or next recommended Task, Plan feasibility, or risk-report validity.
+
+### 25.1.3 Worker mutation request schema
+
+Phase 1 worker submissions use three bounded payload families:
+
+- event or observation submissions, such as authorized External Event, Snapshot, Log-candidate, status, clarification, or recalculation requests;
+- mutation requests, which are the normal worker path for changing canonical UbU objects;
+- proposed patch artifacts, which are reviewable evidence or an explicit patch-style mutation request for supported textual or external artifacts, never direct canonical edits.
+
+A worker mutation request is a candidate state-transition envelope. It is not a canonical write until the parent instance validates it, applies it when policy allows, and writes the corresponding Log entries. The minimum request fields are `mutation_request_id`, `schema_version`, `parent_instance_ref`, `worker_identity_ref`, `capability_grant_ref`, `authority_source`, `submitted_at`, `target_ref`, `operation`, `operation_payload` or `new_value`, `reason`, `evidence_refs`, `provenance`, `idempotency_key`, and either `expected_prior_version` or an explicit no-prior-version reason for create-only requests. Optional fields include `assignment_ref`, `effective_at`, `old_value_observed`, `originating_context_bundle_refs`, `compartment_refs`, `compartment_policy_result`, `confidence`, `review_requirement`, `batch_id`, `batch_atomicity`, and `supersedes_request_ref`.
+
+Phase 1 mutation operations are closed and typed. They include UniverseState mutation-list requests using the accepted mutation vocabulary; Task lifecycle transition requests, including completion, failure, moot, and estimate or delegation-field updates; Objective transition requests; External Reference create, verify, supersede, or duplicate-link requests; `pipeline_state` projection-state requests; Task or Objective candidate creation requests; Task-to-Container restructuring requests; and Log correction or annotation requests. New operation kinds require a schema migration or accepted decision. Projection writes, GitHub API actions, and external side effects remain separate projection or AgentAction requests and do not become direct canonical mutations.
+
+Valid requests are not always applied immediately. A request may be applied immediately only when schema validation, semantic validation, capability scope, Compartment/export policy, idempotency, expected-prior-version checks, assignment lease status, and operation review policy all pass and the request's `review_requirement` allows automatic application. Otherwise a valid request remains a submitted candidate awaiting human or policy review. Invalid, unauthorized, stale, duplicate-conflicting, or policy-denied requests are logged as `worker_mutation_rejected` with a sanitized reason and evidence references when safe.
+
+Batches are allowed when the envelope declares a `batch_id` and `batch_atomicity`. `all_or_nothing` batches validate the whole batch before application and either apply every item in declared order or reject the batch without partial canonical mutation. `independent_items` batches may apply valid items and reject invalid items separately, but this is not atomic. MVP implementations may restrict atomic batches to one parent instance and one validation transaction.
+
+Workers may request creation of new Objectives, Tasks, External References, child Tasks, or Containers only as mutation requests or candidates. They do not receive direct create authority in Phase 1. Objective creation should require review by default unless a later policy grants a very narrow auto-create path. Task creation may be auto-applied only when the grant, assignment, operation kind, target scope, and review policy explicitly allow it.
+
+Worker mutations are reversible only through append-only repair. UbU does not rewrite or delete the original request or applied Log entry. Reversal uses a compensating mutation, Log correction, superseding object, Task moot transition, or projection repair. Requests should include enough observed old value, evidence, and expected-prior-version metadata to make compensation possible when the operation is logically reversible. Irreversible external side effects require projection or AgentAction mitigation metadata rather than ordinary mutation reversal.
+
+Stale overwrite prevention is mandatory. The canonical instance compares `expected_prior_version` or equivalent target version metadata with current canonical state before applying mutation requests. A mismatch rejects the request or converts it into a conflict candidate for review; it must not silently overwrite newer state. Idempotency keys prevent duplicate application, assignment leases prevent expired worker work from being accepted accidentally, and capability-grant versions prevent revoked or changed authority from authorizing late submissions.
+
+### 25.1.4 Model-committee worker pattern
+
+A model-committee worker is an Automation Worker pattern that reads canonical project state, runs configured provider workflows against a selected open question or problem, produces candidate changesets, scores candidate changesets, and writes reviewable artifacts.
+
+In v0.1, this means Codex CLI plus local Ollama proposal workflows. In v0.2, this expands to Codex and Claude Code frontier-provider cross-scoring, with local providers remaining useful for diversity and fallback.
+
+In both versions, model-committee is still an external bootstrap tool rather than a fully integrated UbU worker-mode runtime component.
+
+### 25.2 Worker mode
+
+Worker mode:
+
+- is one of the three mutually exclusive UbU modes;
+- is usually daemon/service-oriented;
+- may expose an admin web UI;
+- may use CLI settings;
+- often runs on GPU-capable hardware;
+- may control cloud compute resources.
+
+### 25.2.1 Worker-mode public UX
+
+Worker-mode public UX is an administrative console for the worker operator, not the primary planning UI.
+
+The first worker-mode screen should show:
+
+- connection and identity status for the parent UbU instance;
+- current service health and last check-in;
+- active assignment, assignment queue, and retry/error state;
+- granted capabilities and their scopes;
+- recent Log submissions, mutation requests, and rejection reasons;
+- local resource status, including GPU availability and cloud compute state when applicable.
+
+The worker UI may expose detailed logs and operational controls, but it should default to summarized, redacted views. It must not expose Compartment-protected payloads, broader organization planning state, or personal affect data merely because the worker executed related work.
+
+No worker-mode web admin UI is required for Phase 1. Phase 1 only needs enough visible worker assignment/status information for the GitHub dogfooding demo, which may be shown in the user-mode dogfooding UI, CLI output, or run artifacts.
+
+### 25.3 Super Automation
+
+**Super Automation** is a product/UX pattern, not the technical name of the device.
+
+Super Automation uses Automation Workers, local services, or external APIs to abstract away difficult external interactions from the user.
+
+It may include:
+
+- screenshot interpretation;
+- user-mediated UI actions;
+- GitHub processing;
+- document parsing;
+- API work;
+- LLM-assisted workflow execution.
+
+---
+
+## 26. Organization Mode
+
+Organization mode is an instance-wide option.
+
+It is isolated from personal user-mode installations.
+
+Organization mode:
+
+- does not model intrinsic affect;
+- may disable affect dimensions on Relationship objects;
+- may use organizational Preferences as directives;
+- may use authority-source metadata/logging;
+- may delegate work to Automation Workers;
+- may expose a web interface.
+
+For MVP, roles/RBAC may be omitted and all users treated as admin-equivalent.
+
+### 26.1 Organization-mode object rules
+
+Organization mode uses the shared core object model unless a field or behavior is intrinsically personal-affect-specific. Objective, Preference, Task, Container, UniverseState, Snapshot, Plan, Calendar, Log, Identity, Relationship, Compartment, Automation Worker, External Event, External Reference, and deferred Association-related objects are available in organization mode to the depth needed by the instance's project-planning workflow.
+
+Intrinsic affect fields are structurally absent from organization-mode objects where a mode-specific schema is used. Where a shared storage schema contains affect-capable fields for implementation convenience, those fields are disabled in organization mode and validation must reject organization-created intrinsic-affect values rather than merely ignoring them. Organization mode may still store non-intrinsic human-related project constraints, availability facts, risk-report findings, or externally supplied structural signals when those signals are allowed by source authority, Compartment policy, and consent/export rules.
+
+Relationship objects may exist in organization mode without affect dimensions. An organization-mode Relationship represents structured UniverseState between Identities, such as contributor, maintainer, worker, project, vendor, or integration relationships. It may carry non-affect project metadata through ordinary UniverseState facts, External Events, Logs, External References, candidate AssociationAttestations, Objectives, or Tasks, but it must not claim the organization has a private emotional state toward another Identity.
+
+Organization-created Objectives, Preferences, and Tasks require `authority_source` metadata as defined in `DESIGN.md` section 17.9.
+
+Before RBAC exists, organization-mode users are represented as human operator Identities with admin-equivalent authority over the organization-mode instance. This is an MVP authority simplification, not a claim that all future organization users have the same role. Actions still write Logs with actor Identity and provenance so later RBAC can be introduced without erasing earlier history.
+
+Future personal `user_mode` instances may provide limited signals to an organization-mode instance only through explicit user-controlled sharing, Identity-mediated authorization, Compartment/export checks, and clear provenance. Phase 1 does not implement cross-instance personal-to-organization sharing. Later designs should prefer structural signals such as availability, commitment status, task completion, or user-approved projection summaries rather than raw affect, private relationship state, or broad personal context.
+
+### 26.2 Organization-mode public UX
+
+Organization-mode public UX is a project operations dashboard for human operators of an organization or project instance.
+
+The first organization-mode screen should show:
+
+- pipeline state for imported/project WorkItems and Objectives;
+- risk summary for current Plans, including deadline, dependency, and worker bottleneck risk;
+- worker assignments, worker health, and pending mutation requests;
+- GitHub projection and reconciliation status;
+- recent decision, projection, and worker Log entries that need operator attention.
+
+Organization mode may expose pipeline state, risk reports, worker assignments, and GitHub projection status as first-class public UI concepts. It should not expose personal user-mode affect surfaces, and admin-equivalent MVP assumptions must be labeled when no full RBAC is implemented.
+
+No organization-mode web admin UI is required for Phase 1. The Phase 1 public demo may show organization-like project coordination data, but the required UI is the single-user dogfooding surface defined by the Phase 1 demo criteria, not a general organization console.
+
+### 26.3 Collective decision legitimacy
+
+Social choice theory is a boundary discipline for organization and multi-user coordination. UbU must not treat a committee, group, or Association as if it had one unqualified personal Preference. A collective outcome is a decision artifact with a procedure, authority basis, scope, participants, evidence, and legitimacy notes.
+
+Future collective decision records should distinguish `authority`, `consent`, `vote`, `delegation`, `consensus`, `veto`, `abstention`, `dissent`, and `exit` rather than flattening them into one approval flag. Minimum fields include decision id, Association/Group or organization scope, actor Identity refs, role or eligibility rules, procedure kind, proposal refs, ballot or consent evidence refs, quorum/threshold rule, outcome, effective interval, authority_source, Compartment refs, provenance, review status, and correction/revocation links.
+
+Aggregated outputs become organization directives, policy statements, or coordination constraints with their own authority_source. Individual Preferences, ballots, delegations, objections, and reasons remain separate source records. UbU may summarize an outcome as binding for a scope, but it must not synthesize a shared Preference or erase minority positions merely because a procedure selected an option.
+
+Dissent is durable state. Minority reports, unresolved objections, abstentions, veto use, appeal paths, and recorded exit rights should remain queryable and may affect risk reporting, legitimacy explanations, and future planning even when the collective decision is procedurally valid.
+
+Social-choice limitations should be surfaced as diagnostics rather than hidden. Examples include agenda dependence, cyclic majorities, strategic-voting incentives, delegation-chain fragility, quorum or participation defects, veto abuse, minority-right conflicts, and consent defects caused by high exit cost or unclear authority. These diagnostics should create review items or warnings before UbU treats a collective directive as legitimate for sensitive coordination.
+
+Phase 1 and Phase 1b do not implement general multi-user governance. They preserve room for Phase 3 by keeping organization-mode authority explicit, logging actor Identity and provenance, retaining dissent/correction paths, and avoiding any schema claim that an organization's Preference is literally a person's Preference.
+
+### 26.4 Strategic interaction boundary
+
+Game theory is a boundary discipline for coordination, not a hidden optimizer for manipulating counterparties. UbU may help the user notice incentives, commitments, verification needs, asymmetric information, and likely coordination failures, but strategic analysis remains advisory unless backed by accepted records and explicit authority.
+
+Phase 1 and Phase 1b represent most strategic interaction with existing objects: External Events record observed counterparty actions or outside-world triggers; Techniques encode reusable coordination workflows; Tasks and Logs record the user's controlled actions and outcomes; External References point to issue trackers, grant calls, bounties, agreements, or messages; Relationships and organization-mode UniverseState capture accepted state; Identity, capability grants, Compartments, and projection policy constrain who may act, what may be disclosed, and where evidence may be sent.
+
+Explicit strategic-interaction records are deferred to Phase 3+ or future Skill Barter/marketplace work. When introduced, they should model the strategic situation, actor Identity refs, hypothesized incentives, commitment or verification mechanisms, bargaining or principal-agent structure, expected consequence ranges, assumptions, evidence refs, confidence, Compartment refs, authority source, review status, and correction/revocation links.
+
+Counterparty models are hypotheses, not facts. A speculative model may create a review item, explanation, or option comparison, but it must not become canonical state, restrict a person's options, classify trustworthiness, disclose private data, expand a capability grant, or create a commitment without review. Recommendations should expose uncertainty and offer non-strategic interpretations when evidence is weak.
+
+Credible commitments, signaling, free-riding controls, bargaining, and trust-but-verify workflows should be represented as user-visible mechanisms: milestones, escrow or deposit requirements, acceptance criteria, verification Tasks, audit evidence, staged disclosure, revocation paths, and graceful failure states. Payoff language should be framed as consequences for Objectives and constraints rather than as an opaque utility maximizer.
+
+For FOSS dogfooding, the useful Phase 1b surface is pragmatic coordination: issue triage, contributor follow-up, review commitments, release promises, grant deadlines, bug bounty terms, verification checklists, and visible projection state. UbU may warn about bottlenecks, ambiguous ownership, unverified claims, stale promises, and incentive mismatch, but it should not optimize adversarial pressure or persuasion.
+
+Phase 1 and Phase 1b must not implement adversarial strategic optimization, automatic counterparty scoring, hidden persuasion timing, or automated bargaining authority. Later multi-user, marketplace, bounty, grant, or Skill Barter features must pass through the same Identity, capability, Compartment, provenance, projection, and human-review boundaries as other external coordination.
+
+---
+
+## 27. GitHub Dogfooding and Projection
+
+GitHub is a projection of UbU state, not the source of truth.
+
+UbU should be able to use GitHub as an interface for FOSS contributors while maintaining canonical state internally.
+
+### 27.1 GitHub object mapping
+
+**Phase 1 realization (`UBU-D0245`).** Live ingestion is implemented: in a dedicated server-side `GithubIngestMode` (default mock, separate from the projection export mode so read and write are opted into independently — never triggered by token presence), the bootstrap enumerates a repository's issues through the adapter and maps them into Tasks and GitHub External References via the existing normalization and candidate mapping, the same admission downstream as the fixture import. Mock and live share one path, differing only in the injected `GitHubApi` (a live `octocrab` client or an in-memory recording fake seeded from a raw-issue fixture); the import is one-shot at bootstrap under `reject_if_already_seeded`. Pull requests, reviews, CI events, milestones, and comments are not ingested in Phase 1, and per-issue GitHub state is not recorded as UniverseState facts. With `UBU-D0244`, the live GitHub path is now symmetric: at bootstrap UbU reads its own real issues, plans, and projects its managed labels back.
+
+Provisional mapping:
+
+- GitHub Issue → one or more Objectives
+- Objective → one or more GitHub Issues
+- GitHub PR → External Event and/or analysis Objective
+- Review request → Task
+- CI failure → External Event and/or analysis Objective
+- Milestone/release → Objective with Calendar detail
+- Contributor comment → External Event and/or analysis Objective
+
+Contributor interactions may also be associated with a GitHub Identity and relationship-maintenance Objective when the user has explicitly modeled that contributor relationship. These imported events may update relationship-relevant UniverseState or satisfy/reactivate the maintenance Objective, but they do not directly rewrite private Relationship affect fields without user acceptance.
+
+### 27.2 Pipeline state
+
+`pipeline_state` is generic projection-scoped workflow/project-management state. It is not GitHub-specific, although Phase 1 uses it first for GitHub dogfooding and managed-label projection.
+
+`pipeline_state` is not stored directly on `Objective` in Phase 1. It is stored as projection metadata keyed by one projection plus one target Objective. One Objective may therefore have multiple current pipeline states for multiple projections, such as GitHub issue labels, a future organization board, or a local release workflow.
+
+MVP projection-state record:
+
+- `pipeline_state_id`
+- `pipeline_projection_id`
+- `target_ref` (`Objective` only in Phase 1)
+- `pipeline_state`
+- `authority_source`
+- `source_refs`
+- `external_reference_refs`
+- `updated_at`
+- `version`
+- `provenance`
+
+A projection has at most one current `pipeline_state` for a given Objective. History is reconstructed from Logs, not by storing multiple historical states on the Objective.
+
+Phase 1 `pipeline_state` enum:
+
+- `unlabeled`
+- `invalid`
+- `under_specified`
+- `valid_unprioritized`
+- `unassigned`
+- `in_process_awaiting_pr`
+- `awaiting_review`
+- `awaiting_ci`
+- `complete`
+
+Enum semantics:
+
+- `unlabeled`: no accepted projection label/state has been assigned.
+- `invalid`: the projected work item is malformed, duplicate-invalid, impossible, or not admissible as planned work.
+- `under_specified`: more triage or clarification is required before prioritization.
+- `valid_unprioritized`: valid work exists but has not been ranked or selected for execution.
+- `unassigned`: valid prioritized work has no executor or active assignment.
+- `in_process_awaiting_pr`: work is assigned or in progress and the next expected external projection is a PR or comparable artifact.
+- `awaiting_review`: implementation or artifact exists and needs human, maintainer, or worker review.
+- `awaiting_ci`: review or merge path is waiting on CI or comparable automated verification.
+- `complete`: the projection workflow is complete; this does not by itself prove `Objective.status = completed` or `satisfied`.
+
+Automation Workers do not directly mutate `pipeline_state`. A worker may submit a `pipeline_state` projection-state mutation request when its capability grant permits `mutation_request.submit` for the target projection and Objective. The canonical instance validates authority, expected prior version, Compartment/export policy, External References, idempotency, and review policy before applying or rejecting the request.
+
+Every accepted `pipeline_state` transition creates a `pipeline_state_transitioned` Log entry with old state, new state, projection id, target Objective ref, actor or authority source, reason, effective time, provenance, source refs, external refs, and any requested projection update. Rejected, stale, or unauthorized worker requests are logged through worker mutation rejection events.
+
+### 27.3 GitHub projection
+
+**Phase 1 realization (`UBU-D0244`).** The managed-label projection write now runs against live GitHub, selected only by a deliberate server-side mode (never a request field) and gated by the deny-by-default export permit and the `is_managed_label` identity invariant — UbU can only ever add or remove its own `ubu`/`ubu-managed` labels, never a user's. Mock and live runs share one adapter write path, differing only in the injected `GitHubApi` (a live `octocrab` client or an in-memory recording fake); the token lives only in process memory and is never persisted; preview is the dry run and a single approval authorizes the write; on a rate-limit or transport error the batch aborts cleanly and reports applied operations (writes are idempotent); `reconcile` reads live labels. Live ingestion still reads a mock backend.
+
+GitHub projection is a deliberately low-dimensional projection of canonical UbU state. Phase 1 may read any authorized GitHub object needed for import or reconciliation, but it writes only the following managed surfaces:
+
+- `ubu:`-prefixed labels or another explicitly configured UbU-owned label prefix;
+- issue or PR body blocks delimited by UbU-managed HTML comments;
+- UbU-authored comments that include a stable projection identifier and managed-marker text.
+
+Milestones and assignees are preview-only by default in Phase 1. UbU may include them in a projection payload, but a live milestone or assignee write requires explicit human approval for that operation or a later accepted decision that narrows the automation rule.
+
+PR statuses, CI checks, branch protection, repository settings, issue titles, and unmarked issue or PR body text are read/import-only in Phase 1. UbU does not set PR status checks or mutate arbitrary repository metadata as part of MVP projection.
+
+Managed labels should encode only projection-owned facts, such as the projected `pipeline_state` once that projection state is accepted. UbU must not remove, rewrite, or reinterpret non-`ubu:` labels as canonical UbU state.
+
+Managed body blocks and comments must carry enough metadata to reconcile them later: projection id, source UbU object refs or External Reference refs, generated-at time, projection schema version, and a short human-readable statement that the block or comment is managed by UbU.
+
+A human-approved live write and a dry-run preview use the same projection payload shape. Public demos may use dry-run projection when live GitHub mutation is unsafe, but the preview must show the exact labels, blocks, comments, milestones, or assignee changes that would be requested after approval. Projection requests, dry-run previews, and applied projection records carry `authority_source` plus actor/provenance fields so their source path is visible during reconciliation.
+
+GitHub edits do not directly override canonical UbU state. A human GitHub edit, including an edit to a UbU-managed label, block, or comment, is imported as a GitHub External Event and may create drift, a mutation candidate, a projection repair request, a Task candidate, or a recalculation trigger after validation. Canonical UbU state changes only through UbU's normal admission path and Logs.
+
+Automation Workers may submit `projection.github.request_update` requests or reconciliation artifacts when granted authority, but they do not directly mutate canonical UbU state or bypass human approval rules for live GitHub writes.
+
+#### 27.3.1 GitHub token custody
+
+Phase 1 GitHub credentials are secret material held by the execution actor that performs a GitHub API call. The default MVP path is worker-held credentials: an assigned worker stores its GitHub token in its OS/device secret store, and the canonical UbU instance stores only credential refs, scope metadata, capability grants, projection requests, External References, results, and Logs.
+
+The canonical instance may hold a local GitHub credential only when it is itself the writer for a human-approved local projection. It does not need to see worker-held tokens and must not store raw GitHub secrets in Objectives, Tasks, ContextBundles, Logs, run artifacts, projection payloads, or External References.
+
+Phase 1 prefers a dedicated GitHub App installation, fine-grained bot token, or equivalent service identity for UbU-managed projection writes. A maintainer-owned token is acceptable for single-user dogfooding when explicitly configured and logged as that operator's credential. Individual contributor tokens are not shared with a parent instance or other workers; they may be used only by that contributor's own authorized instance or worker.
+
+GitHub credentials must be repository-scoped where GitHub supports it. Task-level authority is enforced by UbU capability grants, assignment leases, projection payload allowlists, idempotency keys, and review policy rather than by assuming GitHub can mint a unique token for each Task. Short-lived or narrower per-Task tokens may be used when available, but MVP security does not depend on them.
+
+Live GitHub writes are not treated as confirmed solely from the write response. The writer or canonical instance re-reads the managed GitHub surface, records the observed version or timestamp, and reconciles it against the expected projection. Until verification succeeds, the projection is not marked verified and remains eligible for reconciliation reporting.
+
+The MVP security assumption is cooperative, operator-administered local and worker enclaves with least-privilege GitHub credentials, explicit capability grants, human approval for live writes, append-only audit, and revocation/rotation. Phase 1 does not protect a token from a malicious local administrator or compromised worker that legitimately holds that token.
+
+### 27.4 GitHub reconciliation
+
+Missed GitHub updates are expected in MVP. Reconciliation is therefore part of the normal GitHub dogfooding loop, not an exceptional recovery path.
+
+The canonical UbU instance owns reconciliation admission. It may perform manual sync, polling, fixture replay, or webhook intake itself. Automation Workers may poll GitHub, receive webhooks, compute candidate reconciliation reports, or submit worker requests, but the canonical instance validates authority, Compartment/export policy, idempotency, and expected prior version before applying canonical changes or logging accepted events.
+
+The reconciliation report compares at least:
+
+- GitHub issues and PRs against External References that link them to UbU Objectives, Tasks, External Events, or Logs;
+- UbU-managed labels against the expected projection of `pipeline_state` or other accepted projection metadata;
+- UbU-managed body blocks and comments against projection records and source UbU object refs;
+- GitHub comments, reviews, PR changes, CI runs, and milestone changes against imported External Events and append-only Log entries;
+- expected projection payloads against live GitHub state, including missing, stale, duplicate, manually edited, or foreign-owned fields.
+
+Each report item should include external object identity, matched UbU object refs, External Reference refs, observed GitHub version or timestamp, expected projection version when any, drift classification, severity, provenance, and recommended handling.
+
+MVP drift classes are:
+
+- `missing_external_reference`;
+- `missing_external_event_log`;
+- `stale_managed_projection`;
+- `manual_edit_to_managed_surface`;
+- `unexpected_ubu_label_or_block`;
+- `foreign_edit_outside_ubu_surface`;
+- `projection_request_failed`;
+- `github_object_missing_or_inaccessible`.
+
+Drift creates a reconciliation report first. It may recommend repair Tasks, mutation requests, projection update requests, External Reference verification, or recalculation. It must not silently create canonical repair Tasks or perform live GitHub writes in Phase 1; those require human approval or a later explicitly accepted policy.
+
+Planner-relevant GitHub reconciliation findings create or batch `recalculation_triggered` Log entries with trigger kind `github_update`. Low-priority drift that does not affect the current Plan may mark projection or report caches stale instead of recalculating immediately.
+
+### 27.5 GitHub event triage
+
+GitHub event triage converts authorized GitHub observations into External Events, Logs, candidate Objectives, candidate Tasks, recalculation triggers, worker assignments, and projection requests. A GitHub observation is not canonical domain state merely because GitHub emitted it. The importer first normalizes and deduplicates the observation, then records accepted unique observations through the normal admission path.
+
+Log-only cases in Phase 1 are narrow:
+
+- duplicate webhook deliveries, fixture events, worker submissions, or reconciliation observations whose idempotency key already exists;
+- reconciliation checks that verify an external object or managed projection is unchanged;
+- events outside the configured repository, object, milestone, or fixture import scope;
+- projection write acknowledgements that are already represented by an accepted projection Log entry and do not reveal new GitHub state.
+
+Every other unique in-scope GitHub observation creates an External Event and an `external_event_observed` Log entry with source External References where available. This includes issue, PR, comment, label, review, CI, and milestone changes, even when the only immediate planning effect is to mark a report cache stale.
+
+Phase 1 event-class defaults are:
+
+- `issue_opened`: Creates an External Event, creates or links an issue-backed Objective when the issue represents durable work, and creates an issue-triage or clarification Task when the issue is under-specified.
+- `issue_commented`: Creates an External Event; creates a response, clarification, review, or follow-up Task only when the comment asks for action, supplies blocker information, changes acceptance evidence, or affects contributor follow-up.
+- `issue_labeled`: Creates an External Event; non-`ubu:` labels are evidence only, while UbU-managed labels are checked for projection drift and may create projection repair recommendations.
+- `issue_closed`: Creates an External Event; may transition linked Tasks to completed or moot only after admission validates that the modeled effect is satisfied, otherwise it creates a reconciliation or clarification Task.
+- `pr_opened`: Creates an External Event, links the PR to existing work when possible, and usually creates a review or PR-triage Task.
+- `pr_updated`: Creates an External Event; creates a re-review, CI-wait, or projection-update Task only when the changed commits, body, title, base branch, or mergeability affect active work.
+- `review_requested`: Creates an External Event and a review Task for the requested reviewer or eligible worker path.
+- `review_submitted`: Creates an External Event; approvals may unblock work, while change requests or blocking comments create follow-up Tasks.
+- `ci_failed`: Creates an External Event and a failure-analysis or fix Task, and may request Automation Worker assignment when an eligible worker has an explicit assignment path.
+- `ci_passed`: Creates an External Event; usually logs or unblocks existing Tasks and may trigger projection update, but creates a new Task only when a next action such as merge review is required.
+- `milestone_changed`: Creates an External Event; may create or update a release Objective, deadline fact, Calendar constraint, or release-planning Task.
+
+GitHub Objective and Task creation is capped by admission rules:
+
+- A GitHub event creates a new Objective only when it introduces durable desired state, release scope, accepted project work, or an investigation that cannot be represented as a Task under an existing Objective.
+- An analysis Objective is a one-time Objective tagged `analysis`, linked to at least one parent Objective or source External Reference, and must include a crisp question, termination condition, owner or review path, source refs, and duplicate key.
+- An event is appended to an existing Objective when the source object is already represented, shares the same durable desired state, or supplies evidence, blocker, status, acceptance, scope, deadline, or contributor-follow-up information for that Objective.
+- A unique in-scope event is merely logged only in the sense that it creates the External Event and Log required by this section but no Objective or Task. This is the default for evidence-only labels, routine comments, status churn, CI transitions that confirm known state, and low-priority observations that only mark caches stale.
+- A Task is created only for a concrete next action with an executor path or review owner and an actionable completion criterion: triage, clarification, review, fix, projection repair, reconciliation, release planning, merge readiness, contributor follow-up, or bounded analysis. If an active equivalent Task already exists, the event is appended as evidence instead.
+
+Analysis Objective duplicate detection uses a normalized key over parent Objective refs, analysis kind or failure class, normalized source refs, affected artifact or GitHub object, unresolved question text, and active or terminal status. If a matching active Objective exists, the new event is appended. If a matching terminal Objective exists and the new evidence materially reopens the question, UbU creates a superseding analysis Objective linked by `supersedes`; otherwise it logs duplicate or idempotent evidence.
+
+Analysis Objectives do not receive independent user value in Phase 1. They derive instrumental scheduling value from parent Objective refs and accepted Preferences, capped by the parent scope. An analysis Objective without a valid parent or durable source link is under-specified and should create a clarification or review Task rather than compete as high-value work.
+
+Analysis Objectives close automatically when their termination condition is satisfied by accepted evidence. They transition to `completed` when the analysis question is answered or the required artifact is accepted; they transition to `abandoned`, `invalid`, or `superseded`, or cause related Tasks to become `moot` with accepted reason codes, when the source work disappears, duplicates another work item, becomes obsolete, or is replaced by a newer plan structure. All closures are logged.
+
+Noise-control defaults:
+
+- one GitHub delivery may create at most one new Objective and one immediate Task unless a human-approved decomposition or worker mutation request creates a Container and child Tasks;
+- low-priority evidence is batched into reconciliation, Calendar preview, Log review, or risk-report refresh instead of creating prompt-facing Tasks;
+- generated analysis work needs a review window, owner or worker assignment path, and stale-after policy;
+- repeated equivalent events update External References, Logs, verification metadata, or cache staleness rather than creating more Objectives or Tasks.
+
+A GitHub event triggers recalculation with trigger kind `github_update` when it can affect the current or next recommended Task, a dependency or precondition, Task lifecycle state, Objective status, deadline or milestone constraints, worker assignment need, projection state, or risk-report validity. Low-priority observations that do not affect the current Plan may mark Calendar, projection, explanation, or report caches stale.
+
+Automation Worker assignment is never caused by raw GitHub data alone. The GitHub event must first create or update an admitted Task or Delegation Substrate packet, and the parent UbU instance must explicitly assign eligible worker work under the accepted worker-assignment model.
+
+GitHub projection updates are triggered by accepted canonical UbU state changes or reconciliation drift, not by treating GitHub as source of truth. A GitHub event may recommend a projection update request or preview; live writes still follow the managed-surface and approval rules.
+
+Duplicate detection uses the strongest available normalized key: GitHub delivery ID when present; otherwise repository identity, event class, action, external object type and ID, actor, source timestamp, object version such as commit SHA or CI run attempt, and the affected UbU target. External Reference uniqueness and Log `idempotency_key` checks prevent duplicate External Events, Tasks, Objectives, and projection requests.
+
+Missed events are reconstructed during reconciliation by comparing live GitHub objects, timelines, comments, reviews, CI runs, milestones, and managed projection surfaces against External References, imported External Events, Logs, and projection records. Reconstructed events receive GitHub-derived effective timestamps, reconciliation provenance, confidence metadata when needed, and synthetic idempotency keys. If GitHub exposes only final state, UbU records the observed state transition or drift finding rather than fabricating a precise sequence of unseen events.
+
+---
+
+## 28. Risk Reporting
+
+Risk is not a first-class object in MVP.
+
+Risk reports are derived, recalculable analyses over Calendars, Plans, Tasks, Logs, Snapshots, External Events, worker status, External References, and compact Calendar metadata. They do not create canonical Risk objects, and Plan scoring does not include an explicit risk penalty in MVP.
+
+The Phase 1 MVP report set is:
+
+- `p90_completion_time`
+- `critical_path`
+- `deadline_miss_probability`
+- `affect_constraint_violation_probability`
+- `low_compact_calendar_coverage_warning`
+- `dependency_fragility`
+- `worker_or_automation_bottleneck`
+- `stale_affect_warning`
+- `destructive_pressure_warning`
+- `post_plan_depletion_warning`
+
+Additional findings may be computed when the inputs already exist, but they are not required for Phase 1: `relationship_maintenance_neglect_warning`, `preference_uncertainty`, `repeated_override_or_deviation_pattern`, `motivation_mismatch`, `stale_or_missing_discovery_mode_reconciliation`, and `calendar_preview_or_log_review_overdue`.
+
+Risk reports are computed on demand from the current Calendar or Plan. Implementations may cache a risk-report artifact with the Calendar, Plan, run artifact, or release package for auditability and UI performance, but the cache is derived state and must be invalidated or marked stale when relevant Logs, Snapshots, Tasks, worker status, External Events, compact Calendar coverage, or recalculation triggers change.
+
+Automation Workers may compute or refresh risk-report artifacts when granted appropriate read capability, but worker output is advisory until admitted by the canonical instance. Workers may submit report artifacts, report-refresh requests, mutation requests, or projection requests according to their grants; they do not create canonical Risk objects or directly mutate Tasks.
+
+A risk report may recommend or request Tasks. It must not silently create canonical Tasks in MVP. Human-approved or policy-approved follow-up Tasks may include clarification, affect collection, dependency repair, worker retry/escalation, Calendar regeneration, Log review, Calendar preview, or GitHub projection/reconciliation work.
+
+Worker retry state is an input to `worker_or_automation_bottleneck`: active retry chains, repeated failure classes, retry exhaustion, expired leases, and stale late submissions should be surfaced when they threaten current work or release readiness.
+
+Risk reports are part of release ceremonies for UbU-runs-UbU. A release readiness or release outreach package should include, at minimum, deadline risk, critical path, dependency fragility, worker/automation bottleneck, and low coverage warnings when the inputs exist. Public release artifacts should cite only reviewable report summaries and must not expose sensitive Compartment payloads.
+
+The PERT-superiority demonstration should not claim mathematical replacement of every PERT use. UbU supersedes PERT for its own MVP demo by showing that schedule risk is not only a duration network: it also includes explicit dependency/precondition state, affect constraints, worker status, compact Calendar coverage, recalculation from Logs and Snapshots, and actionable next Task or Plan repair recommendations.
+
+Burnout / affect exhaustion is modeled as a constraint violation.
+
+Affect-related risk reports should name plan fragility, not user blame. Phase 1 reports may include affect constraint violation probability, destructive-pressure warnings, stale-affect warnings, repeated late-failure warnings, and post-plan depletion warnings. These findings are derived from Plans, Logs, Snapshots, and risk-report analysis rather than first-class Risk objects.
+
+---
+
+## 29. Recalculation Triggers
+
+Recalculation triggers are explicit records that tell UbU when a Calendar, Plan, risk-report cache, explanation cache, or next-action recommendation may no longer reflect current state. A trigger does not mutate domain state by itself; it points at the Log entry, Snapshot, External Event, worker request, or clock condition that changed the planner's inputs.
+
+Phase 1 triggers are:
+
+- `task_completed`
+- `task_failed`
+- `task_moot`
+- `observed_snapshot`
+- `affect_confidence_decay`
+- `external_event`
+- `github_update`
+- `user_override`
+- `calendar_preview_due`
+- `log_review_due`
+- `discovery_mode_reconciliation_due`
+- `elapsed_time`
+- `low_compact_calendar_coverage`
+- `worker_request`
+
+Phase 1 user controls such as snooze, reject, decompose, and override should be represented through ordinary Task, Log, or user-override payloads rather than separate trigger kinds unless a later implementation proves the distinction is necessary.
+
+Phase 2 triggers are limited to sync and personal-worker conditions that can invalidate the local Calendar: `sync_state_changed`, `device_reconnected`, `remote_worker_status_changed`, and `offline_window_changed`. These are deferred with multi-device local-first sync and user-owned worker coordination.
+
+Post-MVP trigger families include native cross-user message arrival, AssociationAttestation review, broad legacy-message ingestion, background AgentAction policy events, external compute budget or provider changes, and other high-level agentic or multi-user coordination events. They should be modeled through the same trigger envelope when implemented, but they do not block Phase 1.
+
+Accepted Phase 1 triggers are logged with Log event type `recalculation_triggered`. The Log payload should include `trigger_kind`, `scope`, `target_refs`, `source_event_refs`, `requested_action`, `batch_key`, `reason`, and optional `idempotency_key`. `requested_action` is either `recalculate_now` or `mark_calendar_stale`.
+
+Automation Workers do not create canonical triggers directly. A worker with `recalculation.request` may submit a request. The canonical instance validates the worker capability, target scope, Compartment/export policy, source evidence, and idempotency key, then records either an accepted `recalculation_triggered` entry or a rejected worker mutation/request Log entry.
+
+Triggers may be batched when they share the same Calendar or Plan scope and no member requires a user-visible immediate repair before the batch window closes. Batching should preserve the individual source references and reasons in the logged payload. A short event-loop batch is acceptable for multiple imported GitHub events, worker updates, or low-priority stale markers.
+
+Immediate recalculation is required when the trigger can change the current or next recommended Task, hard feasibility, Task lifecycle state, dependency or precondition truth, Objective status, affect legitimacy, worker assignment needed for current work, or compact Calendar coverage below the configured minimum. The default Phase 1 immediate triggers are `task_completed`, `task_failed`, `task_moot`, `user_override`, planner-relevant `observed_snapshot`, planner-relevant `external_event`, planner-relevant `github_update`, `low_compact_calendar_coverage`, and accepted urgent `worker_request`.
+
+Stale marking is sufficient when the trigger only means cached Plans, Calendars, explanations, or reports should be refreshed before later reliance. The default stale-only triggers are `calendar_preview_due`, `log_review_due`, `discovery_mode_reconciliation_due`, `elapsed_time` outside the reactive repair envelope, `affect_confidence_decay` that has not yet crossed a configured planning threshold or current affect constraint, and low-priority external or GitHub observations that do not affect the current Plan.
+
+`elapsed_time` should not create one Log entry per clock tick. It is materialized only when crossing a modeled boundary such as Task start/end, static commitment proximity, review due time, stale-affect threshold, reactive horizon expiry, offline precompute boundary, or compact Calendar expiration.
+
+**Repair scope and supersession.** Each accepted immediate trigger maps to a planning-kernel repair scope of `local`, `remaining_window`, or `full_window`; most triggers default to `remaining_window`, and `full_window` is used only when the change can invalidate the wider plan. Recalculation invokes the planning kernel in `repair` mode with a `repair_context` identifying the prior Plan and the observed divergence. The repaired Plan supersedes the prior Plan, linking `supersedes_plan_id` and marking the prior Plan `superseded`, rather than mutating it in place (`UBU-D0235`).
+
+**Override-safety.** A recalculation must not re-place completed or in-progress Tasks, and must not clobber a user-override placement. User authority outranks the planner's automation authority: a placement carrying `user_override` (`UBU-D0226`) is preserved across recalculation, and the planner repairs around it rather than over it. This makes the sovereignty invariant — the operator role is never rented to automation — hold inside the planner itself (`UBU-D0235`, `UBU-D0227`).
+
+---
+
+## 30. Current Major Open Questions
+
+Unresolved questions are tracked in [`OPEN_QUESTIONS.md`](OPEN_QUESTIONS.md).
+
+## 31. Design Process
+
+The GitHub repository is the canonical public design process for UbU.
+
+Chat discussions and private notes may generate proposals, but accepted decisions become official only when reflected in this repository.
+
+Design changes should be recorded as:
+
+- updates to `DESIGN.md`,
+- accepted decisions in `DECISIONS.md`,
+- unresolved issues in `OPEN_QUESTIONS.md`,
+- or GitHub Issues linked from `OPEN_QUESTIONS.md`.
+
+The project should prefer explicit decisions over hidden assumptions.
+
+### Current strategic posture
+
+UbU has moved from pure design preparation into active pre-MVP dogfooding.
+
+The project should now prioritize:
+
+- visible `model-committee` dogfooding output;
+- recruitment of a small core cohort of serious, self-directed contributors;
+- prototype-funder discovery among privacy-sensitive independent knowledge workers;
+- conversion of outreach into concrete next actions;
+- implementation of trunk features needed by the personal self-governance product.
+
+Further broad philosophical elaboration should generally be subordinated to implementation, recruitment, dogfooding, or market discovery.
+
+Public-facing materials should avoid implying that there is only one meaningful contributor role. They should welcome several serious contributors while still distinguishing committed work from passive interest.
+
+Public materials should also avoid negative metaphors when criticizing planning systems that fail to model affect. Preferred terms include affect-blind, emotionally incomplete, human-incomplete, mechanistic planning, or affect-insensitive planning.
+
+### Competitive positioning
+
+UbU risks confusion with AI calendar and scheduling assistants (Motion, Reclaim, Clockwise, SkedPal, Akiflow, and similar auto-schedulers). The differentiation is stated positively first (`UBU-D0225`): those tools take the user's to-do list and events as given and optimize their placement — they decide the *when* of an already-decided *what*. UbU is the generative goal-and-values layer above that: it originates *what belongs there at all* from the user's goals, values, affect, and resources, working from introspected state rather than inferred sensor data.
+
+The defensibility argument is about incentives, not technical capability, and must be framed that way to stay credible. An incumbent could build local-first; it will not, because matching UbU's sovereignty means abandoning the pooled-corpus data asset its business model and valuation depend on (a textbook innovator's dilemma), and a bolt-on "private mode" delivers a promise where UbU delivers a verifiable architecture — no server, open source, runs on the user's device. The future-feature extensions (resource/skill markets, delegation, protective compartments) are evidence of this foundational difference rather than a separate claim: a marketplace built on a surveillance platform is just more harvesting. The claim should never be the absolute "they cannot," which invites a falsifiable counterexample; it is "structurally disincentivized, and a partial copy cannot deliver verifiable rather than promised sovereignty." Strongest when tied to the running Phase 0 demo and the open repository rather than asserted.
+
+Per-audience calibration: `WHAT_IS_UBU.md` carries only the positive category line, no competitor names and no attack; `SOVEREIGN_COORDINATION.md` and `FUNDER_BRIEF.md` carry the full incentive/verifiability argument; mass-appeal surfaces avoid adversarial framing.
+
+### Public recruitment language baseline
+
+Public recruitment copy should say that UbU is looking for a small core cohort of serious, self-directed contributors who want to help build an inspectable, privacy-first planning kernel in public. It should make clear that several contributors are welcome, and that commitment means taking a bounded public path from concrete context to reviewed work, not competing for one privileged role.
+
+Reusable public copy:
+
+> UbU is looking for a small core cohort of serious, self-directed contributors. Good first contributions include workflow examples, design review, synthetic or redacted fixtures, parser or validation tests, model-committee artifact review, and narrow implementation-ready issues. If the work keeps the planning kernel inspectable, privacy-first, and useful for dogfooding, there is room for multiple contributors to earn bounded ownership over subsystems.
+
+Public materials may name the staged roles already used by onboarding: workflow informant, design reviewer, fixture/test contributor, implementation contributor, and bounded module owner. Prototype-funder or design-partner leads may also be routed through outreach, but should not be presented as a privileged contributor rank.
+
+Avoid language such as `the co-builder`, `highest-priority contact`, `one founding slot`, `competing for a role`, `exclusive inner circle`, `prove you belong`, `hand-picked elite`, or any phrasing that treats passive interest as worthless. Casual interest should be welcomed when it can become a workflow example, design feedback, contributor lead, prototype-funder lead, or public issue.
+
+ETHConf and similar follow-up should route each person into one concrete next action: send a workflow example, review a model-committee artifact, comment on a public design question, contribute a fixture or test, take a narrow implementation-ready issue, introduce a serious contributor, or discuss a trunk-compatible prototype sponsorship.
+
+### Release Outreach Pipeline baseline
+
+Public and project-facing release communication should be treated as a first-class planning output. The standard tagline is:
+
+> UbU should make every release explain itself.
+
+For UbU itself, a minor release should normally produce a release outreach package when there is enough change to explain. The package should be grounded in current repository state, release notes, accepted decisions, closed issues, automated UI screenshots, scripted demo recordings, test fixtures, known limitations, and future-plan labels.
+
+The public-audience script should explain what changed and why it matters without assuming deep computer knowledge. The developer-facing segment should briefly show dogfooding, current implementation artifacts, and concrete ways serious contributors can help. This lets a single release package serve users, nontechnical supporters, FOSS developers, project maintainers, design partners, and prototype funders.
+
+Release outreach automation should draft and assemble artifacts before it publishes them. Human or policy approval is required before public upload, announcement, or mutation of external channels unless a project explicitly configures a narrow trusted auto-publication rule. Export must respect Compartment, Identity, and public-projection boundaries.
+
+### First technical essay baseline
+
+The first public technical essay should use `The Planning Kernel: What Task Managers Leave Out` as the working title. It should lead with a precise problem claim: list, calendar, board, and opaque assistant tools are useful projections, but they are not enough for real planning unless objectives, state transitions, dependencies, constraints, logs, uncertainty, affect, and recalculation are explicit.
+
+The essay should avoid accusatory title language such as `your task manager is lying to you`, negative metaphors for affect-blind systems, generic startup brochure copy, grandiose inevitability claims, privacy overclaims, scarcity contributor framing, and claims that LLMs are the planner. It should explain LLMs as advisory tools that help interpret, summarize, propose, critique, and generate fixtures, while canonical planning remains inspectable and recalculable. It should point to `model-committee` as visible dogfooding and request one concrete planning-kernel workflow example that can become a public issue, fixture, interview, or prototype-funder conversation.
+
+### Long-arc public narrative baseline
+
+UbU may publicly say it is a long-running personal and technical project whose architecture predates the current LLM moment, and that recent LLM capabilities make the plan more practical by improving interpretation, summarization, proposal generation, fixture creation, and advisory automation.
+
+Public copy should share only enough personal history to explain commitment, design maturity, and why the project exists. It should avoid memoir, destiny claims, and claims that UbU was inevitable. The preferred framing is: `I have worked on this problem for a long time; the toolchain is now good enough to build and test a narrow, inspectable version in public.`
+
+Durable significance should be stated as a possibility to test through dogfooding, contributors, and prototype-funder discovery. Preferred language includes `could matter for a long time`, `worth building carefully`, and `a serious attempt at privacy-first self-governance software`. Avoid `will change the world`, `inevitable`, `once-in-a-generation`, `solves coordination`, `the future of work`, `the only real solution`, `world-historical`, and similar totalizing claims.
+
+The narrative belongs mainly in the first technical essay, selected outreach, talks, and interviews. README-level use should be short and point back to current dogfooding and contribution paths, not long personal history.
+
+### Contributor onboarding baseline
+
+Committed-contributor onboarding should be public, bounded, and fixture-first. The minimum path is: read the project overview/core principles, model-committee dogfooding, Phase 1 demo, GitHub dogfooding, open-core, Compartment, and design-process sections; run the no-private-access local smoke command for the relevant repo; make a small public contribution; then earn broader ownership through reviewed work.
+
+For `model-committee`, the first command should be `uv run model-committee doctor`, followed by a fake-provider or fixture-backed run/test when available. The first task should touch a synthetic or redacted fixture, parser or validation test, model-committee artifact review, public workflow example, or narrow implementation-ready issue with explicit acceptance criteria.
+
+Contributors should understand the core boundaries before implementation: canonical state lives only in committed canonical files; model-committee is advisory; v0.1 provider/network and no-auto-apply boundaries are hard; GitHub is a projection; LLMs are advisory; Compartment and low-security rules constrain data routing; and the open-core planning kernel must remain inspectable and self-hostable.
+
+Contributor progression runs from workflow informant to design reviewer to fixture/test contributor to implementation contributor to bounded module owner. Work that requires private project-owner context is not onboarding-ready; it should be converted into a public issue, fixture, design note, or open question with sensitive details redacted or synthesized.
+
+### Commercial funding red lines
+
+Funding is acceptable only when it accelerates trunk capabilities needed by the personal self-governance product and preserves the user's authority over objectives, logs, plans, affect data, compartments, and external projections.
+
+Acceptable prototype funding may pay for planning-kernel, local-first, privacy, Compartment, affect-aware planning, GitHub/calendar/task ingestion, Log, risk-report, worker, or projection features that generalize to the open core.
+
+Incompatible funding includes requests for:
+
+- surveillance-style project management, activity scoring, keystroke or screen monitoring, or always-on productivity telemetry;
+- manager-first dashboards that rank, pressure, or compare contributors instead of helping a person or project operator govern commitments explicitly;
+- centralized productivity telemetry across users, teams, clients, or contributors without explicit user-controlled sharing;
+- generic enterprise dashboards that make UbU a conventional reporting layer rather than a self-governance planner;
+- features that expose affect, private relationship data, Compartment payloads, or low-security personal context to managers, funders, or customers as a condition of use;
+- token-first, speculation-first, governance-token, DAO-dashboard, or financialized coordination work that would reposition UbU as a crypto product;
+- custom branches whose value depends on one funder's private workflow and would not become trunk capability.
+
+Funding terms are incompatible when they require:
+
+- funder control over the product roadmap, canonical design process, licensing boundary, or accepted decisions;
+- exclusive ownership, assignment, or proprietary relicensing of open-core planning-kernel work;
+- a closed-source replacement for functionality that public contributors need for ordinary dogfooding;
+- confidentiality terms that prevent honest public explanation of architectural constraints, privacy limits, or contributor-facing behavior;
+- urgency, deliverables, or support obligations that materially displace Phase 1 implementation, recruitment, or public dogfooding.
+
+Crypto, tokenization, or DAO-specific requests should be rejected when they are token-first or speculation-first, and deferred when they are merely integration-specific rather than needed for the personal self-governance trunk.
+
+Paid work should fund trunk features by default. When a funded prototype needs customer-specific configuration, that configuration should remain outside the core boundary unless it exposes a reusable open-core abstraction.
+
+### Prototype-funder workflow baseline
+
+The first fundable independent-consultant prototype is a local commitment-risk and weekly-planning workflow, not a general inbox assistant or enterprise dashboard.
+
+The prototype should answer one buyer question: whether the consultant is about to miss, overrun, or quietly under-service a client commitment this week, and what to do next without exposing private client content.
+
+Minimum inputs are manual client/project declarations, manually entered or imported deadlines, task declarations, current availability, optional calendar busy/free blocks, optional GitHub issue/PR references, and an affect Snapshot. Email, notes, invoices, and full message bodies are excluded from the first prototype unless represented by user-approved structural references.
+
+The primary output is a compartment-aware weekly commitment-risk review plus a next-day default Plan. It should show client/project compartments, deadlines, dependency and overcommitment risk, blocked or stale commitments, affect/energy constraints, and the exact structural data used. It should not expose one client's payload in another client's view.
+
+The prototype remains on the trunk when every funded feature maps to reusable open-core objects: Objectives, Tasks, Logs, Compartments, Calendar/Plan generation, risk reports, optional GitHub/calendar ingestion, and user-visible import/projection boundaries. Customer-specific templates, connector credentials, private examples, and support may remain outside the core.
+
+Prototype-funder discovery should test paid design-partner structures before custom consulting: a small prepaid discovery/review session, a larger prepaid prototype sponsorship, or a design-partner retainer whose deliverable is trunk functionality plus customer-specific configuration. Exact pricing is market-discovery data rather than canonical product policy, but offers that cannot fund reusable trunk work should be rejected or renegotiated.
+
+### Open-core and FOSS boundary
+
+UbU treats the planning kernel and contributor-facing integration surface as the open core. A public contributor must be able to inspect, run, modify, and self-host the core system needed for ordinary single-user and project dogfooding without depending on private replacement components.
+
+The definitely open-source surface includes:
+
+- canonical data model schemas and migrations for Objectives, Preferences, WorkItems, Tasks, Containers, UniverseState, Snapshots, Plans, Calendars, Logs, Identities, Relationships, Zones, Compartments, External Events, External References, Association-related schemas when implemented, worker assignments, mutation requests, and projection state;
+- explicit planner and Calendar-generation logic required for Phase 1 dogfooding, including constraint evaluation, recalculation triggers, compact Calendar serialization needed for transport or analysis, and MVP risk-report generation;
+- GitHub import, triage, projection, reconciliation, fixture/demo tooling, and the managed-label/comment/block formats used for FOSS collaboration;
+- worker-mode runtime surfaces required for delegated work, including Identity/capability checks, assignment, status, mutation request, and audit/log contribution APIs;
+- local-first storage and sync protocols when implemented;
+- the Super Automation extension/API boundary needed for third-party workers, connectors, or local services.
+
+Private or commercial code may exist only outside that core boundary. Acceptable private areas include hosted-service operations, managed cloud infrastructure, paid support/packaging, premium hosted worker capacity, enterprise administration/compliance layers, proprietary connectors to closed third-party systems, and short-lived experimental prototypes that are not required for the public dogfooding loop.
+
+Private experiments must not become hidden mandatory dependencies for public contributors. If an experimental component becomes necessary for the advertised open-source workflow, UbU must either open it before relying on it publicly or explicitly narrow the public promise.
+
+Implementation repositories should use OSI-approved licenses. The default license for core implementation repos is MPL-2.0 so modifications to core files remain shareable while integrations can be built without relicensing unrelated code. Stronger copyleft may be considered for network-hosted service code, and permissive licensing may be used for small examples, SDK stubs, or interoperability fixtures when that better serves adoption.
+
+Contributor trust requires clear labeling of each repository or package as open core, private experiment, premium hosted service, or external connector. UbU should not recruit FOSS contributors around a capability that depends on an undisclosed private substitute for the open implementation.
+
+### Canonical and derived project documents
+
+For UbU design governance:
+
+- `DESIGN.md`, `DECISIONS.md`, and `OPEN_QUESTIONS.md` are canonical design inputs.
+- `README.md`, `OUTREACH.md`, `PM_BRIEF.md`, `FUNDER_BRIEF.md`, `SOVEREIGN_COORDINATION.md`, and `ORG_INTROSPECTION_BRIEF.md` are derived public-facing projections.
+
+Question-answering uses canonical files. Consistency checking includes derived files and patches them when they fall out of sync.
+
+### Directive decisions
+
+Direct project-owner directives may be appended to `DECISIONS.md` as accepted decisions.
+
+Directive decisions are canonical once committed.
+
+They may override provisional decisions, create new questions, close questions, split questions, or require consistency repairs.
+
+The model-committee process must treat directive decisions as authoritative input during the next system-wide consistency check.
+
+---
+
+## 32. Strategic future directions
+
+These directions are accepted as named strategic directions (`UBU-D0222`) and presented as substantive, not speculative. Implementation is deferred to Phase 3+ / the full-product track; they are reasons the data model stays general and must not be used to over-scope the Phase 1 MVP. Related material lives in §23.6 (protective shared-authority compartments) and §2.19 (directional authority).
+
+### 32.1 Concurrent multi-scale coordination
+
+The bottom-up and top-down pictures of coordination are not sequential phases; they coexist. UbU's primitives behave identically at every scale, so the same Compartment and Delegation semantics serve a two-person tool loan and a global exchange without translation. A neighborhood tool library, a small Association, and a regional or global marketplace can all operate at once: the local layer is fully self-contained, and any larger market is an optional integration point rather than a mandatory backbone. Neither requires the other; neither collapses the other.
+
+### 32.2 Super-connectors
+
+Some Identities hold standing in several contexts simultaneously — a local library, a regional market, a global network. They are the permeable membrane between layers, not gatekeepers over them. A super-connector can project a redacted piece outward ("this Resource is available") without exposing an Association's inventory, membership, or internal coordination; can be the only externally visible member of an otherwise-private Association; and carries reputation and Skill evidence across contexts under Compartment-safe redaction. Because no layer depends on a central authority, a super-connector can leave a layer without collapsing it. The result is multi-network interoperability without merging everything into one social graph.
+
+### 32.3 Governance as an emergent subsystem
+
+The hard parts of multi-scale coordination — super-connector load, value drift between layers, incentive design, accountability at bridge boundaries — are well-solved governance problems that communities have handled for centuries. UbU does not solve governance. Its role is narrower and structural: honest data boundaries, Compartment control over what flows where, and a settlement-agnostic Delegation Substrate (gift, barter, time-banking, Ethereum, or otherwise). Communities and marketplaces layer their own governance on top, and because the data model is honest about boundaries, that governance can work instead of being theater. This is a present scope boundary, not a deferred feature.
+
+### 32.4 Attention sovereignty
+
+A full-product expression of sovereign coordination is attention sovereignty: cross-channel, values-driven, context-aware governance of interruptions. Whether a message reaches the user now depends on who it is from and how it ranks — and on what the user is doing and wants to protect, which only a user-held life-model knows — unified across email, chat, SMS, and calls. It merges modeled state with user-declared state, detects divergence, and grades permissiveness as a focus window closes rather than toggling it. The interruption chokepoint, today held by attention-capturing platforms whose incentive is to capture attention rather than protect it, moves under the user's control.
+
+### 32.5 Coordination with worker standing
+
+Shift-based or operational coordination — cleaning, maintenance, queue response, training, exception handling — is a frequently-imagined direction, and it is deliberately not classical job control. Classical workforce-management software treats the worker as an execution node to schedule and optimize. UbU's primitives describe the opposite work-political architecture: each worker is an Identity with standing — Objectives, affect, and preferences that the coordination layer must satisfy, not merely consume. The same introspected-state primitive that protects an individual's focus block becomes the worker's standing in a shared plan. This holds only when the worker's say is structural — the eject-not-override principle of §23.6 — otherwise it collapses into job control with a consultation veneer.
+
+### 32.6 Premium compute is leak-minimization, not leak-elimination
+
+UbU's cloud story everywhere is leak-minimization, not leak-elimination (`UBU-D0223`). Any cloud computation leaks proportional to its duration through access patterns, timing, and resource profile; FHE protects the plaintext, not the side channels. A long-horizon premium planning run — for example a UbU Corp premium tier — is the largest instance of a leak the architecture already accepts when it is bounded and consented. The correct framing names the residual leak as residual and requires it to be ephemeral and Compartment-scoped, rather than implying a zero-leak guarantee that "local-first, inspectable" can be misread as making.

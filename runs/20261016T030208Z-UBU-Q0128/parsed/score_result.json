@@ -1,0 +1,21 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0128-audio-feedback-v1",
+      "score": 95,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Correct feedback depends on storage and media adapters providing the specified outcome evidence.",
+        "Fixed phrases still require comprehension qualification; no measured usability is established."
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 1 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0128-audio-feedback-v1",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}

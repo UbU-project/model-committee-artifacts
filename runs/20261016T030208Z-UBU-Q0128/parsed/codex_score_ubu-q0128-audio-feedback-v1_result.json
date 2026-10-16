@@ -1,0 +1,21 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0128-audio-feedback-v1",
+      "score": 95,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Fixed phrases still require comprehension qualification; no measured usability is established.",
+        "Correct feedback depends on storage and media adapters providing the specified outcome evidence."
+      ],
+      "required_fixes": [],
+      "rationale": "Supplied mechanical validation passes, with changes confined to allowed files and the question remaining Open. The proposal specifies bounded controller-owned feedback, separates durable capture from confirmed media effects, and addresses duplicate callbacks, interrupted output, uncertainty and budget exhaustion. It preserves existing schemas and permissions, explicitly distinguishes required fixtures from passing results, and introduces no apparent blocking inconsistency."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0128-audio-feedback-v1",
+  "selection_rationale": "The sole eligible proposal provides a focused, auditable feedback contract without expanding action authority or claiming resolution of the broader question."
+}

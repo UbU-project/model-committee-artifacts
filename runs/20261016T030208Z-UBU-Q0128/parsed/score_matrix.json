@@ -1,0 +1,41 @@
+[
+  {
+    "proposal_id": "UBU-Q0128-audio-feedback-v1",
+    "author_provider": "openai",
+    "scorer_provider": "codex",
+    "score": 95,
+    "valid": true,
+    "rationale": "Supplied mechanical validation passes, with changes confined to allowed files and the question remaining Open. The proposal specifies bounded controller-owned feedback, separates durable capture from confirmed media effects, and addresses duplicate callbacks, interrupted output, uncertainty and budget exhaustion. It preserves existing schemas and permissions, explicitly distinguishes required fixtures from passing results, and introduces no apparent blocking inconsistency.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [
+      "Fixed phrases still require comprehension qualification; no measured usability is established.",
+      "Correct feedback depends on storage and media adapters providing the specified outcome evidence."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20261016T030208Z-UBU-Q0128/responses/codex_score_ubu-q0128-audio-feedback-v1_response.json",
+      "stderr_path": null
+    }
+  },
+  {
+    "proposal_id": "UBU-Q0128-audio-feedback-v1",
+    "author_provider": "openai",
+    "scorer_provider": "claude",
+    "score": null,
+    "valid": false,
+    "rationale": "",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [],
+    "schema_validation": {
+      "valid": false,
+      "message": "claude exited with 1",
+      "response_path": "runs/20261016T030208Z-UBU-Q0128/responses/claude_score_ubu-q0128-audio-feedback-v1_stdout.json",
+      "stderr_path": "runs/20261016T030208Z-UBU-Q0128/responses/claude_score_ubu-q0128-audio-feedback-v1_stderr.txt"
+    }
+  }
+]
