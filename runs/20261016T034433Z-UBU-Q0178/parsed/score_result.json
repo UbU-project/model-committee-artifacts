@@ -1,0 +1,21 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-ubu-q0178-local-access-pack-1",
+      "score": 90,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Four synthetic task cases provide narrow workload coverage; results must not support broader multimodal reach claims.",
+        "No measured configuration or affordability evidence is supplied; this advances experiment preparation but cannot resolve UBU-Q0178."
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 1 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "openai-ubu-q0178-local-access-pack-1",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}

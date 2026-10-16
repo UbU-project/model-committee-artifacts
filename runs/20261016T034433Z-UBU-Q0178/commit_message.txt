@@ -1,0 +1,1 @@
+UMC: docs: specify first lower-cost camera-and-voice comparison workload

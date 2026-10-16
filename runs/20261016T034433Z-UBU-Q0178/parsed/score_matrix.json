@@ -1,0 +1,41 @@
+[
+  {
+    "proposal_id": "openai-ubu-q0178-local-access-pack-1",
+    "author_provider": "openai",
+    "scorer_provider": "codex",
+    "score": 90,
+    "valid": true,
+    "rationale": "Supplied mechanical validation confirms clean application, allowlisted files and schema preservation. The patch makes the existing comparison actionable through explicit cases, matched inputs, trial allocations and outcome accounting. It retains budget, workload, security and retention gates without claiming passing results or changing closure criteria.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [
+      "No measured configuration or affordability evidence is supplied; this advances experiment preparation but cannot resolve UBU-Q0178.",
+      "Four synthetic task cases provide narrow workload coverage; results must not support broader multimodal reach claims."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20261016T034433Z-UBU-Q0178/responses/codex_score_openai-ubu-q0178-local-access-pack-1_response.json",
+      "stderr_path": null
+    }
+  },
+  {
+    "proposal_id": "openai-ubu-q0178-local-access-pack-1",
+    "author_provider": "openai",
+    "scorer_provider": "claude",
+    "score": null,
+    "valid": false,
+    "rationale": "",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [],
+    "schema_validation": {
+      "valid": false,
+      "message": "claude exited with 1",
+      "response_path": "runs/20261016T034433Z-UBU-Q0178/responses/claude_score_openai-ubu-q0178-local-access-pack-1_stdout.json",
+      "stderr_path": "runs/20261016T034433Z-UBU-Q0178/responses/claude_score_openai-ubu-q0178-local-access-pack-1_stderr.txt"
+    }
+  }
+]

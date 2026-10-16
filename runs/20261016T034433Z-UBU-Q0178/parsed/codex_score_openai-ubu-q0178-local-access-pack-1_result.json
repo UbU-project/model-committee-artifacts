@@ -1,0 +1,21 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-ubu-q0178-local-access-pack-1",
+      "score": 90,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "No measured configuration or affordability evidence is supplied; this advances experiment preparation but cannot resolve UBU-Q0178.",
+        "Four synthetic task cases provide narrow workload coverage; results must not support broader multimodal reach claims."
+      ],
+      "required_fixes": [],
+      "rationale": "Supplied mechanical validation confirms clean application, allowlisted files and schema preservation. The patch makes the existing comparison actionable through explicit cases, matched inputs, trial allocations and outcome accounting. It retains budget, workload, security and retention gates without claiming passing results or changing closure criteria."
+    }
+  ],
+  "selected_proposal_id": "openai-ubu-q0178-local-access-pack-1",
+  "selection_rationale": "The sole candidate is mechanically valid, scoped and auditable. It provides useful incremental progress toward comparative measurement while correctly leaving hardware selection and affordability unresolved."
+}
