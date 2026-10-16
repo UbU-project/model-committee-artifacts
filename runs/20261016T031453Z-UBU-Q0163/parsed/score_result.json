@@ -1,0 +1,20 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-ubu-q0163-payload-purge-replay-20261015",
+      "score": 94,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Payload-purge replay protection remains unverified behaviorally; implementation evidence and operator approval are still required before blocker retirement."
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 1 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "openai-ubu-q0163-payload-purge-replay-20261015",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}

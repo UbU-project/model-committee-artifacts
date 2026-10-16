@@ -1,0 +1,176 @@
+{
+  "schema_version": "0.4",
+  "run_id": "20261016T031453Z-UBU-Q0163",
+  "created_at_utc": "2026-10-16T03:14:53Z",
+  "repo_path": "../ubu-design",
+  "base_commit": "89f688054dae51954af1fc6fb7ea4efcf90e13ed",
+  "selected_question_id": "UBU-Q0163",
+  "phase": "work-select",
+  "config_path": "config/models.json",
+  "status": "selected",
+  "commands": [
+    "model-committee run-loop"
+  ],
+  "providers_attempted": [
+    "codex",
+    "claude"
+  ],
+  "providers_succeeded": [
+    "codex"
+  ],
+  "providers_failed": [
+    "claude: ProviderError: claude exited with 1"
+  ],
+  "provider_attempts": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "openai-ubu-q0163-payload-purge-replay-20261015",
+      "response_path": "runs/20261016T031453Z-UBU-Q0163/responses/codex_score_openai-ubu-q0163-payload-purge-replay-20261015_response.json",
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "openai-ubu-q0163-payload-purge-replay-20261015",
+      "response_path": "runs/20261016T031453Z-UBU-Q0163/responses/claude_score_openai-ubu-q0163-payload-purge-replay-20261015_stdout.json",
+      "stderr_path": null
+    }
+  ],
+  "provider_successes": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20261016T031453Z-UBU-Q0163/parsed/codex_work_proposal.json"
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "openai-ubu-q0163-payload-purge-replay-20261015",
+      "response_path": "runs/20261016T031453Z-UBU-Q0163/responses/codex_score_openai-ubu-q0163-payload-purge-replay-20261015_response.json",
+      "parsed_path": "runs/20261016T031453Z-UBU-Q0163/parsed/codex_score_openai-ubu-q0163-payload-purge-replay-20261015_result.json"
+    }
+  ],
+  "provider_failures": [
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "failure_class": "ProviderError",
+      "message": "claude exited with 1",
+      "timeout_seconds": 3600,
+      "exit_status": 1,
+      "stderr_path": "runs/20261016T031453Z-UBU-Q0163/responses/claude_score_openai-ubu-q0163-payload-purge-replay-20261015_stderr.txt",
+      "response_path": "runs/20261016T031453Z-UBU-Q0163/responses/claude_score_openai-ubu-q0163-payload-purge-replay-20261015_stdout.json",
+      "quorum_met": false
+    }
+  ],
+  "score_matrix": [
+    {
+      "proposal_id": "openai-ubu-q0163-payload-purge-replay-20261015",
+      "author_provider": "openai",
+      "scorer_provider": "codex",
+      "score": 94,
+      "valid": true,
+      "rationale": "Adds a concrete purge, cache-discard, restart and replay acceptance check addressing the documented payload-dependent guards. It respects retention policy, withholds affected automation when bindings are unavailable, and preserves Open status and retirement gates. Supplied mechanical validation confirms clean application, allowed-file scope and schema preservation.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "Payload-purge replay protection remains unverified behaviorally; implementation evidence and operator approval are still required before blocker retirement."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261016T031453Z-UBU-Q0163/responses/codex_score_openai-ubu-q0163-payload-purge-replay-20261015_response.json",
+        "stderr_path": null
+      }
+    },
+    {
+      "proposal_id": "openai-ubu-q0163-payload-purge-replay-20261015",
+      "author_provider": "openai",
+      "scorer_provider": "claude",
+      "score": null,
+      "valid": false,
+      "rationale": "",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [],
+      "schema_validation": {
+        "valid": false,
+        "message": "claude exited with 1",
+        "response_path": "runs/20261016T031453Z-UBU-Q0163/responses/claude_score_openai-ubu-q0163-payload-purge-replay-20261015_stdout.json",
+        "stderr_path": "runs/20261016T031453Z-UBU-Q0163/responses/claude_score_openai-ubu-q0163-payload-purge-replay-20261015_stderr.txt"
+      }
+    }
+  ],
+  "score_aggregates": [
+    {
+      "proposal_id": "openai-ubu-q0163-payload-purge-replay-20261015",
+      "author_provider": "openai",
+      "cross_score_count": 1,
+      "score_mean": 94.0,
+      "score_spread": 0,
+      "frontier_score_gap": 0,
+      "disagreement_flags": []
+    }
+  ],
+  "cross_score_count": 1,
+  "score_mean": 94.0,
+  "score_spread": 0,
+  "frontier_score_gap": 0,
+  "disagreement_flags": [],
+  "quorum_result": {
+    "valid": true,
+    "human_review_required": false,
+    "selected_proposal_id": "openai-ubu-q0163-payload-purge-replay-20261015",
+    "selected_score": 94.0,
+    "selected_cross_score_count": 1,
+    "blocked_reasons": [],
+    "manual_override": false
+  },
+  "selected_proposal_id": "openai-ubu-q0163-payload-purge-replay-20261015",
+  "automated_selection_valid": true,
+  "human_review_required": false,
+  "artifact_publication_status": "operator_pending",
+  "prompt_size_warning": true,
+  "prompt_context": {
+    "question_ids": [
+      "UBU-Q0163"
+    ],
+    "decision_ids": [
+      "UBU-D0258",
+      "UBU-D0259",
+      "UBU-D0318"
+    ],
+    "sections": {
+      "DESIGN.md": [
+        "1",
+        "23.1"
+      ]
+    },
+    "core_sections": {
+      "DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md": [
+        "4"
+      ]
+    },
+    "missing_refs": {},
+    "context_chars": 87637,
+    "prompt_chars": 94646
+  }
+}

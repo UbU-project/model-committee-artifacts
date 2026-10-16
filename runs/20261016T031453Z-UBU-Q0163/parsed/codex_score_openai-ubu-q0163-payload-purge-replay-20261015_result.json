@@ -1,0 +1,20 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-ubu-q0163-payload-purge-replay-20261015",
+      "score": 94,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Payload-purge replay protection remains unverified behaviorally; implementation evidence and operator approval are still required before blocker retirement."
+      ],
+      "required_fixes": [],
+      "rationale": "Adds a concrete purge, cache-discard, restart and replay acceptance check addressing the documented payload-dependent guards. It respects retention policy, withholds affected automation when bindings are unavailable, and preserves Open status and retirement gates. Supplied mechanical validation confirms clean application, allowed-file scope and schema preservation."
+    }
+  ],
+  "selected_proposal_id": "openai-ubu-q0163-payload-purge-replay-20261015",
+  "selection_rationale": "The sole candidate is mechanically valid and provides a focused, auditable extension to the existing cancellation ticket without claiming passing implementation results or authorizing blocker removal."
+}

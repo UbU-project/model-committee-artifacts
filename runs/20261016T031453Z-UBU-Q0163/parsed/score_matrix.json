@@ -1,0 +1,40 @@
+[
+  {
+    "proposal_id": "openai-ubu-q0163-payload-purge-replay-20261015",
+    "author_provider": "openai",
+    "scorer_provider": "codex",
+    "score": 94,
+    "valid": true,
+    "rationale": "Adds a concrete purge, cache-discard, restart and replay acceptance check addressing the documented payload-dependent guards. It respects retention policy, withholds affected automation when bindings are unavailable, and preserves Open status and retirement gates. Supplied mechanical validation confirms clean application, allowed-file scope and schema preservation.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [
+      "Payload-purge replay protection remains unverified behaviorally; implementation evidence and operator approval are still required before blocker retirement."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20261016T031453Z-UBU-Q0163/responses/codex_score_openai-ubu-q0163-payload-purge-replay-20261015_response.json",
+      "stderr_path": null
+    }
+  },
+  {
+    "proposal_id": "openai-ubu-q0163-payload-purge-replay-20261015",
+    "author_provider": "openai",
+    "scorer_provider": "claude",
+    "score": null,
+    "valid": false,
+    "rationale": "",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [],
+    "schema_validation": {
+      "valid": false,
+      "message": "claude exited with 1",
+      "response_path": "runs/20261016T031453Z-UBU-Q0163/responses/claude_score_openai-ubu-q0163-payload-purge-replay-20261015_stdout.json",
+      "stderr_path": "runs/20261016T031453Z-UBU-Q0163/responses/claude_score_openai-ubu-q0163-payload-purge-replay-20261015_stderr.txt"
+    }
+  }
+]
