@@ -1,0 +1,184 @@
+{
+  "schema_version": "0.4",
+  "run_id": "20261016T021228Z-UBU-Q0162",
+  "created_at_utc": "2026-10-16T02:12:28Z",
+  "repo_path": "../ubu-design",
+  "base_commit": "d0b7f4d4daba6a1fa300a65cafaec8bc3f722279",
+  "selected_question_id": "UBU-Q0162",
+  "phase": "work-select",
+  "config_path": "config/models.json",
+  "status": "selected",
+  "commands": [
+    "model-committee run-loop"
+  ],
+  "providers_attempted": [
+    "codex",
+    "claude"
+  ],
+  "providers_succeeded": [
+    "codex"
+  ],
+  "providers_failed": [
+    "claude: ProviderError: claude exited with 1"
+  ],
+  "provider_attempts": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0162-openai-log-replay-comparison",
+      "response_path": "runs/20261016T021228Z-UBU-Q0162/responses/codex_score_ubu-q0162-openai-log-replay-comparison_response.json",
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0162-openai-log-replay-comparison",
+      "response_path": "runs/20261016T021228Z-UBU-Q0162/responses/claude_score_ubu-q0162-openai-log-replay-comparison_stdout.json",
+      "stderr_path": null
+    }
+  ],
+  "provider_successes": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20261016T021228Z-UBU-Q0162/parsed/codex_work_proposal.json"
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0162-openai-log-replay-comparison",
+      "response_path": "runs/20261016T021228Z-UBU-Q0162/responses/codex_score_ubu-q0162-openai-log-replay-comparison_response.json",
+      "parsed_path": "runs/20261016T021228Z-UBU-Q0162/parsed/codex_score_ubu-q0162-openai-log-replay-comparison_result.json"
+    }
+  ],
+  "provider_failures": [
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "failure_class": "ProviderError",
+      "message": "claude exited with 1",
+      "timeout_seconds": 3600,
+      "exit_status": 1,
+      "stderr_path": "runs/20261016T021228Z-UBU-Q0162/responses/claude_score_ubu-q0162-openai-log-replay-comparison_stderr.txt",
+      "response_path": "runs/20261016T021228Z-UBU-Q0162/responses/claude_score_ubu-q0162-openai-log-replay-comparison_stdout.json",
+      "quorum_met": false
+    }
+  ],
+  "score_matrix": [
+    {
+      "proposal_id": "UBU-Q0162-openai-log-replay-comparison",
+      "author_provider": "openai",
+      "scorer_provider": "codex",
+      "score": 97,
+      "valid": true,
+      "rationale": "Mechanical validation passes, and edits remain confined to UBU-Q0162 with metadata and Open status preserved. Inspection of the pinned store revision confirms payload-only comparison and early replay return without comparing other Log fields. The proposed shared-boundary comparison, direct/batch regression requirements, legacy-receipt handling and purge safeguards form a focused documentation increment without claiming implementation completion.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "Runtime reproduction, ticket filing and passing implementation checks remain outstanding, as explicitly documented."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261016T021228Z-UBU-Q0162/responses/codex_score_ubu-q0162-openai-log-replay-comparison_response.json",
+        "stderr_path": null
+      }
+    },
+    {
+      "proposal_id": "UBU-Q0162-openai-log-replay-comparison",
+      "author_provider": "openai",
+      "scorer_provider": "claude",
+      "score": null,
+      "valid": false,
+      "rationale": "",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [],
+      "schema_validation": {
+        "valid": false,
+        "message": "claude exited with 1",
+        "response_path": "runs/20261016T021228Z-UBU-Q0162/responses/claude_score_ubu-q0162-openai-log-replay-comparison_stdout.json",
+        "stderr_path": "runs/20261016T021228Z-UBU-Q0162/responses/claude_score_ubu-q0162-openai-log-replay-comparison_stderr.txt"
+      }
+    }
+  ],
+  "score_aggregates": [
+    {
+      "proposal_id": "UBU-Q0162-openai-log-replay-comparison",
+      "author_provider": "openai",
+      "cross_score_count": 1,
+      "score_mean": 97.0,
+      "score_spread": 0,
+      "frontier_score_gap": 0,
+      "disagreement_flags": []
+    }
+  ],
+  "cross_score_count": 1,
+  "score_mean": 97.0,
+  "score_spread": 0,
+  "frontier_score_gap": 0,
+  "disagreement_flags": [],
+  "quorum_result": {
+    "valid": true,
+    "human_review_required": false,
+    "selected_proposal_id": "UBU-Q0162-openai-log-replay-comparison",
+    "selected_score": 97.0,
+    "selected_cross_score_count": 1,
+    "blocked_reasons": [],
+    "manual_override": false
+  },
+  "selected_proposal_id": "UBU-Q0162-openai-log-replay-comparison",
+  "automated_selection_valid": true,
+  "human_review_required": false,
+  "artifact_publication_status": "operator_pending",
+  "prompt_size_warning": true,
+  "prompt_context": {
+    "question_ids": [
+      "UBU-Q0162"
+    ],
+    "decision_ids": [
+      "UBU-D0071",
+      "UBU-D0248",
+      "UBU-D0258"
+    ],
+    "sections": {
+      "DESIGN.md": [
+        "12.1",
+        "12.2",
+        "23.1"
+      ],
+      "DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md": [
+        "16",
+        "17"
+      ]
+    },
+    "core_sections": {
+      "DESIGN.md": [
+        "1"
+      ],
+      "DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md": [
+        "4"
+      ]
+    },
+    "missing_refs": {},
+    "context_chars": 97864,
+    "prompt_chars": 105186
+  }
+}
