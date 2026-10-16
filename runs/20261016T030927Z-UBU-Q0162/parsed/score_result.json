@@ -1,0 +1,20 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-ubu-q0162-linked-history-discovery-20261015",
+      "score": 95,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "The added findings are static source evidence; runtime reproduction, downstream caller verification and passing implementation checks remain outstanding."
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 1 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "openai-ubu-q0162-linked-history-discovery-20261015",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}

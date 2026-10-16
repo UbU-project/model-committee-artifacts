@@ -1,0 +1,40 @@
+[
+  {
+    "proposal_id": "openai-ubu-q0162-linked-history-discovery-20261015",
+    "author_provider": "openai",
+    "scorer_provider": "codex",
+    "score": 95,
+    "valid": true,
+    "rationale": "Supplied mechanical validation passes. The patch stays within UBU-Q0162 and the allowed file, preserves its schema and Open status, and adds actionable, revision-pinned history-discovery findings. Link traversal, separate corrected views, conflict handling and privacy-aware acceptance checks directly support existing closure requirements. It accurately presents a documentation advance without claiming implementation completion.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [
+      "The added findings are static source evidence; runtime reproduction, downstream caller verification and passing implementation checks remain outstanding."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20261016T030927Z-UBU-Q0162/responses/codex_score_openai-ubu-q0162-linked-history-discovery-20261015_response.json",
+      "stderr_path": null
+    }
+  },
+  {
+    "proposal_id": "openai-ubu-q0162-linked-history-discovery-20261015",
+    "author_provider": "openai",
+    "scorer_provider": "claude",
+    "score": null,
+    "valid": false,
+    "rationale": "",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [],
+    "schema_validation": {
+      "valid": false,
+      "message": "claude exited with 1",
+      "response_path": "runs/20261016T030927Z-UBU-Q0162/responses/claude_score_openai-ubu-q0162-linked-history-discovery-20261015_stdout.json",
+      "stderr_path": "runs/20261016T030927Z-UBU-Q0162/responses/claude_score_openai-ubu-q0162-linked-history-discovery-20261015_stderr.txt"
+    }
+  }
+]

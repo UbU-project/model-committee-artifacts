@@ -1,0 +1,184 @@
+{
+  "schema_version": "0.4",
+  "run_id": "20261016T030927Z-UBU-Q0162",
+  "created_at_utc": "2026-10-16T03:09:27Z",
+  "repo_path": "../ubu-design",
+  "base_commit": "dce1b35c49756da059c6078d136bc93e446e95da",
+  "selected_question_id": "UBU-Q0162",
+  "phase": "work-select",
+  "config_path": "config/models.json",
+  "status": "selected",
+  "commands": [
+    "model-committee run-loop"
+  ],
+  "providers_attempted": [
+    "codex",
+    "claude"
+  ],
+  "providers_succeeded": [
+    "codex"
+  ],
+  "providers_failed": [
+    "claude: ProviderError: claude exited with 1"
+  ],
+  "provider_attempts": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "openai-ubu-q0162-linked-history-discovery-20261015",
+      "response_path": "runs/20261016T030927Z-UBU-Q0162/responses/codex_score_openai-ubu-q0162-linked-history-discovery-20261015_response.json",
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "openai-ubu-q0162-linked-history-discovery-20261015",
+      "response_path": "runs/20261016T030927Z-UBU-Q0162/responses/claude_score_openai-ubu-q0162-linked-history-discovery-20261015_stdout.json",
+      "stderr_path": null
+    }
+  ],
+  "provider_successes": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20261016T030927Z-UBU-Q0162/parsed/codex_work_proposal.json"
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "openai-ubu-q0162-linked-history-discovery-20261015",
+      "response_path": "runs/20261016T030927Z-UBU-Q0162/responses/codex_score_openai-ubu-q0162-linked-history-discovery-20261015_response.json",
+      "parsed_path": "runs/20261016T030927Z-UBU-Q0162/parsed/codex_score_openai-ubu-q0162-linked-history-discovery-20261015_result.json"
+    }
+  ],
+  "provider_failures": [
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "failure_class": "ProviderError",
+      "message": "claude exited with 1",
+      "timeout_seconds": 3600,
+      "exit_status": 1,
+      "stderr_path": "runs/20261016T030927Z-UBU-Q0162/responses/claude_score_openai-ubu-q0162-linked-history-discovery-20261015_stderr.txt",
+      "response_path": "runs/20261016T030927Z-UBU-Q0162/responses/claude_score_openai-ubu-q0162-linked-history-discovery-20261015_stdout.json",
+      "quorum_met": false
+    }
+  ],
+  "score_matrix": [
+    {
+      "proposal_id": "openai-ubu-q0162-linked-history-discovery-20261015",
+      "author_provider": "openai",
+      "scorer_provider": "codex",
+      "score": 95,
+      "valid": true,
+      "rationale": "Supplied mechanical validation passes. The patch stays within UBU-Q0162 and the allowed file, preserves its schema and Open status, and adds actionable, revision-pinned history-discovery findings. Link traversal, separate corrected views, conflict handling and privacy-aware acceptance checks directly support existing closure requirements. It accurately presents a documentation advance without claiming implementation completion.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "The added findings are static source evidence; runtime reproduction, downstream caller verification and passing implementation checks remain outstanding."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261016T030927Z-UBU-Q0162/responses/codex_score_openai-ubu-q0162-linked-history-discovery-20261015_response.json",
+        "stderr_path": null
+      }
+    },
+    {
+      "proposal_id": "openai-ubu-q0162-linked-history-discovery-20261015",
+      "author_provider": "openai",
+      "scorer_provider": "claude",
+      "score": null,
+      "valid": false,
+      "rationale": "",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [],
+      "schema_validation": {
+        "valid": false,
+        "message": "claude exited with 1",
+        "response_path": "runs/20261016T030927Z-UBU-Q0162/responses/claude_score_openai-ubu-q0162-linked-history-discovery-20261015_stdout.json",
+        "stderr_path": "runs/20261016T030927Z-UBU-Q0162/responses/claude_score_openai-ubu-q0162-linked-history-discovery-20261015_stderr.txt"
+      }
+    }
+  ],
+  "score_aggregates": [
+    {
+      "proposal_id": "openai-ubu-q0162-linked-history-discovery-20261015",
+      "author_provider": "openai",
+      "cross_score_count": 1,
+      "score_mean": 95.0,
+      "score_spread": 0,
+      "frontier_score_gap": 0,
+      "disagreement_flags": []
+    }
+  ],
+  "cross_score_count": 1,
+  "score_mean": 95.0,
+  "score_spread": 0,
+  "frontier_score_gap": 0,
+  "disagreement_flags": [],
+  "quorum_result": {
+    "valid": true,
+    "human_review_required": false,
+    "selected_proposal_id": "openai-ubu-q0162-linked-history-discovery-20261015",
+    "selected_score": 95.0,
+    "selected_cross_score_count": 1,
+    "blocked_reasons": [],
+    "manual_override": false
+  },
+  "selected_proposal_id": "openai-ubu-q0162-linked-history-discovery-20261015",
+  "automated_selection_valid": true,
+  "human_review_required": false,
+  "artifact_publication_status": "operator_pending",
+  "prompt_size_warning": true,
+  "prompt_context": {
+    "question_ids": [
+      "UBU-Q0162"
+    ],
+    "decision_ids": [
+      "UBU-D0071",
+      "UBU-D0248",
+      "UBU-D0258"
+    ],
+    "sections": {
+      "DESIGN.md": [
+        "12.1",
+        "12.2",
+        "23.1"
+      ],
+      "DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md": [
+        "16",
+        "17"
+      ]
+    },
+    "core_sections": {
+      "DESIGN.md": [
+        "1"
+      ],
+      "DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md": [
+        "4"
+      ]
+    },
+    "missing_refs": {},
+    "context_chars": 104613,
+    "prompt_chars": 111935
+  }
+}
