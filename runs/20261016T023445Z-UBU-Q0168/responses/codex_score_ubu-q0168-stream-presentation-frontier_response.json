@@ -1,0 +1,21 @@
+{
+  "scores": [
+    {
+      "proposal_id": "ubu-q0168-stream-presentation-frontier",
+      "score": 95,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Rejecting incomparable multi-source updates can reduce live coverage; frozen deployment trials must establish acceptable usefulness.",
+        "Controller enforcement and numerical acceptance profiles remain unverified, as explicitly acknowledged."
+      ],
+      "required_fixes": [],
+      "rationale": "Mechanical validation confirms clean application, allowlisted files and preserved question schema. The proposal directly strengthens streamed degradation behavior through observation ordering, presentation-based coverage accounting and targeted race fixtures. It preserves existing qualification gates and correctly leaves UBU-Q0168 Open without claiming measured results."
+    }
+  ],
+  "selected_proposal_id": "ubu-q0168-stream-presentation-frontier",
+  "selection_rationale": "The sole candidate is mechanically valid, focused and auditable, with no required fixes identified. This selection is for cross-score aggregation; empirical qualification and human review remain outstanding."
+}

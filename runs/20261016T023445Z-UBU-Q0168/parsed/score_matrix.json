@@ -1,0 +1,41 @@
+[
+  {
+    "proposal_id": "ubu-q0168-stream-presentation-frontier",
+    "author_provider": "openai",
+    "scorer_provider": "codex",
+    "score": 95,
+    "valid": true,
+    "rationale": "Mechanical validation confirms clean application, allowlisted files and preserved question schema. The proposal directly strengthens streamed degradation behavior through observation ordering, presentation-based coverage accounting and targeted race fixtures. It preserves existing qualification gates and correctly leaves UBU-Q0168 Open without claiming measured results.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [
+      "Rejecting incomparable multi-source updates can reduce live coverage; frozen deployment trials must establish acceptable usefulness.",
+      "Controller enforcement and numerical acceptance profiles remain unverified, as explicitly acknowledged."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20261016T023445Z-UBU-Q0168/responses/codex_score_ubu-q0168-stream-presentation-frontier_response.json",
+      "stderr_path": null
+    }
+  },
+  {
+    "proposal_id": "ubu-q0168-stream-presentation-frontier",
+    "author_provider": "openai",
+    "scorer_provider": "claude",
+    "score": null,
+    "valid": false,
+    "rationale": "",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [],
+    "schema_validation": {
+      "valid": false,
+      "message": "claude exited with 1",
+      "response_path": "runs/20261016T023445Z-UBU-Q0168/responses/claude_score_ubu-q0168-stream-presentation-frontier_stdout.json",
+      "stderr_path": "runs/20261016T023445Z-UBU-Q0168/responses/claude_score_ubu-q0168-stream-presentation-frontier_stderr.txt"
+    }
+  }
+]

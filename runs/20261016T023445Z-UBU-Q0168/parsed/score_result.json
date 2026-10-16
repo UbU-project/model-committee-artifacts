@@ -1,0 +1,21 @@
+{
+  "scores": [
+    {
+      "proposal_id": "ubu-q0168-stream-presentation-frontier",
+      "score": 95,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Controller enforcement and numerical acceptance profiles remain unverified, as explicitly acknowledged.",
+        "Rejecting incomparable multi-source updates can reduce live coverage; frozen deployment trials must establish acceptable usefulness."
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 1 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "ubu-q0168-stream-presentation-frontier",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}
