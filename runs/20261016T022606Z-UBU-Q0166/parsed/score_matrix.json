@@ -1,0 +1,41 @@
+[
+  {
+    "proposal_id": "ubu-q0166-mounted-review-20261015",
+    "author_provider": "openai",
+    "scorer_provider": "codex",
+    "score": 90,
+    "valid": true,
+    "rationale": "Mechanical validation confirms clean application, allowed files and preserved question schema. The patch provides relevant incremental review-path evidence with pinned revisions, explicit controls and carefully bounded conclusions. It correctly keeps Q0166 Open and makes no adapter-qualification or schema-gap claim. Auditability is weakened by omission of the executable harness.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [
+      "The in-memory harness is not included, limiting independent reproduction of the reported DOM and click results.",
+      "Mocked client calls and unresolved carrier specimens leave full qualifier presentation, native admission and authorized exchange unvalidated."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20261016T022606Z-UBU-Q0166/responses/codex_score_ubu-q0166-mounted-review-20261015_response.json",
+      "stderr_path": null
+    }
+  },
+  {
+    "proposal_id": "ubu-q0166-mounted-review-20261015",
+    "author_provider": "openai",
+    "scorer_provider": "claude",
+    "score": null,
+    "valid": false,
+    "rationale": "",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [],
+    "schema_validation": {
+      "valid": false,
+      "message": "claude exited with 1",
+      "response_path": "runs/20261016T022606Z-UBU-Q0166/responses/claude_score_ubu-q0166-mounted-review-20261015_stdout.json",
+      "stderr_path": "runs/20261016T022606Z-UBU-Q0166/responses/claude_score_ubu-q0166-mounted-review-20261015_stderr.txt"
+    }
+  }
+]

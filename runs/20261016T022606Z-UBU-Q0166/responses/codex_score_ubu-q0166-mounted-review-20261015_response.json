@@ -1,0 +1,21 @@
+{
+  "scores": [
+    {
+      "proposal_id": "ubu-q0166-mounted-review-20261015",
+      "score": 90,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "The in-memory harness is not included, limiting independent reproduction of the reported DOM and click results.",
+        "Mocked client calls and unresolved carrier specimens leave full qualifier presentation, native admission and authorized exchange unvalidated."
+      ],
+      "required_fixes": [],
+      "rationale": "Mechanical validation confirms clean application, allowed files and preserved question schema. The patch provides relevant incremental review-path evidence with pinned revisions, explicit controls and carefully bounded conclusions. It correctly keeps Q0166 Open and makes no adapter-qualification or schema-gap claim. Auditability is weakened by omission of the executable harness."
+    }
+  ],
+  "selected_proposal_id": "ubu-q0166-mounted-review-20261015",
+  "selection_rationale": "The proposal is mechanically valid, narrowly scoped and advances the review evidence while preserving the existing enablement gates. This cross-score does not constitute final committee selection."
+}
