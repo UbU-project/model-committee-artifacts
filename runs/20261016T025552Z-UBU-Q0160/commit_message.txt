@@ -1,0 +1,1 @@
+UMC: docs: define mobile GPU timeout and buffer ownership evidence

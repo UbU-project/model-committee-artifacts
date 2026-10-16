@@ -1,0 +1,26 @@
+{
+  "provider_name": "claude",
+  "model_name": "claude-fable-5-1",
+  "argv": [
+    "claude",
+    "--print",
+    "-",
+    "--output-format",
+    "json",
+    "--json-schema",
+    "<json-schema>",
+    "--tools",
+    "",
+    "--model",
+    "claude-fable-5-1"
+  ],
+  "stdout_path": "runs/20261016T025552Z-UBU-Q0160/responses/claude_score_openai-ubu-q0160-in-process-failure-ownership_stdout.json",
+  "stderr_path": "runs/20261016T025552Z-UBU-Q0160/responses/claude_score_openai-ubu-q0160-in-process-failure-ownership_stderr.txt",
+  "exit_status": 1,
+  "timeout_seconds": 3600,
+  "schema_validation": {
+    "valid": false,
+    "message": "claude exited with 1"
+  },
+  "parsed_structured_output_path": "runs/20261016T025552Z-UBU-Q0160/responses/claude_score_openai-ubu-q0160-in-process-failure-ownership_structured_output.json"
+}

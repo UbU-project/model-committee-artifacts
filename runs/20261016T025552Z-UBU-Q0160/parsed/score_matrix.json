@@ -1,0 +1,40 @@
+[
+  {
+    "proposal_id": "openai-ubu-q0160-in-process-failure-ownership",
+    "author_provider": "openai",
+    "scorer_provider": "codex",
+    "score": 91,
+    "valid": true,
+    "rationale": "Mechanical validation confirms clean application, allowed files and preserved question schema. The patch addresses a concrete fallback gap through serialized invalidation, buffer ownership, independent fallback scheduling and residual-work accounting. Its evidence requirements distinguish controller tests from driver recovery. Scope remains limited to mobile planning qualification, with UBU-Q0160 Open and hardware evidence and operator review still required.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [
+      "Physical-device timeout, recovery and resource-release behavior remains unverified; this protocol clarification does not supply the measurements needed for API selection."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20261016T025552Z-UBU-Q0160/responses/codex_score_openai-ubu-q0160-in-process-failure-ownership_response.json",
+      "stderr_path": null
+    }
+  },
+  {
+    "proposal_id": "openai-ubu-q0160-in-process-failure-ownership",
+    "author_provider": "openai",
+    "scorer_provider": "claude",
+    "score": null,
+    "valid": false,
+    "rationale": "",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [],
+    "schema_validation": {
+      "valid": false,
+      "message": "claude exited with 1",
+      "response_path": "runs/20261016T025552Z-UBU-Q0160/responses/claude_score_openai-ubu-q0160-in-process-failure-ownership_stdout.json",
+      "stderr_path": "runs/20261016T025552Z-UBU-Q0160/responses/claude_score_openai-ubu-q0160-in-process-failure-ownership_stderr.txt"
+    }
+  }
+]

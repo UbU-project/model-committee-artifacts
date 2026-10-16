@@ -1,0 +1,20 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-ubu-q0160-in-process-failure-ownership",
+      "score": 91,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Physical-device timeout, recovery and resource-release behavior remains unverified; this protocol clarification does not supply the measurements needed for API selection."
+      ],
+      "required_fixes": [],
+      "rationale": "Mechanical validation confirms clean application, allowed files and preserved question schema. The patch addresses a concrete fallback gap through serialized invalidation, buffer ownership, independent fallback scheduling and residual-work accounting. Its evidence requirements distinguish controller tests from driver recovery. Scope remains limited to mobile planning qualification, with UBU-Q0160 Open and hardware evidence and operator review still required."
+    }
+  ],
+  "selected_proposal_id": "openai-ubu-q0160-in-process-failure-ownership",
+  "selection_rationale": "The sole candidate is mechanically valid, auditable and useful prerequisite work. This cross-score supports the clarification without implying API selection or hardware qualification."
+}
