@@ -1,0 +1,11 @@
+[
+  {
+    "proposal_id": "openai-ubu-q0166-client-numeric-fidelity-20261015",
+    "author_provider": "openai",
+    "cross_score_count": 1,
+    "score_mean": 88.0,
+    "score_spread": 0,
+    "frontier_score_gap": 0,
+    "disagreement_flags": []
+  }
+]

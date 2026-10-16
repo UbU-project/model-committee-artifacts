@@ -1,0 +1,21 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-ubu-q0166-client-numeric-fidelity-20261015",
+      "score": 88,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Run-only harness and result hashes lack accompanying artifacts, limiting independent reproduction.",
+        "Synthetic carriers with incomplete qualifications do not establish preservation for a permitted mapping or numeric domain."
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 1 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "openai-ubu-q0166-client-numeric-fidelity-20261015",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}

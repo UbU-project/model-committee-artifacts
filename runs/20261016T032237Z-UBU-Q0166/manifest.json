@@ -1,0 +1,185 @@
+{
+  "schema_version": "0.4",
+  "run_id": "20261016T032237Z-UBU-Q0166",
+  "created_at_utc": "2026-10-16T03:22:37Z",
+  "repo_path": "../ubu-design",
+  "base_commit": "3d271b324ecf23946dd559281bc3059eceda6e9b",
+  "selected_question_id": "UBU-Q0166",
+  "phase": "work-select",
+  "config_path": "config/models.json",
+  "status": "selected",
+  "commands": [
+    "model-committee run-loop"
+  ],
+  "providers_attempted": [
+    "codex",
+    "claude"
+  ],
+  "providers_succeeded": [
+    "codex"
+  ],
+  "providers_failed": [
+    "claude: ProviderError: claude exited with 1"
+  ],
+  "provider_attempts": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "openai-ubu-q0166-client-numeric-fidelity-20261015",
+      "response_path": "runs/20261016T032237Z-UBU-Q0166/responses/codex_score_openai-ubu-q0166-client-numeric-fidelity-20261015_response.json",
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "openai-ubu-q0166-client-numeric-fidelity-20261015",
+      "response_path": "runs/20261016T032237Z-UBU-Q0166/responses/claude_score_openai-ubu-q0166-client-numeric-fidelity-20261015_stdout.json",
+      "stderr_path": null
+    }
+  ],
+  "provider_successes": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20261016T032237Z-UBU-Q0166/parsed/codex_work_proposal.json"
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "openai-ubu-q0166-client-numeric-fidelity-20261015",
+      "response_path": "runs/20261016T032237Z-UBU-Q0166/responses/codex_score_openai-ubu-q0166-client-numeric-fidelity-20261015_response.json",
+      "parsed_path": "runs/20261016T032237Z-UBU-Q0166/parsed/codex_score_openai-ubu-q0166-client-numeric-fidelity-20261015_result.json"
+    }
+  ],
+  "provider_failures": [
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "failure_class": "ProviderError",
+      "message": "claude exited with 1",
+      "timeout_seconds": 3600,
+      "exit_status": 1,
+      "stderr_path": "runs/20261016T032237Z-UBU-Q0166/responses/claude_score_openai-ubu-q0166-client-numeric-fidelity-20261015_stderr.txt",
+      "response_path": "runs/20261016T032237Z-UBU-Q0166/responses/claude_score_openai-ubu-q0166-client-numeric-fidelity-20261015_stdout.json",
+      "quorum_met": false
+    }
+  ],
+  "score_matrix": [
+    {
+      "proposal_id": "openai-ubu-q0166-client-numeric-fidelity-20261015",
+      "author_provider": "openai",
+      "scorer_provider": "codex",
+      "score": 88,
+      "valid": true,
+      "rationale": "Provides relevant incremental fidelity evidence and identifies how shared decoding can mask value loss. Mechanical validation passes, changes stay within allowed files, and question metadata remains intact. The proposal carefully bounds its claims, preserves the full enablement gate and Open status, and makes no unsupported schema-gap or adapter-approval claim.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "Run-only harness and result hashes lack accompanying artifacts, limiting independent reproduction.",
+        "Synthetic carriers with incomplete qualifications do not establish preservation for a permitted mapping or numeric domain."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261016T032237Z-UBU-Q0166/responses/codex_score_openai-ubu-q0166-client-numeric-fidelity-20261015_response.json",
+        "stderr_path": null
+      }
+    },
+    {
+      "proposal_id": "openai-ubu-q0166-client-numeric-fidelity-20261015",
+      "author_provider": "openai",
+      "scorer_provider": "claude",
+      "score": null,
+      "valid": false,
+      "rationale": "",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [],
+      "schema_validation": {
+        "valid": false,
+        "message": "claude exited with 1",
+        "response_path": "runs/20261016T032237Z-UBU-Q0166/responses/claude_score_openai-ubu-q0166-client-numeric-fidelity-20261015_stdout.json",
+        "stderr_path": "runs/20261016T032237Z-UBU-Q0166/responses/claude_score_openai-ubu-q0166-client-numeric-fidelity-20261015_stderr.txt"
+      }
+    }
+  ],
+  "score_aggregates": [
+    {
+      "proposal_id": "openai-ubu-q0166-client-numeric-fidelity-20261015",
+      "author_provider": "openai",
+      "cross_score_count": 1,
+      "score_mean": 88.0,
+      "score_spread": 0,
+      "frontier_score_gap": 0,
+      "disagreement_flags": []
+    }
+  ],
+  "cross_score_count": 1,
+  "score_mean": 88.0,
+  "score_spread": 0,
+  "frontier_score_gap": 0,
+  "disagreement_flags": [],
+  "quorum_result": {
+    "valid": true,
+    "human_review_required": false,
+    "selected_proposal_id": "openai-ubu-q0166-client-numeric-fidelity-20261015",
+    "selected_score": 88.0,
+    "selected_cross_score_count": 1,
+    "blocked_reasons": [],
+    "manual_override": false
+  },
+  "selected_proposal_id": "openai-ubu-q0166-client-numeric-fidelity-20261015",
+  "automated_selection_valid": true,
+  "human_review_required": false,
+  "artifact_publication_status": "operator_pending",
+  "prompt_size_warning": true,
+  "prompt_context": {
+    "question_ids": [
+      "UBU-Q0166"
+    ],
+    "decision_ids": [
+      "UBU-D0293",
+      "UBU-D0320",
+      "UBU-D0321",
+      "UBU-D0323",
+      "UBU-D0334",
+      "UBU-D0360",
+      "UBU-D0366",
+      "UBU-D0373"
+    ],
+    "sections": {
+      "DESIGN.md": [
+        "11.2",
+        "21.1"
+      ]
+    },
+    "core_sections": {
+      "DESIGN.md": [
+        "1"
+      ],
+      "DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md": [
+        "4"
+      ]
+    },
+    "missing_refs": {},
+    "context_chars": 271183,
+    "prompt_chars": 278486
+  }
+}
