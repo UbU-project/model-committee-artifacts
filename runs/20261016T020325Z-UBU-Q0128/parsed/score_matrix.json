@@ -1,0 +1,41 @@
+[
+  {
+    "proposal_id": "UBU-Q0128-openai-stt-finalization-20261015",
+    "author_provider": "openai",
+    "scorer_provider": "codex",
+    "score": 95,
+    "valid": true,
+    "rationale": "Mechanical validation confirms clean application, allowed files and schema preservation. The patch directly addresses subquestion 9 through bounded utterance completion, immutable evidence, clarification separation and callback-race handling. It preserves existing permissions, schemas, retention boundaries and turn limits, keeps UBU-Q0128 Open, and clearly limits its claims. No blocking fixes identified.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [
+      "Sealing establishes transcript stability, not recognition correctness; adapter completion and quality policies still require qualification.",
+      "The controller fixtures are specified requirements, not executed validation."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20261016T020325Z-UBU-Q0128/responses/codex_score_ubu-q0128-openai-stt-finalization-20261015_response.json",
+      "stderr_path": null
+    }
+  },
+  {
+    "proposal_id": "UBU-Q0128-openai-stt-finalization-20261015",
+    "author_provider": "openai",
+    "scorer_provider": "claude",
+    "score": null,
+    "valid": false,
+    "rationale": "",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [],
+    "schema_validation": {
+      "valid": false,
+      "message": "claude exited with 1",
+      "response_path": "runs/20261016T020325Z-UBU-Q0128/responses/claude_score_ubu-q0128-openai-stt-finalization-20261015_stdout.json",
+      "stderr_path": "runs/20261016T020325Z-UBU-Q0128/responses/claude_score_ubu-q0128-openai-stt-finalization-20261015_stderr.txt"
+    }
+  }
+]

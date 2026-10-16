@@ -1,0 +1,21 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0128-openai-stt-finalization-20261015",
+      "score": 95,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Sealing establishes transcript stability, not recognition correctness; adapter completion and quality policies still require qualification.",
+        "The controller fixtures are specified requirements, not executed validation."
+      ],
+      "required_fixes": [],
+      "rationale": "Mechanical validation confirms clean application, allowed files and schema preservation. The patch directly addresses subquestion 9 through bounded utterance completion, immutable evidence, clarification separation and callback-race handling. It preserves existing permissions, schemas, retention boundaries and turn limits, keeps UBU-Q0128 Open, and clearly limits its claims. No blocking fixes identified."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0128-openai-stt-finalization-20261015",
+  "selection_rationale": "The sole candidate is mechanically valid, narrowly scoped and auditable, and closes a concrete input-finalization gap without expanding action authority. This cross-score supports local aggregation; final selection remains with model-committee."
+}
