@@ -1,0 +1,27 @@
+{
+  "scores": [
+    {
+      "proposal_id": "umc-ubu-q0162-correction-kind-shared-resolver-2026-10-18",
+      "score": 67,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "The duration rule says a revocation withdraws the observation, while the general rule says revoking a correction restores the earlier interpretation. These yield different evidence for the same history.",
+        "Applying the last replacement's named fields over the original does not clearly specify whether earlier partial corrections survive.",
+        "Correction equivalence compares kind and corrected values without explicitly accounting for linked replacement records, potentially collapsing distinct replacements.",
+        "Conflict settlement permits targeting competing entries, but the proposed singular correction_of contract does not define how such a resolving correction identifies multiple branches."
+      ],
+      "required_fixes": [
+        "Define target-sensitive revocation semantics and make duration consumers use the resolved assertion. Revoking an annotation or correction must not automatically withdraw the underlying observation.",
+        "Specify partial-replacement composition and nested revocation behavior with concrete expected-value fixtures.",
+        "Include replacement-record links in semantic equivalence and define the admissible representation and resolution behavior for competing branches."
+      ],
+      "rationale": "Mechanical validation passes, the patch stays within UBU-Q0162, and it preserves Open status and the distinction between required checks and passing evidence. The payload contract and shared resolver advance the documentation handoff, but their proposed semantics contain ambiguities and a duration-specific contradiction that could produce divergent corrected views. These need correction before adopting the specification."
+    }
+  ],
+  "selected_proposal_id": "umc-ubu-q0162-correction-kind-shared-resolver-2026-10-18",
+  "selection_rationale": "The sole candidate passes mechanical validation and provides relevant documentation progress. Its cross-score reflects required semantic fixes; it does not establish question closure or implementation conformance."
+}

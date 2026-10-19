@@ -1,0 +1,20 @@
+[
+  {
+    "proposal_id": "UBU-Q0162-completion-consumer-audit",
+    "author_provider": "openai",
+    "cross_score_count": 2,
+    "score_mean": 86.0,
+    "score_spread": 20,
+    "frontier_score_gap": 20,
+    "disagreement_flags": []
+  },
+  {
+    "proposal_id": "umc-ubu-q0162-correction-kind-shared-resolver-2026-10-18",
+    "author_provider": "anthropic",
+    "cross_score_count": 2,
+    "score_mean": 70.5,
+    "score_spread": 7,
+    "frontier_score_gap": 7,
+    "disagreement_flags": []
+  }
+]

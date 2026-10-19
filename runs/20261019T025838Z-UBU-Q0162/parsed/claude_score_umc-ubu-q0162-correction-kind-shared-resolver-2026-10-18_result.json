@@ -1,0 +1,28 @@
+{
+  "scores": [
+    {
+      "proposal_id": "umc-ubu-q0162-correction-kind-shared-resolver-2026-10-18",
+      "score": 74,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "none",
+      "risks": [
+        "The patch was authored without reading OPEN_QUESTIONS.md, DESIGN.md or DECISIONS.md. Its claims that UBU-D0071 leaves event-specific payload schemas to refinement, that DESIGN.md \u00a712.1 already distinguishes replacement from revocation, and that UBU-D0248 forbids timestamp-only choice are plausible but unverified in this scoring session, which also had no file access.",
+        "The resolver paragraph names a `conflict_resolution` record as a way to settle competing corrections. That identifier does not appear anywhere in the UBU-Q0162 text; if it is not an existing event type under UBU-D0248, the question would now reference a nonexistent mechanism.",
+        "Introducing `correction_kind` with enumerated values and restricting `log_annotation_added` payloads to notes/reason/confidence/context is a data-model schema decision. Recording it only inside a question's remediation text, with no decision id, creates a shadow specification that DESIGN.md and DECISIONS.md do not carry; the question is marked Human approval required, so a reviewer must decide whether to promote it.",
+        "The restriction that annotations carry no old/new values may conflict with UBU-D0071 if that decision lists optional old/new values for Log entries generally rather than for corrections only.",
+        "The UBU-Q0162 block is already very long and this adds roughly two dense paragraphs of further required checks without any new revision-pinned audit finding or reproduction evidence. The outstanding closure items (reproduction, filed ticket, passing checks) are unchanged, so the increment refines the spec rather than advancing closure.",
+        "'Names each replaced field' assumes a flat field model for an arbitrary JSON payload; nested or array payloads leave the replacement semantics underspecified."
+      ],
+      "required_fixes": [
+        "Verify against DESIGN.md \u00a712.1, UBU-D0071 and UBU-D0248 that the cited permissions and distinctions exist as described, and adjust wording if they do not.",
+        "Confirm `conflict_resolution` is an existing admitted record type under UBU-D0248, or reword to 'the ordinary UBU-D0248 conflict-resolution record' without naming a specific event type."
+      ],
+      "rationale": "Mechanical validation reports the patch applies, touches only OPEN_QUESTIONS.md, and passes the question schema; Status stays Open and the metadata line is untouched. The two inserted paragraphs sit inside the existing '### Source audit and remediation handoff' section and the Resolution line is updated consistently. The content is directly responsive: the accumulated remediation text already uses 'competing', 'uncontested', 'withdrawal', 'replacement' and 'friction-only correction' without defining them, and the ubu-store and ubu-orchestrator handoffs could diverge without a shared resolver contract. The proposal supplies internally consistent semantics (chain resolution, revocation-of-correction reverting to the prior uncontested member, identical competing corrections collapsing, differing ones marked contested and never timestamp-chosen, duration evidence changed only by replacements of duration-bearing fields) and keeps the no-behavior-change, required-checks-not-passing-results framing. It is honest that no source was read and that git apply --check was not run. Points are withheld because the design-authority claims are unverified, a possibly nonexistent `conflict_resolution` record is named, a schema contract is being recorded in question text rather than a decision, and the already oversized question grows further without new audit or reproduction evidence. Author identity was not used as evidence; the prompt lists the scoring provider as claude and the authoring provider as anthropic, so the proposal was scored as instructed."
+    }
+  ],
+  "selected_proposal_id": "umc-ubu-q0162-correction-kind-shared-resolver-2026-10-18",
+  "selection_rationale": "Only one proposal was submitted and it passed mechanical validation. It is a minimal, auditable documentation change confined to the UBU-Q0162 block, preserves the question schema and Open status, and fills a genuine specification gap in the existing remediation handoff. Human review remains required to verify the cited design-authority claims and to decide whether the `correction_kind` payload contract should be promoted to a DESIGN.md \u00a712.1 clause with a decision id."
+}

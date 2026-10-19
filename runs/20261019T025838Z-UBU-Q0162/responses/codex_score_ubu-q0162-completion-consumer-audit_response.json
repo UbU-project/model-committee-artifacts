@@ -1,0 +1,20 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0162-completion-consumer-audit",
+      "score": 96,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Static audit evidence does not establish runtime behavior; reproduction, a filed remediation ticket and passing implementation checks remain outstanding."
+      ],
+      "required_fixes": [],
+      "rationale": "The documentation patch adds specific completion consumers and actionable regression checks, including the critical distinction between corrected assertions and already admitted Task effects. It stays within UBU-Q0162 and the allowed file, preserves metadata and Open status, and clearly distinguishes required checks from passing evidence. Supplied mechanical validation confirms clean application and schema preservation."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0162-completion-consumer-audit",
+  "selection_rationale": "The sole candidate is mechanically valid, focused and auditable, and strengthens the remediation handoff without claiming implementation closure."
+}

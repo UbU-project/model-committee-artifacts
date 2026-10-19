@@ -1,0 +1,26 @@
+{
+  "provider_name": "claude",
+  "model_name": "claude-fable-5-1",
+  "argv": [
+    "claude",
+    "--print",
+    "-",
+    "--output-format",
+    "json",
+    "--json-schema",
+    "<json-schema>",
+    "--tools",
+    "",
+    "--model",
+    "claude-fable-5-1"
+  ],
+  "stdout_path": "runs/20261019T025838Z-UBU-Q0162/responses/claude_score_umc-ubu-q0162-correction-kind-shared-resolver-2026-10-18_stdout.json",
+  "stderr_path": "runs/20261019T025838Z-UBU-Q0162/responses/claude_score_umc-ubu-q0162-correction-kind-shared-resolver-2026-10-18_stderr.txt",
+  "exit_status": 0,
+  "timeout_seconds": 3600,
+  "schema_validation": {
+    "valid": true,
+    "message": null
+  },
+  "parsed_structured_output_path": "runs/20261019T025838Z-UBU-Q0162/responses/claude_score_umc-ubu-q0162-correction-kind-shared-resolver-2026-10-18_structured_output.json"
+}

@@ -1,0 +1,23 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0162-completion-consumer-audit",
+      "score": 76,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "none",
+      "risks": [
+        "The cited ubu-orchestrator symbols (calendar_interaction::latest_completion, report_service::time_by_category, log_service::reopen_completion/reopen_calendar_completion/record_task_action_with_calendar) and test files (tests/reports.rs, tests/calendar_interaction.rs, tests/task_reopen.rs fixture name) cannot be verified from the model-committee checkout; the proposal relies on its own validation note for existence at 9fddef16.",
+        "The question block keeps accumulating consumer-specific audit paragraphs; each addition widens the single proposed remediation ticket and raises closure burden without advancing the still-outstanding reproduction, filed ticket or passing checks.",
+        "The patch index line uses a 0000000 post-image blob hash, which is unusual for a modification; mechanical validation reports it applies, but it suggests the diff was hand-assembled rather than git-generated.",
+        "The withdraw-then-recomplete regression requirement makes a normative choice (effects must not re-apply after a withdrawn completion) that is consistent with the existing 'correction does not undo Task effects' rule but is stated as a required check without a linked design decision."
+      ],
+      "required_fixes": [],
+      "rationale": "Patch applies, touches only the UBU-Q0162 block in OPEN_QUESTIONS.md, keeps Status: Open and the single-line metadata intact, and passes schema validation. The content is directly responsive to the question's own instruction to identify callers that treat raw history as current truth: it adds a dated static audit of a completion reader and its report/reopen/effect-suppression callers, flags a concrete repair hazard (hiding a withdrawn completion could permit a second effect application), extends the remediation handoff and required checks in the established style, and updates the Current direction and Resolution summaries consistently. It correctly marks everything as static evidence and keeps the question open. Score is held below the high range because the orchestrator-side claims are unverifiable here, the diff provenance looks hand-edited, and the proposal grows an already large ticket rather than moving toward the closure evidence the question actually needs."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0162-completion-consumer-audit",
+  "selection_rationale": "Only one proposal was offered and it passed mechanical validation, applies cleanly, preserves the question schema, changes only the allowed file and block, and extends the audit in a way the question explicitly calls for (identifying raw-history consumers and preserving admitted effect outcomes). It is selected with moderate confidence; the main caveats are unverifiable external-repo citations and continued growth of the remediation scope."
+}

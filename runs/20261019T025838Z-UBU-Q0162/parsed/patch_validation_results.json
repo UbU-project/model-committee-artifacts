@@ -1,0 +1,32 @@
+[
+  {
+    "proposal_id": "umc-ubu-q0162-correction-kind-shared-resolver-2026-10-18",
+    "patch_applies": true,
+    "allowlist_passed": true,
+    "changed_files": [
+      "OPEN_QUESTIONS.md"
+    ],
+    "question_schema_passed": true,
+    "error": null,
+    "normalized_patch": null,
+    "warnings": [],
+    "ordinary_error": null,
+    "recount_error": null,
+    "normalization_error": null
+  },
+  {
+    "proposal_id": "UBU-Q0162-completion-consumer-audit",
+    "patch_applies": true,
+    "allowlist_passed": true,
+    "changed_files": [
+      "OPEN_QUESTIONS.md"
+    ],
+    "question_schema_passed": true,
+    "error": null,
+    "normalized_patch": null,
+    "warnings": [],
+    "ordinary_error": null,
+    "recount_error": null,
+    "normalization_error": null
+  }
+]
