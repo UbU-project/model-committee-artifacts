@@ -1,0 +1,21 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0163-openai-unexpanded-parent-regression-20261019",
+      "score": 90,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "The regression is retained in documentation rather than an executable repository test.",
+        "Parser evidence does not establish capture, manifest, durable replay, backend occupancy or blocker-retirement qualification."
+      ],
+      "required_fixes": [],
+      "rationale": "Mechanical validation confirms an applicable, allowlisted patch with preserved question metadata. It advances the existing U3 work with a reproducible, revision-pinned failing parser check and a bounded repair handoff. It accurately keeps the question open and distinguishes passing existing tests from incomplete acceptance gates. The contribution supplies diagnostic evidence rather than the implementation repair."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0163-openai-unexpanded-parent-regression-20261019",
+  "selection_rationale": "The sole candidate is mechanically valid, narrowly scoped and auditable, identifying a concrete implementation gap without overstating readiness to remove the workaround."
+}

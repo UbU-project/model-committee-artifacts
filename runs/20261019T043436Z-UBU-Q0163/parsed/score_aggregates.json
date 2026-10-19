@@ -1,0 +1,20 @@
+[
+  {
+    "proposal_id": "UBU-Q0163-openai-unexpanded-parent-regression-20261019",
+    "author_provider": "openai",
+    "cross_score_count": 2,
+    "score_mean": 87.0,
+    "score_spread": 6,
+    "frontier_score_gap": 6,
+    "disagreement_flags": []
+  },
+  {
+    "proposal_id": "umc-ubu-q0163-retirement-closure-ledger-2026-10-19",
+    "author_provider": "anthropic",
+    "cross_score_count": 2,
+    "score_mean": 75.0,
+    "score_spread": 6,
+    "frontier_score_gap": 6,
+    "disagreement_flags": []
+  }
+]

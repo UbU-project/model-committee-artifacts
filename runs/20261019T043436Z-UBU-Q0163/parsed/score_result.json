@@ -1,0 +1,53 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0163-openai-unexpanded-parent-regression-20261019",
+      "score": 87,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Google expanded reads with singleEvents=true should not deliver recurrence parents, so the regression guards the question's own defensive U3 requirement rather than an observed production delivery; the text could be read as overstating practical severity if that context is not kept in view.",
+        "Parser evidence does not establish capture, manifest, durable replay, backend occupancy or blocker-retirement qualification.",
+        "The Resolution wording change from 'none supplies passing results' to 'none supplies a completed acceptance slice' is a mild and unneeded softening; the original statement remains true because the only executed check failed.",
+        "The executed-test claims (34 passing existing tests, the failing regression, rustc/cargo versions, SHA-256 pins) cannot be verified by the scorer from this prompt; the committee is trusting the author's report that the probe compiled against the pinned revision's parse_event_list signature and DesiredEvent.external_id field.",
+        "The regression is retained in documentation rather than an executable repository test.",
+        "The regression source lives in OPEN_QUESTIONS.md rather than the orchestrator repo, so drift between the documented probe and the pinned revision is possible until the handoff adds it to tests/calendar_wire.rs."
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    },
+    {
+      "proposal_id": "umc-ubu-q0163-retirement-closure-ledger-2026-10-19",
+      "score": 75,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": false,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Adds roughly 19 lines to an already very large question block, increasing prompt-size pressure for later committee passes.",
+        "Content is largely a tabular restatement of what the existing Resolution already asserts, so the marginal value depends on whether future passes actually consult and update the ledger rather than appending more slices.",
+        "Introduces process prescriptions not plainly sourced from UBU-D0318: that the approved handoff must be recorded as a new decision before closure, that manifest-retained residual blockers are a permitted end state, and that entries obey 'current Compartment policy'. If 'Compartment policy' is not a defined repo term, the reference is dangling.",
+        "Requiring a recorded failing result before any further specification, and a separate bounded slice for every additional series-edit kind, introduces process constraints beyond a neutral evidence index.",
+        "Scoring provider 'claude' and authoring provider 'anthropic' are distinct ids in this harness but the same vendor; the aggregator should weigh this score accordingly.",
+        "The blanket requirement that every row pass does not explicitly accommodate requirements outside the reviewed scope or documented non-applicable cases.",
+        "The ledger provides traceability but supplies no implementation, passing evidence, ticket filing or operator approval.",
+        "The ledger rows are the author's paraphrase of UBU-D0318 evidence bullets; the author had no file-read access (per validation notes) and did not verify them against DESIGN.md \u00a71 at the base commit, so a row could misstate or omit a real D0318 requirement and give a false sense of complete coverage."
+      ],
+      "required_fixes": [
+        "Confirm 'Compartment policy' is an established term in the repo; otherwise cite the actual data-handling policy or drop the clause.",
+        "Consider trimming the ledger prose to limit further growth of the UBU-Q0163 block.",
+        "Either cite the existing rule requiring the approved handoff to be recorded as a decision, or soften that sentence so the ledger does not add a closure requirement beyond UBU-D0318.",
+        "Make closure depend on passing applicable requirements for the approved scope, with explicit non-applicability and residual-protection records for remaining coverage.",
+        "Preserve the existing implementation-evidence gap rule; remove the stronger failing-result prerequisite and mandatory additional-slice requirement unless separately justified and approved.",
+        "Verify each ledger row against the actual UBU-D0318 evidence bullets in DESIGN.md \u00a71 at d11993a and adjust wording or add missing rows so the table is a faithful index rather than a paraphrase."
+      ],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0163-openai-unexpanded-parent-regression-20261019",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}

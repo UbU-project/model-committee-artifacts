@@ -1,0 +1,29 @@
+{
+  "scores": [
+    {
+      "proposal_id": "umc-ubu-q0163-retirement-closure-ledger-2026-10-19",
+      "score": 72,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "none",
+      "risks": [
+        "The ledger rows are the author's paraphrase of UBU-D0318 evidence bullets; the author had no file-read access (per validation notes) and did not verify them against DESIGN.md \u00a71 at the base commit, so a row could misstate or omit a real D0318 requirement and give a false sense of complete coverage.",
+        "Adds roughly 19 lines to an already very large question block, increasing prompt-size pressure for later committee passes.",
+        "Introduces process prescriptions not plainly sourced from UBU-D0318: that the approved handoff must be recorded as a new decision before closure, that manifest-retained residual blockers are a permitted end state, and that entries obey 'current Compartment policy'. If 'Compartment policy' is not a defined repo term, the reference is dangling.",
+        "Content is largely a tabular restatement of what the existing Resolution already asserts, so the marginal value depends on whether future passes actually consult and update the ledger rather than appending more slices.",
+        "Scoring provider 'claude' and authoring provider 'anthropic' are distinct ids in this harness but the same vendor; the aggregator should weigh this score accordingly."
+      ],
+      "required_fixes": [
+        "Verify each ledger row against the actual UBU-D0318 evidence bullets in DESIGN.md \u00a71 at d11993a and adjust wording or add missing rows so the table is a faithful index rather than a paraphrase.",
+        "Confirm 'Compartment policy' is an established term in the repo; otherwise cite the actual data-handling policy or drop the clause.",
+        "Either cite the existing rule requiring the approved handoff to be recorded as a decision, or soften that sentence so the ledger does not add a closure requirement beyond UBU-D0318.",
+        "Consider trimming the ledger prose to limit further growth of the UBU-Q0163 block."
+      ],
+      "rationale": "Mechanical validation confirms the patch applies, touches only OPEN_QUESTIONS.md, and preserves the single-line metadata; Status stays Open and no ids are allocated. Given that the real work (ubu-orchestrator implementation and operator records) lives outside this repo, a compact closure index that halts slice accretion and makes the closure condition explicit is a reasonable, minimal documentation contribution and is directly responsive to the question's own instruction to add specification only where a result exposes a gap. The main weaknesses are unverified fidelity of the ledger rows to UBU-D0318, a few process assertions that go slightly beyond indexing, an unverified policy term, and further growth of an oversized block. No decomposition is attempted even though the question now bundles four proposed tickets; that is defensible but a missed opportunity."
+    }
+  ],
+  "selected_proposal_id": "umc-ubu-q0163-retirement-closure-ledger-2026-10-19",
+  "selection_rationale": "Only one proposal was submitted and it passed mechanical validation (applies cleanly, allowlist and question schema pass). It is minimal, auditable, schema-preserving and responsive to the question's stated direction, so it is selectable. The required fixes above (verify ledger rows against UBU-D0318 in DESIGN.md, confirm the 'Compartment policy' term, and avoid adding closure requirements beyond UBU-D0318) should be applied before merge. Note that the scoring and authoring provider ids differ but share a vendor; the aggregator should treat this cross-score with that in mind."
+}

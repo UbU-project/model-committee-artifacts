@@ -1,0 +1,23 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0163-openai-unexpanded-parent-regression-20261019",
+      "score": 84,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "none",
+      "risks": [
+        "The executed-test claims (34 passing existing tests, the failing regression, rustc/cargo versions, SHA-256 pins) cannot be verified by the scorer from this prompt; the committee is trusting the author's report that the probe compiled against the pinned revision's parse_event_list signature and DesiredEvent.external_id field.",
+        "Google expanded reads with singleEvents=true should not deliver recurrence parents, so the regression guards the question's own defensive U3 requirement rather than an observed production delivery; the text could be read as overstating practical severity if that context is not kept in view.",
+        "The Resolution wording change from 'none supplies passing results' to 'none supplies a completed acceptance slice' is a mild and unneeded softening; the original statement remains true because the only executed check failed.",
+        "The regression source lives in OPEN_QUESTIONS.md rather than the orchestrator repo, so drift between the documented probe and the pinned revision is possible until the handoff adds it to tests/calendar_wire.rs."
+      ],
+      "required_fixes": [],
+      "rationale": "Patch applies cleanly, touches only the Q0163 section of OPEN_QUESTIONS.md, and keeps Status: Open with unchanged metadata. It follows the question's own rule to add specification only where an implementation result exposes a gap: it records a revision-pinned, reproducible failing regression showing the production wire parser admits a timed recurrence parent as a live event with no diagnostic, which directly contradicts the existing U3 row, and then specifies a bounded repair inside the already-proposed unsupported-input ticket. The scope limits are stated honestly (no Google delivery, admission, replay, backend or handoff result; no blocker removed). Deductions are for unverifiable execution claims, the slightly redundant three-place edit including an unnecessary Resolution rewording, and the low practical severity of a case that singleEvents=true should already exclude."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0163-openai-unexpanded-parent-regression-20261019",
+  "selection_rationale": "Only one proposal was submitted and it passed mechanical validation. It is minimal, auditable and directly responsive: it converts a static U3 requirement into a concrete, reproducible failing regression with pinned revision, command and digests, and bounds the repair without claiming any UBU-D0318 gate passed or retiring the workaround. No schema or scope violations were found, so it is selected with the noted caveat that its execution claims are reported rather than independently verified here."
+}

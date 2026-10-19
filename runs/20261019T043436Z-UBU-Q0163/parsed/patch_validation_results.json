@@ -1,0 +1,32 @@
+[
+  {
+    "proposal_id": "umc-ubu-q0163-retirement-closure-ledger-2026-10-19",
+    "patch_applies": true,
+    "allowlist_passed": true,
+    "changed_files": [
+      "OPEN_QUESTIONS.md"
+    ],
+    "question_schema_passed": true,
+    "error": null,
+    "normalized_patch": null,
+    "warnings": [],
+    "ordinary_error": null,
+    "recount_error": null,
+    "normalization_error": null
+  },
+  {
+    "proposal_id": "UBU-Q0163-openai-unexpanded-parent-regression-20261019",
+    "patch_applies": true,
+    "allowlist_passed": true,
+    "changed_files": [
+      "OPEN_QUESTIONS.md"
+    ],
+    "question_schema_passed": true,
+    "error": null,
+    "normalized_patch": null,
+    "warnings": [],
+    "ordinary_error": null,
+    "recount_error": null,
+    "normalization_error": null
+  }
+]

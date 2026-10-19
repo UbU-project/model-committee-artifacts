@@ -1,0 +1,25 @@
+{
+  "scores": [
+    {
+      "proposal_id": "umc-ubu-q0163-retirement-closure-ledger-2026-10-19",
+      "score": 78,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": false,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "The blanket requirement that every row pass does not explicitly accommodate requirements outside the reviewed scope or documented non-applicable cases.",
+        "Requiring a recorded failing result before any further specification, and a separate bounded slice for every additional series-edit kind, introduces process constraints beyond a neutral evidence index.",
+        "The ledger provides traceability but supplies no implementation, passing evidence, ticket filing or operator approval."
+      ],
+      "required_fixes": [
+        "Make closure depend on passing applicable requirements for the approved scope, with explicit non-applicability and residual-protection records for remaining coverage.",
+        "Preserve the existing implementation-evidence gap rule; remove the stronger failing-result prerequisite and mandatory additional-slice requirement unless separately justified and approved."
+      ],
+      "rationale": "Mechanical validation confirms clean application, allowed-file compliance and preserved question schema. The ledger usefully connects existing requirements to evidence and accurately keeps the question open. However, its new closure and specification constraints exceed its stated indexing purpose and need correction."
+    }
+  ],
+  "selected_proposal_id": "umc-ubu-q0163-retirement-closure-ledger-2026-10-19",
+  "selection_rationale": "The sole candidate is mechanically valid and provides useful traceability, with scope and closure-policy fixes remaining. This is a cross-score preference, not final approval."
+}
