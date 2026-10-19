@@ -1,0 +1,26 @@
+{
+  "scores": [
+    {
+      "proposal_id": "umc-ubu-q0162-declared-correction-scope-20261019",
+      "score": 70,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": false,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Mandatory target old values conflict with DESIGN.md \u00a717.1's allowance to omit sensitive values and could require retaining or reconstructing purged content.",
+        "The universal replacement format is not reconciled with DESIGN.md \u00a717.8.1's existing event_payload.friction representation, including null for withdrawal. General note-only withdrawal also remains ambiguous.",
+        "Consumers requiring declared scope have no specified treatment for previously admitted corrections lacking that declaration."
+      ],
+      "required_fixes": [
+        "Make old/new value requirements policy-aware. Validate scope using permitted schema or metadata; insufficient retained evidence must produce an incomplete/review outcome without reconstructing removed content.",
+        "Preserve UBU-D0357 friction annotation/correction semantics and explicitly define field-only withdrawal separately from whole-assertion withdrawal. Add compatible admission and corrected-view fixtures.",
+        "Define handling of legacy unscoped corrections, imports and exact replays without modifying admitted history or receipts."
+      ],
+      "rationale": "The patch provides useful documentation-level progress by declaring correction scope, naming shared-boundary validation and adding required checks. Mechanical validation passes, changes remain in the allowed question block, and the question correctly stays Open without claiming implementation evidence. However, its mandatory encoding requirements exceed the cited existing contract and need reconciliation with privacy, friction and legacy-history rules."
+    }
+  ],
+  "selected_proposal_id": "umc-ubu-q0162-declared-correction-scope-20261019",
+  "selection_rationale": "The sole mechanically valid proposal is referenced as required by the scoring schema. This cross-score identifies required fixes and does not constitute final acceptance."
+}

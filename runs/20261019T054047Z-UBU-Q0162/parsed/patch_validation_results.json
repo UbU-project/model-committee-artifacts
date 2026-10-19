@@ -1,0 +1,32 @@
+[
+  {
+    "proposal_id": "umc-ubu-q0162-declared-correction-scope-20261019",
+    "patch_applies": true,
+    "allowlist_passed": true,
+    "changed_files": [
+      "OPEN_QUESTIONS.md"
+    ],
+    "question_schema_passed": true,
+    "error": null,
+    "normalized_patch": null,
+    "warnings": [],
+    "ordinary_error": null,
+    "recount_error": null,
+    "normalization_error": null
+  },
+  {
+    "proposal_id": "openai-ubu-q0162-planning-quality-20261019",
+    "patch_applies": true,
+    "allowlist_passed": true,
+    "changed_files": [
+      "OPEN_QUESTIONS.md"
+    ],
+    "question_schema_passed": true,
+    "error": null,
+    "normalized_patch": null,
+    "warnings": [],
+    "ordinary_error": null,
+    "recount_error": null,
+    "normalization_error": null
+  }
+]

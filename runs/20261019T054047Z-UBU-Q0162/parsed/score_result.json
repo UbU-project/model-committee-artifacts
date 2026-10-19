@@ -1,0 +1,52 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-ubu-q0162-planning-quality-20261019",
+      "score": 90,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "'Finite traversal budgets' for cross-window link discovery is left unspecified, so implementers must choose the bound without guidance.",
+        "The acceptance text binds documentation to implementation details (keyword `overrun`, classification `wrong_estimates`, exact 50-row window) that can drift from source without the question being updated.",
+        "The added findings remain static-audit evidence; runtime reproduction, a filed remediation ticket and passing behavioral checks remain outstanding.",
+        "The static audit claims (src/reports/planning_analysis.rs symbols, the 50-row raw history limit, derive_reports, planning_service::generate persistence, tests/planning_o9.rs and the named unit test) cannot be verified from the scoring context; if any reference is wrong, the remediation handoff misdirects implementers.",
+        "UBU-Q0162 continues to absorb every raw-history consumer as appended paragraphs; the block is already very large, and further growth raises readability and prompt-size concerns that may eventually call for splitting consumer-side handoffs into a separate implementation ticket."
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    },
+    {
+      "proposal_id": "umc-ubu-q0162-declared-correction-scope-20261019",
+      "score": 73,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": false,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Although framed as a clarification, declaring a mandatory correction-scope payload shape is effectively a data-model rule; recording it only inside the question handoff rather than as a decision may be missed by implementers reading UBU-D0071 alone.",
+        "Consumers requiring declared scope have no specified treatment for previously admitted corrections lacking that declaration.",
+        "Internal ambiguity: the text requires exactly one declared scope (withdrawal or named-field replacement) but then says a Snapshot replacement declares scope by linking a new Snapshot, which reads as a third form. Implementers could disagree on how to validate that case at append_prepared_log.",
+        "Mandatory target old values conflict with DESIGN.md \u00a717.1's allowance to omit sensitive values and could require retaining or reconstructing purged content.",
+        "The addition is one very dense ~2,000-character paragraph appended to an already very long question block, increasing prompt size and reducing auditability of the requirement list.",
+        "The new constraint that log_annotation_added may carry only notes, reason, confidence or evidence references is a fresh restriction on annotation payloads with no source audit behind it and could conflict with existing annotation uses.",
+        "The paragraph relies on UBU-D0071 having optional old/new value fields and on UBU-D0248 having a non-overlapping field-level rule with invariant and policy-input conditions. The author had no readable checkout, so both citations are unverified; if either is inaccurate the handoff would specify a payload shape or composition rule that the decisions do not actually define.",
+        "The universal replacement format is not reconciled with DESIGN.md \u00a717.8.1's existing event_payload.friction representation, including null for withdrawal. General note-only withdrawal also remains ambiguous."
+      ],
+      "required_fixes": [
+        "Before merge, confirm against DESIGN.md and the decisions log that UBU-D0071 defines optional old/new value fields and that UBU-D0248 defines the non-overlapping field-level rule as described; reword or drop those citations if they do not match.",
+        "Clarify whether a Snapshot-replacement link is a replacement-scope variant or a distinct third scope so the 'exactly one declared scope' validation rule is unambiguous.",
+        "Consider splitting the single paragraph into scope definition, writer validation, consumer classification and required fixtures for readability.",
+        "Define handling of legacy unscoped corrections, imports and exact replays without modifying admitted history or receipts.",
+        "Make old/new value requirements policy-aware. Validate scope using permitted schema or metadata; insufficient retained evidence must produce an incomplete/review outcome without reconstructing removed content.",
+        "Preserve UBU-D0357 friction annotation/correction semantics and explicitly define field-only withdrawal separately from whole-assertion withdrawal. Add compatible admission and corrected-view fixtures."
+      ],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "openai-ubu-q0162-planning-quality-20261019",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}

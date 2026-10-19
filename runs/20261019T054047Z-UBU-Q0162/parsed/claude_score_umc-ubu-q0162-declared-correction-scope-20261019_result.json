@@ -1,0 +1,28 @@
+{
+  "scores": [
+    {
+      "proposal_id": "umc-ubu-q0162-declared-correction-scope-20261019",
+      "score": 76,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "none",
+      "risks": [
+        "The paragraph relies on UBU-D0071 having optional old/new value fields and on UBU-D0248 having a non-overlapping field-level rule with invariant and policy-input conditions. The author had no readable checkout, so both citations are unverified; if either is inaccurate the handoff would specify a payload shape or composition rule that the decisions do not actually define.",
+        "Internal ambiguity: the text requires exactly one declared scope (withdrawal or named-field replacement) but then says a Snapshot replacement declares scope by linking a new Snapshot, which reads as a third form. Implementers could disagree on how to validate that case at append_prepared_log.",
+        "The new constraint that log_annotation_added may carry only notes, reason, confidence or evidence references is a fresh restriction on annotation payloads with no source audit behind it and could conflict with existing annotation uses.",
+        "The addition is one very dense ~2,000-character paragraph appended to an already very long question block, increasing prompt size and reducing auditability of the requirement list.",
+        "Although framed as a clarification, declaring a mandatory correction-scope payload shape is effectively a data-model rule; recording it only inside the question handoff rather than as a decision may be missed by implementers reading UBU-D0071 alone."
+      ],
+      "required_fixes": [
+        "Before merge, confirm against DESIGN.md and the decisions log that UBU-D0071 defines optional old/new value fields and that UBU-D0248 defines the non-overlapping field-level rule as described; reword or drop those citations if they do not match.",
+        "Clarify whether a Snapshot-replacement link is a replacement-scope variant or a distinct third scope so the 'exactly one declared scope' validation rule is unambiguous.",
+        "Consider splitting the single paragraph into scope definition, writer validation, consumer classification and required fixtures for readability."
+      ],
+      "rationale": "Patch applied cleanly under mechanical validation, touches only OPEN_QUESTIONS.md inside the UBU-Q0162 block, keeps Status: Open and all single-line metadata intact, and adds no questions or decisions. It is directly responsive: the existing handoff already demands that duration, completion, reopen and human-complete consumers distinguish note-only, friction-only, duration and whole-outcome corrections, yet the minimum repair gave log_correction_added no scope representation, so each consumer would have to infer scope by payload diffing. Declaring scope in the admitted entry and validating it at the already-targeted append_prepared_log boundary closes that gap using the shared boundary the ticket already names, and the Resolution update is consistent with the body. Points are withheld for unverified citations of UBU-D0071 fields and the UBU-D0248 rule, the Snapshot-scope ambiguity, an unsupported new restriction on annotation payloads, and the density of a single long paragraph in an already oversized block."
+    }
+  ],
+  "selected_proposal_id": "umc-ubu-q0162-declared-correction-scope-20261019",
+  "selection_rationale": "Only one proposal was supplied and it passed mechanical validation (applies, allowlist, question schema). It is minimal in file scope, auditable, and fills a real specification gap in the existing handoff without changing Status or adding decisions. Its weaknesses are unverified decision citations and one ambiguity that a human reviewer should check before accepting, which is appropriate given the question is marked Human approval required."
+}
