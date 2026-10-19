@@ -1,0 +1,8 @@
+UMC: docs: bound timezone, horizon and unsupported-input coverage for UBU-Q0163
+
+Add a bounded slice for the remaining UBU-D0318 capture-qualification
+gate: DST offset handling, horizon-edge occurrences, explicit
+unsupported-input outcomes that leave scope uncovered, incomplete
+capture refusing certification, and stale-manifest refusal after
+horizon advancement. Update the Current direction and Resolution text.
+No blocker is retired and no passing result is recorded.

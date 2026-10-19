@@ -1,0 +1,27 @@
+[
+  {
+    "proposal_id": "UBU-Q0163-openai-effective-horizon-20261018",
+    "author_provider": "openai",
+    "cross_score_count": 2,
+    "score_mean": 78.0,
+    "score_spread": 32,
+    "frontier_score_gap": 32,
+    "disagreement_flags": [
+      {
+        "code": "FRONTIER_SCORE_GAP",
+        "severity": "critical",
+        "proposal_id": "UBU-Q0163-openai-effective-horizon-20261018",
+        "message": "frontier_score_gap 32 is >= 25"
+      }
+    ]
+  },
+  {
+    "proposal_id": "ubu-q0163-timezone-horizon-unsupported-slice-20261018",
+    "author_provider": "anthropic",
+    "cross_score_count": 2,
+    "score_mean": 84.0,
+    "score_spread": 8,
+    "frontier_score_gap": 8,
+    "disagreement_flags": []
+  }
+]

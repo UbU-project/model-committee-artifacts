@@ -1,0 +1,22 @@
+{
+  "scores": [
+    {
+      "proposal_id": "ubu-q0163-timezone-horizon-unsupported-slice-20261018",
+      "score": 88,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "good",
+      "risks": [
+        "The shared fixture lists unsupported inputs alongside supported occurrences, leaving ambiguity about whether the later certified-free probes run against an uncovered scope."
+      ],
+      "required_fixes": [
+        "Explicitly define a supported-only baseline for certification and occupancy probes. Run unsupported-input, incomplete-capture and stale-manifest cases as isolated negative controls that cannot certify affected capacity as free."
+      ],
+      "rationale": "Mechanical validation passes, only the allowed file changes, and the question remains Open with its metadata intact. The bounded ticket adds relevant DST, horizon and unsupported-input acceptance criteria without claiming passing results or authorizing retirement. Clarifying fixture isolation would make its certification expectations consistent and directly executable."
+    }
+  ],
+  "selected_proposal_id": "ubu-q0163-timezone-horizon-unsupported-slice-20261018",
+  "selection_rationale": "The sole candidate is mechanically valid and addresses a relevant coverage gap. Its cross-score reflects the fixture clarification still required; final selection remains with model-committee."
+}

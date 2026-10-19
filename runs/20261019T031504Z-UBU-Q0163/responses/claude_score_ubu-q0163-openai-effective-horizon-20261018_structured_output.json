@@ -1,0 +1,27 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0163-openai-effective-horizon-20261018",
+      "score": 62,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "none",
+      "risks": [
+        "The 2026-10-18 source claims (calendar_range.rs::CalendarTimeRange::planning, planning_service::resolve_time_window, GeneratePlanningRequest.horizon flowing into build_request_from_store_with_context) could not be verified by this scorer; if any path or behavior is misdescribed, the question pins incorrect static evidence to revision 9fddef16.",
+        "The section asserts a UBU-D0318 'horizon-advancement gate'. The question text as shown lists capture, capacity, blocker-handoff, series-edit, timezone/DST, unsupported-input, mixed-blocker and reviewed-handoff gates but never names a horizon-advancement gate, so this may attribute a requirement to the decision that it does not contain.",
+        "The question's own stated remaining work is executed, revision-pinned passing checks, operator inventory and operator approval. This proposal adds a fifth unexecuted proposed ticket instead, continuing documentation accretion on an already very long block and increasing prompt size without moving any gate toward a passing result.",
+        "The fixture assumes 'no saved Calendar window and a six-hour default horizon' producing H0 [09:00, 15:00). If the orchestrator's default horizon differs, the slice's window arithmetic and probe intervals would need rework."
+      ],
+      "required_fixes": [
+        "Quote or cite the exact UBU-D0318 clause that constitutes the horizon-advancement gate, or reword the opening sentence so it does not claim a gate that the decision may not define.",
+        "Have the source-path claims independently confirmed against the clean 9fddef16 checkout before merge, or mark them as unconfirmed by a second reviewer, consistent with the question's existing audit conventions.",
+        "Consider stating explicitly that this slice is subordinate to the already-listed remaining work so the Current direction paragraph does not read as adding another prerequisite before the operator inventory and passing checks."
+      ],
+      "rationale": "The patch applies cleanly, touches only OPEN_QUESTIONS.md, leaves the single-line metadata and Status: Open intact, and keeps the Resolution honest that no blocker is removed. The identified gap is real and on topic: if capture resolves a default window while explicit planning widens the horizon, uncaptured busy time beyond the capture window looks free, which is exactly the operator-reported limitation the workaround blocker protects against. The slice is internally consistent (A inside H0, B inside H1 only, probes and controls placed correctly) and mirrors the structure of the existing cancellation and handoff slices. It scores in the low 60s rather than higher because it supplies only another unexecuted proposed ticket while the question already says remaining work is execution and approval, because its source-path and UBU-D0318 gate claims could not be verified here, and because it lengthens an already oversized question block."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0163-openai-effective-horizon-20261018",
+  "selection_rationale": "Only one proposal was submitted and it passed mechanical validation, applies cleanly, modifies only the allowed file, and preserves the question schema and Open status. It is a defensible documentation-only advancement that records a genuine capture-versus-planning window coverage gap relevant to retiring the workaround. Its weaknesses are unverified source claims, an uncorroborated reference to a UBU-D0318 horizon-advancement gate, and continued accretion of proposed tickets without executed checks. Those warrant the listed fixes and a moderate score but not rejection."
+}

@@ -1,0 +1,32 @@
+[
+  {
+    "proposal_id": "ubu-q0163-timezone-horizon-unsupported-slice-20261018",
+    "patch_applies": true,
+    "allowlist_passed": true,
+    "changed_files": [
+      "OPEN_QUESTIONS.md"
+    ],
+    "question_schema_passed": true,
+    "error": null,
+    "normalized_patch": null,
+    "warnings": [],
+    "ordinary_error": null,
+    "recount_error": null,
+    "normalization_error": null
+  },
+  {
+    "proposal_id": "UBU-Q0163-openai-effective-horizon-20261018",
+    "patch_applies": true,
+    "allowlist_passed": true,
+    "changed_files": [
+      "OPEN_QUESTIONS.md"
+    ],
+    "question_schema_passed": true,
+    "error": null,
+    "normalized_patch": null,
+    "warnings": [],
+    "ordinary_error": null,
+    "recount_error": null,
+    "normalization_error": null
+  }
+]

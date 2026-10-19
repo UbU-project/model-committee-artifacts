@@ -1,0 +1,53 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0163-openai-effective-horizon-20261018",
+      "score": 78,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "The 2026-10-18 source claims (calendar_range.rs::CalendarTimeRange::planning, planning_service::resolve_time_window, GeneratePlanningRequest.horizon flowing into build_request_from_store_with_context) could not be verified by this scorer; if any path or behavior is misdescribed, the question pins incorrect static evidence to revision 9fddef16.",
+        "The acceptance slice exercises explicit horizon expansion but lacks a direct control for implicit kernel-window widening caused by participating Static Tasks.",
+        "The fixture assumes 'no saved Calendar window and a six-hour default horizon' producing H0 [09:00, 15:00). If the orchestrator's default horizon differs, the slice's window arithmetic and probe intervals would need rework.",
+        "The question's own stated remaining work is executed, revision-pinned passing checks, operator inventory and operator approval. This proposal adds a fifth unexecuted proposed ticket instead, continuing documentation accretion on an already very long block and increasing prompt size without moving any gate toward a passing result.",
+        "The section asserts a UBU-D0318 'horizon-advancement gate'. The question text as shown lists capture, capacity, blocker-handoff, series-edit, timezone/DST, unsupported-input, mixed-blocker and reviewed-handoff gates but never names a horizon-advancement gate, so this may attribute a requirement to the decision that it does not contain."
+      ],
+      "required_fixes": [
+        "Consider stating explicitly that this slice is subordinate to the already-listed remaining work so the Current direction paragraph does not read as adding another prerequisite before the operator inventory and passing checks.",
+        "Have the source-path claims independently confirmed against the clean 9fddef16 checkout before merge, or mark them as unconfirmed by a second reviewer, consistent with the question's existing audit conventions.",
+        "Quote or cite the exact UBU-D0318 clause that constitutes the horizon-advancement gate, or reword the opening sentence so it does not claim a gate that the decision may not define."
+      ],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    },
+    {
+      "proposal_id": "ubu-q0163-timezone-horizon-unsupported-slice-20261018",
+      "score": 84,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Authoring model is claude-fable-5-1, the same model producing this cross-score. Provider ids differ (`claude` vs `anthropic`) so this was scored as instructed, but the aggregator should treat it as a potential self-score and weight it accordingly.",
+        "T1's end string `2026-11-01T02:30:00-04:00` denotes a valid instant (06:30Z) but a wall-clock that never appears in America/New_York on that date; Google would render that instant as `01:30:00-05:00`. Acceptable as a synthetic explicit-offset probe, but it is not a realistic production emission and should be labelled as such.",
+        "The UBU-Q0163 section is already very long; a further 30-line slice adds review burden, though it fills a gap the question text itself names as outstanding.",
+        "The first check row asserts E1/E2 Task windows are 'unclipped' at horizon edges. That is a specification choice introduced inside a check row rather than recorded as a decision; it is reasonable but undiscussed.",
+        "The new Resolution sentence asserts that every `UBU-D0318` evidence bullet now maps to a bounded slice or assertion source. DESIGN.md was not supplied in this request, so that completeness claim is unverifiable here; if UBU-D0318 carries gates beyond the four the proposal names (for example series edits other than truncation, which the series-truncation slice itself leaves open), the sentence could steer future rounds away from needed specification.",
+        "The shared fixture lists unsupported inputs alongside supported occurrences, leaving ambiguity about whether the later certified-free probes run against an uncovered scope.",
+        "U2 treats a `dateTime` without offset as unsupported. Google's event resource permits omitting the offset when `timeZone` is supplied, so this form may occur in real sources; the slice correctly records it as uncovered rather than free, but the question does not note that this may leave material operator scope uncovered."
+      ],
+      "required_fixes": [
+        "Add a short note to U2 that Google permits offset-less `dateTime` with a `timeZone` field, so the uncovered-scope consequence is understood when qualifying real operator sources.",
+        "Explicitly define a supported-only baseline for certification and occupancy probes. Run unsupported-input, incomplete-capture and stale-manifest cases as isolated negative controls that cannot certify affected capacity as free.",
+        "Qualify the Resolution completeness claim: either cite the UBU-D0318 bullet list it is mapping against or restrict the sentence to the gates enumerated within this question, so the claim is auditable without reading DESIGN.md.",
+        "State explicitly in the instance table that T1's end offset is a non-canonical synthetic form for the zone at that instant, so implementers do not expect it from the production adapter."
+      ],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "ubu-q0163-timezone-horizon-unsupported-slice-20261018",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}

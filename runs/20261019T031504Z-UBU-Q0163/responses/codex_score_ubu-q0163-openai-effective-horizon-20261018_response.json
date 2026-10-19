@@ -1,0 +1,20 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0163-openai-effective-horizon-20261018",
+      "score": 94,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "good",
+      "risks": [
+        "The acceptance slice exercises explicit horizon expansion but lacks a direct control for implicit kernel-window widening caused by participating Static Tasks."
+      ],
+      "required_fixes": [],
+      "rationale": "Mechanical validation passes, and changes remain confined to the allowed question block. The bounded follow-up advances an existing coverage gate with concrete read-path, restart, stale-binding and backend occupancy checks. It preserves Open status, operator approval and residual protection, and clearly distinguishes proposed checks from passing evidence."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0163-openai-effective-horizon-20261018",
+  "selection_rationale": "The sole candidate is valid, auditable and directly relevant to horizon-dependent capture coverage. Final selection remains with model-committee aggregation."
+}

@@ -1,0 +1,107 @@
+# Model-Committee Review
+
+Run: `20261019T031504Z-UBU-Q0163`  
+Question: `UBU-Q0163`  
+Base commit: `1f937d084092f0c853e0a8644c4717dbb500eec5`  
+Automated selection: valid
+Human review required: no
+Selected proposal: `ubu-q0163-timezone-horizon-unsupported-slice-20261018`
+
+## Disagreement Flags
+
+
+## Prompt Size Warning
+
+The rendered work prompt reached or exceeded 90% of the prompt size limit. Consider tombstoning solved questions and compressing source files before the next run.
+
+- **CRITICAL** `FRONTIER_SCORE_GAP` on `UBU-Q0163-openai-effective-horizon-20261018`: frontier_score_gap 32 is >= 25
+
+## Quorum Result
+
+- Valid automated selection: yes
+- Selected score: 84.0
+- Selected cross-score count: 2
+- Blocked reasons: None
+
+## Provider Attempts
+
+| Phase | Provider | Model | Target proposal |
+| --- | --- | --- | --- |
+| `work-generate` | `codex` | `gpt-6.1-sol` | `n/a` |
+| `work-generate` | `claude` | `claude-fable-5-1` | `n/a` |
+| `work-score` | `codex` | `gpt-6.1-sol` | `UBU-Q0163-openai-effective-horizon-20261018` |
+| `work-score` | `claude` | `claude-fable-5-1` | `UBU-Q0163-openai-effective-horizon-20261018` |
+| `work-score` | `codex` | `gpt-6.1-sol` | `ubu-q0163-timezone-horizon-unsupported-slice-20261018` |
+| `work-score` | `claude` | `claude-fable-5-1` | `ubu-q0163-timezone-horizon-unsupported-slice-20261018` |
+
+## Provider Successes
+
+| Phase | Provider | Model | Target proposal |
+| --- | --- | --- | --- |
+| `work-generate` | `codex` | `gpt-6.1-sol` | `n/a` |
+| `work-generate` | `claude` | `claude-fable-5-1` | `n/a` |
+| `work-score` | `codex` | `gpt-6.1-sol` | `UBU-Q0163-openai-effective-horizon-20261018` |
+| `work-score` | `claude` | `claude-fable-5-1` | `UBU-Q0163-openai-effective-horizon-20261018` |
+| `work-score` | `codex` | `gpt-6.1-sol` | `ubu-q0163-timezone-horizon-unsupported-slice-20261018` |
+| `work-score` | `claude` | `claude-fable-5-1` | `ubu-q0163-timezone-horizon-unsupported-slice-20261018` |
+
+## Cross-Score Matrix
+
+| Proposal | Author | Scorer | Valid | Score | Rationale | Required fixes | Risks |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| `UBU-Q0163-openai-effective-horizon-20261018` | `openai` | `codex` | yes | 94 | Mechanical validation passes, and changes remain confined to the allowed question block. The bounded follow-up advances an existing coverage gate with concrete read-path, restart, stale-binding and backend occupancy checks. It preserves Open status, operator approval and residual protection, and clearly distinguishes proposed checks from passing evidence. | None | The acceptance slice exercises explicit horizon expansion but lacks a direct control for implicit kernel-window widening caused by participating Static Tasks. |
+| `UBU-Q0163-openai-effective-horizon-20261018` | `openai` | `claude` | yes | 62 | The patch applies cleanly, touches only OPEN_QUESTIONS.md, leaves the single-line metadata and Status: Open intact, and keeps the Resolution honest that no blocker is removed. The identified gap is real and on topic: if capture resolves a default window while explicit planning widens the horizon, uncaptured busy time beyond the capture window looks free, which is exactly the operator-reported limitation the workaround blocker protects against. The slice is internally consistent (A inside H0, B inside H1 only, probes and controls placed correctly) and mirrors the structure of the existing cancellation and handoff slices. It scores in the low 60s rather than higher because it supplies only another unexecuted proposed ticket while the question already says remaining work is execution and approval, because its source-path and UBU-D0318 gate claims could not be verified here, and because it lengthens an already oversized question block. | Quote or cite the exact UBU-D0318 clause that constitutes the horizon-advancement gate, or reword the opening sentence so it does not claim a gate that the decision may not define., Have the source-path claims independently confirmed against the clean 9fddef16 checkout before merge, or mark them as unconfirmed by a second reviewer, consistent with the question's existing audit conventions., Consider stating explicitly that this slice is subordinate to the already-listed remaining work so the Current direction paragraph does not read as adding another prerequisite before the operator inventory and passing checks. | The 2026-10-18 source claims (calendar_range.rs::CalendarTimeRange::planning, planning_service::resolve_time_window, GeneratePlanningRequest.horizon flowing into build_request_from_store_with_context) could not be verified by this scorer; if any path or behavior is misdescribed, the question pins incorrect static evidence to revision 9fddef16., The section asserts a UBU-D0318 'horizon-advancement gate'. The question text as shown lists capture, capacity, blocker-handoff, series-edit, timezone/DST, unsupported-input, mixed-blocker and reviewed-handoff gates but never names a horizon-advancement gate, so this may attribute a requirement to the decision that it does not contain., The question's own stated remaining work is executed, revision-pinned passing checks, operator inventory and operator approval. This proposal adds a fifth unexecuted proposed ticket instead, continuing documentation accretion on an already very long block and increasing prompt size without moving any gate toward a passing result., The fixture assumes 'no saved Calendar window and a six-hour default horizon' producing H0 [09:00, 15:00). If the orchestrator's default horizon differs, the slice's window arithmetic and probe intervals would need rework. |
+| `ubu-q0163-timezone-horizon-unsupported-slice-20261018` | `anthropic` | `codex` | yes | 88 | Mechanical validation passes, only the allowed file changes, and the question remains Open with its metadata intact. The bounded ticket adds relevant DST, horizon and unsupported-input acceptance criteria without claiming passing results or authorizing retirement. Clarifying fixture isolation would make its certification expectations consistent and directly executable. | Explicitly define a supported-only baseline for certification and occupancy probes. Run unsupported-input, incomplete-capture and stale-manifest cases as isolated negative controls that cannot certify affected capacity as free. | The shared fixture lists unsupported inputs alongside supported occurrences, leaving ambiguity about whether the later certified-free probes run against an uncovered scope. |
+| `ubu-q0163-timezone-horizon-unsupported-slice-20261018` | `anthropic` | `claude` | yes | 80 | Mechanical validation passes (applies, allowlist, schema). The patch touches only OPEN_QUESTIONS.md, keeps UBU-Q0163 Open with no new ids, and continues the question's established pattern of bounded slices. It targets a gap the question text explicitly names as outstanding (timezone/DST and unsupported-input gates under UBU-D0318), so it is directly responsive. I independently verified the fixture arithmetic: 2026-11-01 is a Sunday, US DST ends at 02:00 EDT = 06:00Z, and every raw-wire string, expected UTC interval, horizon-edge placement, busy probe and control probe in the table is consistent with those offsets; the stale-offset control at [13:15, 13:45) on 2026-11-01 correctly isolates a -04:00 misconversion of D2, and the timeMin/timeMax filtering semantics match Google's events.list reference. The unsupported-input rows correctly make skipped inputs uncovered rather than free, and the horizon-advancement row reuses the manifest horizon binding already introduced by the mixed-blocker slice. Validation notes are candid about what was not executed. Deductions are for the unverifiable completeness claim added to the Resolution, a couple of fixture labelling gaps, and the same-model authorship concern noted above. | Qualify the Resolution completeness claim: either cite the UBU-D0318 bullet list it is mapping against or restrict the sentence to the gates enumerated within this question, so the claim is auditable without reading DESIGN.md., State explicitly in the instance table that T1's end offset is a non-canonical synthetic form for the zone at that instant, so implementers do not expect it from the production adapter., Add a short note to U2 that Google permits offset-less `dateTime` with a `timeZone` field, so the uncovered-scope consequence is understood when qualifying real operator sources. | Authoring model is claude-fable-5-1, the same model producing this cross-score. Provider ids differ (`claude` vs `anthropic`) so this was scored as instructed, but the aggregator should treat it as a potential self-score and weight it accordingly., The new Resolution sentence asserts that every `UBU-D0318` evidence bullet now maps to a bounded slice or assertion source. DESIGN.md was not supplied in this request, so that completeness claim is unverifiable here; if UBU-D0318 carries gates beyond the four the proposal names (for example series edits other than truncation, which the series-truncation slice itself leaves open), the sentence could steer future rounds away from needed specification., T1's end string `2026-11-01T02:30:00-04:00` denotes a valid instant (06:30Z) but a wall-clock that never appears in America/New_York on that date; Google would render that instant as `01:30:00-05:00`. Acceptable as a synthetic explicit-offset probe, but it is not a realistic production emission and should be labelled as such., U2 treats a `dateTime` without offset as unsupported. Google's event resource permits omitting the offset when `timeZone` is supplied, so this form may occur in real sources; the slice correctly records it as uncovered rather than free, but the question does not note that this may leave material operator scope uncovered., The first check row asserts E1/E2 Task windows are 'unclipped' at horizon edges. That is a specification choice introduced inside a check row rather than recorded as a decision; it is reasonable but undiscussed., The UBU-Q0163 section is already very long; a further 30-line slice adds review burden, though it fills a gap the question text itself names as outstanding. |
+
+## Selected Summary
+
+Add a bounded timezone/DST, horizon-crossing, unsupported-input, incomplete-capture and horizon-advancement coverage slice to UBU-Q0163. This is the one UBU-D0318 evidence bullet that had no bounded reproduction; the cancellation, series-truncation and mixed-blocker tickets already cover the others. The slice pins raw-wire offsets across the 2026-11-01 America/New_York transition, identical wall-clock-text controls, horizon-edge occurrences, explicit unsupported-input outcomes that leave scope uncovered rather than free, stale-manifest refusal after horizon advancement, and CPU/backend probes with a stale-offset control. The Current direction and Resolution text are updated to point at the new slice and to state that every UBU-D0318 bullet now maps to a bounded slice or existing assertion source, so further progress is implementation evidence rather than more specification. The question stays Open; no decisions or questions are added.
+
+## Changed Files
+
+- `OPEN_QUESTIONS.md`
+
+## Validation
+
+- Patch applies: yes
+- Patch allowlist passed: yes
+- Question schema preserved: yes
+
+## Risks
+
+- Authoring model is claude-fable-5-1, the same model producing this cross-score. Provider ids differ (`claude` vs `anthropic`) so this was scored as instructed, but the aggregator should treat it as a potential self-score and weight it accordingly.
+- T1's end string `2026-11-01T02:30:00-04:00` denotes a valid instant (06:30Z) but a wall-clock that never appears in America/New_York on that date; Google would render that instant as `01:30:00-05:00`. Acceptable as a synthetic explicit-offset probe, but it is not a realistic production emission and should be labelled as such.
+- The 2026-10-18 source claims (calendar_range.rs::CalendarTimeRange::planning, planning_service::resolve_time_window, GeneratePlanningRequest.horizon flowing into build_request_from_store_with_context) could not be verified by this scorer; if any path or behavior is misdescribed, the question pins incorrect static evidence to revision 9fddef16.
+- The UBU-Q0163 section is already very long; a further 30-line slice adds review burden, though it fills a gap the question text itself names as outstanding.
+- The acceptance slice exercises explicit horizon expansion but lacks a direct control for implicit kernel-window widening caused by participating Static Tasks.
+- The first check row asserts E1/E2 Task windows are 'unclipped' at horizon edges. That is a specification choice introduced inside a check row rather than recorded as a decision; it is reasonable but undiscussed.
+- The fixture assumes 'no saved Calendar window and a six-hour default horizon' producing H0 [09:00, 15:00). If the orchestrator's default horizon differs, the slice's window arithmetic and probe intervals would need rework.
+- The new Resolution sentence asserts that every `UBU-D0318` evidence bullet now maps to a bounded slice or assertion source. DESIGN.md was not supplied in this request, so that completeness claim is unverifiable here; if UBU-D0318 carries gates beyond the four the proposal names (for example series edits other than truncation, which the series-truncation slice itself leaves open), the sentence could steer future rounds away from needed specification.
+- The question's own stated remaining work is executed, revision-pinned passing checks, operator inventory and operator approval. This proposal adds a fifth unexecuted proposed ticket instead, continuing documentation accretion on an already very long block and increasing prompt size without moving any gate toward a passing result.
+- The section asserts a UBU-D0318 'horizon-advancement gate'. The question text as shown lists capture, capacity, blocker-handoff, series-edit, timezone/DST, unsupported-input, mixed-blocker and reviewed-handoff gates but never names a horizon-advancement gate, so this may attribute a requirement to the decision that it does not contain.
+- The shared fixture lists unsupported inputs alongside supported occurrences, leaving ambiguity about whether the later certified-free probes run against an uncovered scope.
+- U2 treats a `dateTime` without offset as unsupported. Google's event resource permits omitting the offset when `timeZone` is supplied, so this form may occur in real sources; the slice correctly records it as uncovered rather than free, but the question does not note that this may leave material operator scope uncovered.
+
+## Next Manual Steps
+
+```bash
+git -C ../ubu-design apply "$(pwd)/runs/20261019T031504Z-UBU-Q0163/patches/selected.patch"
+git -C ../ubu-design commit -S -F "$(pwd)/runs/20261019T031504Z-UBU-Q0163/commit_message.txt"
+```
+
+## Artifact Publication
+
+Run these commands manually, or invoke `model-committee uber-loop` to automate
+publication after the signed design commit.
+
+```bash
+RUN_ID="20261019T031504Z-UBU-Q0163"
+
+mkdir -p ../model-committee-artifacts/runs
+cp -r "$(pwd)/runs/${RUN_ID}" ../model-committee-artifacts/runs/
+
+git -C ../model-committee-artifacts add "runs/${RUN_ID}"
+git -C ../model-committee-artifacts commit -S -m "UMC artifact ${RUN_ID}"
+git -C ../model-committee-artifacts push
+```
