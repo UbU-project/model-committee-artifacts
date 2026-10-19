@@ -1,0 +1,26 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-UBU-Q0163-mixed-blocker-handoff-20261018",
+      "score": 74,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "none",
+      "risks": [
+        "Spec-only addition: the question already carries four unfiled proposed tickets/slices with no passing results; another bounded slice adds documentation weight without moving any gate toward evidence, and the UBU-Q0163 block is becoming very large.",
+        "Unlike the earlier sections, the new handoff slice is not anchored to a revision-pinned static source inspection; it assumes existence of a tombstone admission path, a scoped coverage manifest with approval binding, and batch/serialized mutation under UBU-D0258/UBU-D0259 without identifying where (or whether) those seams exist in ubu-orchestrator.",
+        "The 'exactly one reservation covers each instant' multiplicity assertion presumes an inspectable planner capacity-input surface; if none exists, the row is unexecutable as written and may need tooling that is itself out of scope.",
+        "Fixture consistency between this slice and the cancellation slice (same clock/horizon/store) is asserted but the two slices define different seeded state (W present vs. absent); a reader could conflate baselines when both are later executed."
+      ],
+      "required_fixes": [
+        "Optional but recommended: add a short revision-pinned static inspection naming the handoff/tombstone/approval seams (or stating they are not yet located) so this section matches the auditability standard of the cancellation and series-truncation sections.",
+        "Optional: state explicitly that the mixed-blocker slice uses its own baseline (W seeded) distinct from the cancellation slice baseline to avoid cross-slice confusion."
+      ],
+      "rationale": "The patch applies cleanly, touches only OPEN_QUESTIONS.md, and leaves the question metadata and Status: Open intact; mechanical schema validation passed. It is directly responsive: the question's own text lists 'mixed-blocker and reviewed-handoff gates under UBU-D0318' as outstanding retirement gates, and this proposal converts that gate into a concrete bounded acceptance slice with coherent intervals (W [10:00,14:00) replaced by captured A/B plus residual R [11:00,13:00)), stale-approval and crash/replay controls, a genuine-overlap control (C) that guards against time-based deduplication, and probe windows that are internally consistent. It makes no passing-result or retirement claim and updates the Current direction and Resolution paragraphs consistently. It loses points for being another specification-only increment on an already evidence-starved question and for lacking the revision-pinned source anchoring that the adjacent sections provide, which weakens auditability of its assumptions about tombstone admission, manifests and approval binding."
+    }
+  ],
+  "selected_proposal_id": "openai-UBU-Q0163-mixed-blocker-handoff-20261018",
+  "selection_rationale": "Only one proposal was submitted and it passed mechanical validation, applies cleanly, preserves the question schema, stays within the allowed file, and fills a gate the question itself names as outstanding (the UBU-D0318 mixed-blocker/reviewed-handoff gate) with a bounded, non-claiming acceptance slice. Its weaknesses are incremental (spec-only, no source-pinned anchoring for the handoff seams) rather than disqualifying."
+}

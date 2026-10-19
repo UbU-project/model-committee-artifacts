@@ -1,0 +1,178 @@
+{
+  "schema_version": "0.4",
+  "run_id": "20261019T022958Z-UBU-Q0163",
+  "created_at_utc": "2026-10-19T02:29:58Z",
+  "repo_path": "../ubu-design",
+  "base_commit": "d3c30905dc1acd3144f0f8a95ce55c52765c93be",
+  "selected_question_id": "UBU-Q0163",
+  "phase": "work-select",
+  "config_path": "config/models.json",
+  "status": "selected",
+  "commands": [
+    "model-committee run-loop"
+  ],
+  "providers_attempted": [
+    "codex",
+    "claude"
+  ],
+  "providers_succeeded": [
+    "codex",
+    "claude"
+  ],
+  "providers_failed": [],
+  "provider_attempts": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "openai-UBU-Q0163-mixed-blocker-handoff-20261018",
+      "response_path": "runs/20261019T022958Z-UBU-Q0163/responses/codex_score_openai-ubu-q0163-mixed-blocker-handoff-20261018_response.json",
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "openai-UBU-Q0163-mixed-blocker-handoff-20261018",
+      "response_path": "runs/20261019T022958Z-UBU-Q0163/responses/claude_score_openai-ubu-q0163-mixed-blocker-handoff-20261018_stdout.json",
+      "stderr_path": null
+    }
+  ],
+  "provider_successes": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20261019T022958Z-UBU-Q0163/parsed/codex_work_proposal.json"
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "openai-UBU-Q0163-mixed-blocker-handoff-20261018",
+      "response_path": "runs/20261019T022958Z-UBU-Q0163/responses/codex_score_openai-ubu-q0163-mixed-blocker-handoff-20261018_response.json",
+      "parsed_path": "runs/20261019T022958Z-UBU-Q0163/parsed/codex_score_openai-ubu-q0163-mixed-blocker-handoff-20261018_result.json"
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "openai-UBU-Q0163-mixed-blocker-handoff-20261018",
+      "response_path": "runs/20261019T022958Z-UBU-Q0163/responses/claude_score_openai-ubu-q0163-mixed-blocker-handoff-20261018_stdout.json",
+      "parsed_path": "runs/20261019T022958Z-UBU-Q0163/parsed/claude_score_openai-ubu-q0163-mixed-blocker-handoff-20261018_result.json"
+    }
+  ],
+  "provider_failures": [],
+  "score_matrix": [
+    {
+      "proposal_id": "openai-UBU-Q0163-mixed-blocker-handoff-20261018",
+      "author_provider": "openai",
+      "scorer_provider": "codex",
+      "score": 95,
+      "valid": true,
+      "rationale": "Mechanical validation passes, and changes stay within the allowed question block. The bounded handoff ticket usefully specifies residual protection, capacity multiplicity, approval freshness, crash recovery and backend checks. It preserves Open status and clearly distinguishes required evidence from executed results.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "Documentation alone supplies no passing implementation evidence or authority to retire an actual blocker."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261019T022958Z-UBU-Q0163/responses/codex_score_openai-ubu-q0163-mixed-blocker-handoff-20261018_response.json",
+        "stderr_path": null
+      }
+    },
+    {
+      "proposal_id": "openai-UBU-Q0163-mixed-blocker-handoff-20261018",
+      "author_provider": "openai",
+      "scorer_provider": "claude",
+      "score": 74,
+      "valid": true,
+      "rationale": "The patch applies cleanly, touches only OPEN_QUESTIONS.md, and leaves the question metadata and Status: Open intact; mechanical schema validation passed. It is directly responsive: the question's own text lists 'mixed-blocker and reviewed-handoff gates under UBU-D0318' as outstanding retirement gates, and this proposal converts that gate into a concrete bounded acceptance slice with coherent intervals (W [10:00,14:00) replaced by captured A/B plus residual R [11:00,13:00)), stale-approval and crash/replay controls, a genuine-overlap control (C) that guards against time-based deduplication, and probe windows that are internally consistent. It makes no passing-result or retirement claim and updates the Current direction and Resolution paragraphs consistently. It loses points for being another specification-only increment on an already evidence-starved question and for lacking the revision-pinned source anchoring that the adjacent sections provide, which weakens auditability of its assumptions about tombstone admission, manifests and approval binding.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [
+        "Optional but recommended: add a short revision-pinned static inspection naming the handoff/tombstone/approval seams (or stating they are not yet located) so this section matches the auditability standard of the cancellation and series-truncation sections.",
+        "Optional: state explicitly that the mixed-blocker slice uses its own baseline (W seeded) distinct from the cancellation slice baseline to avoid cross-slice confusion."
+      ],
+      "risks": [
+        "Spec-only addition: the question already carries four unfiled proposed tickets/slices with no passing results; another bounded slice adds documentation weight without moving any gate toward evidence, and the UBU-Q0163 block is becoming very large.",
+        "Unlike the earlier sections, the new handoff slice is not anchored to a revision-pinned static source inspection; it assumes existence of a tombstone admission path, a scoped coverage manifest with approval binding, and batch/serialized mutation under UBU-D0258/UBU-D0259 without identifying where (or whether) those seams exist in ubu-orchestrator.",
+        "The 'exactly one reservation covers each instant' multiplicity assertion presumes an inspectable planner capacity-input surface; if none exists, the row is unexecutable as written and may need tooling that is itself out of scope.",
+        "Fixture consistency between this slice and the cancellation slice (same clock/horizon/store) is asserted but the two slices define different seeded state (W present vs. absent); a reader could conflate baselines when both are later executed."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261019T022958Z-UBU-Q0163/responses/claude_score_openai-ubu-q0163-mixed-blocker-handoff-20261018_stdout.json",
+        "stderr_path": null
+      }
+    }
+  ],
+  "score_aggregates": [
+    {
+      "proposal_id": "openai-UBU-Q0163-mixed-blocker-handoff-20261018",
+      "author_provider": "openai",
+      "cross_score_count": 2,
+      "score_mean": 84.5,
+      "score_spread": 21,
+      "frontier_score_gap": 21,
+      "disagreement_flags": []
+    }
+  ],
+  "cross_score_count": 2,
+  "score_mean": 84.5,
+  "score_spread": 21,
+  "frontier_score_gap": 21,
+  "disagreement_flags": [],
+  "quorum_result": {
+    "valid": true,
+    "human_review_required": false,
+    "selected_proposal_id": "openai-UBU-Q0163-mixed-blocker-handoff-20261018",
+    "selected_score": 84.5,
+    "selected_cross_score_count": 2,
+    "blocked_reasons": [],
+    "manual_override": false
+  },
+  "selected_proposal_id": "openai-UBU-Q0163-mixed-blocker-handoff-20261018",
+  "automated_selection_valid": true,
+  "human_review_required": false,
+  "artifact_publication_status": "operator_pending",
+  "prompt_size_warning": true,
+  "prompt_context": {
+    "question_ids": [
+      "UBU-Q0163"
+    ],
+    "decision_ids": [
+      "UBU-D0258",
+      "UBU-D0259",
+      "UBU-D0318"
+    ],
+    "sections": {
+      "DESIGN.md": [
+        "1",
+        "23.1"
+      ]
+    },
+    "core_sections": {
+      "DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md": [
+        "4"
+      ]
+    },
+    "missing_refs": {},
+    "context_chars": 96063,
+    "prompt_chars": 103072
+  }
+}

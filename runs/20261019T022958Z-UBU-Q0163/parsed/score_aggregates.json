@@ -1,0 +1,11 @@
+[
+  {
+    "proposal_id": "openai-UBU-Q0163-mixed-blocker-handoff-20261018",
+    "author_provider": "openai",
+    "cross_score_count": 2,
+    "score_mean": 84.5,
+    "score_spread": 21,
+    "frontier_score_gap": 21,
+    "disagreement_flags": []
+  }
+]

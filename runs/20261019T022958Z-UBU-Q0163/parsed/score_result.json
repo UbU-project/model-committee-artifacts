@@ -1,0 +1,27 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-UBU-Q0163-mixed-blocker-handoff-20261018",
+      "score": 84,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Documentation alone supplies no passing implementation evidence or authority to retire an actual blocker.",
+        "Fixture consistency between this slice and the cancellation slice (same clock/horizon/store) is asserted but the two slices define different seeded state (W present vs. absent); a reader could conflate baselines when both are later executed.",
+        "Spec-only addition: the question already carries four unfiled proposed tickets/slices with no passing results; another bounded slice adds documentation weight without moving any gate toward evidence, and the UBU-Q0163 block is becoming very large.",
+        "The 'exactly one reservation covers each instant' multiplicity assertion presumes an inspectable planner capacity-input surface; if none exists, the row is unexecutable as written and may need tooling that is itself out of scope.",
+        "Unlike the earlier sections, the new handoff slice is not anchored to a revision-pinned static source inspection; it assumes existence of a tombstone admission path, a scoped coverage manifest with approval binding, and batch/serialized mutation under UBU-D0258/UBU-D0259 without identifying where (or whether) those seams exist in ubu-orchestrator."
+      ],
+      "required_fixes": [
+        "Optional but recommended: add a short revision-pinned static inspection naming the handoff/tombstone/approval seams (or stating they are not yet located) so this section matches the auditability standard of the cancellation and series-truncation sections.",
+        "Optional: state explicitly that the mixed-blocker slice uses its own baseline (W seeded) distinct from the cancellation slice baseline to avoid cross-slice confusion."
+      ],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "openai-UBU-Q0163-mixed-blocker-handoff-20261018",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}

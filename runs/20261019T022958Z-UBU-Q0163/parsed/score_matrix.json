@@ -1,0 +1,48 @@
+[
+  {
+    "proposal_id": "openai-UBU-Q0163-mixed-blocker-handoff-20261018",
+    "author_provider": "openai",
+    "scorer_provider": "codex",
+    "score": 95,
+    "valid": true,
+    "rationale": "Mechanical validation passes, and changes stay within the allowed question block. The bounded handoff ticket usefully specifies residual protection, capacity multiplicity, approval freshness, crash recovery and backend checks. It preserves Open status and clearly distinguishes required evidence from executed results.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [],
+    "risks": [
+      "Documentation alone supplies no passing implementation evidence or authority to retire an actual blocker."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20261019T022958Z-UBU-Q0163/responses/codex_score_openai-ubu-q0163-mixed-blocker-handoff-20261018_response.json",
+      "stderr_path": null
+    }
+  },
+  {
+    "proposal_id": "openai-UBU-Q0163-mixed-blocker-handoff-20261018",
+    "author_provider": "openai",
+    "scorer_provider": "claude",
+    "score": 74,
+    "valid": true,
+    "rationale": "The patch applies cleanly, touches only OPEN_QUESTIONS.md, and leaves the question metadata and Status: Open intact; mechanical schema validation passed. It is directly responsive: the question's own text lists 'mixed-blocker and reviewed-handoff gates under UBU-D0318' as outstanding retirement gates, and this proposal converts that gate into a concrete bounded acceptance slice with coherent intervals (W [10:00,14:00) replaced by captured A/B plus residual R [11:00,13:00)), stale-approval and crash/replay controls, a genuine-overlap control (C) that guards against time-based deduplication, and probe windows that are internally consistent. It makes no passing-result or retirement claim and updates the Current direction and Resolution paragraphs consistently. It loses points for being another specification-only increment on an already evidence-starved question and for lacking the revision-pinned source anchoring that the adjacent sections provide, which weakens auditability of its assumptions about tombstone admission, manifests and approval binding.",
+    "implements_selected_work": true,
+    "avoids_unnecessary_scope": true,
+    "required_fixes": [
+      "Optional but recommended: add a short revision-pinned static inspection naming the handoff/tombstone/approval seams (or stating they are not yet located) so this section matches the auditability standard of the cancellation and series-truncation sections.",
+      "Optional: state explicitly that the mixed-blocker slice uses its own baseline (W seeded) distinct from the cancellation slice baseline to avoid cross-slice confusion."
+    ],
+    "risks": [
+      "Spec-only addition: the question already carries four unfiled proposed tickets/slices with no passing results; another bounded slice adds documentation weight without moving any gate toward evidence, and the UBU-Q0163 block is becoming very large.",
+      "Unlike the earlier sections, the new handoff slice is not anchored to a revision-pinned static source inspection; it assumes existence of a tombstone admission path, a scoped coverage manifest with approval binding, and batch/serialized mutation under UBU-D0258/UBU-D0259 without identifying where (or whether) those seams exist in ubu-orchestrator.",
+      "The 'exactly one reservation covers each instant' multiplicity assertion presumes an inspectable planner capacity-input surface; if none exists, the row is unexecutable as written and may need tooling that is itself out of scope.",
+      "Fixture consistency between this slice and the cancellation slice (same clock/horizon/store) is asserted but the two slices define different seeded state (W present vs. absent); a reader could conflate baselines when both are later executed."
+    ],
+    "schema_validation": {
+      "valid": true,
+      "message": null,
+      "response_path": "runs/20261019T022958Z-UBU-Q0163/responses/claude_score_openai-ubu-q0163-mixed-blocker-handoff-20261018_stdout.json",
+      "stderr_path": null
+    }
+  }
+]

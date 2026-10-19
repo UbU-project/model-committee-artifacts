@@ -1,0 +1,20 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-UBU-Q0163-mixed-blocker-handoff-20261018",
+      "score": 95,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "good",
+      "risks": [
+        "Documentation alone supplies no passing implementation evidence or authority to retire an actual blocker."
+      ],
+      "required_fixes": [],
+      "rationale": "Mechanical validation passes, and changes stay within the allowed question block. The bounded handoff ticket usefully specifies residual protection, capacity multiplicity, approval freshness, crash recovery and backend checks. It preserves Open status and clearly distinguishes required evidence from executed results."
+    }
+  ],
+  "selected_proposal_id": "openai-UBU-Q0163-mixed-blocker-handoff-20261018",
+  "selection_rationale": "The sole candidate is valid, narrowly scoped and directly advances the existing handoff gate. This cross-score leaves final selection to local aggregation."
+}
