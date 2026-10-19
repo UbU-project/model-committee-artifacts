@@ -1,0 +1,60 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-ubu-q0163-u3-capture-path-20261019",
+      "score": 74,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Further handoff elaboration offers limited progress where the question already prioritizes implementation and executed evidence.",
+        "It assumes `plan_capture` is callable from an integration test the way `parse_event_list` was; if it is not public, the regression cannot live where the handoff places it.",
+        "The Q0163 section is already very large; this adds more unexecuted prose without closing any gate, increasing prompt size for later rounds.",
+        "The capture consequences remain static predictions; no new capture, admission, occupancy or coverage result is established.",
+        "The capture-path trace rests on static inspection only: the ownable-id predicate for `q0163series`, the absent-`colorId` Dynamic branch and the `Dynamic { seconds: 3600 }` candidate are predictions, not executed results. If any is wrong, the canonical question records an incorrect predicted failure under revision pins that make it look authoritative.",
+        "The handoff now requires a second regression (`parse_event_list` to `plan_capture` in `tests/calendar_occupancy.rs`) justified by static evidence, which sits in tension with the question's own rule to add specification only where an implementation result exposes a gap.",
+        "The regression spec says to use an empty palette/source map yet relies on `colorId: \"3\"` to reach the Static branch; unless a default palette maps that color, the Static-branch case may be unreachable as written."
+      ],
+      "required_fixes": [
+        "Confirm `plan_capture` is a public entry point reachable from `tests/`, or name the public call the regression should use.",
+        "Prefer executing the predicted capture-path regression and recording its observed outcome, matching the executed U3 parser regression, rather than adding a prediction-only requirement.",
+        "State the palette assumption for the `colorId: \"3\"` case (default palette or an explicit mapping supplied by the test) so the Static-branch regression is reproducible with the stated empty palette."
+      ],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    },
+    {
+      "proposal_id": "ubu-q0163-out-of-window-move-requalification-20261019",
+      "score": 65,
+      "patch_applies": true,
+      "implements_selected_work": false,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": false,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "'Finite per-capture budget' is left unspecified; a large absent set (for example after a series truncation) would leave scope uncertified, and the interaction with the series-truncation follow-up is only implied.",
+        "Adds specification from static deduction rather than from an implementation result, which conflicts with the question's own Resolution guidance ('add specification only where an implementation result exposes a gap'); the move-out-of-window gap is plausible and follows from recorded facts, but was not reproduced.",
+        "Adds specification without the implementation result required by the existing Resolution, while the concrete U3 repair and capture/coverage check remain outstanding.",
+        "Edits adopted UBU-D0318 text in DESIGN.md directly, without an amendment record or new decision id; the proposal itself flags this as needing human confirmation.",
+        "Google per-event delivery for moved or cancelled instance ids was not checked (acknowledged). The row assumes a targeted read can supply verifiable ordering, while the sparse-evidence section already warns that updated/etag fields cannot be assumed present.",
+        "Making targeted per-occurrence reads the only admissible evidence unnecessarily excludes other qualified authoritative read paths, including the existing optional cursor path.",
+        "No tools were available to the author; hunk line numbers were estimated. Mechanical validation confirms the patch applies, so this is residual rather than blocking.",
+        "The acceptance row requires unverified provider delivery behavior and leaves the cancellation-only description inconsistent with the newly added move coverage.",
+        "The new paragraph and row make a targeted per-occurrence read 'the only admissible source' of an absent occurrence's current state. That wording conflicts with the question's existing optional cursor/syncToken path, under which a moved instance is delivered regardless of timeMin/timeMax; as written it could forbid an otherwise qualified read from admitting a move.",
+        "The row closes with 'the admitted-cancellation probes apply', reusing cancellation probe expectations for a move; acceptable for the in-horizon outcome but could conflate move and cancellation admission outcomes."
+      ],
+      "required_fixes": [
+        "Allow any qualified read supplying scoped occurrence identity, verifiable ordering and ordinary-admission bindings; present targeted reads as one possible implementation.",
+        "Human reviewer must confirm the DESIGN.md UBU-D0318 sentence amendment, or record it per the project's decision-amendment convention, before merge.",
+        "If retaining the move slice, qualify its provider delivery assumptions and update the ticket and acceptance descriptions to distinguish cancellation evidence from move evidence.",
+        "Prioritize the existing U3 repair and wire-to-capture evidence handoff; justify additional specification with revision-pinned implementation evidence before expanding UBU-D0318.",
+        "Reword 'as the only admissible source' and 'Only a targeted per-occurrence read ... may supersede' to admit any qualified identity-bound read of the occurrence's current state (targeted per-occurrence read or qualified incremental-sync delivery), so the optional cursor path in the Google read-path section is not excluded.",
+        "State in the new row that A's former interval becomes free because the reservation was superseded by a move, and that probe expectations are move-specific rather than inherited from the cancellation row."
+      ],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "openai-ubu-q0163-u3-capture-path-20261019",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}

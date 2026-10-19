@@ -1,0 +1,21 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-ubu-q0163-u3-capture-path-20261019",
+      "score": 79,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "none",
+      "risks": [
+        "The capture consequences remain static predictions; no new capture, admission, occupancy or coverage result is established.",
+        "Further handoff elaboration offers limited progress where the question already prioritizes implementation and executed evidence."
+      ],
+      "required_fixes": [],
+      "rationale": "Implements its narrow documentation refinement accurately. The inspected revision, hashes, ownership predicate and Dynamic/Static branches support the trace. The proposed regression distinguishes parser diagnostics from capture diagnostics and preserves valid expanded instances. Mechanical validation passes, changes remain confined to the allowed question file, and Open status and operator-approval gates remain intact. Credit is limited because the parser repair and behavioral verification remain outstanding."
+    }
+  ],
+  "selected_proposal_id": "openai-ubu-q0163-u3-capture-path-20261019",
+  "selection_rationale": "The sole candidate is mechanically valid, auditable and technically supported. It supplies a useful bounded handoff refinement, but no verified retirement progress. This nomination is for local aggregation."
+}

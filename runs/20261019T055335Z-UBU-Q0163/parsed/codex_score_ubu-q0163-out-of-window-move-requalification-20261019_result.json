@@ -1,0 +1,26 @@
+{
+  "scores": [
+    {
+      "proposal_id": "ubu-q0163-out-of-window-move-requalification-20261019",
+      "score": 58,
+      "patch_applies": true,
+      "implements_selected_work": false,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": false,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Adds specification without the implementation result required by the existing Resolution, while the concrete U3 repair and capture/coverage check remain outstanding.",
+        "Making targeted per-occurrence reads the only admissible evidence unnecessarily excludes other qualified authoritative read paths, including the existing optional cursor path.",
+        "The acceptance row requires unverified provider delivery behavior and leaves the cancellation-only description inconsistent with the newly added move coverage."
+      ],
+      "required_fixes": [
+        "Prioritize the existing U3 repair and wire-to-capture evidence handoff; justify additional specification with revision-pinned implementation evidence before expanding UBU-D0318.",
+        "Allow any qualified read supplying scoped occurrence identity, verifiable ordering and ordinary-admission bindings; present targeted reads as one possible implementation.",
+        "If retaining the move slice, qualify its provider delivery assumptions and update the ticket and acceptance descriptions to distinguish cancellation evidence from move evidence."
+      ],
+      "rationale": "Mechanical validation confirms clean application, allowed files and preserved question schema. The patch identifies a relevant edge case, retains protection and clearly disclaims executed verification. However, it expands accepted specification and adds an exclusive read requirement instead of advancing the explicitly identified U3 implementation and coverage work."
+    }
+  ],
+  "selected_proposal_id": "ubu-q0163-out-of-window-move-requalification-20261019",
+  "selection_rationale": "The sole candidate passes mechanical validation. Its score reflects substantive scope and evidence concerns; final selection remains with model-committee."
+}

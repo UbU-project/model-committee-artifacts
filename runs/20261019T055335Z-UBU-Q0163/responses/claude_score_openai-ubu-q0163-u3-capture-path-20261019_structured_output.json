@@ -1,0 +1,28 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-ubu-q0163-u3-capture-path-20261019",
+      "score": 70,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "none",
+      "risks": [
+        "The capture-path trace rests on static inspection only: the ownable-id predicate for `q0163series`, the absent-`colorId` Dynamic branch and the `Dynamic { seconds: 3600 }` candidate are predictions, not executed results. If any is wrong, the canonical question records an incorrect predicted failure under revision pins that make it look authoritative.",
+        "The handoff now requires a second regression (`parse_event_list` to `plan_capture` in `tests/calendar_occupancy.rs`) justified by static evidence, which sits in tension with the question's own rule to add specification only where an implementation result exposes a gap.",
+        "The regression spec says to use an empty palette/source map yet relies on `colorId: \"3\"` to reach the Static branch; unless a default palette maps that color, the Static-branch case may be unreachable as written.",
+        "It assumes `plan_capture` is callable from an integration test the way `parse_event_list` was; if it is not public, the regression cannot live where the handoff places it.",
+        "The Q0163 section is already very large; this adds more unexecuted prose without closing any gate, increasing prompt size for later rounds."
+      ],
+      "required_fixes": [
+        "State the palette assumption for the `colorId: \"3\"` case (default palette or an explicit mapping supplied by the test) so the Static-branch regression is reproducible with the stated empty palette.",
+        "Confirm `plan_capture` is a public entry point reachable from `tests/`, or name the public call the regression should use.",
+        "Prefer executing the predicted capture-path regression and recording its observed outcome, matching the executed U3 parser regression, rather than adding a prediction-only requirement."
+      ],
+      "rationale": "The patch applies cleanly, touches only the UBU-Q0163 section of OPEN_QUESTIONS.md, keeps the single-line Open metadata and Resolution intact, and passed mechanical validation. It is directly responsive: it extends the executed U3 parser finding one step downstream, predicts that the accepted recurrence parent would become a capacity-bearing Dynamic candidate beside the Static instance, pins the inspected source files, and sharpens the existing handoff with a raw-wire-to-capture regression covering both colour branches. The framing is honest about being static and about not establishing admission, occupancy or projection results, and it removes no blocker. Value is moderate rather than high: nothing was executed, the new regression requirement is added on prediction alone, and two reproducibility details (palette mapping for `colorId: \"3\"`, test reachability of `plan_capture`) are left unstated. Within the established documentation-only pattern for this question it is a sound, auditable, bounded increment."
+    }
+  ],
+  "selected_proposal_id": "openai-ubu-q0163-u3-capture-path-20261019",
+  "selection_rationale": "Only one proposal was submitted and it passed mechanical validation. It is minimal, confined to the target question, schema-preserving, revision-pinned and clearly labelled as static evidence, and it sharpens the already identified U3 repair rather than widening the question. Its weaknesses (no executed capture check, an unstated palette assumption, and an unverified test entry point) are fixable follow-ups, not reasons to reject."
+}
