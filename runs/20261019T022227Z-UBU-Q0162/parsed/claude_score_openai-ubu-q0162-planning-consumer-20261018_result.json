@@ -1,0 +1,25 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-UBU-Q0162-planning-consumer-20261018",
+      "score": 74,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "none",
+      "risks": [
+        "The orchestrator audit claims (revision 9fddef16990ac89d07a168c75bf04b77c35b9bc3, observed_routine_events, build_request_from_store_with_context, duration_model::by_group/derive, tests/duration_models.rs) could not be independently verified during this cross-score; if any symbol or path is wrong the question would carry a false reference.",
+        "The remediation ticket is described as living in ubu-store, but the new paragraph folds ubu-orchestrator planning changes into the 'same remediation handoff', creating a cross-repository ticket boundary that the text leaves ambiguous.",
+        "The new test-requirements paragraph is dense and prescriptive (observation counting, minimum-observation fallback, friction-only corrections, learned-model review rules) and references behaviors ('existing minimum', 'existing review/admission requirements for learned model changes') that are not cited to a decision ID.",
+        "The proposal adds another static-audit finding without advancing any of the three outstanding closure items (revision-pinned reproduction, filed ticket, passing checks); the question keeps accreting scope each round."
+      ],
+      "required_fixes": [
+        "State whether the ubu-orchestrator consumer work belongs to the ubu-store remediation ticket or to a separate ubu-orchestrator ticket linked to UBU-Q0162, since the existing text names the ticket as 'in ubu-store'."
+      ],
+      "rationale": "Patch applies, touches only OPEN_QUESTIONS.md, stays inside UBU-Q0162 and preserves the single-line metadata including Status: Open. The addition is directly responsive to text already in the question: the read-side paragraph requires identifying callers that use raw history as current truth, and closure evidence requires relevant planning inputs to respect admitted links. Naming a concrete planning consumer with a pinned revision, affected symbols and a matching test-extension requirement follows the established audit pattern and is honest about being static evidence rather than a reproduction or passing result. The Current direction and Resolution summaries are updated consistently. Deductions for unverifiable cross-repo claims, the ambiguous ticket boundary between ubu-store and ubu-orchestrator, and the growing prescriptive test text that does not move the question toward closure."
+    }
+  ],
+  "selected_proposal_id": "openai-UBU-Q0162-planning-consumer-20261018",
+  "selection_rationale": "Only one proposal was submitted and it passed mechanical validation, preserves the question schema, limits changes to the selected question, and adds a revision-pinned finding that the question's own read-side and closure-evidence text already calls for. Its weaknesses (unverified orchestrator symbols, ambiguous ticket boundary, no progress on the outstanding reproduction/ticket/test evidence) are noted as risks and a clarification fix but do not make the patch invalid or off-scope."
+}

@@ -1,0 +1,26 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-UBU-Q0162-planning-consumer-20261018",
+      "score": 84,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Documentation only: the operator reproduction, filed remediation ticket and passing implementation checks remain outstanding.",
+        "The new test-requirements paragraph is dense and prescriptive (observation counting, minimum-observation fallback, friction-only corrections, learned-model review rules) and references behaviors ('existing minimum', 'existing review/admission requirements for learned model changes') that are not cited to a decision ID.",
+        "The orchestrator audit claims (revision 9fddef16990ac89d07a168c75bf04b77c35b9bc3, observed_routine_events, build_request_from_store_with_context, duration_model::by_group/derive, tests/duration_models.rs) could not be independently verified during this cross-score; if any symbol or path is wrong the question would carry a false reference.",
+        "The proposal adds another static-audit finding without advancing any of the three outstanding closure items (revision-pinned reproduction, filed ticket, passing checks); the question keeps accreting scope each round.",
+        "The remediation ticket is described as living in ubu-store, but the new paragraph folds ubu-orchestrator planning changes into the 'same remediation handoff', creating a cross-repository ticket boundary that the text leaves ambiguous."
+      ],
+      "required_fixes": [
+        "State whether the ubu-orchestrator consumer work belongs to the ubu-store remediation ticket or to a separate ubu-orchestrator ticket linked to UBU-Q0162, since the existing text names the ticket as 'in ubu-store'."
+      ],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "openai-UBU-Q0162-planning-consumer-20261018",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}

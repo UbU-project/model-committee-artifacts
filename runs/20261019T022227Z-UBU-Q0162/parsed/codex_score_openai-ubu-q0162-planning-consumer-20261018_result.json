@@ -1,0 +1,20 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-UBU-Q0162-planning-consumer-20261018",
+      "score": 95,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Documentation only: the operator reproduction, filed remediation ticket and passing implementation checks remain outstanding."
+      ],
+      "required_fixes": [],
+      "rationale": "Mechanical validation passes, and changes remain confined to UBU-Q0162 in the allowed file. Inspection of the cited orchestrator revision confirms the direct Log query excludes correction events and feeds derived durations into planner requests. The patch adds precise remediation targets and meaningful acceptance checks covering correction chains, conflicts, replay, privacy and observation counts. It preserves Open status, human review requirements and the distinction between static findings and passing behavioral evidence."
+    }
+  ],
+  "selected_proposal_id": "openai-UBU-Q0162-planning-consumer-20261018",
+  "selection_rationale": "The sole candidate is mechanically valid, source-supported and directly responsive. It is suitable for local aggregation; this score does not establish question closure or final committee selection."
+}

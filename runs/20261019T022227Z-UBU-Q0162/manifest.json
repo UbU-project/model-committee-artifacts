@@ -1,0 +1,185 @@
+{
+  "schema_version": "0.4",
+  "run_id": "20261019T022227Z-UBU-Q0162",
+  "created_at_utc": "2026-10-19T02:22:27Z",
+  "repo_path": "../ubu-design",
+  "base_commit": "ae9addd02116c76bdc93625c665a6e46a64941e6",
+  "selected_question_id": "UBU-Q0162",
+  "phase": "work-select",
+  "config_path": "config/models.json",
+  "status": "selected",
+  "commands": [
+    "model-committee run-loop"
+  ],
+  "providers_attempted": [
+    "codex",
+    "claude"
+  ],
+  "providers_succeeded": [
+    "codex",
+    "claude"
+  ],
+  "providers_failed": [],
+  "provider_attempts": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "openai-UBU-Q0162-planning-consumer-20261018",
+      "response_path": "runs/20261019T022227Z-UBU-Q0162/responses/codex_score_openai-ubu-q0162-planning-consumer-20261018_response.json",
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "openai-UBU-Q0162-planning-consumer-20261018",
+      "response_path": "runs/20261019T022227Z-UBU-Q0162/responses/claude_score_openai-ubu-q0162-planning-consumer-20261018_stdout.json",
+      "stderr_path": null
+    }
+  ],
+  "provider_successes": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20261019T022227Z-UBU-Q0162/parsed/codex_work_proposal.json"
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "openai-UBU-Q0162-planning-consumer-20261018",
+      "response_path": "runs/20261019T022227Z-UBU-Q0162/responses/codex_score_openai-ubu-q0162-planning-consumer-20261018_response.json",
+      "parsed_path": "runs/20261019T022227Z-UBU-Q0162/parsed/codex_score_openai-ubu-q0162-planning-consumer-20261018_result.json"
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "openai-UBU-Q0162-planning-consumer-20261018",
+      "response_path": "runs/20261019T022227Z-UBU-Q0162/responses/claude_score_openai-ubu-q0162-planning-consumer-20261018_stdout.json",
+      "parsed_path": "runs/20261019T022227Z-UBU-Q0162/parsed/claude_score_openai-ubu-q0162-planning-consumer-20261018_result.json"
+    }
+  ],
+  "provider_failures": [],
+  "score_matrix": [
+    {
+      "proposal_id": "openai-UBU-Q0162-planning-consumer-20261018",
+      "author_provider": "openai",
+      "scorer_provider": "codex",
+      "score": 95,
+      "valid": true,
+      "rationale": "Mechanical validation passes, and changes remain confined to UBU-Q0162 in the allowed file. Inspection of the cited orchestrator revision confirms the direct Log query excludes correction events and feeds derived durations into planner requests. The patch adds precise remediation targets and meaningful acceptance checks covering correction chains, conflicts, replay, privacy and observation counts. It preserves Open status, human review requirements and the distinction between static findings and passing behavioral evidence.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "Documentation only: the operator reproduction, filed remediation ticket and passing implementation checks remain outstanding."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261019T022227Z-UBU-Q0162/responses/codex_score_openai-ubu-q0162-planning-consumer-20261018_response.json",
+        "stderr_path": null
+      }
+    },
+    {
+      "proposal_id": "openai-UBU-Q0162-planning-consumer-20261018",
+      "author_provider": "openai",
+      "scorer_provider": "claude",
+      "score": 74,
+      "valid": true,
+      "rationale": "Patch applies, touches only OPEN_QUESTIONS.md, stays inside UBU-Q0162 and preserves the single-line metadata including Status: Open. The addition is directly responsive to text already in the question: the read-side paragraph requires identifying callers that use raw history as current truth, and closure evidence requires relevant planning inputs to respect admitted links. Naming a concrete planning consumer with a pinned revision, affected symbols and a matching test-extension requirement follows the established audit pattern and is honest about being static evidence rather than a reproduction or passing result. The Current direction and Resolution summaries are updated consistently. Deductions for unverifiable cross-repo claims, the ambiguous ticket boundary between ubu-store and ubu-orchestrator, and the growing prescriptive test text that does not move the question toward closure.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [
+        "State whether the ubu-orchestrator consumer work belongs to the ubu-store remediation ticket or to a separate ubu-orchestrator ticket linked to UBU-Q0162, since the existing text names the ticket as 'in ubu-store'."
+      ],
+      "risks": [
+        "The orchestrator audit claims (revision 9fddef16990ac89d07a168c75bf04b77c35b9bc3, observed_routine_events, build_request_from_store_with_context, duration_model::by_group/derive, tests/duration_models.rs) could not be independently verified during this cross-score; if any symbol or path is wrong the question would carry a false reference.",
+        "The remediation ticket is described as living in ubu-store, but the new paragraph folds ubu-orchestrator planning changes into the 'same remediation handoff', creating a cross-repository ticket boundary that the text leaves ambiguous.",
+        "The new test-requirements paragraph is dense and prescriptive (observation counting, minimum-observation fallback, friction-only corrections, learned-model review rules) and references behaviors ('existing minimum', 'existing review/admission requirements for learned model changes') that are not cited to a decision ID.",
+        "The proposal adds another static-audit finding without advancing any of the three outstanding closure items (revision-pinned reproduction, filed ticket, passing checks); the question keeps accreting scope each round."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261019T022227Z-UBU-Q0162/responses/claude_score_openai-ubu-q0162-planning-consumer-20261018_stdout.json",
+        "stderr_path": null
+      }
+    }
+  ],
+  "score_aggregates": [
+    {
+      "proposal_id": "openai-UBU-Q0162-planning-consumer-20261018",
+      "author_provider": "openai",
+      "cross_score_count": 2,
+      "score_mean": 84.5,
+      "score_spread": 21,
+      "frontier_score_gap": 21,
+      "disagreement_flags": []
+    }
+  ],
+  "cross_score_count": 2,
+  "score_mean": 84.5,
+  "score_spread": 21,
+  "frontier_score_gap": 21,
+  "disagreement_flags": [],
+  "quorum_result": {
+    "valid": true,
+    "human_review_required": false,
+    "selected_proposal_id": "openai-UBU-Q0162-planning-consumer-20261018",
+    "selected_score": 84.5,
+    "selected_cross_score_count": 2,
+    "blocked_reasons": [],
+    "manual_override": false
+  },
+  "selected_proposal_id": "openai-UBU-Q0162-planning-consumer-20261018",
+  "automated_selection_valid": true,
+  "human_review_required": false,
+  "artifact_publication_status": "operator_pending",
+  "prompt_size_warning": true,
+  "prompt_context": {
+    "question_ids": [
+      "UBU-Q0162"
+    ],
+    "decision_ids": [
+      "UBU-D0071",
+      "UBU-D0248",
+      "UBU-D0258"
+    ],
+    "sections": {
+      "DESIGN.md": [
+        "12.1",
+        "12.2",
+        "23.1"
+      ],
+      "DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md": [
+        "16",
+        "17"
+      ]
+    },
+    "core_sections": {
+      "DESIGN.md": [
+        "1"
+      ],
+      "DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md": [
+        "4"
+      ]
+    },
+    "missing_refs": {},
+    "context_chars": 113931,
+    "prompt_chars": 121253
+  }
+}
