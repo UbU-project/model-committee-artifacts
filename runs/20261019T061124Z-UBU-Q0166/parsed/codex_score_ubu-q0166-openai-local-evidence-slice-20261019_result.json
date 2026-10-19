@@ -1,0 +1,20 @@
+{
+  "scores": [
+    {
+      "proposal_id": "ubu-q0166-openai-local-evidence-slice-20261019",
+      "score": 88,
+      "patch_applies": true,
+      "implements_selected_work": false,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "good",
+      "risks": [
+        "The proposal supplies planning and acceptance criteria, but no concrete host mapping, implementation or executed preservation evidence."
+      ],
+      "required_fixes": [],
+      "rationale": "Mechanical validation passes and changes remain within the allowed files. The extracted question isolates a useful prerequisite with concrete revision, fidelity, replay and policy controls. It preserves Q0166's metadata, limitations and closure criteria without claiming compatibility or a schema gap. This is sound decomposition, but does not itself deliver the mapping and runtime evidence requested by Q0166."
+    }
+  ],
+  "selected_proposal_id": "ubu-q0166-openai-local-evidence-slice-20261019",
+  "selection_rationale": "The only candidate is mechanically valid and provides useful, bounded decomposition with auditable acceptance criteria. It merits consideration as planning progress while Q0166 remains unresolved."
+}

@@ -1,0 +1,26 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0166-fixture-prerequisite-ledger-20261019",
+      "score": 62,
+      "patch_applies": true,
+      "implements_selected_work": false,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": false,
+      "decomposition_quality": "none",
+      "risks": [
+        "The mandatory requirement to supply absent paths through host changes converts D0386's bounded failure to locate implementations into a stronger conclusion that implementation changes are necessary.",
+        "Restricting further evidence to changes in ledger disposition can exclude useful additional specimens, independent reproductions and qualifier-fidelity coverage on already-characterized paths.",
+        "The ledger largely repeats D0385's evidence index without identifying a concrete Discovery evidence path or supplying new mapping evidence."
+      ],
+      "required_fixes": [
+        "Describe unresolved paths as not located within the inspected scope, and permit either identifying and validating existing implementations or supplying separately reviewed changes.",
+        "Remove the prohibition on recording evidence that leaves a row's disposition unchanged; preserve specimen-specific coverage and independent verification.",
+        "Keep the ledger as an evidence index under D0321's existing gate, and retain identification of concrete evidence write/read/resolution and field-to-claim paths as the next investigative work."
+      ],
+      "rationale": "Mechanical validation confirms clean application, allowed files and preserved question schema. The ledger usefully distinguishes carrier retention from complete fidelity and keeps Q0166 Open. However, it adds restrictive scheduling and evidence-recording rules unsupported by the bounded findings, while supplying neither the outstanding host mapping nor new fixture evidence."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0166-fixture-prerequisite-ledger-20261019",
+  "selection_rationale": "The sole candidate passes mechanical validation and is selected for aggregation, with substantive fixes required before acceptance."
+}

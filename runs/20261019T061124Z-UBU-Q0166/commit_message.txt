@@ -1,0 +1,1 @@
+UMC: docs: isolate local Discovery evidence storage and resolution work

@@ -1,0 +1,30 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0166-fixture-prerequisite-ledger-20261019",
+      "score": 74,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "none",
+      "risks": [
+        "The ledger pins concrete file, function and schema names (for example `precondition_review::vet_result`, `advisory_service::run_advisory`, `store_advisory_candidate`, `api::advisory::queue`, `src/api/client.ts::request`, `object_type_from_str`, `tools/validate-fixtures`). The author states no file-read tool was available, so these cells were reconstructed from excerpts of earlier decisions and could misstate what UBU-D0323 through UBU-D0386 actually recorded.",
+        "Overlaps with UBU-D0385, which already supplies a compact evidence index in \u00a721.1.1. Two adjacent index-style artifacts for the same question invite drift unless their relationship is stated.",
+        "The decision block is anchored directly after UBU-D0386. If UBU-D0387 exists elsewhere in DECISIONS.md, UBU-D0388 lands out of numerical order; the proposal itself flags this but does not resolve it. Mechanical validation does not confirm UBU-D0388 is the next free identifier.",
+        "The scheduling rule routes all missing host paths to separately reviewed work outside this question. That is consistent with UBU-D0386, but it leaves UBU-Q0166 with no in-question next action and could stall the question indefinitely.",
+        "Several table rows carry mixed dispositions in a single cell (for example `present` for string refs and `lossy` for the inline member), which weakens the ledger's intended one-disposition-per-row auditability.",
+        "The 'do not record further synthetic carrier variants' rule could suppress evidence a later reviewer finds relevant; it is bounded by the 'changes a row' exception but the judgment of what changes a row is left implicit."
+      ],
+      "required_fixes": [
+        "Before merge, verify every pinned path, function and schema name in the ledger table against the cited decisions' recorded text and the five UBU-D0323 revisions; correct or remove any cell that cannot be traced to a recorded result.",
+        "Confirm UBU-D0388 is the next unallocated decision identifier and that no UBU-D0387 block follows UBU-D0386; reorder if needed.",
+        "Add one sentence stating how the ledger relates to UBU-D0385's evidence index (complements, supersedes, or indexes into it) to avoid two competing \u00a721.1.1 indices.",
+        "Split mixed-disposition rows so each row has one disposition, moving per-specimen caveats to the representation column or to separate rows."
+      ],
+      "rationale": "The patch applies cleanly, touches only DECISIONS.md, DESIGN.md and OPEN_QUESTIONS.md, keeps Status: Open with the metadata line untouched, and makes no schema, enum, pin, migration, repair or adapter-enablement claim. It is directly responsive to the question's recorded next step: UBU-D0386 says to identify the concrete evidence write/read/resolution paths before the complete fixture run, and this proposal converts the accumulated findings into an explicit prerequisite gate with a scheduling rule and a churn-stop rule. That is a reasonable narrowing of a question that has produced nine bounded carrier probes without changing closure. It does not advance technical evidence, and its main weakness is that the ledger's cells restate specific host names without the author having been able to read the repository, so the table is not independently auditable from the patch alone. The overlap with UBU-D0385's index and the open identifier-ordering concern lower the score further. Overall a valid, minimal, docs-only proposal that is useful but requires verification of its factual cells before acceptance."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0166-fixture-prerequisite-ledger-20261019",
+  "selection_rationale": "Only one proposal was submitted and it passed mechanical validation (patch applies, allowlist and question schema checks passed). It is minimal, docs-only, preserves Status: Open, and responds to the question's recorded next step by converting prior bounded findings into an explicit prerequisite gate. Selection is conditional on human review confirming the ledger's pinned path and function names against the cited decisions and checking decision-identifier ordering, as the author could not read the repository when constructing the table."
+}

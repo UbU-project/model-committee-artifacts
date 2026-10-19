@@ -1,0 +1,59 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0166-fixture-prerequisite-ledger-20261019",
+      "score": 68,
+      "patch_applies": true,
+      "implements_selected_work": false,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": false,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Overlaps with UBU-D0385, which already supplies a compact evidence index in \u00a721.1.1. Two adjacent index-style artifacts for the same question invite drift unless their relationship is stated.",
+        "Restricting further evidence to changes in ledger disposition can exclude useful additional specimens, independent reproductions and qualifier-fidelity coverage on already-characterized paths.",
+        "Several table rows carry mixed dispositions in a single cell (for example `present` for string refs and `lossy` for the inline member), which weakens the ledger's intended one-disposition-per-row auditability.",
+        "The 'do not record further synthetic carrier variants' rule could suppress evidence a later reviewer finds relevant; it is bounded by the 'changes a row' exception but the judgment of what changes a row is left implicit.",
+        "The decision block is anchored directly after UBU-D0386. If UBU-D0387 exists elsewhere in DECISIONS.md, UBU-D0388 lands out of numerical order; the proposal itself flags this but does not resolve it. Mechanical validation does not confirm UBU-D0388 is the next free identifier.",
+        "The ledger largely repeats D0385's evidence index without identifying a concrete Discovery evidence path or supplying new mapping evidence.",
+        "The ledger pins concrete file, function and schema names (for example `precondition_review::vet_result`, `advisory_service::run_advisory`, `store_advisory_candidate`, `api::advisory::queue`, `src/api/client.ts::request`, `object_type_from_str`, `tools/validate-fixtures`). The author states no file-read tool was available, so these cells were reconstructed from excerpts of earlier decisions and could misstate what UBU-D0323 through UBU-D0386 actually recorded.",
+        "The mandatory requirement to supply absent paths through host changes converts D0386's bounded failure to locate implementations into a stronger conclusion that implementation changes are necessary.",
+        "The scheduling rule routes all missing host paths to separately reviewed work outside this question. That is consistent with UBU-D0386, but it leaves UBU-Q0166 with no in-question next action and could stall the question indefinitely."
+      ],
+      "required_fixes": [
+        "Add one sentence stating how the ledger relates to UBU-D0385's evidence index (complements, supersedes, or indexes into it) to avoid two competing \u00a721.1.1 indices.",
+        "Before merge, verify every pinned path, function and schema name in the ledger table against the cited decisions' recorded text and the five UBU-D0323 revisions; correct or remove any cell that cannot be traced to a recorded result.",
+        "Confirm UBU-D0388 is the next unallocated decision identifier and that no UBU-D0387 block follows UBU-D0386; reorder if needed.",
+        "Describe unresolved paths as not located within the inspected scope, and permit either identifying and validating existing implementations or supplying separately reviewed changes.",
+        "Keep the ledger as an evidence index under D0321's existing gate, and retain identification of concrete evidence write/read/resolution and field-to-claim paths as the next investigative work.",
+        "Remove the prohibition on recording evidence that leaves a row's disposition unchanged; preserve specimen-specific coverage and independent verification.",
+        "Split mixed-disposition rows so each row has one disposition, moving per-specimen caveats to the representation column or to separate rows."
+      ],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    },
+    {
+      "proposal_id": "ubu-q0166-openai-local-evidence-slice-20261019",
+      "score": 79,
+      "patch_applies": true,
+      "implements_selected_work": false,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "'Decision type: Data model' on UBU-Q0191 may mislabel what the proposal itself calls an implementation/mapping question.",
+        "Declaring UBU-Q0191 'Depends on: None / Blocks: None' understates the practical coupling: UBU-Q0166's full-conformance closure route cannot complete without the path UBU-Q0191 is meant to produce. The emphasis on 'dependency-free' reads as tuned for loop prioritization rather than for an accurate dependency graph.",
+        "Possible topical overlap with existing Discovery evidence storage questions under UBU-D0320; the proposal verifies ID uniqueness but not topic uniqueness.",
+        "Produces no new fixture, mapping or host-path evidence for UBU-Q0166; it appends a tenth 'stays Open' decision to an already long chain, so the marginal progress is organizational only.",
+        "The DESIGN.md table is prescriptive (E1@v1/E2@v1 aliases, pool-reconnect vs crash-recovery labeling, explicit normalization bypass); the disclaimer that these are fixture aliases, not a reference grammar, must be honored by downstream implementers or the slice drifts into de facto schema design.",
+        "The proposal supplies planning and acceptance criteria, but no concrete host mapping, implementation or executed preservation evidence.",
+        "UBU-Q0191 largely restates the direction UBU-D0386 already recorded (identify writer/resolver/policy boundary, supply missing implementation via separate review); risk of duplicate tracking rather than movement."
+      ],
+      "required_fixes": [
+        "Non-blocking: add a one-paragraph UBU-D0388 entry to UBU-Q0166's 'Current direction' to match the established per-decision pattern (every prior decision from UBU-D0334 onward appears in both Current direction and Resolution; this patch updates Resolution only).",
+        "Non-blocking: state the practical relationship between UBU-Q0191 and UBU-Q0166 in metadata or text (e.g., note that UBU-Q0166's full-conformance route is gated on UBU-Q0191 even though its demonstrated-gap route is not), so the 'Depends on: None' framing is not read as independence."
+      ],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "ubu-q0166-openai-local-evidence-slice-20261019",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}
