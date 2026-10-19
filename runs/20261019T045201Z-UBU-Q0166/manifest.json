@@ -1,0 +1,301 @@
+{
+  "schema_version": "0.4",
+  "run_id": "20261019T045201Z-UBU-Q0166",
+  "created_at_utc": "2026-10-19T04:52:01Z",
+  "repo_path": "../ubu-design",
+  "base_commit": "a4221326d00a2a3b7ff3e80998509b82262b4d75",
+  "selected_question_id": "UBU-Q0166",
+  "phase": "work-select",
+  "config_path": "config/models.json",
+  "status": "selected",
+  "commands": [
+    "model-committee run-loop"
+  ],
+  "providers_attempted": [
+    "codex",
+    "claude"
+  ],
+  "providers_succeeded": [
+    "codex",
+    "claude"
+  ],
+  "providers_failed": [],
+  "provider_attempts": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0166-openai-discovery-host-inventory",
+      "response_path": "runs/20261019T045201Z-UBU-Q0166/responses/codex_score_ubu-q0166-openai-discovery-host-inventory_response.json",
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0166-openai-discovery-host-inventory",
+      "response_path": "runs/20261019T045201Z-UBU-Q0166/responses/claude_score_ubu-q0166-openai-discovery-host-inventory_stdout.json",
+      "stderr_path": null
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "ubu-q0166-d0386-fidelity-specimen-stage-dispositions",
+      "response_path": "runs/20261019T045201Z-UBU-Q0166/responses/codex_score_ubu-q0166-d0386-fidelity-specimen-stage-dispositions_response.json",
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "ubu-q0166-d0386-fidelity-specimen-stage-dispositions",
+      "response_path": "runs/20261019T045201Z-UBU-Q0166/responses/claude_score_ubu-q0166-d0386-fidelity-specimen-stage-dispositions_stdout.json",
+      "stderr_path": null
+    }
+  ],
+  "provider_successes": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20261019T045201Z-UBU-Q0166/parsed/codex_work_proposal.json"
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20261019T045201Z-UBU-Q0166/parsed/claude_work_proposal.json"
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0166-openai-discovery-host-inventory",
+      "response_path": "runs/20261019T045201Z-UBU-Q0166/responses/codex_score_ubu-q0166-openai-discovery-host-inventory_response.json",
+      "parsed_path": "runs/20261019T045201Z-UBU-Q0166/parsed/codex_score_ubu-q0166-openai-discovery-host-inventory_result.json"
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0166-openai-discovery-host-inventory",
+      "response_path": "runs/20261019T045201Z-UBU-Q0166/responses/claude_score_ubu-q0166-openai-discovery-host-inventory_stdout.json",
+      "parsed_path": "runs/20261019T045201Z-UBU-Q0166/parsed/claude_score_ubu-q0166-openai-discovery-host-inventory_result.json"
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "ubu-q0166-d0386-fidelity-specimen-stage-dispositions",
+      "response_path": "runs/20261019T045201Z-UBU-Q0166/responses/codex_score_ubu-q0166-d0386-fidelity-specimen-stage-dispositions_response.json",
+      "parsed_path": "runs/20261019T045201Z-UBU-Q0166/parsed/codex_score_ubu-q0166-d0386-fidelity-specimen-stage-dispositions_result.json"
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "ubu-q0166-d0386-fidelity-specimen-stage-dispositions",
+      "response_path": "runs/20261019T045201Z-UBU-Q0166/responses/claude_score_ubu-q0166-d0386-fidelity-specimen-stage-dispositions_stdout.json",
+      "parsed_path": "runs/20261019T045201Z-UBU-Q0166/parsed/claude_score_ubu-q0166-d0386-fidelity-specimen-stage-dispositions_result.json"
+    }
+  ],
+  "provider_failures": [],
+  "score_matrix": [
+    {
+      "proposal_id": "UBU-Q0166-openai-discovery-host-inventory",
+      "author_provider": "openai",
+      "scorer_provider": "codex",
+      "score": 88,
+      "valid": true,
+      "rationale": "Mechanical validation passes. Independent inspection confirms the five revision pins, clean tracked files, 630-file search and reported carrier representations. The patch implements a useful bounded follow-up to UBU-D0385, changes only allowed Markdown files, and preserves the question metadata, Open status and closure criteria. It correctly distinguishes missing implementation evidence from a governing schema gap. The score reflects prerequisite progress rather than a completed host mapping or preservation result.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "The negative search result is bounded to the inspected revisions and tracked directories; generic or alternate mappings remain possible.",
+        "Complete evidence resolution, qualifier fidelity and policy-authorized path fixtures remain unexecuted."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261019T045201Z-UBU-Q0166/responses/codex_score_ubu-q0166-openai-discovery-host-inventory_response.json",
+        "stderr_path": null
+      }
+    },
+    {
+      "proposal_id": "UBU-Q0166-openai-discovery-host-inventory",
+      "author_provider": "openai",
+      "scorer_provider": "claude",
+      "score": 74,
+      "valid": true,
+      "rationale": "Mechanical validation passes (applies cleanly, allowlist OK, question schema OK). The patch is docs-only across DECISIONS.md, DESIGN.md and OPEN_QUESTIONS.md, keeps UBU-Q0166 Open with its single-line metadata intact, adds UBU-D0386 in sequence, and does not alter closure criteria, schema, pins or migrations. It is directly responsive to UBU-D0385's stated next step (investigate a complete Discovery evidence revision and resolved candidate/field links): it attempted to locate that host path, found no dedicated implementation or resolver, and records the result as an explicitly unexecuted path rather than inferring a governing schema gap. The claim discipline is careful and matches the question's established evidentiary standards (carrier retention vs. resolved fidelity, no invented candidate kind, absence not equated with gap). The score is held in the 70s because the contribution is a bounded negative source inventory with no new runtime evidence, and because its correctness depends on host-repo inspection claims that cannot be independently audited from the patch alone. Optional improvements: restate the five host revision hashes in the DESIGN.md table, and record the tracked-file count and exact grep invocation so the negative result is reproducible.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "The inventory's value rests entirely on unverifiable host-source claims (specific file paths, function names such as object_type_from_str and store_worker_submission, and a negative case-insensitive grep across five repos). A single wrong path or an overly narrow search scope would make the 'no Discovery implementation located' finding misleading, and nothing in the patch lets a reviewer re-derive it without re-running the inspection.",
+        "Source-inspection only: it executes no validator, round-trip, service, review or exchange fixture, so it advances UBU-Q0166 only marginally. It effectively defers the next fidelity run behind an unidentified or not-yet-implemented evidence write/read path, which could stall the question if no one picks up the separately reviewed implementation work.",
+        "The five host revisions are referenced indirectly via UBU-D0323 rather than restated in the new DESIGN.md table, so the pin is one hop removed from the evidence it bounds.",
+        "The DESIGN.md insertion lands in the \u00a721.1.1 evidence-index region directly before the 'Supported operations' contract paragraph; it reads as an appended probe record, which is consistent with prior entries but makes the section progressively harder to navigate."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261019T045201Z-UBU-Q0166/responses/claude_score_ubu-q0166-openai-discovery-host-inventory_stdout.json",
+        "stderr_path": null
+      }
+    },
+    {
+      "proposal_id": "ubu-q0166-d0386-fidelity-specimen-stage-dispositions",
+      "author_provider": "anthropic",
+      "scorer_provider": "codex",
+      "score": 67,
+      "valid": true,
+      "rationale": "Mechanical validation passes, allowed files are respected, and Q0166 correctly remains Open without a schema-gap claim. The specimen and reporting vocabulary are useful preparation, but the actual mapping investigation remains unimplemented and the proposed reporting gate needs correction.",
+      "implements_selected_work": false,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [
+        "Execute and document at least the next bounded Discovery mapping probe with pinned host fields, resolved revisions and independent readback comparisons; keep subsequent unexecuted paths explicit.",
+        "Define rejection obligations per stage, permit appropriate evidence retention before the executable boundary, and specify downstream dispositions after required rejection.",
+        "Define the confidence-number domain separately from the integer domain and state the independent numeric comparison oracle."
+      ],
+      "risks": [
+        "The patch specifies a useful fixture but supplies no revision-pinned host mapping, resolved stored Discovery records or executed round-trip evidence.",
+        "The negative-control rule treats native ok, storage and API reads as validation failures without distinguishing carrier acceptance from the required adapter rejection before executable review or admission.",
+        "The closure rule leaves unclear how validation-only stages and downstream stages intentionally unexecuted after required rejection can satisfy the closed disposition scheme.",
+        "Confidence values 0.82 and 0.4 contradict the statement that every number belongs to the safe-integer domain."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261019T045201Z-UBU-Q0166/responses/codex_score_ubu-q0166-d0386-fidelity-specimen-stage-dispositions_response.json",
+        "stderr_path": null
+      }
+    },
+    {
+      "proposal_id": "ubu-q0166-d0386-fidelity-specimen-stage-dispositions",
+      "author_provider": "anthropic",
+      "scorer_provider": "claude",
+      "score": 70,
+      "valid": true,
+      "rationale": "The patch applies and passes the allowlist and question-schema checks; UBU-Q0166 stays Status: Open with Resolved by: None and only the three documentation files change. It is directly responsive to the Current direction, which ends with UBU-D0385's call to investigate a complete Discovery evidence revision with resolved candidate and field links. Every prior probe used a carrier specimen with no claim content, so freezing an exact, auditable specimen is a genuine precondition for that investigation rather than filler. The specimen F1 is internally consistent: distinct observation and recording times, per-claim confidence with scale, method and source, contradiction and shares_source relations, verification carried as separate evidence with an inconclusive result and null confidence, and one field citing conflicting claims. The three negative controls each differ by exactly one change. The closed disposition vocabulary addresses the ambiguity UBU-D0385 noted between validation-only acceptance and exact fidelity, and it requires decoder-independent oracles in line with UBU-D0379. The decision is careful to claim no runtime result, no mapping, no repair and no schema or pin change. The score is held to the low seventies because the work is preparatory: it produces no round-trip evidence, the question asks for exactly that evidence, and a few wording issues (fixture-local sub-keys unflagged in DESIGN.md, unnamed positive scenarios, a class assigned before the rule permits it) leave the next prober some interpretation to do.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [
+        "State in the DESIGN.md specimen text that the sub-object keys for content, attribution, confidence and basis are fixture-local and not a perceptual-qualifiers/1 profile schema decision, or cite the UBU-D0321 rows that fix them.",
+        "Name the positive scenarios that count toward 'every required stage' or cross-reference the exact rows of the existing required-fixtures table.",
+        "Either drop the `missing_adapter_validation` label on UBU-D0334's unknown-profile case or mark it provisional until the adapter path is pinned, so the text matches its own rule for when a class is assigned.",
+        "Reword the Resolution entry so the disposition-based rule is explicitly a restatement of the existing UBU-D0321 gate, not a new closure criterion."
+      ],
+      "risks": [
+        "Specification only: the proposal executes no probe, so it adds an eighth non-closing decision to UBU-Q0166 and leaves the Discovery-evidence host-mapping investigation named by UBU-D0385 still unrun.",
+        "The fixture fixes sub-object keys inside content, attribution, confidence and basis that the validation notes admit UBU-D0321 did not pin. The DESIGN.md text does not carry that caveat, so the specimen can read as implicitly defining profile sub-schema while the decision states no schema change occurs.",
+        "The closure rule refers to 'each positive scenario above' without naming the scenarios, so which existing section 21.1.1 scenarios count as required stages is left to the reader.",
+        "The vocabulary says a `changed` class is assigned once the adapter path is pinned, yet the decision already labels UBU-D0334's unknown-profile case a `missing_adapter_validation` finding before any adapter path is pinned. This is a small internal tension and an interpretive claim about a prior result made without new execution.",
+        "The OPEN_QUESTIONS.md Resolution phrase 'Closure now requires' can be read as replacing UBU-D0321's gate rather than restating it in the new vocabulary, even though the decision text frames it as a restatement.",
+        "The base commit could not be inspected from this session; the apply result and the claim that prior probes used only content-free carrier specimens rest on the mechanical validation and the proposal's own account.",
+        "The authoring model name matches the scoring model, although the harness labels the providers as `anthropic` and `claude`; treat this score as a cross-score only under that labeling."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261019T045201Z-UBU-Q0166/responses/claude_score_ubu-q0166-d0386-fidelity-specimen-stage-dispositions_stdout.json",
+        "stderr_path": null
+      }
+    }
+  ],
+  "score_aggregates": [
+    {
+      "proposal_id": "UBU-Q0166-openai-discovery-host-inventory",
+      "author_provider": "openai",
+      "cross_score_count": 2,
+      "score_mean": 81.0,
+      "score_spread": 14,
+      "frontier_score_gap": 14,
+      "disagreement_flags": []
+    },
+    {
+      "proposal_id": "ubu-q0166-d0386-fidelity-specimen-stage-dispositions",
+      "author_provider": "anthropic",
+      "cross_score_count": 2,
+      "score_mean": 68.5,
+      "score_spread": 3,
+      "frontier_score_gap": 3,
+      "disagreement_flags": []
+    }
+  ],
+  "cross_score_count": 4,
+  "score_mean": 81.0,
+  "score_spread": 14,
+  "frontier_score_gap": 14,
+  "disagreement_flags": [],
+  "quorum_result": {
+    "valid": true,
+    "human_review_required": false,
+    "selected_proposal_id": "UBU-Q0166-openai-discovery-host-inventory",
+    "selected_score": 81.0,
+    "selected_cross_score_count": 2,
+    "blocked_reasons": [],
+    "manual_override": false
+  },
+  "selected_proposal_id": "UBU-Q0166-openai-discovery-host-inventory",
+  "automated_selection_valid": true,
+  "human_review_required": false,
+  "artifact_publication_status": "operator_pending",
+  "prompt_size_warning": true,
+  "prompt_context": {
+    "question_ids": [
+      "UBU-Q0166"
+    ],
+    "decision_ids": [
+      "UBU-D0293",
+      "UBU-D0320",
+      "UBU-D0321",
+      "UBU-D0323",
+      "UBU-D0334",
+      "UBU-D0360",
+      "UBU-D0366",
+      "UBU-D0373",
+      "UBU-D0379",
+      "UBU-D0385"
+    ],
+    "sections": {
+      "DESIGN.md": [
+        "11.2",
+        "21.1"
+      ]
+    },
+    "core_sections": {
+      "DESIGN.md": [
+        "1"
+      ],
+      "DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md": [
+        "4"
+      ]
+    },
+    "missing_refs": {},
+    "context_chars": 297017,
+    "prompt_chars": 304386
+  }
+}

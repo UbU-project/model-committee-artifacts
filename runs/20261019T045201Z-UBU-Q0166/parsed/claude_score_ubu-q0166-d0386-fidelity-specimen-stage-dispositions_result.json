@@ -1,0 +1,31 @@
+{
+  "scores": [
+    {
+      "proposal_id": "ubu-q0166-d0386-fidelity-specimen-stage-dispositions",
+      "score": 70,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "none",
+      "risks": [
+        "Specification only: the proposal executes no probe, so it adds an eighth non-closing decision to UBU-Q0166 and leaves the Discovery-evidence host-mapping investigation named by UBU-D0385 still unrun.",
+        "The fixture fixes sub-object keys inside content, attribution, confidence and basis that the validation notes admit UBU-D0321 did not pin. The DESIGN.md text does not carry that caveat, so the specimen can read as implicitly defining profile sub-schema while the decision states no schema change occurs.",
+        "The closure rule refers to 'each positive scenario above' without naming the scenarios, so which existing section 21.1.1 scenarios count as required stages is left to the reader.",
+        "The vocabulary says a `changed` class is assigned once the adapter path is pinned, yet the decision already labels UBU-D0334's unknown-profile case a `missing_adapter_validation` finding before any adapter path is pinned. This is a small internal tension and an interpretive claim about a prior result made without new execution.",
+        "The OPEN_QUESTIONS.md Resolution phrase 'Closure now requires' can be read as replacing UBU-D0321's gate rather than restating it in the new vocabulary, even though the decision text frames it as a restatement.",
+        "The base commit could not be inspected from this session; the apply result and the claim that prior probes used only content-free carrier specimens rest on the mechanical validation and the proposal's own account.",
+        "The authoring model name matches the scoring model, although the harness labels the providers as `anthropic` and `claude`; treat this score as a cross-score only under that labeling."
+      ],
+      "required_fixes": [
+        "State in the DESIGN.md specimen text that the sub-object keys for content, attribution, confidence and basis are fixture-local and not a perceptual-qualifiers/1 profile schema decision, or cite the UBU-D0321 rows that fix them.",
+        "Name the positive scenarios that count toward 'every required stage' or cross-reference the exact rows of the existing required-fixtures table.",
+        "Either drop the `missing_adapter_validation` label on UBU-D0334's unknown-profile case or mark it provisional until the adapter path is pinned, so the text matches its own rule for when a class is assigned.",
+        "Reword the Resolution entry so the disposition-based rule is explicitly a restatement of the existing UBU-D0321 gate, not a new closure criterion."
+      ],
+      "rationale": "The patch applies and passes the allowlist and question-schema checks; UBU-Q0166 stays Status: Open with Resolved by: None and only the three documentation files change. It is directly responsive to the Current direction, which ends with UBU-D0385's call to investigate a complete Discovery evidence revision with resolved candidate and field links. Every prior probe used a carrier specimen with no claim content, so freezing an exact, auditable specimen is a genuine precondition for that investigation rather than filler. The specimen F1 is internally consistent: distinct observation and recording times, per-claim confidence with scale, method and source, contradiction and shares_source relations, verification carried as separate evidence with an inconclusive result and null confidence, and one field citing conflicting claims. The three negative controls each differ by exactly one change. The closed disposition vocabulary addresses the ambiguity UBU-D0385 noted between validation-only acceptance and exact fidelity, and it requires decoder-independent oracles in line with UBU-D0379. The decision is careful to claim no runtime result, no mapping, no repair and no schema or pin change. The score is held to the low seventies because the work is preparatory: it produces no round-trip evidence, the question asks for exactly that evidence, and a few wording issues (fixture-local sub-keys unflagged in DESIGN.md, unnamed positive scenarios, a class assigned before the rule permits it) leave the next prober some interpretation to do."
+    }
+  ],
+  "selected_proposal_id": "ubu-q0166-d0386-fidelity-specimen-stage-dispositions",
+  "selection_rationale": "Only one proposal was supplied and it passed mechanical validation, so it is the sole eligible selection. It is valid, minimal in file scope, auditable through its explicit JSON specimen and closed vocabulary, and consistent with the question's stated next step, while claiming nothing it did not execute. The harness labels the scoring provider as `claude` and the authoring provider as `anthropic`, so this is treated as a cross-score under that labeling; the matching model name is flagged as a risk rather than used as evidence. Human review remains required, as the proposal itself states."
+}

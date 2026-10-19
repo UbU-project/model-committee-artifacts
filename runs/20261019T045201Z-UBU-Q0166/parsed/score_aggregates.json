@@ -1,0 +1,20 @@
+[
+  {
+    "proposal_id": "UBU-Q0166-openai-discovery-host-inventory",
+    "author_provider": "openai",
+    "cross_score_count": 2,
+    "score_mean": 81.0,
+    "score_spread": 14,
+    "frontier_score_gap": 14,
+    "disagreement_flags": []
+  },
+  {
+    "proposal_id": "ubu-q0166-d0386-fidelity-specimen-stage-dispositions",
+    "author_provider": "anthropic",
+    "cross_score_count": 2,
+    "score_mean": 68.5,
+    "score_spread": 3,
+    "frontier_score_gap": 3,
+    "disagreement_flags": []
+  }
+]

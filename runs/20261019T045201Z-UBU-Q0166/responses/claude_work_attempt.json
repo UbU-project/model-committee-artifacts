@@ -1,0 +1,26 @@
+{
+  "provider_name": "claude",
+  "model_name": "claude-fable-5-1",
+  "argv": [
+    "claude",
+    "--print",
+    "-",
+    "--output-format",
+    "json",
+    "--json-schema",
+    "<json-schema>",
+    "--tools",
+    "",
+    "--model",
+    "claude-fable-5-1"
+  ],
+  "stdout_path": "runs/20261019T045201Z-UBU-Q0166/responses/claude_work_stdout.json",
+  "stderr_path": "runs/20261019T045201Z-UBU-Q0166/responses/claude_work_stderr.txt",
+  "exit_status": 0,
+  "timeout_seconds": 3600,
+  "schema_validation": {
+    "valid": true,
+    "message": null
+  },
+  "parsed_structured_output_path": "runs/20261019T045201Z-UBU-Q0166/responses/claude_work_structured_output.json"
+}

@@ -1,0 +1,27 @@
+{
+  "scores": [
+    {
+      "proposal_id": "ubu-q0166-d0386-fidelity-specimen-stage-dispositions",
+      "score": 67,
+      "patch_applies": true,
+      "implements_selected_work": false,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "The patch specifies a useful fixture but supplies no revision-pinned host mapping, resolved stored Discovery records or executed round-trip evidence.",
+        "The negative-control rule treats native ok, storage and API reads as validation failures without distinguishing carrier acceptance from the required adapter rejection before executable review or admission.",
+        "The closure rule leaves unclear how validation-only stages and downstream stages intentionally unexecuted after required rejection can satisfy the closed disposition scheme.",
+        "Confidence values 0.82 and 0.4 contradict the statement that every number belongs to the safe-integer domain."
+      ],
+      "required_fixes": [
+        "Execute and document at least the next bounded Discovery mapping probe with pinned host fields, resolved revisions and independent readback comparisons; keep subsequent unexecuted paths explicit.",
+        "Define rejection obligations per stage, permit appropriate evidence retention before the executable boundary, and specify downstream dispositions after required rejection.",
+        "Define the confidence-number domain separately from the integer domain and state the independent numeric comparison oracle."
+      ],
+      "rationale": "Mechanical validation passes, allowed files are respected, and Q0166 correctly remains Open without a schema-gap claim. The specimen and reporting vocabulary are useful preparation, but the actual mapping investigation remains unimplemented and the proposed reporting gate needs correction."
+    }
+  ],
+  "selected_proposal_id": "ubu-q0166-d0386-fidelity-specimen-stage-dispositions",
+  "selection_rationale": "The sole candidate passes mechanical validation. Its score credits useful preparation while reflecting missing mapping evidence and required reporting-rule fixes; committee aggregation remains the final selection mechanism."
+}

@@ -1,0 +1,57 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0166-openai-discovery-host-inventory",
+      "score": 81,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Complete evidence resolution, qualifier fidelity and policy-authorized path fixtures remain unexecuted.",
+        "Source-inspection only: it executes no validator, round-trip, service, review or exchange fixture, so it advances UBU-Q0166 only marginally. It effectively defers the next fidelity run behind an unidentified or not-yet-implemented evidence write/read path, which could stall the question if no one picks up the separately reviewed implementation work.",
+        "The DESIGN.md insertion lands in the \u00a721.1.1 evidence-index region directly before the 'Supported operations' contract paragraph; it reads as an appended probe record, which is consistent with prior entries but makes the section progressively harder to navigate.",
+        "The five host revisions are referenced indirectly via UBU-D0323 rather than restated in the new DESIGN.md table, so the pin is one hop removed from the evidence it bounds.",
+        "The inventory's value rests entirely on unverifiable host-source claims (specific file paths, function names such as object_type_from_str and store_worker_submission, and a negative case-insensitive grep across five repos). A single wrong path or an overly narrow search scope would make the 'no Discovery implementation located' finding misleading, and nothing in the patch lets a reviewer re-derive it without re-running the inspection.",
+        "The negative search result is bounded to the inspected revisions and tracked directories; generic or alternate mappings remain possible."
+      ],
+      "required_fixes": [],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    },
+    {
+      "proposal_id": "ubu-q0166-d0386-fidelity-specimen-stage-dispositions",
+      "score": 68,
+      "patch_applies": true,
+      "implements_selected_work": false,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Confidence values 0.82 and 0.4 contradict the statement that every number belongs to the safe-integer domain.",
+        "Specification only: the proposal executes no probe, so it adds an eighth non-closing decision to UBU-Q0166 and leaves the Discovery-evidence host-mapping investigation named by UBU-D0385 still unrun.",
+        "The OPEN_QUESTIONS.md Resolution phrase 'Closure now requires' can be read as replacing UBU-D0321's gate rather than restating it in the new vocabulary, even though the decision text frames it as a restatement.",
+        "The authoring model name matches the scoring model, although the harness labels the providers as `anthropic` and `claude`; treat this score as a cross-score only under that labeling.",
+        "The base commit could not be inspected from this session; the apply result and the claim that prior probes used only content-free carrier specimens rest on the mechanical validation and the proposal's own account.",
+        "The closure rule leaves unclear how validation-only stages and downstream stages intentionally unexecuted after required rejection can satisfy the closed disposition scheme.",
+        "The closure rule refers to 'each positive scenario above' without naming the scenarios, so which existing section 21.1.1 scenarios count as required stages is left to the reader.",
+        "The fixture fixes sub-object keys inside content, attribution, confidence and basis that the validation notes admit UBU-D0321 did not pin. The DESIGN.md text does not carry that caveat, so the specimen can read as implicitly defining profile sub-schema while the decision states no schema change occurs.",
+        "The negative-control rule treats native ok, storage and API reads as validation failures without distinguishing carrier acceptance from the required adapter rejection before executable review or admission.",
+        "The patch specifies a useful fixture but supplies no revision-pinned host mapping, resolved stored Discovery records or executed round-trip evidence.",
+        "The vocabulary says a `changed` class is assigned once the adapter path is pinned, yet the decision already labels UBU-D0334's unknown-profile case a `missing_adapter_validation` finding before any adapter path is pinned. This is a small internal tension and an interpretive claim about a prior result made without new execution."
+      ],
+      "required_fixes": [
+        "Define rejection obligations per stage, permit appropriate evidence retention before the executable boundary, and specify downstream dispositions after required rejection.",
+        "Define the confidence-number domain separately from the integer domain and state the independent numeric comparison oracle.",
+        "Either drop the `missing_adapter_validation` label on UBU-D0334's unknown-profile case or mark it provisional until the adapter path is pinned, so the text matches its own rule for when a class is assigned.",
+        "Execute and document at least the next bounded Discovery mapping probe with pinned host fields, resolved revisions and independent readback comparisons; keep subsequent unexecuted paths explicit.",
+        "Name the positive scenarios that count toward 'every required stage' or cross-reference the exact rows of the existing required-fixtures table.",
+        "Reword the Resolution entry so the disposition-based rule is explicitly a restatement of the existing UBU-D0321 gate, not a new closure criterion.",
+        "State in the DESIGN.md specimen text that the sub-object keys for content, attribution, confidence and basis are fixture-local and not a perceptual-qualifiers/1 profile schema decision, or cite the UBU-D0321 rows that fix them."
+      ],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0166-openai-discovery-host-inventory",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}

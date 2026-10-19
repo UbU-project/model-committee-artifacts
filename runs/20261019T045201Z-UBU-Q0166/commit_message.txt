@@ -1,0 +1,1 @@
+UMC: docs: inventory Discovery host paths for UBU-Q0166

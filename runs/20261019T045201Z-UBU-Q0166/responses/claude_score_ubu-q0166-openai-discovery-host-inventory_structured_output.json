@@ -1,0 +1,23 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0166-openai-discovery-host-inventory",
+      "score": 74,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "none",
+      "risks": [
+        "The inventory's value rests entirely on unverifiable host-source claims (specific file paths, function names such as object_type_from_str and store_worker_submission, and a negative case-insensitive grep across five repos). A single wrong path or an overly narrow search scope would make the 'no Discovery implementation located' finding misleading, and nothing in the patch lets a reviewer re-derive it without re-running the inspection.",
+        "Source-inspection only: it executes no validator, round-trip, service, review or exchange fixture, so it advances UBU-Q0166 only marginally. It effectively defers the next fidelity run behind an unidentified or not-yet-implemented evidence write/read path, which could stall the question if no one picks up the separately reviewed implementation work.",
+        "The five host revisions are referenced indirectly via UBU-D0323 rather than restated in the new DESIGN.md table, so the pin is one hop removed from the evidence it bounds.",
+        "The DESIGN.md insertion lands in the \u00a721.1.1 evidence-index region directly before the 'Supported operations' contract paragraph; it reads as an appended probe record, which is consistent with prior entries but makes the section progressively harder to navigate."
+      ],
+      "required_fixes": [],
+      "rationale": "Mechanical validation passes (applies cleanly, allowlist OK, question schema OK). The patch is docs-only across DECISIONS.md, DESIGN.md and OPEN_QUESTIONS.md, keeps UBU-Q0166 Open with its single-line metadata intact, adds UBU-D0386 in sequence, and does not alter closure criteria, schema, pins or migrations. It is directly responsive to UBU-D0385's stated next step (investigate a complete Discovery evidence revision and resolved candidate/field links): it attempted to locate that host path, found no dedicated implementation or resolver, and records the result as an explicitly unexecuted path rather than inferring a governing schema gap. The claim discipline is careful and matches the question's established evidentiary standards (carrier retention vs. resolved fidelity, no invented candidate kind, absence not equated with gap). The score is held in the 70s because the contribution is a bounded negative source inventory with no new runtime evidence, and because its correctness depends on host-repo inspection claims that cannot be independently audited from the patch alone. Optional improvements: restate the five host revision hashes in the DESIGN.md table, and record the tracked-file count and exact grep invocation so the negative result is reproducible."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0166-openai-discovery-host-inventory",
+  "selection_rationale": "Only proposal in this round and it passed mechanical validation. It is valid, minimal, auditable in form, and directly responsive to the UBU-D0385 'next investigate' direction, while preserving the question's Open status, metadata schema and existing closure gate. Its limitations (source-only, unverifiable host paths, modest advancement) are risks to weigh, not disqualifiers."
+}

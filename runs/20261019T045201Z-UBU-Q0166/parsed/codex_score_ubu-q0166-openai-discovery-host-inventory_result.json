@@ -1,0 +1,21 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0166-openai-discovery-host-inventory",
+      "score": 88,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "none",
+      "risks": [
+        "The negative search result is bounded to the inspected revisions and tracked directories; generic or alternate mappings remain possible.",
+        "Complete evidence resolution, qualifier fidelity and policy-authorized path fixtures remain unexecuted."
+      ],
+      "required_fixes": [],
+      "rationale": "Mechanical validation passes. Independent inspection confirms the five revision pins, clean tracked files, 630-file search and reported carrier representations. The patch implements a useful bounded follow-up to UBU-D0385, changes only allowed Markdown files, and preserves the question metadata, Open status and closure criteria. It correctly distinguishes missing implementation evidence from a governing schema gap. The score reflects prerequisite progress rather than a completed host mapping or preservation result."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0166-openai-discovery-host-inventory",
+  "selection_rationale": "The sole candidate is mechanically valid, auditable and directly advances the requested host-path investigation without overstating its findings. This cross-score supports local aggregation; it does not establish question closure."
+}
