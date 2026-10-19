@@ -1,0 +1,55 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0160-mobile-repair-cache-pack-1",
+      "score": 85,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Fixture materialization, controller mappings and independently checked CPU goldens remain outstanding; the proposed cases do not establish executable parity or device qualification.",
+        "The DESIGN.md addition is a single dense block with a seven-row table inside an already long \u00a716.10.6; readability of the section continues to degrade, and the decision is marked Accepted without an operator having seen it, though this matches the prior fixture-pack precedent and the decision selects no API.",
+        "The five trigger identifiers (late_task, skipped_task, fatigue_report, approaching_static_task, missing_prerequisite) and vocabulary such as stale_after, Snapshot, continuation refs and chunk boundary are asserted to match DESIGN.md \u00a716.5 and PLANNING_KERNEL_CONTRACT.md; a mismatch with the canonical enum names would make the fixture pack misname triggers.",
+        "The fixture introduces a synthetic fact path facts.project.mobile_fixture.ready. If the facts namespace is a controlled vocabulary, this is a de facto new key rather than pure test data; the text is careful not to add PlanningRequest fields but does not address fact-key governance.",
+        "The new block depends on definitions 'above' from the UBU-D0383 structural pack (T, the 3600-second window, 60-second planning delta, seed 160, Static S anchor). The patch applied cleanly so the context lines exist, but these parameter references could not be verified against the base commit from this scoring context.",
+        "The question is blocked on physically connected device measurements; this is the sixth consecutive specification-only decision on UBU-Q0160 (after D0358, D0364, D0370, D0377, D0383) and adds no measurement, harness code or fixture files, so marginal value toward actually answering the question is diminishing.",
+        "UBU-D0387 is assumed to be the next free decision ID; the diff context does not show the preceding decision's ID, so a collision cannot be excluded from the patch alone."
+      ],
+      "required_fixes": [
+        "Confirm UBU-D0387 is the next unused decision ID and that T, seed 160, the 3600-second window and 60-second delta are defined in the UBU-D0383 block it reuses.",
+        "Confirm the five repair trigger names and the Static/Flexible/Disposable/Protected class terms match DESIGN.md \u00a716.5 and PLANNING_KERNEL_CONTRACT.md exactly before merge."
+      ],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    },
+    {
+      "proposal_id": "ubu-q0160-mobile-representation-pack-d0387",
+      "score": 81,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "DECISIONS.md ordering: the new UBU-D0387 block is inserted immediately after UBU-D0383 using that block as context. The author states UBU-D0384 to UBU-D0386 exist but were not visible, so if any of them follow D0383 in the file the patch leaves DECISIONS.md out of numeric order.",
+        "P1's claim that every M2 B placement at W1 contains second 2^31 (offset 848) and at W2 contains 2^32 (offset 1096) depends on the exact offsets frozen in UBU-D0383's structural pack, which are not visible in this request; the author asserts offsets 540 to 1260 but this could not be independently confirmed.",
+        "P2 hardcodes a 256-slot Task mask for the slot-boundary case while the batch case is parametric on the mapping's declared maximum. If the frozen mappings declare a different slot count, the slot case must be re-derived.",
+        "P3 requires chains with durations divisible by 60 to end exactly at arbitrary declared bounds. Bounds such as 2147483647 seconds cannot satisfy that construction.",
+        "P3 says the request 'exactly at the bound' must execute with exact parity, which presumes each declared bound is inclusive. If a candidate's declared bound is exclusive (for example a 2^31 limit whose largest representable value is 2^31 minus one), the 'at bound' case becomes an above-bound case and the expected disposition flips.",
+        "Testing a chain's final end offset does not necessarily exercise individual duration limits or other intermediate arithmetic bounds.",
+        "This is the sixth specification-only decision narrowing UBU-Q0160 without a fixture file or device measurement; the question remains blocked on hardware and the marginal value of further protocol text is declining, though this pack does fill a gap D0383 explicitly left open."
+      ],
+      "required_fixes": [
+        "At merge, verify the position of the UBU-D0387 block in DECISIONS.md and move it after UBU-D0386 if the file keeps decisions in numeric order.",
+        "Clarify in P3 that 'bound' means the largest supported value inclusive, or restate the three cases as below, at and above the last supported value in the mapping's declared unit.",
+        "Confirm against the frozen UBU-D0383 M2 placements that each B interval covers offset 848 and offset 1096, or adjust W1/W2 so the wrap seconds fall inside every compared placement.",
+        "Define P3 boundaries using contract-reachable values and explicit unit conversion. Specify the greatest supported value and first unsupported value when the declared bound is not aligned to the planning delta.",
+        "Provide separate constructions for offset, duration and intermediate arithmetic limits, identifying the quantity under test and keeping other quantities within supported ranges."
+      ],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0160-mobile-repair-cache-pack-1",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}

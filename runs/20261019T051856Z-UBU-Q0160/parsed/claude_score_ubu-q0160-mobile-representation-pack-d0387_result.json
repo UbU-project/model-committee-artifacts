@@ -1,0 +1,28 @@
+{
+  "scores": [
+    {
+      "proposal_id": "ubu-q0160-mobile-representation-pack-d0387",
+      "score": 82,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "none",
+      "risks": [
+        "DECISIONS.md ordering: the new UBU-D0387 block is inserted immediately after UBU-D0383 using that block as context. The author states UBU-D0384 to UBU-D0386 exist but were not visible, so if any of them follow D0383 in the file the patch leaves DECISIONS.md out of numeric order.",
+        "P1's claim that every M2 B placement at W1 contains second 2^31 (offset 848) and at W2 contains 2^32 (offset 1096) depends on the exact offsets frozen in UBU-D0383's structural pack, which are not visible in this request; the author asserts offsets 540 to 1260 but this could not be independently confirmed.",
+        "P3 says the request 'exactly at the bound' must execute with exact parity, which presumes each declared bound is inclusive. If a candidate's declared bound is exclusive (for example a 2^31 limit whose largest representable value is 2^31 minus one), the 'at bound' case becomes an above-bound case and the expected disposition flips.",
+        "P2 hardcodes a 256-slot Task mask for the slot-boundary case while the batch case is parametric on the mapping's declared maximum. If the frozen mappings declare a different slot count, the slot case must be re-derived.",
+        "This is the sixth specification-only decision narrowing UBU-Q0160 without a fixture file or device measurement; the question remains blocked on hardware and the marginal value of further protocol text is declining, though this pack does fill a gap D0383 explicitly left open."
+      ],
+      "required_fixes": [
+        "At merge, verify the position of the UBU-D0387 block in DECISIONS.md and move it after UBU-D0386 if the file keeps decisions in numeric order.",
+        "Confirm against the frozen UBU-D0383 M2 placements that each B interval covers offset 848 and offset 1096, or adjust W1/W2 so the wrap seconds fall inside every compared placement.",
+        "Clarify in P3 that 'bound' means the largest supported value inclusive, or restate the three cases as below, at and above the last supported value in the mapping's declared unit."
+      ],
+      "rationale": "The patch passed mechanical validation and the allowlist, touches only DECISIONS.md, DESIGN.md and OPEN_QUESTIONS.md, and keeps UBU-Q0160 at Status: Open with its metadata line unchanged, which is correct for a human-approval architecture question blocked on physically connected device measurements. It is directly responsive to the stated gap: UBU-D0383's text and the question's resolution both say UBU-D0370's representation and range cases remain required, and this pack materializes them with concrete, independently checkable values. The arithmetic checks out: 2026-10-16T09:00:00Z is Unix 1792141200 (above 2^30, float32 spacing 128 s), 2038-01-19T03:00:00Z is 2147483648 minus 848, 2106-02-07T06:10:00Z is 4294967296 minus 1096, and 1970-01-02T00:00:00Z is 86400, so the windows do straddle the signed and unsigned 32-bit wrap points and sit where single-precision seconds cannot resolve a 60-second separation. Expected results reuse already-frozen M2, M5 and M6 semantics, no representation width, tolerance, API or schema field is introduced, and the above-bound case correctly routes to CPU fallback under D0364 accounting rather than a semantic rejection. The near-origin control is a sound design choice for separating magnitude failures from rule failures. Deductions are for the likely out-of-order placement in DECISIONS.md, the unverifiable dependence on D0383's exact placement offsets, the inclusive versus exclusive bound ambiguity in P3, and the general concern that another specification-only decision adds limited movement toward the actual API selection."
+    }
+  ],
+  "selected_proposal_id": "ubu-q0160-mobile-representation-pack-d0387",
+  "selection_rationale": "Only one proposal was offered and it passed mechanical validation, so it is selected. The scoring provider id (claude) and authoring provider id (anthropic) differ as given in this request; the score rests on patch content alone and no author identity or provider weight was used as evidence. The proposal is valid, minimal within its three allowed files, auditable through its stated Unix-second arithmetic, and directly responsive to the representation-case gap that UBU-D0383 left open, while correctly leaving UBU-Q0160 Open and selecting no compute API. The required fixes are merge-time checks on decision ordering, D0383 offset alignment and bound inclusivity rather than content rejections."
+}

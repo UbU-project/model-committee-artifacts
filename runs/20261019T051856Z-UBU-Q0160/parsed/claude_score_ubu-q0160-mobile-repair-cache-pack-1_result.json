@@ -1,0 +1,28 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0160-mobile-repair-cache-pack-1",
+      "score": 76,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "none",
+      "risks": [
+        "The question is blocked on physically connected device measurements; this is the sixth consecutive specification-only decision on UBU-Q0160 (after D0358, D0364, D0370, D0377, D0383) and adds no measurement, harness code or fixture files, so marginal value toward actually answering the question is diminishing.",
+        "The new block depends on definitions 'above' from the UBU-D0383 structural pack (T, the 3600-second window, 60-second planning delta, seed 160, Static S anchor). The patch applied cleanly so the context lines exist, but these parameter references could not be verified against the base commit from this scoring context.",
+        "The five trigger identifiers (late_task, skipped_task, fatigue_report, approaching_static_task, missing_prerequisite) and vocabulary such as stale_after, Snapshot, continuation refs and chunk boundary are asserted to match DESIGN.md \u00a716.5 and PLANNING_KERNEL_CONTRACT.md; a mismatch with the canonical enum names would make the fixture pack misname triggers.",
+        "The fixture introduces a synthetic fact path facts.project.mobile_fixture.ready. If the facts namespace is a controlled vocabulary, this is a de facto new key rather than pure test data; the text is careful not to add PlanningRequest fields but does not address fact-key governance.",
+        "UBU-D0387 is assumed to be the next free decision ID; the diff context does not show the preceding decision's ID, so a collision cannot be excluded from the patch alone.",
+        "The DESIGN.md addition is a single dense block with a seven-row table inside an already long \u00a716.10.6; readability of the section continues to degrade, and the decision is marked Accepted without an operator having seen it, though this matches the prior fixture-pack precedent and the decision selects no API."
+      ],
+      "required_fixes": [
+        "Confirm the five repair trigger names and the Static/Flexible/Disposable/Protected class terms match DESIGN.md \u00a716.5 and PLANNING_KERNEL_CONTRACT.md exactly before merge.",
+        "Confirm UBU-D0387 is the next unused decision ID and that T, seed 160, the 3600-second window and 60-second delta are defined in the UBU-D0383 block it reuses."
+      ],
+      "rationale": "The patch passes mechanical validation, touches only the three allowed files, leaves the UBU-Q0160 metadata line and Status: Open intact, and updates only the Resolution paragraph. It follows the established UBU-D0383 pattern by supplying a concrete repair/branch-cache fixture pack (five repair triggers, protected-skip confirmation, cache hit/miss, invalid-fact and stale-envelope cases) with internally consistent arithmetic (R1 shifts F to [300,900) within its [0,900) envelope; R4 correctly cannot fit 300 seconds in the 60 seconds before S). It is disciplined about not inventing hardware results, repair defaults, planning fields or an API selection, and explicitly keeps materialization, numerical, failure-ownership, resource and contention gates in force. Weaknesses are structural rather than defects: it is another specification layer on a question that can only be closed by on-device measurement, several cross-references (trigger names, D0383 parameters, decision ID, a new fact key) cannot be verified from the diff alone, and the block adds considerable density to \u00a716.10.6. No decomposition was attempted."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0160-mobile-repair-cache-pack-1",
+  "selection_rationale": "Only one proposal was offered and it passed mechanical validation. It is valid, scoped to the allowed files, preserves the question schema, and makes honest incremental progress consistent with the prior fixture-pack decisions without inferring an API choice or hardware result. It is selectable as-is, with the pre-merge verification items noted in required_fixes."
+}

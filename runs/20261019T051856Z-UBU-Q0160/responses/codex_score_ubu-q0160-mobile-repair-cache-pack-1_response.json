@@ -1,0 +1,20 @@
+{
+  "scores": [
+    {
+      "proposal_id": "UBU-Q0160-mobile-repair-cache-pack-1",
+      "score": 94,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Fixture materialization, controller mappings and independently checked CPU goldens remain outstanding; the proposed cases do not establish executable parity or device qualification."
+      ],
+      "required_fixes": [],
+      "rationale": "Mechanical validation confirms clean application, allowed files and preserved question schema. The patch provides concrete cases for all five repair triggers and cache hits, misses and invalidation, while preserving protected-work rules, CPU certification, accelerator attribution and measurement gates. It makes useful, bounded progress without claiming an API selection or hardware result."
+    }
+  ],
+  "selected_proposal_id": "UBU-Q0160-mobile-repair-cache-pack-1",
+  "selection_rationale": "The sole candidate is mechanically valid, auditable and directly advances the remaining workload specification. No required patch corrections are evident; API selection appropriately remains Open pending implementation, device evidence and operator review."
+}

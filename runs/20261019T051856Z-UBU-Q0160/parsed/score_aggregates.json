@@ -1,0 +1,20 @@
+[
+  {
+    "proposal_id": "UBU-Q0160-mobile-repair-cache-pack-1",
+    "author_provider": "openai",
+    "cross_score_count": 2,
+    "score_mean": 85.0,
+    "score_spread": 18,
+    "frontier_score_gap": 18,
+    "disagreement_flags": []
+  },
+  {
+    "proposal_id": "ubu-q0160-mobile-representation-pack-d0387",
+    "author_provider": "anthropic",
+    "cross_score_count": 2,
+    "score_mean": 81.0,
+    "score_spread": 2,
+    "frontier_score_gap": 2,
+    "disagreement_flags": []
+  }
+]

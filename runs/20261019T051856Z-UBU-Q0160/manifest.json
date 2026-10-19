@@ -1,0 +1,314 @@
+{
+  "schema_version": "0.4",
+  "run_id": "20261019T051856Z-UBU-Q0160",
+  "created_at_utc": "2026-10-19T05:18:56Z",
+  "repo_path": "../ubu-design",
+  "base_commit": "34ebafbf3a85d4f691205331a823ab0eefe838c9",
+  "selected_question_id": "UBU-Q0160",
+  "phase": "work-select",
+  "config_path": "config/models.json",
+  "status": "selected",
+  "commands": [
+    "model-committee run-loop"
+  ],
+  "providers_attempted": [
+    "codex",
+    "claude"
+  ],
+  "providers_succeeded": [
+    "codex",
+    "claude"
+  ],
+  "providers_failed": [],
+  "provider_attempts": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0160-mobile-repair-cache-pack-1",
+      "response_path": "runs/20261019T051856Z-UBU-Q0160/responses/codex_score_ubu-q0160-mobile-repair-cache-pack-1_response.json",
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0160-mobile-repair-cache-pack-1",
+      "response_path": "runs/20261019T051856Z-UBU-Q0160/responses/claude_score_ubu-q0160-mobile-repair-cache-pack-1_stdout.json",
+      "stderr_path": null
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "ubu-q0160-mobile-representation-pack-d0387",
+      "response_path": "runs/20261019T051856Z-UBU-Q0160/responses/codex_score_ubu-q0160-mobile-representation-pack-d0387_response.json",
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "ubu-q0160-mobile-representation-pack-d0387",
+      "response_path": "runs/20261019T051856Z-UBU-Q0160/responses/claude_score_ubu-q0160-mobile-representation-pack-d0387_stdout.json",
+      "stderr_path": null
+    }
+  ],
+  "provider_successes": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20261019T051856Z-UBU-Q0160/parsed/codex_work_proposal.json"
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20261019T051856Z-UBU-Q0160/parsed/claude_work_proposal.json"
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0160-mobile-repair-cache-pack-1",
+      "response_path": "runs/20261019T051856Z-UBU-Q0160/responses/codex_score_ubu-q0160-mobile-repair-cache-pack-1_response.json",
+      "parsed_path": "runs/20261019T051856Z-UBU-Q0160/parsed/codex_score_ubu-q0160-mobile-repair-cache-pack-1_result.json"
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "UBU-Q0160-mobile-repair-cache-pack-1",
+      "response_path": "runs/20261019T051856Z-UBU-Q0160/responses/claude_score_ubu-q0160-mobile-repair-cache-pack-1_stdout.json",
+      "parsed_path": "runs/20261019T051856Z-UBU-Q0160/parsed/claude_score_ubu-q0160-mobile-repair-cache-pack-1_result.json"
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "ubu-q0160-mobile-representation-pack-d0387",
+      "response_path": "runs/20261019T051856Z-UBU-Q0160/responses/codex_score_ubu-q0160-mobile-representation-pack-d0387_response.json",
+      "parsed_path": "runs/20261019T051856Z-UBU-Q0160/parsed/codex_score_ubu-q0160-mobile-representation-pack-d0387_result.json"
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "ubu-q0160-mobile-representation-pack-d0387",
+      "response_path": "runs/20261019T051856Z-UBU-Q0160/responses/claude_score_ubu-q0160-mobile-representation-pack-d0387_stdout.json",
+      "parsed_path": "runs/20261019T051856Z-UBU-Q0160/parsed/claude_score_ubu-q0160-mobile-representation-pack-d0387_result.json"
+    }
+  ],
+  "provider_failures": [],
+  "score_matrix": [
+    {
+      "proposal_id": "UBU-Q0160-mobile-repair-cache-pack-1",
+      "author_provider": "openai",
+      "scorer_provider": "codex",
+      "score": 94,
+      "valid": true,
+      "rationale": "Mechanical validation confirms clean application, allowed files and preserved question schema. The patch provides concrete cases for all five repair triggers and cache hits, misses and invalidation, while preserving protected-work rules, CPU certification, accelerator attribution and measurement gates. It makes useful, bounded progress without claiming an API selection or hardware result.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "Fixture materialization, controller mappings and independently checked CPU goldens remain outstanding; the proposed cases do not establish executable parity or device qualification."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261019T051856Z-UBU-Q0160/responses/codex_score_ubu-q0160-mobile-repair-cache-pack-1_response.json",
+        "stderr_path": null
+      }
+    },
+    {
+      "proposal_id": "UBU-Q0160-mobile-repair-cache-pack-1",
+      "author_provider": "openai",
+      "scorer_provider": "claude",
+      "score": 76,
+      "valid": true,
+      "rationale": "The patch passes mechanical validation, touches only the three allowed files, leaves the UBU-Q0160 metadata line and Status: Open intact, and updates only the Resolution paragraph. It follows the established UBU-D0383 pattern by supplying a concrete repair/branch-cache fixture pack (five repair triggers, protected-skip confirmation, cache hit/miss, invalid-fact and stale-envelope cases) with internally consistent arithmetic (R1 shifts F to [300,900) within its [0,900) envelope; R4 correctly cannot fit 300 seconds in the 60 seconds before S). It is disciplined about not inventing hardware results, repair defaults, planning fields or an API selection, and explicitly keeps materialization, numerical, failure-ownership, resource and contention gates in force. Weaknesses are structural rather than defects: it is another specification layer on a question that can only be closed by on-device measurement, several cross-references (trigger names, D0383 parameters, decision ID, a new fact key) cannot be verified from the diff alone, and the block adds considerable density to \u00a716.10.6. No decomposition was attempted.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [
+        "Confirm the five repair trigger names and the Static/Flexible/Disposable/Protected class terms match DESIGN.md \u00a716.5 and PLANNING_KERNEL_CONTRACT.md exactly before merge.",
+        "Confirm UBU-D0387 is the next unused decision ID and that T, seed 160, the 3600-second window and 60-second delta are defined in the UBU-D0383 block it reuses."
+      ],
+      "risks": [
+        "The question is blocked on physically connected device measurements; this is the sixth consecutive specification-only decision on UBU-Q0160 (after D0358, D0364, D0370, D0377, D0383) and adds no measurement, harness code or fixture files, so marginal value toward actually answering the question is diminishing.",
+        "The new block depends on definitions 'above' from the UBU-D0383 structural pack (T, the 3600-second window, 60-second planning delta, seed 160, Static S anchor). The patch applied cleanly so the context lines exist, but these parameter references could not be verified against the base commit from this scoring context.",
+        "The five trigger identifiers (late_task, skipped_task, fatigue_report, approaching_static_task, missing_prerequisite) and vocabulary such as stale_after, Snapshot, continuation refs and chunk boundary are asserted to match DESIGN.md \u00a716.5 and PLANNING_KERNEL_CONTRACT.md; a mismatch with the canonical enum names would make the fixture pack misname triggers.",
+        "The fixture introduces a synthetic fact path facts.project.mobile_fixture.ready. If the facts namespace is a controlled vocabulary, this is a de facto new key rather than pure test data; the text is careful not to add PlanningRequest fields but does not address fact-key governance.",
+        "UBU-D0387 is assumed to be the next free decision ID; the diff context does not show the preceding decision's ID, so a collision cannot be excluded from the patch alone.",
+        "The DESIGN.md addition is a single dense block with a seven-row table inside an already long \u00a716.10.6; readability of the section continues to degrade, and the decision is marked Accepted without an operator having seen it, though this matches the prior fixture-pack precedent and the decision selects no API."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261019T051856Z-UBU-Q0160/responses/claude_score_ubu-q0160-mobile-repair-cache-pack-1_stdout.json",
+        "stderr_path": null
+      }
+    },
+    {
+      "proposal_id": "ubu-q0160-mobile-representation-pack-d0387",
+      "author_provider": "anthropic",
+      "scorer_provider": "codex",
+      "score": 80,
+      "valid": true,
+      "rationale": "Mechanical validation confirms clean application, allowed files and preserved question schema. The proposal usefully concretizes representation fixtures while retaining CPU certification, fallback accounting, hardware measurement requirements and the Open API decision. P3 needs correction before its mandatory acceptance rules are reproducible across candidate representations.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [
+        "Define P3 boundaries using contract-reachable values and explicit unit conversion. Specify the greatest supported value and first unsupported value when the declared bound is not aligned to the planning delta.",
+        "Provide separate constructions for offset, duration and intermediate arithmetic limits, identifying the quantity under test and keeping other quantities within supported ranges."
+      ],
+      "risks": [
+        "P3 requires chains with durations divisible by 60 to end exactly at arbitrary declared bounds. Bounds such as 2147483647 seconds cannot satisfy that construction.",
+        "Testing a chain's final end offset does not necessarily exercise individual duration limits or other intermediate arithmetic bounds."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261019T051856Z-UBU-Q0160/responses/codex_score_ubu-q0160-mobile-representation-pack-d0387_response.json",
+        "stderr_path": null
+      }
+    },
+    {
+      "proposal_id": "ubu-q0160-mobile-representation-pack-d0387",
+      "author_provider": "anthropic",
+      "scorer_provider": "claude",
+      "score": 82,
+      "valid": true,
+      "rationale": "The patch passed mechanical validation and the allowlist, touches only DECISIONS.md, DESIGN.md and OPEN_QUESTIONS.md, and keeps UBU-Q0160 at Status: Open with its metadata line unchanged, which is correct for a human-approval architecture question blocked on physically connected device measurements. It is directly responsive to the stated gap: UBU-D0383's text and the question's resolution both say UBU-D0370's representation and range cases remain required, and this pack materializes them with concrete, independently checkable values. The arithmetic checks out: 2026-10-16T09:00:00Z is Unix 1792141200 (above 2^30, float32 spacing 128 s), 2038-01-19T03:00:00Z is 2147483648 minus 848, 2106-02-07T06:10:00Z is 4294967296 minus 1096, and 1970-01-02T00:00:00Z is 86400, so the windows do straddle the signed and unsigned 32-bit wrap points and sit where single-precision seconds cannot resolve a 60-second separation. Expected results reuse already-frozen M2, M5 and M6 semantics, no representation width, tolerance, API or schema field is introduced, and the above-bound case correctly routes to CPU fallback under D0364 accounting rather than a semantic rejection. The near-origin control is a sound design choice for separating magnitude failures from rule failures. Deductions are for the likely out-of-order placement in DECISIONS.md, the unverifiable dependence on D0383's exact placement offsets, the inclusive versus exclusive bound ambiguity in P3, and the general concern that another specification-only decision adds limited movement toward the actual API selection.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [
+        "At merge, verify the position of the UBU-D0387 block in DECISIONS.md and move it after UBU-D0386 if the file keeps decisions in numeric order.",
+        "Confirm against the frozen UBU-D0383 M2 placements that each B interval covers offset 848 and offset 1096, or adjust W1/W2 so the wrap seconds fall inside every compared placement.",
+        "Clarify in P3 that 'bound' means the largest supported value inclusive, or restate the three cases as below, at and above the last supported value in the mapping's declared unit."
+      ],
+      "risks": [
+        "DECISIONS.md ordering: the new UBU-D0387 block is inserted immediately after UBU-D0383 using that block as context. The author states UBU-D0384 to UBU-D0386 exist but were not visible, so if any of them follow D0383 in the file the patch leaves DECISIONS.md out of numeric order.",
+        "P1's claim that every M2 B placement at W1 contains second 2^31 (offset 848) and at W2 contains 2^32 (offset 1096) depends on the exact offsets frozen in UBU-D0383's structural pack, which are not visible in this request; the author asserts offsets 540 to 1260 but this could not be independently confirmed.",
+        "P3 says the request 'exactly at the bound' must execute with exact parity, which presumes each declared bound is inclusive. If a candidate's declared bound is exclusive (for example a 2^31 limit whose largest representable value is 2^31 minus one), the 'at bound' case becomes an above-bound case and the expected disposition flips.",
+        "P2 hardcodes a 256-slot Task mask for the slot-boundary case while the batch case is parametric on the mapping's declared maximum. If the frozen mappings declare a different slot count, the slot case must be re-derived.",
+        "This is the sixth specification-only decision narrowing UBU-Q0160 without a fixture file or device measurement; the question remains blocked on hardware and the marginal value of further protocol text is declining, though this pack does fill a gap D0383 explicitly left open."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261019T051856Z-UBU-Q0160/responses/claude_score_ubu-q0160-mobile-representation-pack-d0387_stdout.json",
+        "stderr_path": null
+      }
+    }
+  ],
+  "score_aggregates": [
+    {
+      "proposal_id": "UBU-Q0160-mobile-repair-cache-pack-1",
+      "author_provider": "openai",
+      "cross_score_count": 2,
+      "score_mean": 85.0,
+      "score_spread": 18,
+      "frontier_score_gap": 18,
+      "disagreement_flags": []
+    },
+    {
+      "proposal_id": "ubu-q0160-mobile-representation-pack-d0387",
+      "author_provider": "anthropic",
+      "cross_score_count": 2,
+      "score_mean": 81.0,
+      "score_spread": 2,
+      "frontier_score_gap": 2,
+      "disagreement_flags": []
+    }
+  ],
+  "cross_score_count": 4,
+  "score_mean": 85.0,
+  "score_spread": 18,
+  "frontier_score_gap": 18,
+  "disagreement_flags": [],
+  "quorum_result": {
+    "valid": true,
+    "human_review_required": false,
+    "selected_proposal_id": "UBU-Q0160-mobile-repair-cache-pack-1",
+    "selected_score": 85.0,
+    "selected_cross_score_count": 2,
+    "blocked_reasons": [],
+    "manual_override": false
+  },
+  "selected_proposal_id": "UBU-Q0160-mobile-repair-cache-pack-1",
+  "automated_selection_valid": true,
+  "human_review_required": false,
+  "artifact_publication_status": "operator_pending",
+  "prompt_size_warning": true,
+  "prompt_context": {
+    "question_ids": [
+      "UBU-Q0156",
+      "UBU-Q0160"
+    ],
+    "decision_ids": [
+      "UBU-D0126",
+      "UBU-D0256",
+      "UBU-D0275",
+      "UBU-D0279",
+      "UBU-D0281",
+      "UBU-D0283",
+      "UBU-D0290",
+      "UBU-D0339",
+      "UBU-D0358",
+      "UBU-D0364",
+      "UBU-D0370",
+      "UBU-D0377",
+      "UBU-D0383"
+    ],
+    "sections": {
+      "DESIGN.md": [
+        "4",
+        "12.2",
+        "16.3",
+        "16.5",
+        "16.9",
+        "16.10",
+        "21.1"
+      ],
+      "PLANNING_KERNEL_CONTRACT.md": [
+        "1",
+        "2",
+        "4",
+        "5"
+      ]
+    },
+    "core_sections": {
+      "DESIGN.md": [
+        "1"
+      ],
+      "DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md": [
+        "4"
+      ]
+    },
+    "missing_refs": {},
+    "context_chars": 447906,
+    "prompt_chars": 456148
+  }
+}
