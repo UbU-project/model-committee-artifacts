@@ -1,0 +1,20 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-ubu-q0162-human-complete-corrected-history",
+      "score": 97,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Documentation only: the reproduction, filed remediation ticket and passing implementation evidence remain outstanding."
+      ],
+      "required_fixes": [],
+      "rationale": "Mechanical validation passes and changes stay within the allowed file and selected question. Inspection of the pinned orchestrator source confirms the independently exposed raw counts and notes. The patch adds precise consumer references and route-level acceptance requirements, preserves correction scope and canonical effects, and keeps the question Open without claiming implementation success."
+    }
+  ],
+  "selected_proposal_id": "openai-ubu-q0162-human-complete-corrected-history",
+  "selection_rationale": "The sole candidate is mechanically valid, source-supported and narrowly extends the existing remediation to a confirmed reporting gap. This preference is for local aggregation, not a final committee decision."
+}

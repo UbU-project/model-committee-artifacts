@@ -1,0 +1,20 @@
+[
+  {
+    "proposal_id": "openai-ubu-q0162-human-complete-corrected-history",
+    "author_provider": "openai",
+    "cross_score_count": 2,
+    "score_mean": 88.5,
+    "score_spread": 17,
+    "frontier_score_gap": 17,
+    "disagreement_flags": []
+  },
+  {
+    "proposal_id": "umc-ubu-q0162-correction-scope-contract-2026-10-19",
+    "author_provider": "anthropic",
+    "cross_score_count": 2,
+    "score_mean": 71.0,
+    "score_spread": 2,
+    "frontier_score_gap": 2,
+    "disagreement_flags": []
+  }
+]

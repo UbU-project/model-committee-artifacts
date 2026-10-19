@@ -1,0 +1,24 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-ubu-q0162-human-complete-corrected-history",
+      "score": 80,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "none",
+      "risks": [
+        "The new 2026-10-19 audit cites symbols (`src/router.rs` GET /reports/human-complete, `src/api/reports.rs::human_complete`, `report_service::{human_complete,task_status_counts,notes_from_logs}`, `tests/reports.rs::reports_scaffold_exists`) that this cross-score could not verify against the pinned `ubu-orchestrator` revision 9fddef16; if any name is wrong the remediation handoff points implementers at a non-existent path.",
+        "UBU-Q0162 is accumulating one static-audit paragraph per consumer and is now very long; each addition increases prompt-size pressure and makes the eventual remediation ticket harder to scope, even though the question's own direction asks to identify every raw-history caller.",
+        "Two separate paragraphs now instruct extending `tests/reports.rs` (the existing latest_completion paragraph and the new human-complete paragraph), creating mild redundancy that a future consolidation pass should merge."
+      ],
+      "required_fixes": [
+        "Before merge, confirm the cited router route, API handler and `report_service` helper names exist at `ubu-orchestrator` 9fddef16990ac89d07a168c75bf04b77c35b9bc3; adjust names if the static audit misnamed any symbol."
+      ],
+      "rationale": "Patch applies cleanly, touches only OPEN_QUESTIONS.md within UBU-Q0162, and keeps Status: Open with the closure-evidence and resolution text consistent. It follows the question's established pattern exactly: a dated static audit paragraph naming file/symbol/route references, a remediation-handoff paragraph tied to the existing append-only decision (UBU-D0071) and withdrawal/effect rules, and a required-checks paragraph that is explicitly labeled as requirements rather than passing results. The content is directly responsive to the question's own instruction to identify callers using raw history as current truth, and it correctly notes that repairing `latest_completion` alone would not cover a route that counts raw events and reads raw notes. Semantics are coherent with the rest of the ticket (annotation adds context without changing counts, note-only correction changes only the note, whole-outcome withdrawal does not alter canonical Task status or applied effects, competing corrections require explicit review). The main deduction is that the source claims are unverified here and that the question continues to grow rather than converging on the filed ticket and reproduction the question still lacks."
+    }
+  ],
+  "selected_proposal_id": "openai-ubu-q0162-human-complete-corrected-history",
+  "selection_rationale": "Only one candidate was submitted and it passed all mechanical validation (applies, allowlist, question schema). It is a minimal, auditable, docs-only extension that stays within UBU-Q0162, preserves Status: Open, and adds a new raw-history consumer to the remediation handoff in the same form as the existing audits, so it is the valid selection. Reviewers should verify the cited orchestrator symbols at the pinned revision before merging."
+}

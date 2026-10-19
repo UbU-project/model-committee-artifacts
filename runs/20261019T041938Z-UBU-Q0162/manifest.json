@@ -1,0 +1,297 @@
+{
+  "schema_version": "0.4",
+  "run_id": "20261019T041938Z-UBU-Q0162",
+  "created_at_utc": "2026-10-19T04:19:38Z",
+  "repo_path": "../ubu-design",
+  "base_commit": "0f700ab4cf63da706da5edeff3f609ab14eafc4b",
+  "selected_question_id": "UBU-Q0162",
+  "phase": "work-select",
+  "config_path": "config/models.json",
+  "status": "selected",
+  "commands": [
+    "model-committee run-loop"
+  ],
+  "providers_attempted": [
+    "codex",
+    "claude"
+  ],
+  "providers_succeeded": [
+    "codex",
+    "claude"
+  ],
+  "providers_failed": [],
+  "provider_attempts": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "stderr_path": null
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "openai-ubu-q0162-human-complete-corrected-history",
+      "response_path": "runs/20261019T041938Z-UBU-Q0162/responses/codex_score_openai-ubu-q0162-human-complete-corrected-history_response.json",
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "openai-ubu-q0162-human-complete-corrected-history",
+      "response_path": "runs/20261019T041938Z-UBU-Q0162/responses/claude_score_openai-ubu-q0162-human-complete-corrected-history_stdout.json",
+      "stderr_path": null
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "umc-ubu-q0162-correction-scope-contract-2026-10-19",
+      "response_path": "runs/20261019T041938Z-UBU-Q0162/responses/codex_score_umc-ubu-q0162-correction-scope-contract-2026-10-19_response.json",
+      "stderr_path": null
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "umc-ubu-q0162-correction-scope-contract-2026-10-19",
+      "response_path": "runs/20261019T041938Z-UBU-Q0162/responses/claude_score_umc-ubu-q0162-correction-scope-contract-2026-10-19_stdout.json",
+      "stderr_path": null
+    }
+  ],
+  "provider_successes": [
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20261019T041938Z-UBU-Q0162/parsed/codex_work_proposal.json"
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-generate",
+      "target_proposal_id": null,
+      "response_path": null,
+      "parsed_path": "runs/20261019T041938Z-UBU-Q0162/parsed/claude_work_proposal.json"
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "openai-ubu-q0162-human-complete-corrected-history",
+      "response_path": "runs/20261019T041938Z-UBU-Q0162/responses/codex_score_openai-ubu-q0162-human-complete-corrected-history_response.json",
+      "parsed_path": "runs/20261019T041938Z-UBU-Q0162/parsed/codex_score_openai-ubu-q0162-human-complete-corrected-history_result.json"
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "openai-ubu-q0162-human-complete-corrected-history",
+      "response_path": "runs/20261019T041938Z-UBU-Q0162/responses/claude_score_openai-ubu-q0162-human-complete-corrected-history_stdout.json",
+      "parsed_path": "runs/20261019T041938Z-UBU-Q0162/parsed/claude_score_openai-ubu-q0162-human-complete-corrected-history_result.json"
+    },
+    {
+      "provider_id": "codex",
+      "model_name": "gpt-6.1-sol",
+      "phase": "work-score",
+      "target_proposal_id": "umc-ubu-q0162-correction-scope-contract-2026-10-19",
+      "response_path": "runs/20261019T041938Z-UBU-Q0162/responses/codex_score_umc-ubu-q0162-correction-scope-contract-2026-10-19_response.json",
+      "parsed_path": "runs/20261019T041938Z-UBU-Q0162/parsed/codex_score_umc-ubu-q0162-correction-scope-contract-2026-10-19_result.json"
+    },
+    {
+      "provider_id": "claude",
+      "model_name": "claude-fable-5-1",
+      "phase": "work-score",
+      "target_proposal_id": "umc-ubu-q0162-correction-scope-contract-2026-10-19",
+      "response_path": "runs/20261019T041938Z-UBU-Q0162/responses/claude_score_umc-ubu-q0162-correction-scope-contract-2026-10-19_stdout.json",
+      "parsed_path": "runs/20261019T041938Z-UBU-Q0162/parsed/claude_score_umc-ubu-q0162-correction-scope-contract-2026-10-19_result.json"
+    }
+  ],
+  "provider_failures": [],
+  "score_matrix": [
+    {
+      "proposal_id": "openai-ubu-q0162-human-complete-corrected-history",
+      "author_provider": "openai",
+      "scorer_provider": "codex",
+      "score": 97,
+      "valid": true,
+      "rationale": "Mechanical validation passes and changes stay within the allowed file and selected question. Inspection of the pinned orchestrator source confirms the independently exposed raw counts and notes. The patch adds precise consumer references and route-level acceptance requirements, preserves correction scope and canonical effects, and keeps the question Open without claiming implementation success.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [],
+      "risks": [
+        "Documentation only: the reproduction, filed remediation ticket and passing implementation evidence remain outstanding."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261019T041938Z-UBU-Q0162/responses/codex_score_openai-ubu-q0162-human-complete-corrected-history_response.json",
+        "stderr_path": null
+      }
+    },
+    {
+      "proposal_id": "openai-ubu-q0162-human-complete-corrected-history",
+      "author_provider": "openai",
+      "scorer_provider": "claude",
+      "score": 80,
+      "valid": true,
+      "rationale": "Patch applies cleanly, touches only OPEN_QUESTIONS.md within UBU-Q0162, and keeps Status: Open with the closure-evidence and resolution text consistent. It follows the question's established pattern exactly: a dated static audit paragraph naming file/symbol/route references, a remediation-handoff paragraph tied to the existing append-only decision (UBU-D0071) and withdrawal/effect rules, and a required-checks paragraph that is explicitly labeled as requirements rather than passing results. The content is directly responsive to the question's own instruction to identify callers using raw history as current truth, and it correctly notes that repairing `latest_completion` alone would not cover a route that counts raw events and reads raw notes. Semantics are coherent with the rest of the ticket (annotation adds context without changing counts, note-only correction changes only the note, whole-outcome withdrawal does not alter canonical Task status or applied effects, competing corrections require explicit review). The main deduction is that the source claims are unverified here and that the question continues to grow rather than converging on the filed ticket and reproduction the question still lacks.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [
+        "Before merge, confirm the cited router route, API handler and `report_service` helper names exist at `ubu-orchestrator` 9fddef16990ac89d07a168c75bf04b77c35b9bc3; adjust names if the static audit misnamed any symbol."
+      ],
+      "risks": [
+        "The new 2026-10-19 audit cites symbols (`src/router.rs` GET /reports/human-complete, `src/api/reports.rs::human_complete`, `report_service::{human_complete,task_status_counts,notes_from_logs}`, `tests/reports.rs::reports_scaffold_exists`) that this cross-score could not verify against the pinned `ubu-orchestrator` revision 9fddef16; if any name is wrong the remediation handoff points implementers at a non-existent path.",
+        "UBU-Q0162 is accumulating one static-audit paragraph per consumer and is now very long; each addition increases prompt-size pressure and makes the eventual remediation ticket harder to scope, even though the question's own direction asks to identify every raw-history caller.",
+        "Two separate paragraphs now instruct extending `tests/reports.rs` (the existing latest_completion paragraph and the new human-complete paragraph), creating mild redundancy that a future consolidation pass should merge."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261019T041938Z-UBU-Q0162/responses/claude_score_openai-ubu-q0162-human-complete-corrected-history_stdout.json",
+        "stderr_path": null
+      }
+    },
+    {
+      "proposal_id": "umc-ubu-q0162-correction-scope-contract-2026-10-19",
+      "author_provider": "anthropic",
+      "scorer_provider": "codex",
+      "score": 72,
+      "valid": true,
+      "rationale": "The supplied mechanical validation passes, changes remain confined to the selected question, and Open status and outstanding closure evidence are preserved. The proposal usefully clarifies scope needed by planning, reports and reopen actions without claiming implementation success or operator approval. However, its claimed deterministic contract leaves important withdrawal, chaining and conflict cases underspecified.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [
+        "Define the concrete scope and replacement-value representation, including whole-assertion withdrawal and the meaning or rejection of path-scoped withdrawal.",
+        "Specify pointer interpretation for corrections targeting corrections, and exclude immutable links and correction-control metadata from semantic replacement paths.",
+        "Define overlap and conflict resolution across whole assertions, nested paths and correction chains; add corresponding required fixtures."
+      ],
+      "risks": [
+        "Path-scoped withdrawal is permitted but its interpretation and encoding are undefined; only whole-assertion withdrawal receives explicit semantics.",
+        "Correction-of-correction paths ambiguously address either the correction payload or the underlying assertion. Allowing all event-defined payload paths could also permit reinterpretation of correction links or scope.",
+        "Conflict rules do not explicitly cover whole-assertion withdrawal versus scoped replacement, ancestor/descendant JSON Pointer overlap, or effective scope across correction chains."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261019T041938Z-UBU-Q0162/responses/codex_score_umc-ubu-q0162-correction-scope-contract-2026-10-19_response.json",
+        "stderr_path": null
+      }
+    },
+    {
+      "proposal_id": "umc-ubu-q0162-correction-scope-contract-2026-10-19",
+      "author_provider": "anthropic",
+      "scorer_provider": "claude",
+      "score": 70,
+      "valid": true,
+      "rationale": "The patch applies cleanly, touches only OPEN_QUESTIONS.md, keeps Status Open with all metadata intact, and updates the Resolution in the existing style while marking the contract as awaiting operator approval, which fits the question's human-approval requirement. The gap it identifies is real on the face of the question text: the handoff repeatedly relies on scoped, friction-only, withdrawn, replaced and competing corrections, yet the minimum repair only names `correction_of` and `annotation_of`, so the required planner, report and reopen fixtures have no defined interpretation to assert against. The proposed contract stays within existing event types and the arbitrary JSON payload, keeps legacy unscoped corrections unrewritten, and routes overlapping competing corrections to ordinary review rather than timestamps, all consistent with D0071 and D0248 as the question describes them. Points are withheld because key premises (D0071 content, `event_payload`/`result`/`effective_at` field names, D0248's class name) are asserted without evidence available in the request and partly contradict the recorded `payload` field name, because path-scoped withdraw is left semantically undefined, and because the proposal grows an already oversized question body with a data-model choice that would be more auditable as a separate approval item.",
+      "implements_selected_work": true,
+      "avoids_unnecessary_scope": true,
+      "required_fixes": [
+        "Cite the UBU-D0071 and DESIGN.md text that establishes correction scope is undefined, or soften the claim to what the question already records (the 2026-10-14 audit found no event-specific validation).",
+        "Align `corrected_paths` target field names with the recorded Log envelope (`payload` per the NewLogRecord audit) or cite the DESIGN.md section that defines `event_payload`, `result` and `effective_at`.",
+        "Define corrected-view semantics for a path-scoped `withdraw`, or restrict `withdraw` to the whole assertion so every declared scope has deterministic interpretation.",
+        "Consider recording the contract as an explicit approval item (candidate decision or dependent question linked under Depends on) rather than only in the minimum-repair prose."
+      ],
+      "risks": [
+        "The claim that UBU-D0071 defines only annotation/correction links with optional old/new values is not corroborated by anything in the request; if D0071 or DESIGN.md already defines a scope or kind mechanism, the new contract would conflict with recorded design rather than fill a gap.",
+        "The contract names target fields `event_payload`, `result` and `effective_at`, but the recorded audits describe the Log request as `id`, `event_type`, `object_refs`, `payload`, `provenance`, `created_at` (NewLogRecord uses `payload`). Field names in the contract may not match the actual envelope, which would make the `corrected_paths` rules unimplementable as written.",
+        "Path-scoped `withdraw` is permitted (`corrected_paths` may be listed for withdraw) but only whole-assertion withdraw has defined corrected-view semantics; path-scoped withdraw is left undefined, which reintroduces the free-form interpretation the contract is meant to remove.",
+        "The reference to `UBU-D0248`'s incompatible-intent class asserts specific content of that decision that cannot be verified from the request.",
+        "A new data-model contract (`correction_kind`, `corrected_paths`) is embedded in an already very long question body instead of a candidate decision or a dependent question, making the approval item easy to lose and further inflating the question text.",
+        "Author did not run git apply --check and estimated hunk line numbers; mechanical validation reports the patch applies, so this is residual only."
+      ],
+      "schema_validation": {
+        "valid": true,
+        "message": null,
+        "response_path": "runs/20261019T041938Z-UBU-Q0162/responses/claude_score_umc-ubu-q0162-correction-scope-contract-2026-10-19_stdout.json",
+        "stderr_path": null
+      }
+    }
+  ],
+  "score_aggregates": [
+    {
+      "proposal_id": "openai-ubu-q0162-human-complete-corrected-history",
+      "author_provider": "openai",
+      "cross_score_count": 2,
+      "score_mean": 88.5,
+      "score_spread": 17,
+      "frontier_score_gap": 17,
+      "disagreement_flags": []
+    },
+    {
+      "proposal_id": "umc-ubu-q0162-correction-scope-contract-2026-10-19",
+      "author_provider": "anthropic",
+      "cross_score_count": 2,
+      "score_mean": 71.0,
+      "score_spread": 2,
+      "frontier_score_gap": 2,
+      "disagreement_flags": []
+    }
+  ],
+  "cross_score_count": 4,
+  "score_mean": 88.5,
+  "score_spread": 17,
+  "frontier_score_gap": 17,
+  "disagreement_flags": [],
+  "quorum_result": {
+    "valid": true,
+    "human_review_required": false,
+    "selected_proposal_id": "openai-ubu-q0162-human-complete-corrected-history",
+    "selected_score": 88.5,
+    "selected_cross_score_count": 2,
+    "blocked_reasons": [],
+    "manual_override": false
+  },
+  "selected_proposal_id": "openai-ubu-q0162-human-complete-corrected-history",
+  "automated_selection_valid": true,
+  "human_review_required": false,
+  "artifact_publication_status": "operator_pending",
+  "prompt_size_warning": true,
+  "prompt_context": {
+    "question_ids": [
+      "UBU-Q0162"
+    ],
+    "decision_ids": [
+      "UBU-D0071",
+      "UBU-D0248",
+      "UBU-D0258"
+    ],
+    "sections": {
+      "DESIGN.md": [
+        "12.1",
+        "12.2",
+        "23.1"
+      ],
+      "DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md": [
+        "16",
+        "17"
+      ]
+    },
+    "core_sections": {
+      "DESIGN.md": [
+        "1"
+      ],
+      "DEVICE_SYNC_AND_COMPARTMENT_CONTRACT.md": [
+        "4"
+      ]
+    },
+    "missing_refs": {},
+    "context_chars": 119650,
+    "prompt_chars": 126972
+  }
+}

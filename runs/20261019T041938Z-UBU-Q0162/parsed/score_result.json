@@ -1,0 +1,55 @@
+{
+  "scores": [
+    {
+      "proposal_id": "openai-ubu-q0162-human-complete-corrected-history",
+      "score": 88,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Documentation only: the reproduction, filed remediation ticket and passing implementation evidence remain outstanding.",
+        "The new 2026-10-19 audit cites symbols (`src/router.rs` GET /reports/human-complete, `src/api/reports.rs::human_complete`, `report_service::{human_complete,task_status_counts,notes_from_logs}`, `tests/reports.rs::reports_scaffold_exists`) that this cross-score could not verify against the pinned `ubu-orchestrator` revision 9fddef16; if any name is wrong the remediation handoff points implementers at a non-existent path.",
+        "Two separate paragraphs now instruct extending `tests/reports.rs` (the existing latest_completion paragraph and the new human-complete paragraph), creating mild redundancy that a future consolidation pass should merge.",
+        "UBU-Q0162 is accumulating one static-audit paragraph per consumer and is now very long; each addition increases prompt-size pressure and makes the eventual remediation ticket harder to scope, even though the question's own direction asks to identify every raw-history caller."
+      ],
+      "required_fixes": [
+        "Before merge, confirm the cited router route, API handler and `report_service` helper names exist at `ubu-orchestrator` 9fddef16990ac89d07a168c75bf04b77c35b9bc3; adjust names if the static audit misnamed any symbol."
+      ],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    },
+    {
+      "proposal_id": "umc-ubu-q0162-correction-scope-contract-2026-10-19",
+      "score": 71,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "A new data-model contract (`correction_kind`, `corrected_paths`) is embedded in an already very long question body instead of a candidate decision or a dependent question, making the approval item easy to lose and further inflating the question text.",
+        "Author did not run git apply --check and estimated hunk line numbers; mechanical validation reports the patch applies, so this is residual only.",
+        "Conflict rules do not explicitly cover whole-assertion withdrawal versus scoped replacement, ancestor/descendant JSON Pointer overlap, or effective scope across correction chains.",
+        "Correction-of-correction paths ambiguously address either the correction payload or the underlying assertion. Allowing all event-defined payload paths could also permit reinterpretation of correction links or scope.",
+        "Path-scoped `withdraw` is permitted (`corrected_paths` may be listed for withdraw) but only whole-assertion withdraw has defined corrected-view semantics; path-scoped withdraw is left undefined, which reintroduces the free-form interpretation the contract is meant to remove.",
+        "Path-scoped withdrawal is permitted but its interpretation and encoding are undefined; only whole-assertion withdrawal receives explicit semantics.",
+        "The claim that UBU-D0071 defines only annotation/correction links with optional old/new values is not corroborated by anything in the request; if D0071 or DESIGN.md already defines a scope or kind mechanism, the new contract would conflict with recorded design rather than fill a gap.",
+        "The contract names target fields `event_payload`, `result` and `effective_at`, but the recorded audits describe the Log request as `id`, `event_type`, `object_refs`, `payload`, `provenance`, `created_at` (NewLogRecord uses `payload`). Field names in the contract may not match the actual envelope, which would make the `corrected_paths` rules unimplementable as written.",
+        "The reference to `UBU-D0248`'s incompatible-intent class asserts specific content of that decision that cannot be verified from the request."
+      ],
+      "required_fixes": [
+        "Align `corrected_paths` target field names with the recorded Log envelope (`payload` per the NewLogRecord audit) or cite the DESIGN.md section that defines `event_payload`, `result` and `effective_at`.",
+        "Cite the UBU-D0071 and DESIGN.md text that establishes correction scope is undefined, or soften the claim to what the question already records (the 2026-10-14 audit found no event-specific validation).",
+        "Consider recording the contract as an explicit approval item (candidate decision or dependent question linked under Depends on) rather than only in the minimum-repair prose.",
+        "Define corrected-view semantics for a path-scoped `withdraw`, or restrict `withdraw` to the whole assertion so every declared scope has deterministic interpretation.",
+        "Define overlap and conflict resolution across whole assertions, nested paths and correction chains; add corresponding required fixtures.",
+        "Define the concrete scope and replacement-value representation, including whole-assertion withdrawal and the meaning or rejection of path-scoped withdrawal.",
+        "Specify pointer interpretation for corrections targeting corrections, and exclude immutable links and correction-control metadata from semantic replacement paths."
+      ],
+      "rationale": "Aggregate cross-score mean from 2 valid scorer(s)."
+    }
+  ],
+  "selected_proposal_id": "openai-ubu-q0162-human-complete-corrected-history",
+  "selection_rationale": "Selected by local v0.2 quorum policy from cross-scores."
+}

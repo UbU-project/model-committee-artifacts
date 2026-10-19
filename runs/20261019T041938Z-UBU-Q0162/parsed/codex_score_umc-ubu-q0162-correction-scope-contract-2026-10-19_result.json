@@ -1,0 +1,26 @@
+{
+  "scores": [
+    {
+      "proposal_id": "umc-ubu-q0162-correction-scope-contract-2026-10-19",
+      "score": 72,
+      "patch_applies": true,
+      "implements_selected_work": true,
+      "preserves_question_schema": true,
+      "avoids_unnecessary_scope": true,
+      "decomposition_quality": "not_applicable",
+      "risks": [
+        "Path-scoped withdrawal is permitted but its interpretation and encoding are undefined; only whole-assertion withdrawal receives explicit semantics.",
+        "Correction-of-correction paths ambiguously address either the correction payload or the underlying assertion. Allowing all event-defined payload paths could also permit reinterpretation of correction links or scope.",
+        "Conflict rules do not explicitly cover whole-assertion withdrawal versus scoped replacement, ancestor/descendant JSON Pointer overlap, or effective scope across correction chains."
+      ],
+      "required_fixes": [
+        "Define the concrete scope and replacement-value representation, including whole-assertion withdrawal and the meaning or rejection of path-scoped withdrawal.",
+        "Specify pointer interpretation for corrections targeting corrections, and exclude immutable links and correction-control metadata from semantic replacement paths.",
+        "Define overlap and conflict resolution across whole assertions, nested paths and correction chains; add corresponding required fixtures."
+      ],
+      "rationale": "The supplied mechanical validation passes, changes remain confined to the selected question, and Open status and outstanding closure evidence are preserved. The proposal usefully clarifies scope needed by planning, reports and reopen actions without claiming implementation success or operator approval. However, its claimed deterministic contract leaves important withdrawal, chaining and conflict cases underspecified."
+    }
+  ],
+  "selected_proposal_id": "umc-ubu-q0162-correction-scope-contract-2026-10-19",
+  "selection_rationale": "The sole candidate is mechanically eligible and provides relevant documentation progress. Its score reflects substantive fixes still needed; inclusion does not constitute operator approval or question closure."
+}
